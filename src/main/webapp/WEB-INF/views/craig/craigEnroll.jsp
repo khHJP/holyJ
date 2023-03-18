@@ -6,9 +6,22 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="title"/>
 </jsp:include>
-<title>중고거래 등록</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig.css" />
-	<form
+<style>
+#tbl-craig-enroll-board{
+   border: 1px solid black;
+   width : 600px;
+   height : 600px;
+   margin: 0 auto;   
+}
+
+#craigEnrollFrm{
+   width : 600px;
+   height : 600px;
+   margin: 0 auto;  
+}
+</style>
+	<form id="craigEnrollFrm"
 		name="craigEnrollFrm"
 		enctype ="multipart/form-data"
 		method="post">
@@ -34,19 +47,18 @@
 					<th>내용</th>
 					<td><textarea id="content"></textarea></td>
 				</tr>
-				<tr>							
-					<th>거래희망장소 <button id="pickPlace">장소선택</button></th>
-					<td id="placetd">
-						<div id="map" style="width:300px;height:350px;"></div>
-					</td>
-				</tr>
-				<tr><td>
-					 <p>위/경도나올부분</p>
-					<div id="clickLatlng"></div>
-					</td>
-				</tr>
-		 	</tbody>
+				</tbody>
 		</table>
+			<div>
+				<span>거래희망장소     </span><button id="pickPlace">장소선택</button></th>
+				<div id="map" style="width:300px;height:350px;"></div>				
+			</div>
+			
+			<div>						
+				<p>위/경도나올부분</p>
+				<div id="clickLatlng"></div>
+		 	</div>
+		 	
 	</form>
 	<br><br><br><br>	
 	

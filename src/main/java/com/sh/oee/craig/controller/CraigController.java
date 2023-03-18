@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sh.oee.craig.model.dto.Craig;
+import com.sh.oee.craig.model.dto.CraigEntity;
 import com.sh.oee.craig.model.service.CraigService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class CraigController {
 	@GetMapping("/craigList.do")
 	public void craigList(Model model){
 		
-		List<Craig> craigList = craigService.craigList();
+		List<CraigEntity> craigList = craigService.craigList();
 		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
 		
 		log.debug( "■ craigList = {}", craigList);

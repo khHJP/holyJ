@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReportServiceImpl implements ReportService {
 	
-	@Autowired(required = false)
+	@Autowired()
 	private ReportDao reportDao;
 
 }

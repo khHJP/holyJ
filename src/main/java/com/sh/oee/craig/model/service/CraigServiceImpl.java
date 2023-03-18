@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.oee.craig.model.dao.CraigDao;
-import com.sh.oee.craig.model.dto.Craig;
+import com.sh.oee.craig.model.dto.CraigEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ public class CraigServiceImpl implements CraigService {
 	private CraigDao craigDao;
 
 	@Override
-	public List<Craig> craigList() {
+	public List<CraigEntity> craigList() {
 		return craigDao.craigList();
 	}
 
