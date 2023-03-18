@@ -39,7 +39,7 @@ window.addEventListener('load', (e) => {
 			<div class="nav-container">
 				<ul class="nav-list">
 					<li>
-						<a href="${pageContext.request.contextPath}/temp.do" class="title">중고거래</a>
+						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title">중고거래</a>
 					</li>
 					<li>
 						<a href="#" class="title">동네생활</a>
