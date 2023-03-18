@@ -67,7 +67,7 @@ window.addEventListener('load', (e) => {
 				<div class="profile-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 					<div class="my-select-box">
-						<span class="my-select"><a href="${pageContext.request.contextPath}/mypage/mypage.do" class="subtitle">나의 오이</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/member/myPage.do" class="subtitle">나의 오이</a></span>
 						<span class="my-select"><a href="#">관리자페이지</a></span>
 						<span class="my-select"><a href="#">로그아웃</a></span>
 					</div>	
