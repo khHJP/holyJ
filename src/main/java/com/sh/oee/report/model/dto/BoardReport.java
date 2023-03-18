@@ -19,6 +19,13 @@ public class BoardReport extends ReportEntity{
 	private ReportType reportType;
 	@NonNull
 	private int reportPostNo;
+	
+	public BoardReport(@NonNull int reportNo, @NonNull String writer, LocalDateTime regDate, Status status,
+			@NonNull ReportType reportType, @NonNull int reportPostNo) {
+		super(reportNo, writer, regDate, status);
+		this.reportType = reportType;
+		this.reportPostNo = reportPostNo;
+	}
 
 	
 	

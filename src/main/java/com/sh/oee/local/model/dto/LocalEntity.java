@@ -16,4 +16,5 @@ public class LocalEntity {
 	private String title;
 	private String content;
 	private LocalDateTime regDate;
+	private int hits;
 }
