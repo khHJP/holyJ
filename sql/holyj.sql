@@ -9,13 +9,6 @@ create table GU (
 
 create sequence seq_gu_no;
 
--- 구 : 송파구 /강남구 /강동구 
-
-select * from gu
-select * from dong;
-select * from dong_range;
-
-
 
 --=============================================
 -- 동 DONG
@@ -31,8 +24,6 @@ create table DONG (
 );
 
 -- DONG_NO 하드코딩
-
-
 
 --=============================================
 -- 동별 범위 DONG_RANGE
@@ -61,7 +52,7 @@ create table MEMBER (
 	DONG_RANGE char(1) not null,
 	REPORT_CNT	number default 0, -- 신고 기본 0
     ENROLL_DATE date default sysdate,
-    DELETE_DATE date default sysdate,
+
     constraint pk_member_id primary key(member_id),
     constraint fk_member_dong_no foreign key(dong_no) references DONG(dong_no),
     constraint ck_dong_range check(dong_range in ('N', 'F'))
@@ -69,7 +60,6 @@ create table MEMBER (
 
 alter table MEMBER add DELETE_DATE date default null; -- 탈퇴일 추가
 
-select * from MEMBER
 
 --=============================================
 -- 알림 NOTICE
@@ -104,23 +94,33 @@ create table NOTICE_KEYWORD (
 create sequence seq_keyword_no;
 
 --=============================================
--- 게시판 종류 BOARD_TYPE
+-- 신고유형 REPORT_TYPE
 --=============================================
-CREATE TABLE BOARD_TYPE (
-	BOARD_TYPE_NO	NUMBER,
-	BOARD_TYPE_NAME	VARCHAR2(50)	NOT NULL,
-	CONSTRAINT PK_BOARD_TYPE_NO PRIMARY KEY(BOARD_TYPE_NO)	
+CREATE TABLE REPORT_TYPE (
+	REPORT_TYPE	CHAR(2),
+	REPORT_TYPE_NAME VARCHAR2(50) NOT NULL,
+	CONSTRAINT PK_REPORT_TYPE PRIMARY KEY(REPORT_TYPE)	
 );
 
+insert into REPORT_TYPE values('CR', '중고거래');
+insert into REPORT_TYPE values('LO', '동네생활');
+insert into REPORT_TYPE values('TO', '같이해요');
+insert into REPORT_TYPE values('US', '사용자');
 
 --=============================================
 -- 신고사유 REPORT_REASON
 --=============================================
 CREATE TABLE REPORT_REASON (
 	REASON_NO	NUMBER,
-	REASON_NAME	VARCHAR2(50)	NOT NULL,
-  CONSTRAINT PK_REASON_NO PRIMARY KEY(REASON_NO)
+    REPORT_TYPE CHAR(2) not null,
+	REASON_NAME	VARCHAR2(200) NOT NULL,
+  CONSTRAINT PK_REASON_NO PRIMARY KEY(REASON_NO),
+  constraint fk_report_reason_type foreign key (report_type) references REPORT_TYPE(REPORT_TYPE) 
 );
+-- modify로 크기변경
+alter table REPORT_REASON modify REASON_NAME varchar2(200);
+
+create sequence seq_report_reason_no;
 
 --=============================================
 -- 게시글신고 BOARD_REPORT
@@ -128,14 +128,14 @@ CREATE TABLE REPORT_REASON (
 CREATE TABLE BOARD_REPORT (
     REPORT_NO	NUMBER,
     WRITER	VARCHAR2(30)	NOT NULL,
-    BOARD_TYPE_NO	NUMBER	NOT NULL,
+    REPORT_TYPE	CHAR(2)	NOT NULL,
     REPORT_POST_NO	NUMBER	NOT NULL,
     REASON_NO	NUMBER	NOT NULL,
     REG_DATE	DATE DEFAULT SYSDATE,
     STATUS	CHAR(1)	DEFAULT 'N',
     CONSTRAINT PK_BOARD_REPORT_NO PRIMARY KEY(REPORT_NO),
     CONSTRAINT FK_BOARD_REPORT_WRITER FOREIGN KEY(WRITER) REFERENCES MEMBER(MEMBER_ID),
-    CONSTRAINT FK_BOARD_TYPE_NO FOREIGN KEY(BOARD_TYPE_NO) REFERENCES BOARD_TYPE(BOARD_TYPE_NO),
+    CONSTRAINT FK_BOARD_REPORT_TYPE FOREIGN KEY(REPORT_TYPE) REFERENCES REPORT_TYPE(REPORT_TYPE),
     CONSTRAINT FK_BOARD_REPORT_REASON_NO FOREIGN KEY(REASON_NO) REFERENCES REPORT_REASON(REASON_NO),
     constraint CK_BOARD_REPORT_STATUS check(STATUS in ('Y', 'N'))   
 );
@@ -162,6 +162,7 @@ CREATE SEQUENCE SEQ_USER_REPORT_NO;
 -- COMMENT
 COMMENT ON COLUMN TOGETHER_CATEGORY.CATEGORY_NO IS '카테고리 NO';
 COMMENT ON COLUMN TOGETHER_CATEGORY.CATEGORY_NAME IS '카테고리명';
+
 
 --=============================================
 -- 같이해요 카테고리 TOGETHER_CATEGORY
@@ -303,10 +304,6 @@ create table CRAIG_CATEGORY (
   constraint pk_craig_category_no primary key(category_no)
 );
 
-
-select * from CRAIG_CATEGORY;
-
-
 --=============================================
 -- 중고거래 CRAIG
 --=============================================
@@ -321,20 +318,17 @@ create table CRAIG (
 	longitude number not null,
 	place_detail varchar2(50) not null,
 	price number not null,
-	hits number default 0, --조회수
-	state varchar2(10) default 'CR2', -- 예약중/판매중/판매완료
+	hits number default 0,
+	state char(10) default 'CR2', -- 예약중/판매중/판매완료
 	buyer varchar2(30),
 	complete_date date,
-    constraint pk_craig_no primary key(no),
+  constraint pk_craig_no primary key(no),
 	constraint fk_craig_category_no foreign key (category_no) references craig_category(category_no) on delete set null,
 	constraint fk_craig_writer foreign key (writer) references member(member_id),
 	constraint ck_craig_state check (state in ('CR1', 'CR2', 'CR3'))
 );
 
 create sequence seq_craig_no;
-
--- 혜진변경(0317)  / 사유 : enum오류 
-ALTER TABLE CRAIG MODIFY state VARCHAR2(10);
 
 --=============================================
 -- 중고거래 첨부파일 CRAIG_ATTACHMENT
@@ -351,7 +345,6 @@ create table CRAIG_ATTACHMENT (
 
 create sequence seq_craig_attach_no;
 
-
 --=============================================
 -- 중고거래 관심 CRAIG_WISH
 --=============================================
@@ -367,9 +360,6 @@ CREATE TABLE CRAIG_WISH (
 );
 
 CREATE SEQUENCE seq_CRAIG_WISH_no;
-
---  CRAIG_WISH 샘플데이터
-insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, 2, 'doghj', sysdate);
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -448,15 +438,15 @@ CREATE TABLE CRAIG_MEETING (
 create table MANNER_REVIEW (
     manner_no number,
     craig_no number,
-    prefer char(10), -- 별로예요/좋아요/최고예요
+    prefer char(10) not null, -- 별로예요/좋아요/최고예요
     compliment char(10),
     writer varchar2(30), -- 후기작성자
     recipient varchar2(30), -- 후기대상자?
     reg_date date default sysdate,
     constraint pk_manner_no primary key(manner_no),
     constraint fk_manner_craig_no foreign key (craig_no) references craig (no) on delete set null,
-    constraint ck_manner_prefer check (prefer in ('MA1', 'MA2', 'MA3')),
-    constraint ck_manner_compliment check (compliment in ('COM1', 'COM2', 'COM3', 'COM4'))
+    constraint ck_manner_prefer check (prefer in ('MA1', 'MA2', 'MA3')), -- 매너온도 / -0.5 / +0.2 / +0.5 (** 선택안했을시 못넘어감)
+    constraint ck_manner_compliment check (compliment in ('COM1', 'COM2', 'COM3', 'COM4')) -- +0.1 (넷중하나 / null가능 (CK))
 );
 
 create sequence seq_manner_no;
@@ -596,51 +586,3 @@ create table persistent_logins (
 );
 
 select * from persistent_logins;
-
-
-
-
-
--- 혜진샘플데이터
--- 회원 :  doghj은 강남구 / 도곡1동  살고 near 선택 
--- 회원 :  cathj은 강남구 / 도곡2동  살고 far 선택 
--- 게시글 조회범위는 select dong_near from dong_range where no = 1
-
-
--- ** 회원
-insert into member values('doghj', '1234', '개발자', '01012341111', default, default, 1, 'N', default, default, default );
-insert into member values('cathj', '1234', '야옹이는멍멍', '01033331111', default, default, 2, 'F', default, default, default );
-
-select *
-from dong
-where dong_no = (SELECT dong_no from member where member_id = 'cathj' )
-
-commit;
-
--- 1) 중고거래 게시글 샘플데이터 
-SELECT * FROM  craig_CATEGORY;
-SELECT * FROM  craig;
-
-insert into craig values(seq_craig_no.nextval, 1, 'doghj','마우스 오이', '안녕하세요! 안쓰는마우스 오이합니다',default, 37.488286578886324, 127.03896459698176,
-                                             '도곡1동 주민센터앞', 10000,default, default, null, null );
-insert into craig values(seq_craig_no.nextval, 2, 'doghj','의자 오이', '안녕하세요! 안쓰는 의자 오이합니다',default, 37.488286578886324, 127.03896459698176,
-                                             '도곡1동 주민센터앞', 15000,default, default, null, null );
-           
---2)  중고거래 게시글_첨부파일  샘플데이터 
-SELECT * FROM  CRAIG_ATTACHMENT;
-insert into CRAIG_ATTACHMENT values(seq_craig_attach_no.nextval, 2, 'mouse.','', sysdate);
-
-                                                                                          
-select dong_near  -- dong near 이냐 dong far냐는 member 의 N/F에 따라 다름 
-from dong_range 
-where no = ( select dong_no from member where member_id = 'doghj')
-
-
--- 3) CRAIG_WISH 샘플데이터
-insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, 4, 'doghj', sysdate);
-               
-
-
-select * from craig;
-
-select * from member;

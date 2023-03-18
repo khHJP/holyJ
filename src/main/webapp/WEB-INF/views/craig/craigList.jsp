@@ -3,11 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>중고거래 리스트</title>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="중고거래" name="title"/>
+</jsp:include>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig.css" >
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
@@ -69,4 +68,4 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 
 
 
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
