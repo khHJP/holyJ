@@ -20,7 +20,7 @@ public class Together {
 	private LocalDateTime dateTime;
 	private String place;
 	private Gender gender;
-	private String age;
+	private String age; // 20 30 40 .. 100
 	private LocalDateTime regDate;
 	private String status;
 	
