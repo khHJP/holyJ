@@ -57,18 +57,5 @@ color : red;
   
 }
 
-<!------------------------------------------------ enroll jsp ---------------------------------------------------->
-
-#tbl-craig-enroll-board{
-	border: 1px solid black;
-	width : 800px;
-	height : 600px;
-	margin: 0 auto;	
-}
-
-#tbl-craig-enroll-board th, td{
-	border: 1px solid black;
-}
-
 
 
