@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder // 이거뭐임? 
 public class CraigMsgEntity {
 	private long msgNo; // 거래메시지 no
 	private String chatroomId; // 거래대화방id

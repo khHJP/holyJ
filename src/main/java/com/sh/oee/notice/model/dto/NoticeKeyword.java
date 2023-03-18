@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class NoticeKeyword {
     private int no;
     private String memberId;
-    private String msg;
-    private Type type;
+    private String keyword;
     private LocalDateTime regDate;
-    private String readYN; // Y/N
 }
