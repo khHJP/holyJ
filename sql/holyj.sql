@@ -25,7 +25,6 @@ create table DONG (
 
 -- DONG_NO 하드코딩
 
-
 --=============================================
 -- 동별 범위 DONG_RANGE
 --=============================================
@@ -95,23 +94,33 @@ create table NOTICE_KEYWORD (
 create sequence seq_keyword_no;
 
 --=============================================
--- 게시판 종류 BOARD_TYPE
+-- 신고유형 REPORT_TYPE
 --=============================================
-CREATE TABLE BOARD_TYPE (
-	BOARD_TYPE_NO	NUMBER,
-	BOARD_TYPE_NAME	VARCHAR2(50)	NOT NULL,
-	CONSTRAINT PK_BOARD_TYPE_NO PRIMARY KEY(BOARD_TYPE_NO)	
+CREATE TABLE REPORT_TYPE (
+	REPORT_TYPE	CHAR(2),
+	REPORT_TYPE_NAME VARCHAR2(50) NOT NULL,
+	CONSTRAINT PK_REPORT_TYPE PRIMARY KEY(REPORT_TYPE)	
 );
 
+insert into REPORT_TYPE values('CR', '중고거래');
+insert into REPORT_TYPE values('LO', '동네생활');
+insert into REPORT_TYPE values('TO', '같이해요');
+insert into REPORT_TYPE values('US', '사용자');
 
 --=============================================
 -- 신고사유 REPORT_REASON
 --=============================================
 CREATE TABLE REPORT_REASON (
 	REASON_NO	NUMBER,
-	REASON_NAME	VARCHAR2(50)	NOT NULL,
-  CONSTRAINT PK_REASON_NO PRIMARY KEY(REASON_NO)
+    REPORT_TYPE CHAR(2) not null,
+	REASON_NAME	VARCHAR2(200) NOT NULL,
+  CONSTRAINT PK_REASON_NO PRIMARY KEY(REASON_NO),
+  constraint fk_report_reason_type foreign key (report_type) references REPORT_TYPE(REPORT_TYPE) 
 );
+-- modify로 크기변경
+alter table REPORT_REASON modify REASON_NAME varchar2(200);
+
+create sequence seq_report_reason_no;
 
 --=============================================
 -- 게시글신고 BOARD_REPORT
@@ -119,14 +128,14 @@ CREATE TABLE REPORT_REASON (
 CREATE TABLE BOARD_REPORT (
     REPORT_NO	NUMBER,
     WRITER	VARCHAR2(30)	NOT NULL,
-    BOARD_TYPE_NO	NUMBER	NOT NULL,
+    REPORT_TYPE	CHAR(2)	NOT NULL,
     REPORT_POST_NO	NUMBER	NOT NULL,
     REASON_NO	NUMBER	NOT NULL,
     REG_DATE	DATE DEFAULT SYSDATE,
     STATUS	CHAR(1)	DEFAULT 'N',
     CONSTRAINT PK_BOARD_REPORT_NO PRIMARY KEY(REPORT_NO),
     CONSTRAINT FK_BOARD_REPORT_WRITER FOREIGN KEY(WRITER) REFERENCES MEMBER(MEMBER_ID),
-    CONSTRAINT FK_BOARD_TYPE_NO FOREIGN KEY(BOARD_TYPE_NO) REFERENCES BOARD_TYPE(BOARD_TYPE_NO),
+    CONSTRAINT FK_BOARD_REPORT_TYPE FOREIGN KEY(REPORT_TYPE) REFERENCES REPORT_TYPE(REPORT_TYPE),
     CONSTRAINT FK_BOARD_REPORT_REASON_NO FOREIGN KEY(REASON_NO) REFERENCES REPORT_REASON(REASON_NO),
     constraint CK_BOARD_REPORT_STATUS check(STATUS in ('Y', 'N'))   
 );
@@ -153,6 +162,7 @@ CREATE SEQUENCE SEQ_USER_REPORT_NO;
 -- COMMENT
 COMMENT ON COLUMN TOGETHER_CATEGORY.CATEGORY_NO IS '카테고리 NO';
 COMMENT ON COLUMN TOGETHER_CATEGORY.CATEGORY_NAME IS '카테고리명';
+
 
 --=============================================
 -- 같이해요 카테고리 TOGETHER_CATEGORY
@@ -428,15 +438,15 @@ CREATE TABLE CRAIG_MEETING (
 create table MANNER_REVIEW (
     manner_no number,
     craig_no number,
-    prefer char(10), -- 별로예요/좋아요/최고예요
+    prefer char(10) not null, -- 별로예요/좋아요/최고예요
     compliment char(10),
     writer varchar2(30), -- 후기작성자
     recipient varchar2(30), -- 후기대상자?
     reg_date date default sysdate,
     constraint pk_manner_no primary key(manner_no),
     constraint fk_manner_craig_no foreign key (craig_no) references craig (no) on delete set null,
-    constraint ck_manner_prefer check (prefer in ('MA1', 'MA2', 'MA3')),
-    constraint ck_manner_compliment check (compliment in ('COM1', 'COM2', 'COM3', 'COM4'))
+    constraint ck_manner_prefer check (prefer in ('MA1', 'MA2', 'MA3')), -- 매너온도 / -0.5 / +0.2 / +0.5 (** 선택안했을시 못넘어감)
+    constraint ck_manner_compliment check (compliment in ('COM1', 'COM2', 'COM3', 'COM4')) -- +0.1 (넷중하나 / null가능 (CK))
 );
 
 create sequence seq_manner_no;
