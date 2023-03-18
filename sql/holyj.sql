@@ -1,5 +1,3 @@
-select * from together;
-
 --=============================================
 -- 구 GU
 --=============================================
@@ -179,7 +177,6 @@ CREATE TABLE TOGETHER_CATEGORY (
 --=============================================
 -- 같이해요 TOGETHER
 --=============================================
-
 CREATE TABLE TOGETHER (
     NO NUMBER,
     WRITER VARCHAR2(30) NOT NULL,
@@ -332,8 +329,6 @@ create table CRAIG (
 );
 
 create sequence seq_craig_no;
-
-select * from craig;
 
 --=============================================
 -- 중고거래 첨부파일 CRAIG_ATTACHMENT
