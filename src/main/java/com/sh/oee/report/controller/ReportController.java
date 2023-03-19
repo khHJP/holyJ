@@ -8,9 +8,10 @@ import com.sh.oee.report.model.service.ReportService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+
 @RequestMapping("/report")
 @Slf4j
+@Controller
 public class ReportController {
 
 	@Autowired

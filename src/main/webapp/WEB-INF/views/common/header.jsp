@@ -10,6 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>오이마켓</title>
+<!-- jq추가 - 혜진 -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- css 모음 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
@@ -43,7 +45,7 @@ window.addEventListener('load', (e) => {
 						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title">중고거래</a>
 					</li>
 					<li>
-						<a href="#" class="title">동네생활</a>
+						<a href="${pageContext.request.contextPath}/local/localList.do" class="title">동네생활</a>
 					</li>
 					<li>
 						<a href="#" class="title">같이해요</a>
@@ -69,7 +71,7 @@ window.addEventListener('load', (e) => {
 					<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 					<div class="my-select-box">
 						<span class="my-select"><a href="#">마이페이지</a></span>
-						<span class="my-select"><a href="#">관리자페이지</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/admin/adminList.do">관리자페이지</a></span>
 						<span class="my-select"><a href="#">로그아웃</a></span>
 					</div>	
 				</div>
