@@ -12,8 +12,4 @@ public class MemberController {
 	@Autowired
 	private MemberService memberSerive;
 	
-	@GetMapping("/temp.do")
-	public String temp() {
-		return "common/temp";
-	}
 }
