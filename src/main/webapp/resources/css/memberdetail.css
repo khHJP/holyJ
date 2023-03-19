@@ -1,0 +1,23 @@
+@charset "UTF-8";
+body {
+	width: 1200px;
+    min-width: 1200px;
+    max-width: 1200px;
+	margin: 0 auto;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+table{
+	margin-left : 35%;
+}
+td{
+	padding-left: 35px;
+}
+#profile{
+	height: 100px; 
+    width: 100px; 
+    /* margin: 50px 0 0 50px; */
+}
+#id{
+	font-size: 25px;
+    font-weight: 600;
+}
