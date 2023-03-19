@@ -1,0 +1,111 @@
+@charset "UTF-8";
+h2{
+	margin-top: 100px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+/* craig -  enroll, pickPlace 관련 css */
+div#craigBoardContainer{
+	width:670px; 
+	margin : auto;
+	text-align:center;
+}
+.formtext{
+	margin-bottom:15px;
+	width:500px; 
+	height: 30px;
+	vertical-align: center;
+	border: 1px solid #c0c0c0;
+	float: left
+}
+
+.input-group{
+	text-align:left;
+	margin-left: 0;
+
+}
+
+
+/* 파일 */
+div#craigBoardContainer label.custom-file-label{
+	text-align:left;
+	margin-left: 0;
+	width:550px;
+	border: 1px solid black;
+
+}
+
+.custom-file-label{
+	border : none;
+	border-bottom: 1px solid gray;
+	font-size: 15px;
+}
+
+.custom-file-input{
+	border : none;
+	width : 200px;
+	font-size: 15px;
+
+}
+
+
+#placeDetail{
+	width:500px; 
+}
+
+table{
+	border: none;
+}
+
+table tr th{
+	height: 50px;
+	text-align: left;
+	width:100px;
+}
+
+table  th, td{
+	border-bottom: 1px solid black;
+}
+
+table td{
+	padding-top: 10px;
+}
+
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+<--place -->
+#ment{
+	font-weight: bold;
+}
+
+.inputbuttons{
+	width:80px;
+	height:35px;
+	color: white;
+	border: none;
+}
+
+#placeCancel{
+	background-color: gray;
+}
+
+#placeEnroll{
+	background-color: #00d736;
+}
+
+.inputbuttons:hover{
+	border: 2px solid gray;
+}
+
+#mapP{
+	text-align: left;
+	margin-bottom: 10px
+}
+
+<!-- css 2 수정 -->
