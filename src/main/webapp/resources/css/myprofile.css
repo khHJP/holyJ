@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+ body {
+	width: 1200px;
+    min-width: 1200px;
+    max-width: 1200px;
+	margin: 0 auto;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+hr{
+	 width : 87%
+}
+td{
+	padding-left: 35px;
+}
+#profile{
+	height: 100px; 
+    width: 100px; 
+    /* margin: 50px 0 0 50px; */
+}
+#nickname{
+	font-size: 25px;
+    font-weight: 600;
+}
+#mannertmp{
+	padding-left : 30px;
+	font-size : 22px;
+	font-weight : 500;
+}
+#proupdate{
+    padding-left:70px;
+}
+#probut{
+	border-radius: 5px;
+    height: 40px;
+    width: 60vw;
+    font-weight: 500;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    background: #7FB77E;
+    color: white;
+}
+#probut:hover{
+	background:#868b94;
+}
+#sala{
+    font-weight: 500;
+    font-size: 20px;
+    list-style: none;
+    padding: 15px 5px;
+}
+#sala a{
+    color : black;
+}
+#sala a:hover{
+    color : grey;
+}
