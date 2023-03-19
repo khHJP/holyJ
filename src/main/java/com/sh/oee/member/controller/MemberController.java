@@ -20,4 +20,5 @@ public class MemberController {
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {} 
 	
+
 }

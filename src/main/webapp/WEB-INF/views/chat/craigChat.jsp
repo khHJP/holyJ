@@ -26,7 +26,7 @@
 .chat-tbl {
 	border-collapse: collapse;
 	min-height: 80%;
-	border: 1px solid #F2F3F6;
+	border: 1px solid black;
 	margin : 0 auto;
 	margin-top : 10px;
 }
