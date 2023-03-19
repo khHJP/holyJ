@@ -4,16 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sh.oee.craig.model.dto.Craig;
+import com.sh.oee.craig.model.dto.CraigEntity;
 import com.sh.oee.craig.model.service.CraigService;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +56,7 @@ public class CraigController {
 	@GetMapping("/craigList.do")
 	public void craigList(Model model){
 		
-		List<Craig> craigList = craigService.craigList();
+		List<CraigEntity> craigList = craigService.craigList();
 		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
 		
 		log.debug( "■ craigList = {}", craigList);
@@ -64,10 +70,23 @@ public class CraigController {
 	
 	//중고거래 게시물 등록
 	@GetMapping("/craigEnroll.do")
-	public void craigEnroll() {
+	public void craigEnroll(Model model ) {
+		
+		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
+		log.debug( "■ craigCategory = {}", craigCategory);
+		
+		model.addAttribute("craigCategory", craigCategory);
 		return;
 	}
 	
+	
+	//지도 선택 
+	@GetMapping("/craigPickPlace.do")
+	public void craigPickPlace() {
+		
+	}
+	
+
 	
 	
 }
