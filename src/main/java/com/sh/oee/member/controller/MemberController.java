@@ -17,59 +17,11 @@ public class MemberController {
 	@Autowired
 	private MemberService memberSerive;
 	
+
 	@GetMapping("/temp.do")
 	public String temp() {
 		return "common/temp";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//--------------- 하나 시작----------------------------------------
 	@GetMapping("/myPage.do")
@@ -82,4 +34,8 @@ public class MemberController {
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성
 	//-------------- 하나 끝 --------------------------------------------
+
+	@GetMapping("/memberEnroll.do")
+	public void memberEnroll() {} 
+	
 }

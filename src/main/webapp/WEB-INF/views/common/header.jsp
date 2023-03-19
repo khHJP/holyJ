@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <script>
+/* 현재 타이틀에 색 입히기 */
 window.addEventListener('load', (e) => {
 	const titleList = document.querySelectorAll(".title");
 	const currentTitle = '${param.title}';
@@ -52,14 +53,14 @@ window.addEventListener('load', (e) => {
 				</ul>
 			</div>
 			<!-- 로그인전 -->
-			<!--  
+
  			<div class="non-login">
 				<button class="btn">로그인</button>
-				<button class="btn">회원가입</button>
+				<button class="btn" onclick="signUp();">회원가입</button>
 			</div>
-			-->
-			<!-- 로그인후 -->
 
+			<!-- 로그인후 -->
+			<%-- 
 			<div class="login-box">
 				<div class="notice-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
@@ -75,12 +76,17 @@ window.addEventListener('load', (e) => {
 					</div>	
 				</div>
 			</div><!-- end login-box -->
-
+ 			--%>
 		</div><!-- end header-wrap -->
 	</header>
 	<section id="content">
 <script>
-/* 로그인시 실행 */
+/* 회워가입 페이지로 이동 */
+const signUp = () => {
+	location = ""	
+}
+
+/* 로그인시 실행됨 */
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');

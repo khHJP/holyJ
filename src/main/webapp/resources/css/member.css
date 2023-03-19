@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/* memberEnroll */
+.sign-up-container {
+    width: 600px;
+    margin: 0 auto;
+}
+#sign-up-form {
+    margin: 30px 0 100px;
+    padding: 0 10px;
+}
+.sign-up-title {
+	padding: 45px 0 20px;
+    border-bottom: 1px solid #868B94;
+   	font-family: 'BMJUA', sans-serif;
+}
+.sign-up-box {
+    margin: 25px 0;
+    padding: 5px 7px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.sign-up-box > p {
+    margin: 4px 0 0;
+    padding-bottom: 4px;
+    font-size: 12px;
+    color: #868B94;
+}
+.sign-up-input {
+    margin-top: 5px;
+    width: 305px;
+    height: 25px;
+    border: 1px solid #4D5159;
+    border-radius: 5px;
+}
+.dupl-btn {
+    padding: 3px 7px;
+	margin-left: 5px;
+    border: 1px solid RGB(216, 218, 222);
+    border-radius: 5px;
+    background: #F2F3F6;
+    transition-duration: 0.3s;
+}
+.dupl-btn:hover {
+	background: #7FB77E;
+	color: white;
+	cursor: pointer;
+	transition-duration: 0.3s;
+}
+.dupl-msg {
+	display: none;
+	color: F96666;
+}
+.error {
+	color: F96666;
+}
+.sign-up-btn > input {
+    width: 100%;
+    height: 35px;
+    border-style: none;
+    border-radius: 5px;
+    color: #F2F3F6;
+    background: #56C271;
+}
+.sign-up-btn > input:hover {
+	background: #7FB77E;
+	cursor: pointer;
+}
