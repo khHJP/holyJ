@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoticeKeyword {
-    private int no;
-    private String memberId;
-    private String keyword;
-    private LocalDateTime regDate;
+	private int no;
+	private String memberId;
+	private String keyword;
+	private LocalDateTime regDate;
 }
