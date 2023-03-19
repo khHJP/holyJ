@@ -83,7 +83,7 @@ window.addEventListener('load', (e) => {
 <script>
 /* 회워가입 페이지로 이동 */
 const signUp = () => {
-	location = ""	
+	location = "{pageContext.request.contextPath}/member/memberEnroll.do";	
 }
 
 /* 로그인시 실행됨 */
