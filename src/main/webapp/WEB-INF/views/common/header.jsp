@@ -42,7 +42,7 @@ window.addEventListener('load', (e) => {
 						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title">중고거래</a>
 					</li>
 					<li>
-						<a href="#" class="title">동네생활</a>
+						<a href="${pageContext.request.contextPath}/local/localList.do" class="title">동네생활</a>
 					</li>
 					<li>
 						<a href="#" class="title">같이해요</a>
