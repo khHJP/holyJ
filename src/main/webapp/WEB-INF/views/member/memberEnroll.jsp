@@ -10,7 +10,7 @@
 <div class="sign-up-container">
 	<form:form name="memberEnrollFrm" id="sign-up-form">
 		<div class="sign-up-title">
-			<h2>회원가입</h2>
+			<h2>회원가입 ㅎㅎ</h2>
 		</div>
 		<div class="sign-up-box">
 			<h3>아이디</h3>
