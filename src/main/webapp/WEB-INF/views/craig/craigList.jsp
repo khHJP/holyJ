@@ -9,8 +9,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig.css" >
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-</head>
-<body>
+
 	<div class="wrap">
 	   <div class="search">
 	      <input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
@@ -65,7 +64,5 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 });
 
 </script>
-
-
-
+<br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
