@@ -10,6 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>오이마켓</title>
+<!-- jq추가 - 혜진 -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!-- css 모음 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
