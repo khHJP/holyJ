@@ -13,6 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReportController {
 
-	@Autowired(required = false)
+	@Autowired
 	private ReportService reportService;
 }

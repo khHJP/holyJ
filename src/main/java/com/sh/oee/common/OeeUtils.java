@@ -1,4 +1,4 @@
-package com.sh.oee.common.interceptor;
+package com.sh.oee.common;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

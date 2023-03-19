@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sh.oee.member.model.service.MemberService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class MemberController {
 

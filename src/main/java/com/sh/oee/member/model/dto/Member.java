@@ -15,7 +15,7 @@ public class Member {
 	private String password;
 	private String nickname;
 	private String phone;
-	private int manner;
+	private double manner;
 	private String profileImg;
 	private int dongNo;
 	private DongRange dongRange;
