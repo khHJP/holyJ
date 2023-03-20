@@ -9,4 +9,18 @@ public interface MemberDao {
 
 	Member selectOneMember(String memberId);
 
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//혜진도전 0320
+	String[] selectDongNearNames(int dongNo);	
 }
