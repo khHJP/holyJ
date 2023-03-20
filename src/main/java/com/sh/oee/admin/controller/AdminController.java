@@ -22,13 +22,5 @@ public class AdminController {
 	public AdminService adminService;
 	
 	@GetMapping("/adminList.do")
-	public void adminList(Model model) {
-		
-		List<Member> adminList = adminService.adminList();
-		log.debug("adminList = {}", adminList);
-		model.addAttribute("adminList", adminList);
-		
-		return;
-		
-	}
+	public void adminList(Model model) {}
 }
