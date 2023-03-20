@@ -46,9 +46,6 @@ ul{
 	list-style: none;
 	font-family: 'Noto Sans KR', sans-serif;
 }
-li{
-    padding-top: 25px;
-}
 a{
 	color : black;
 }
@@ -58,9 +55,11 @@ a:hover{
 #menu{
 	font-size : 25px;
 	font-weight: 600;
+	padding-top: 25px;
 }
 #submenu{
 	padding-left : 15px;
+	padding-top: 25px;
 }
 #mypageimg{
 	width: 20px;
