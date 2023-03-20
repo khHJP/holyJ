@@ -12,6 +12,11 @@
 <title>오이마켓</title>
 <!-- jq추가 - 혜진 -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<!-- bootstrap js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- bootstrap css -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <!-- css 모음 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
@@ -19,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
 <script>
 /* 현재 타이틀에 색 입히기 */
 window.addEventListener('load', (e) => {
@@ -31,36 +37,44 @@ window.addEventListener('load', (e) => {
 	})
 });
 </script>
+<c:if test="${not empty msg}">
+	<script>
+	alert('${msg}');
+	</script>
+</c:if>
 </head>
 <body>
 <div id="container">
 	<header>
-		<div class="header-container">
+		<div id="header-container">
 			<a class="logo-box" href="${pageContext.request.contextPath}/">
 				<img src="${pageContext.request.contextPath}/resources/images/OEE-LOGO.png" alt="오이마켓로고">
 			</a>
-			<div class="nav-container">
-				<ul class="nav-list">
-					<li>
+			<div id="nav-container">
+				<ul id="nav-list">
+					<li id="list">
 						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title">중고거래</a>
 					</li>
-					<li>
+					<li id="list">
 						<a href="${pageContext.request.contextPath}/local/localList.do" class="title">동네생활</a>
 					</li>
-					<li>
+					<li id="list">
 						<a href="#" class="title">같이해요</a>
 					</li>
 				</ul>
 			</div>
 			<!-- 로그인전 -->
-
+			<c:if test="${empty loginMember}">
  			<div class="non-login">
-				<button class="btn">로그인</button>
-				<button class="btn" onclick="signUp();">회원가입</button>
+				<%-- <button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">로그인</button> --%>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+ 		 			로그인
+				</button>
+				<button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do'">회원가입</button>
 			</div>
-
+			</c:if>
 			<!-- 로그인후 -->
-			<%-- 
+			<c:if test="${not empty loginMember}">
 			<div class="login-box">
 				<div class="notice-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
@@ -72,21 +86,69 @@ window.addEventListener('load', (e) => {
 					<div class="my-select-box">
 						<span class="my-select"><a href="${pageContext.request.contextPath}/member/myPage.do" class="subtitle">나의 오이</a></span>
 						<span class="my-select"><a href="${pageContext.request.contextPath}/admin/adminList.do">관리자페이지</a></span>
-						<span class="my-select"><a href="#">로그아웃</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/member/memberLogout.do">로그아웃</a></span>
 					</div>	
 				</div>
 			</div><!-- end login-box -->
- 			--%>
-		</div><!-- end header-wrap -->
+			</c:if>
+		</div>
 	</header>
+	<!-- Modal시작 -->
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+		aria-labelledby="loginModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="login-header">
+					<div class="img-box">
+						<img src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png">
+					</div>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<!--로그인폼 -->
+				<form:form
+					action="${pageContext.request.contextPath}/member/memberLogin.do"
+					method="post">
+					<div class="modal-body">
+						<c:if test="${param.error != null}">
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<span class="text-danger">아이디 또는 비밀번호가 일치하지 않습니다.</span>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+				            </div>
+						</c:if>
+						<input 
+							type="text" class="je-input" name="memberId"
+							placeholder="아이디" required> 
+						<br /> 
+						<input
+							type="password" class="je-input" name="password"
+							placeholder="비밀번호" required>
+						<div class="login-check">
+							<input type="checkbox" class="form-check-input" name="remember-me" id="remember-me"/>
+							<label for="remember-me" class="form-check-label">자동로그인</label>
+						</div>
+					</div>
+					<div class="login-footer">
+						<div>
+							<button type="submit" class="btn btn-outline-success">로그인</button>
+							<button type="button" class="btn btn-outline-success" data-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</form:form>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 끝-->
 	<section id="content">
 <script>
-/* 회워가입 페이지로 이동 */
+
 const signUp = () => {
 	location = ""	
 }
 
-/* 로그인시 실행됨 */
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');

@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DongRange {
+public class Dong {
 
 	private int dongNo;
-	private String dongNear;
-	private String dongFar;
+	private int guNo;
+	private String dongName;
+	private double latitude;
+	private double longitude;
 	
 }

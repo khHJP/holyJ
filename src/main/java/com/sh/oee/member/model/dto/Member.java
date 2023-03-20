@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Member {
 	
 	@NonNull
@@ -24,7 +24,7 @@ public class Member {
 	private String profileImg;
 	private int dongNo;
 	@NonNull
-	private DongRange dongRange;
+	private DongRangeEnum dongRange;
 	private int reportCnt;
 	private LocalDateTime enrollDate;
 	private LocalDateTime deleteDate;
