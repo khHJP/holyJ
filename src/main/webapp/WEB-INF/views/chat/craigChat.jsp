@@ -86,7 +86,6 @@ main#chatWrap {
 	</symbol>
 </svg>
 <!-- svg 아이콘태그 end -->    
-
 <main id="chatWrap" class="d-flex flex-nowrap">
   <div id="prof-bar" class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
     <a href="${pageContext.request.contextPath}/member/myPage.do" class="d-block p-3 link-dark text-decoration-none">
