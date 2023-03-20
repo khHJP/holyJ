@@ -19,7 +19,7 @@ a {
 header {
     margin: 0 auto;
     font-family: 'Noto Sans KR', sans-serif;
-    width: 1200px;
+    width: 75rem;
 }
 #header-container {
     max-height: 83px;
@@ -30,15 +30,15 @@ header {
     justify-content: space-between;
 }
 .logo-box {
-display: flex;
-    /* width: 0; */
+	width: 140px;
+	display: flex;
     align-items: center;
-
 }
 .logo-box img {
-	width: 120px;
+	width: 7.5rem;;
 }
 #nav-container {
+    width: 50rem;
     display: flex;
     align-items: center;
 }
@@ -81,17 +81,18 @@ min-height: 83px;
 	transition-duration: 0.3s;
 }
 .login-box {
+	width: 140px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 .notice-wrap {
 	position: relative;
     right: 20px;
-    width: 90px;
+    width: 60px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 .notice-wrap img {
 	height: 26px;
@@ -131,13 +132,16 @@ min-height: 83px;
 }
 .my-select a {
 	color: #F2F3F6;
+    padding: 0;
 	font-size: 14px;
     font-family: 'Noto Sans KR', sans-serif;
 }
 .my-select:hover {
 	background: #868B94;
-	color: white;
 	transition-duration: 0.4s;
+}
+.my-select a:hover {
+	color: white;
 }
 .show-toggle {
 	visibility: visible;
@@ -178,9 +182,8 @@ footer {
 
 /* login */
 .modal-content {
-	width: 28rem;
-    height: 26rem;
-    padding: 0 1rem;
+    width: 28rem;
+    height: 23.2rem;
 }
 .login-header {
 	display: flex;
@@ -195,6 +198,12 @@ footer {
 .img-box img {
     height: 110px;
 }
+.modal-body {
+    padding: 0rem 1rem 0.3rem;
+}
+.modal-body, .login-check {
+	font-family: 'Noto Sans KR', sans-serif;
+}
 .je-input {
 	display: block;
     width: 100%;
@@ -208,7 +217,7 @@ footer {
     border-radius: 0.25rem;
 }
 .login-footer {
-	position: relative;
+    position: relative;
     display: flex;
     padding: 1rem;
     border-top: 1px solid #e9ecef;
@@ -216,7 +225,7 @@ footer {
     align-items: center;
 }
 .login-check {
-	
+    margin: 0.8rem 0 0 1.5rem;
 }
 
 /* index */
@@ -244,6 +253,7 @@ footer {
 	line-height: 60px;
 }
 .main-info h3 {
+    font-size: 1.2rem;
     font-weight: 400;
     margin-top: 15px;
     font-family: 'Noto Sans KR', sans-serif;

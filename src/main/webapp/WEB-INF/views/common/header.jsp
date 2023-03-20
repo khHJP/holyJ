@@ -17,6 +17,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!-- bootstrap locon -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <!-- css 모음 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
@@ -53,13 +55,13 @@ window.addEventListener('load', (e) => {
 			<div id="nav-container">
 				<ul id="nav-list">
 					<li id="list">
-						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title">중고거래</a>
+						<a href="${pageContext.request.contextPath}/craig/craigList.do" class="title nav-link" >중고거래</a>
 					</li>
 					<li id="list">
-						<a href="${pageContext.request.contextPath}/local/localList.do" class="title">동네생활</a>
+						<a href="${pageContext.request.contextPath}/local/localList.do" class="title nav-link">동네생활</a>
 					</li>
 					<li id="list">
-						<a href="#" class="title">같이해요</a>
+						<a href="#" class="title nav-link">같이해요</a>
 					</li>
 				</ul>
 			</div>
@@ -73,9 +75,9 @@ window.addEventListener('load', (e) => {
 			<!-- 로그인후 -->		
  			<div class="login-box">
 			<c:if test="${empty loginMember}">
- 			<div class="non-login">
+ 			<div class="login-box">
 				<%-- <button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">로그인</button> --%>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+				<button type="button" class="btn" data-toggle="modal" data-target="#loginModal">
  		 			로그인
 				</button>
 				<button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do'">회원가입</button>
@@ -93,9 +95,9 @@ window.addEventListener('load', (e) => {
 				<div class="profile-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 					<div class="my-select-box">
-						<span class="my-select"><a href="${pageContext.request.contextPath}/member/myPage.do" class="subtitle">나의 오이</a></span>
-						<span class="my-select"><a href="${pageContext.request.contextPath}/admin/adminList.do">관리자페이지</a></span>
-						<span class="my-select"><a href="${pageContext.request.contextPath}/member/memberLogout.do">로그아웃</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/member/myPage.do" class="subtitle nav-link">나의 오이</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/admin/adminList.do" class="subtitle nav-link">관리자페이지</a></span>
+						<span class="my-select"><a href="${pageContext.request.contextPath}/member/memberLogout.do" class="subtitle nav-link">로그아웃</a></span>
 					</div>	
 				</div>
 
@@ -148,8 +150,8 @@ window.addEventListener('load', (e) => {
 					</div>
 					<div class="login-footer">
 						<div>
-							<button type="submit" class="btn btn-outline-success">로그인</button>
-							<button type="button" class="btn btn-outline-success" data-dismiss="modal">취소</button>
+							<button type="submit" class="btn">로그인</button>
+							<button type="button" class="btn" data-dismiss="modal">취소</button>
 						</div>
 					</div>
 				</form:form>
@@ -158,14 +160,11 @@ window.addEventListener('load', (e) => {
 	</div>
 	<!-- Modal 끝-->
 	<section id="content">
+<c:if test="${not empty loginMember}">
 <script>
-
-const signUp = () => {
-	location = ""	
-}
-
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');
 });
 </script>
+</c:if>
