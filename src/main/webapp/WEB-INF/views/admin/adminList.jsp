@@ -4,4 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="회원관리" name="title"/>
+</jsp:include>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
