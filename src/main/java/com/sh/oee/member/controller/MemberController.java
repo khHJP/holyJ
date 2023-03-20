@@ -80,4 +80,5 @@ public class MemberController {
 	// views에 member folder 생성후 myPage.jsp 생성
 	//-------------- 하나 끝 --------------------------------------------
 	
+
 }
