@@ -3,15 +3,14 @@ package com.sh.oee.craig.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import com.sh.oee.craig.model.dao.CraigDao;
-import com.sh.oee.craig.model.dto.CraigEntity;
+import com.sh.oee.craig.model.dto.Craig;
+import com.sh.oee.craig.model.dto.CraigAttachment;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +24,8 @@ public class CraigServiceImpl implements CraigService {
 	private CraigDao craigDao;
 
 	@Override
-	public List<CraigEntity> craigList() {
-		return craigDao.craigList();
+	public List<Craig> craigList(RowBounds rowBounds) {
+		return craigDao.craigList(rowBounds);
 	}
 
 	//카테고리 목록조회 
@@ -35,10 +34,34 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.craigCategoryList();
 	}
 
+
+	//게시글등록
 	@Override
-	public ResponseEntity<?> craigPlaceEnroll(double latitude, double longitude, String placeDetail) {
-		String URL = "http://localhost:8080/craig/craigEnroll";
-		return  new RestTemplate().exchange( URL, HttpMethod.PUT, null, Map.class);
+	public int insertCraigBoard(Craig craig) {
+		//글만등록 
+		int result =  craigDao.insertCraigBoard(craig);
+		log.debug("■ craig no = {}", craig.getNo());
+		
+		//첨부파일등록
+		List<CraigAttachment> attachments = craig.getAttachments();
+		if(attachments.size() > 0) {
+			for(CraigAttachment attach : attachments) {
+				attach.setCraigNo(craig.getNo());
+				result = insertCraigAttachment(attach);
+			}	
+		}
+		return result;
 	}
+
 	
+	@Override
+	public int insertCraigAttachment(CraigAttachment attach) {
+		// TODO Auto-generated method stub
+		return craigDao.insertCraigAttachment(attach);
+	}
+
 }
+
+	
+		
+		

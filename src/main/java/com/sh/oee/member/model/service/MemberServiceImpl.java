@@ -16,5 +16,21 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneMember(String memberId) {
 		return memberDao.selectOneMember(memberId);
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//혜진도전,,0320
+	@Override
+	public String[] selectDongNearNames(int dongNo) {
+		return memberDao.selectDongNearNames(dongNo);
+	}
 	
 }

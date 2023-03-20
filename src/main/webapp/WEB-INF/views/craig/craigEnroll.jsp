@@ -6,21 +6,41 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="title"/>
 </jsp:include>
+<style>
+dl, ol, ul {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+a { text-decoration:none !important }
+a:hover { text-decoration:none !important }
 
-<!-- bootstrap js: jquery load 이후에 작성할것.-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
- bootstrap css -->
+.notice-wrap, .non-login {margin-top: 5px;}
+
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
+</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig2.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
 
 
 <h2> 내 물건 팔기  </h2>
 <div id="craigBoardContainer">
-	<form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post">
-		<input type="hidden" class="form-control" name="memberId" required>
-		
+	<form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do"  >
+		<input type="hidden" class="form-control" name="writer" id="writer" value="yoseop" required>
+
+		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
 		<!-- ●  첨부파일 ● -->	
+		<tr>
+		<th style="max-width : 100px; min-width: 100px;" colspan="2">
 		<div style="display: flex; margin:10px 0px 10px 0px">
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer"  style="width : 200px; height : 170px; padding-right: 20px">
@@ -39,60 +59,77 @@
 		  </div>
   		  <div class="input-group-prepend" style="padding:0px;">
 
-		    <p class="input-group-text"> ※ 여러장을 올리고 싶으시면 shift+이미지 선택을 해보세요!</p>
+		    <p class="input-group-text"> ※ 여러장을 올리고 싶으시면 shift+이미지를 선택해보세요!</p>
 		  </div>
-		</div><br><br>
-
+		</div><br><br><br>
+		</th>
+		</tr>
 		
 	
-		<table>
+<!-- 		<table id="crentb" style="border: 1.5px solid lightgray;border-top:2px solid lightgray; border-bottom:2px solid lightgray;padding: 10px; margin-bottom: 20px"  >-->			
 			<tr>
-				<th style="width : 80px"><label for="title"> 글 제목  </label></th>
-				<td><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" required></td>
+				<th style="max-width : 100px; min-width: 100px;"><label for="title"> 글 제목  </label></th>
+				<td style="max-width:650px;"><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" required></td>
 			</tr>
 			
 			<tr>
-				<th style="width : 80px"><label for="category"> 카테고리 </label></th>
-				<td>
+				<th style="max-width : 100px;" ><label for="category"> 카테고리 </label></th>
+				<td style="max-width:650px;">
 				<c:forEach items="${craigCategory}" var="category"> 	
-					<input type="radio"  name="category" value="${category.no}" style="margin-left: 12px"> ${category.CATEGORY_NAME}
+					<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}" style="margin-left: 12px"> <label for="categoryNo">${category.CATEGORY_NAME}</label> 
 				</c:forEach>
 				</td>
 			</tr>	
 	
 			<tr>
-				<th style="width : 80px"><label for="price"> ￦ 가격 </label></th>
-				<td><input type="number"  class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" style="width: 300px; margin-right: 200px"/>      <input type="checkbox" name="share" id="share" onclick="sharecheck(this)">나눔 </td>
+				<th style="max-width : 100px;"><label for="price"> ￦ 가격 </label></th>
+				<td style="max-width:650px;"><input type="number" class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" style="width: 400px; margin-right: 90px"/>      <input type="checkbox" name="share" id="share" onclick="sharecheck(this)"> 나눔</td>
 			</tr>	
 
 			<tr>
-				<th colspan="2" >내용</th>
+				<th colspan="2" style="border: none">내용</th>
 			</tr>
 
 			<tr>
-				<th colspan="2" >
-			    	<textarea class="formtext" name="content" placeholder="내용을 작성해주세요 ✍️"  style="width:650px; height: 90px"  required="required"></textarea><br>
+				<th colspan="2" style="padding-bottom: 20px;">
+			    	<textarea class="formtext" name="content" id="content" placeholder="내용을 작성해주세요 ✍️"  style="min-width:650px; height: 90px"  required="required"></textarea></br></br>
 			    </th>
 		    </tr>
+			
+			<tr style="height: 50px;">
+			</tr>			    
 		    
 		    <tr>
-				<th style="width : 100px"  >거래희망장소</th>
-				<td> <button id="pickPlace"> 장소선택 > </button><br>
-			</tr>	
+				<th style="border: none; max-width : 100px;">거래희망장소</th>
+				<td style="border: none;  vertical-align: middle"> <button id="pickPlace"  class="btn btn-secondary pl"> 장소선택 > </button><br>
+			</tr>
+
 			<tr>
-				<th colspan="2" >	
-					<input class="formtext"  type="text" name="placeDetail" id="placeDetail" readonly="readonly" />
+				<th colspan="2" style="border: none; ">	
+					<input class="formtext" style="width : 650px;"  type="text" name="placeDetail" id="placeDetail" readonly="readonly" />
 					<input class="formtext"  type="hidden" name="latitude" id="latitude" readonly="readonly" />
 					<input class="formtext"  type="hidden" name="longitude" id="longitude" readonly="readonly" />
 				</th>
 			</tr>
-	    </table></br>
-	    	<p id="mapP">🥒 장소를 등록하시면 해당 위치가 나타납니다 </p>
-	    	<div id="map" style="width:650px;height:300px; border: 1px solid green;"></div> 	
+			<tr>
+			<th colspan="2" style="border: none;" >
+				<p id="mapP" style="margin-left: 50px">🥒 장소를 등록하시면 해당 위치가 나타납니다 </p>
+		    	<div id="map" style="width:600px; height:300px; border: none; margin-left: 50px"></div> 	
+			</th>	    	
+			</tr>
+	    </table>
+	    
+	    <%--
+	    	<p id="mapP" style="margin-left: 50px">🥒 장소를 등록하시면 해당 위치가 나타납니다 </p>
+	    	<div id="map" style="width:600px; height:300px; border: none; margin-left: 50px"></div> 	
 
 		<br />
-		<input type="text" class="btn btn-outline-success" value="취소" >
-		<input type="submit" class="btn btn-outline-success" value="글쓰기" >
+		<hr style="border : 1px solid lightgray; margin-bottom: 20px;" />
+		
+		 --%>
+		<input class="btn btn-cancel" type="button" value="취소" onclick="history.go(-1)" ></button>
+		<input type="submit" class="btn btn-outline-success" value="완료" >
+		<hr style="border : 1px solid lightgray; margin-top: 20px; width: 700px" />
 	</form><br><br>
 </div>
 
@@ -101,6 +138,33 @@
 
 
 <script>
+
+/* const cateno = document.querySelector("#categoryNo");
+cateno.addEventListener( 'click', (e)=>{
+	console.log(e.target);
+	console.log(e.target.value);
+	const no = e.target.dataset.no;
+	console.log( no );
+	
+}) */
+//카테고리뽑기
+document.querySelectorAll("input[data-no]").forEach( (input)=>{
+	
+	input.addEventListener('click', (e) => {
+		
+		const no = input.dataset.no;
+		console.log( "no", no );
+
+		const inputValue = input.value;
+		console.log( "inputValue", inputValue );
+
+		
+		
+		
+	})
+})
+
+
 //가격
 function sharecheck(){
 	const share = document.querySelector("#share");
@@ -119,6 +183,39 @@ function sharecheck(){
 };
 
 //form 유효성검사 
+document.craigEnrollFrm.onsubmit = (e) =>{
+	console.log ( e );
+
+	const title = e.target.title; 
+	const content  = e.target.content;
+	const placeDetail  = e.target.placeDetail;
+
+	
+	
+	//제목 작성하지 않은경우 
+	if( !/^.+$/.test(title.value)){
+		alert("제목을 작성해주세요!");
+		title.select();
+		return false;
+	}
+	
+	//내용 없는경우
+	if(!/^.|\n+$/.test(content.value)){
+		alert("내용을 작성해주세요!");
+		content.select();
+		return false;
+	}
+	
+	<%-- 음 쓰면오류^^
+	//장소 없는경우
+	if(!/^.|\n+$/.test(placeDetail.value)){
+		alert("장소를 선택해주세요!");
+		pickPlace.select();
+		return false;
+	}
+	--%>
+	
+}
 </script>
 
 
@@ -126,6 +223,8 @@ function sharecheck(){
 <script>
 	//	장소고르기
 	document.querySelector("#pickPlace").addEventListener('click', (e) => {
+		e.preventDefault();
+		
 		const url = `${pageContext.request.contextPath}/craig/craigPickPlace.do`;
 		const name = "pickPlace"; // popup의 window이름. 브라우져가 탭,팝업윈도우를 관리하는 이름
 		const spec = "width=500px, height=550px";
