@@ -65,15 +65,8 @@ window.addEventListener('load', (e) => {
 					</li>
 				</ul>
 			</div>
-			<!-- 로그인전 -->
 
-<!--  			<div class="non-login">
-				<button class="btn">로그인</button>
-				<button class="btn" onclick="signUp();">회원가입</button>
-			</div>  -->
-
-			<!-- 로그인후 -->		
- 			<div class="login-box">
+			<!-- 로그인전 -->		
 			<c:if test="${empty loginMember}">
  			<div class="login-box">
 				<%-- <button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">로그인</button> --%>
@@ -86,7 +79,6 @@ window.addEventListener('load', (e) => {
 			<!-- 로그인후 -->
 			<c:if test="${not empty loginMember}">
 			<div class="login-box">
-
 				<div class="notice-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
 					<img src="${pageContext.request.contextPath}/resources/images/notification.png" alt="알림">
@@ -100,15 +92,9 @@ window.addEventListener('load', (e) => {
 						<span class="my-select"><a href="${pageContext.request.contextPath}/member/memberLogout.do" class="subtitle nav-link">로그아웃</a></span>
 					</div>	
 				</div>
-
 			</div><!-- end login-box --> 
- 			
-		</div><!-- end header-wrap -->
-
-			</div><!-- end login-box -->
 			</c:if>
 		</div>
-
 	</header>
 	<!-- Modal시작 -->
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
