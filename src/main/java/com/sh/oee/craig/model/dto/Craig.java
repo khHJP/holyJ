@@ -10,7 +10,9 @@ import com.sh.oee.member.model.dto.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString(callSuper=true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

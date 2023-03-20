@@ -17,6 +17,7 @@ sec에서 다 뺄수있을까   -->
                     on m.dong_no = dr.dong_no
 	where dr.dong_no = 3
 	or dr.dong_no = 1
+	order by c.reg_date desc
 
 </select>
 
@@ -24,31 +25,40 @@ sec에서 다 뺄수있을까   -->
 	<id column="no"  property="no"/>
 	<result column="category_no" property="categoryNo"/>
 	<result column="writer" property="writer"/>
+	<result column="title" property="title"/>
 	<result column="content" property="content"/>
-	<result column="regDate" property="regDate"/>
-	<result column="latitude" property="regDate"/>
-	<result column="regDate" property="regDate"/>
-	<result column="regDate" property="regDate"/>
-	<result column="regDate" property="regDate"/>
-	<result column="regDate" property="regDate"/>
-	<result column="regDate" property="regDate"/>
-	<result column="regDate" property="regDate"/>
+	<result column="reg_date" property="regDate"/>
+	<result column="latitude" property="latitude"/>
+	<result column="longitude" property="longitude"/>
+	<result column="place_detail" property="placeDetail"/>
+	<result column="price" property="price"/>
+	<result column="hits" property="hits"/>
+	<result column="state" property="state"/>
+	<result column="buyer" property="buyer"/>
+	<result column="complete_date" property="completeDate"/>
+
+	<!-- member -->
+	<association property="member" javaType="member" >
+		<id column="member_id" property="memberId" />
+		<result column="name" property="name" />
+		<result column="dong_no" property="dongNo" />
+		<result column="dong_range" property="dongRange" /> 
+	</association>
 	
+	<!-- dong_range -->
+	<association property="dongrange" javaType="dongrange" >
+		<id column="dong_no" property="dongNo" />
+		<result column="dong_near" property="dongNear" />
+		<result column="dong_far" property="dongFar" />
+	</association>
 	
-<!-- 
-	private String writer;
-	private String title;
-	private String content;
-	private LocalDateTime regDate;
-	private Double latitude;
-	private Double longitude;
-	private String placeDetail;
-	private int price;
-	private int hits; //조회수
-	private State state; // default - 'CR2' |  예약중/판매중/판매완료
-	private String buyer;
-	private LocalDateTime completeDate;
- -->
+	<!-- attachments | ofType 결과 한 행의 타입이래  -->
+	<collection property="attachments" ofType="craigAttachment" >
+		<id column="attach_no" property="attachNo" />
+		<result column="original_filename" property="originalFilename" /> 
+		<result column="re_filename" property="reFilename" /> 
+		<result column="reg_date" property="regDate" /> 
+	</collection>
 </resultMap>
 
 <!-- ■ insert  -->

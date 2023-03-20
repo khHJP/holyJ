@@ -206,7 +206,7 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 		return false;
 	}
 	
-	<%--
+	<%-- 음 쓰면오류^^
 	//장소 없는경우
 	if(!/^.|\n+$/.test(placeDetail.value)){
 		alert("장소를 선택해주세요!");

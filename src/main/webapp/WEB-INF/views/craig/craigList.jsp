@@ -30,8 +30,12 @@ button, input, optgroup, select, textarea {
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
  -->
+	 <span>
+	 ${member.dongNo}
+	 </span>
 
-	   <div class="searchdiv" style="position: relative; top: 38px; max-width:900px; left: 480px !important; ">
+
+	   <div class="searchdiv" style="position: relative; top: 38px; left: 550px; ">
 	      <input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
 	      <button type="submit" class="searchButton">
 	        <i class="fa fa-search"></i>
@@ -79,5 +83,12 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 });
 
 </script>
+
+<script>
+//꺼내보자동,, 
+
+
+</script>
+
 <br><br><br><br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
