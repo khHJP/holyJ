@@ -54,14 +54,13 @@ window.addEventListener('load', (e) => {
 			</div>
 			<!-- 로그인전 -->
 
- 			<div class="non-login">
+<!--  			<div class="non-login">
 				<button class="btn">로그인</button>
 				<button class="btn" onclick="signUp();">회원가입</button>
-			</div>
+			</div>  -->
 
-			<!-- 로그인후 -->
-			<%-- 
-			<div class="login-box">
+			<!-- 로그인후 -->		
+ 			<div class="login-box">
 				<div class="notice-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
 					<img src="${pageContext.request.contextPath}/resources/images/notification.png" alt="알림">
@@ -75,8 +74,8 @@ window.addEventListener('load', (e) => {
 						<span class="my-select"><a href="#">로그아웃</a></span>
 					</div>	
 				</div>
-			</div><!-- end login-box -->
- 			--%>
+			</div><!-- end login-box --> 
+ 			
 		</div><!-- end header-wrap -->
 	</header>
 	<section id="content">
