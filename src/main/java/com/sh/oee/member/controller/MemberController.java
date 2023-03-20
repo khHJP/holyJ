@@ -1,5 +1,7 @@
 package com.sh.oee.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,8 @@ import com.sh.oee.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("/member")
 @Controller
+@RequestMapping("/member")
 @SessionAttributes("loginMember")
 public class MemberController {
 
