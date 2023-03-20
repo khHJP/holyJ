@@ -19,6 +19,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<!--  메세지 alert 추가 - 혜진 -->
+<c:if test="${not empty msg}">
+<script>
+	alert('${msg}');
+</script>
+</c:if>
+
 <script>
 /* 현재 타이틀에 색 입히기 */
 window.addEventListener('load', (e) => {
@@ -86,9 +93,9 @@ const signUp = () => {
 	location = ""	
 }
 
-/* 로그인시 실행됨 */
+/* 로그인시 실행됨
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');
-});
+}); */
 </script>

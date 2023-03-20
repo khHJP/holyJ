@@ -18,8 +18,8 @@ public class CraigEntity {
 	private String title;
 	private String content;
 	private LocalDateTime regDate;
-	private double latitude;
-	private double longitude;
+	private Double latitude;
+	private Double longitude;
 	private String placeDetail;
 	private int price;
 	private int hits; //조회수

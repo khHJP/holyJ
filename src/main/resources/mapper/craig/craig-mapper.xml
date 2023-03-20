@@ -4,12 +4,67 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.craig.model.dao.CraigDao">
 
-
+<!-- ■ select - 단, 해당 멤버가 지정한 동네일것
+where절에 나오는 동 no 가 지금 로그인 한 사람의 동네 + 그 외 추가동네여야되는데 
+sec에서 다 뺄수있을까   -->
 <select id="craigList" resultMap="craigMap">
-	select * from craig
+	select *
+             from craig c left join craig_attachment ca
+                    on c.no = ca.craig_no
+              left   join  member m
+                    on c.writer = m.member_id 
+              join dong_range dr
+                    on m.dong_no = dr.dong_no
+	where dr.dong_no = 3
+	or dr.dong_no = 1
+
 </select>
 
 <resultMap type="Craig" id="craigMap">
+	<id column="no"  property="no"/>
+	<result column="category_no" property="categoryNo"/>
+	<result column="writer" property="writer"/>
+	<result column="content" property="content"/>
+	<result column="regDate" property="regDate"/>
+	<result column="latitude" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	<result column="regDate" property="regDate"/>
+	
+	
+<!-- 
+	private String writer;
+	private String title;
+	private String content;
+	private LocalDateTime regDate;
+	private Double latitude;
+	private Double longitude;
+	private String placeDetail;
+	private int price;
+	private int hits; //조회수
+	private State state; // default - 'CR2' |  예약중/판매중/판매완료
+	private String buyer;
+	private LocalDateTime completeDate;
+ -->
 </resultMap>
+
+<!-- ■ insert  -->
+<insert id="insertCraigBoard">
+
+	insert into craig (no, category_no, writer, title, content, latitude, longitude, place_detail, price)
+			values( seq_craig_no.nextval, #{categoryNo}, #{writer}, #{title},#{content}, #{latitude}, #{longitude}, #{placeDetail}, #{price})
+	
+	<selectKey  order="AFTER" resultType="_int" keyProperty="no"> 
+		select seq_craig_no.currval from dual
+	</selectKey>
+</insert>
+
+<insert id="insertCraigAttachment">
+	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, default)
+</insert>
+
 
 </mapper>
