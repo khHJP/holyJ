@@ -26,6 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
 <script>
 /* 현재 타이틀에 색 입히기 */
 window.addEventListener('load', (e) => {
@@ -146,7 +147,6 @@ window.addEventListener('load', (e) => {
 	<section id="content">
 <c:if test="${not empty loginMember}">
 <script>
-/* 프로필 토글 */
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');

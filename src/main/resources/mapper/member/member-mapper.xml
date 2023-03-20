@@ -15,4 +15,27 @@
 	
 	<resultMap type="member" id="memberMap"></resultMap>	
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 혜진도전영역입니다.. 0320 -->
+<select id="selectDongNearNames" resultMap="dongRaneMap">
+	select dong_near from dong_range where dong_no = ${dongNo}
+</select>
+
+<resultMap type="dongRange" id="dongRaneMap">
+</resultMap>
+
+
 </mapper>

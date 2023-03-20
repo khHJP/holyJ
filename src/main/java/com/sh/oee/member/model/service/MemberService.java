@@ -6,4 +6,21 @@ public interface MemberService {
 
 	Member selectOneMember(String memberId);
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//혜진 도전,,
+	String[] selectDongNearNames(int dongNo);
+
 }
