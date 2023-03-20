@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
@@ -35,7 +37,7 @@
 				<li id="menu">중고거래</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/tag.png" alt="" id="mypageimg"/>
-					<a href="">알림 키워드 설정</a>
+					<a href="${pageContext.request.contextPath}/notice/noticeKeyword.do">알림 키워드 설정</a>
 				</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/sal.png" alt="" id="mypageimg"/>
@@ -44,22 +46,22 @@
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/buy.png" alt="" id="mypageimg"/>
 					<a href="">구매내역</a>
-				</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/heart.png" alt="" id="mypageimg"/>
 					<a href="">관심목록</a>
+				</li>
 				</li>
 				<hr />
 				<li id="menu">동네생활</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/list.png" alt="" id="mypageimg"/>
-					<a href="">동네생활 글/댓글</a>
+					<a href="${pageContext.request.contextPath}/local/myLocal.do">동네생활 글/댓글</a>
 				</li>
 				<hr />
 				<li id="menu">같이해요</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/list.png" alt="" id="mypageimg"/>
-					<a href="">나의 같이해요</a>
+					<a href="${pageContext.request.contextPath}/together/myTogether.do">나의 같이해요</a>
 				</li>
 				<hr />
 				<li id="menu">채팅</li>

@@ -35,4 +35,22 @@ public class LocalController {
 		
 	}
 	
+	
+	
+	
+	
+	//--------------- 하나 시작 ---------------------------------------
+	@GetMapping("/myLocal.do")
+	public void myLocal(Model model, String memberId) {
+		/*
+		 * List<Local> localList = localService.myLocal(memberId);
+		 * 
+		 * log.debug("localList:{}", localList); model.addAttribute("memberId : {}",
+		 * memberId)
+		 */
+		
+	}
+			
+	//-------------- 하나 끝 ------------------------------------------
+	
 }
