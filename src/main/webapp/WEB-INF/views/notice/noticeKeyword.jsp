@@ -18,21 +18,25 @@
 		<h1 class="subtitle">알림 키워드 설정</h1>
 		<br />
 		<div class="search-container">
-			<input type="text" id="search" placeholder="키워드를 입력해주세요.(예:자전거)"/>
-			<button id="search-btn">
-				<img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
-			</button>
+				<input type="text" id="search" placeholder="키워드를 입력해주세요.(예:자전거)"/>
+				<button id="search-btn">
+					<img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
+				</button>
 		</div>
 		<br /><br />
 		<span id="upkword">등록한 키워드 */3</span>
 		<br />
 		<br />
 		<div class="showkword">
-			키워드
-			<button id="cancel-btn">
-				<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
-			</button>
+				키워드
+				<button id="cancel-btn">
+					<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
+				</button>
 		</div>
 	</div>
 </body>
+<script>
+
+
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
