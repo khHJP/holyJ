@@ -5,16 +5,27 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import com.sh.oee.member.model.dto.Dong;
+import com.sh.oee.member.model.dto.Gu;
 import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 
 @Mapper
 public interface MemberDao {
 
+	/** 정은 시작 */
 	Member selectOneMember(String memberId);
 
+	@Select("select * from gu")
+	List<Gu> selectGuList();
+	
+	@Select("select * from dong")
+	List<Dong> selectDongList();
 
-
+	/** 정은 끝 */
 	
 	
 	
@@ -32,7 +43,23 @@ public interface MemberDao {
 	
 	
 	//혜진도전 0320
-	List<DongRange>  selectDongNearNames(int dongNo);
+	String[] selectDongNearNames(int dongNo);
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	List<DongRange> selectDongNearNames(int dongNo);
 
 	String selectDongNearOnly(int dongNo);
 

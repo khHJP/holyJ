@@ -166,7 +166,32 @@
             <version>21.1.0.0</version>
         </dependency>
 		
-		<!-- #7. spring-security 의존 -->
+		<!-- #7. spring-security -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>${org.springframework.security-version}</version>        
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>${org.springframework.security-version}</version>        
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>${org.springframework.security-version}</version>        
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
+		    <version>${org.springframework.security-version}</version>        
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <version>${org.springframework.security-version}</version>        
+		</dependency>
 		
 		<!-- #9. lo4jdbc-remix 실행query와 resultset을 logging -->
 		<dependency>
