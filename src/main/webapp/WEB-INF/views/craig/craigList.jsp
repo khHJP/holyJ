@@ -3,57 +3,135 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>  --%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="title"/>
 </jsp:include>
-<style>
-dl, ol, ul {
-    text-align: center;
-    margin-top: 5px;
-    margin-bottom: 0;
-}
-a { text-decoration:none !important }
-a:hover { text-decoration:none !important }
-
-.notice-wrap, .non-login {margin-top: 5px;}
-
-button, input, optgroup, select, textarea {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-}
-</style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig.css" >
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
- -->
-	 <span>
-	 ${member.dongNo}
-	 </span>
+<style>
+	dl, ol, ul { text-align: center; margin-top: 5px; margin-bottom: 0;}
+	a { text-decoration:none !important }
+	a:hover { text-decoration:none !important }
+	.notice-wrap, .non-login {margin-top: 5px;}
+	button, input, optgroup, select, textarea { margin: 0; font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 600; }
+	
+	
+	.dropdown-toggle:hover{ color: black; background-color: white; -webkit-appearance:none; }
+	
+	#writeCraigbtn{
+		height:36px; width: 80px; 
+		background-color: white; 
+		color:black; 
+		border-color: lightgray; 
+		top:-1px; position: relative; left:10px;  
+	}
+	#writeCraigbtn:hover { border-color:  #28a745; }
+	
+	#memberInfo{
+		width: 120px;
+		border:1px solid gray;
+		position: relative;
+		left: 420px;
+		top:70px;
+		height: 35px;
+		padding: 5px;
+	}
+	
+	#craigWholeListTbl{
+		margin: auto;
+		margin-top : 50px;
+		padding: 40px;
+/** border: 1px solid black; **/
+		border: none;
+		width : 700px;	
+	}
+	
+	.explains{
+		margin-bottom: 50px;
+		width : 240px;
+		margin: auto;
+	}
+	
+	#eachimg{
+		border-radius: 15px 15px 15px 15px; 
+		margin-bottom: 15px;
+	}
+</style>
+<%-- 해야되는거 - 사진뽑기 / read카운트 처리 / 페이징 --%>
 
 
+	 <span id="memberInfo"> ${member.nickname} </span>
+	 
 	   <div class="searchdiv" style="position: relative; top: 38px; left: 550px; ">
 	      <input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
 	      <button type="submit" class="searchButton">
 	        <i class="fa fa-search"></i>
 	     </button>
-       	 <button id="writeCraigbtn"  class="btn btn-success" style="height:35px; background-color: white; color:black; border-color:black; top:0px; position: relative; left:20px;  ">+ 글쓰기</button>
+       	 <button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
 	   </div>
+
+	   <div class="btn-group">
+		  <button type="button" style="width:160px; margin-left: 250px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    중고거래 카테고리
+		  </button>
+		  <ul class="dropdown-menu">
+		  <c:forEach items="${craigCategory}" var="category">
+		    <li data-no="${category.no}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
+	   	  </c:forEach>
+		  </ul>
+		</div>
+		<!-- whole List  -->
+		<h3 style="margin-top: 30px; text-align: center;">중고거래 인기매물</h3>
+		
+		<table id="craigWholeListTbl">
+		<tbody>
+		<c:forEach items="${craigList}" var="craig" varStatus="vs">
+			<c:if test="${vs.index%4==0}">
+				<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
+			</c:if>
+					<td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 350px; padding: 10px">
+						<div class="explains">
+							<div>
+						<%-- 	<p id="crtitle">${craig.attachments}</p> --%>
+						<c:if test="${craig.attachments[0].reFilename != null}">
+						    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+								    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
+						</c:if>
+						<c:if test="${craig.attachments[0].reFilename==null}">
+						    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+								    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+						</c:if>
+							<p id="crtitle" class="crpp">${craig.title}</p>
+							<p id="crprice" class="crpp"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							<p id="crdong" class="crpp">${craig.dong.dongName}</p>
+							<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
+							</div>
+						</div>
+					</td>
+		<c:if test="${vs.index %4==3}">
+			</tr>
+		</c:if>
+		</c:forEach>
+		</tbody>
+		</table>
+		
+		
+		
+<%-- 원래 펼친 카테고리
 	   <table id="tblcate">
 		   <tr  style="height:100px;" >
 		   		<th style="height:45px; width:190px; text-align:left; font-size: 21px; background-color: white; color:black" id="btct" >중고거래 카테고리</th>
 		   </tr>
 		   
 		   <c:forEach items="${craigCategory}" var="category"> 	
-	 		<tr data-no="${category.no}" style="height:50px;">
-	 			<td style="height:30px">${category.CATEGORY_NAME}</td>
+	 		<tr  data-no="${category.no}" style="height:50px;">
+	 			<td id="eachcate" style="height:30px; background-color: green;">${category.CATEGORY_NAME}</td>
 	 		</tr>
 		    </c:forEach>
 	   </table>
-<%-- 	<table>
+ 	<table>
 		<c:forEach items="${craigList}" var="craig">
 			<td>${craig.no}</td>
 			<td>${craig.title}</td>
@@ -61,10 +139,20 @@ button, input, optgroup, select, textarea {
 		</c:forEach>
 	</table> --%>
 
-
-
-
 <script>
+document.querySelectorAll("span[data-no]").forEach( (tr)=>{
+	tr.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log( tr );
+		
+		const no = tr.dataset.no;
+		console.log( no );
+	})
+})
+
+
+
+
 //카테고리뽑기
 document.querySelectorAll("tr[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
@@ -85,10 +173,20 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 </script>
 
 <script>
-//꺼내보자동,, 
-
+document.querySelectorAll("td[data-crno]").forEach( (td)=>{
+	td.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log( td );
+		
+		const crno = td.dataset.crno;
+		console.log( crno );
+		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+crno;
+		
+	})
+})
 
 </script>
 
-<br><br><br><br><br><br><br><br><br>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

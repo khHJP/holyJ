@@ -39,7 +39,7 @@ public class StringArrayTypeHandler extends BaseTypeHandler<String[]> {
 	@Override
 	public String[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
 		String value = rs.getString(columnName);
-		System.out.println("typehandler = 언제되는거니 ?");
+		System.out.println("typehandler = 너지 ");
 		return value != null ? value.split(",") : null;
 	}
 

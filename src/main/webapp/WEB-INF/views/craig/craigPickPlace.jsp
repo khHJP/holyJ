@@ -63,15 +63,15 @@ body {
 	<form name="placeEnroll" method="post" action="`${pageContext.request.contextPath}/craig/craigEnroll.do">
 	<div id="map" style="width:500px;height:300px; border: 1px solid green; margin: auto"></div> 				
 		<hr>
-		<p style="margin-bottom: 8px; margin-left: 20px">선택한 곳의 장소명을 입력해주세요 </p>
-		<input type="text" style="margin-left: 20px" class="formtext" name="placeDetail" id="placeDetail" placeholder="예 ) 강남역 1번 출구, 오이빌딩 앞"  required /><br>
+		<p style="margin-bottom: 8px; margin-left: 10px">선택한 곳의 장소명을 입력해주세요 </p>
+		<input type="text" style="margin-left: 10px" class="formtext" name="placeDetail" id="placeDetail" placeholder="예 ) 강남역 1번 출구, 오이빌딩 앞"  required /><br>
 		<input type="hidden"  name="latitude" id="platitude" value="" />
 		<input type="hidden"  name="longitude" id="longitude" value=""  />
 		<br><br>	
 		<div id="clickLatlng" style="font-size: 13px; margin : -20px 0 10px 20px; width:400px">
 		</div>
 
-		<input style="margin-left : 180px" class ="inputbuttons"  type="button" id="placeCancel" value="취소" onclick="window.close();"/>		
+		<input style="margin-left : 160px" class ="inputbuttons"  type="button" id="placeCancel" value="취소" onclick="window.close();"/>		
 		<input  style="margin-left : 30px" class ="inputbuttons"  type="button"  id="placeEnroll"  value="등록" onclick="setTimeout( ()=> { setParentText()}, 500)" />
 	</form>
 	

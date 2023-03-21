@@ -13,7 +13,7 @@ import com.sh.oee.craig.model.dto.CraigEntity;
 public interface CraigService {
 
 	// 전체목록조회 
-	List<Craig> craigList(RowBounds rowBounds);
+	List<Craig> craigList(RowBounds rowBounds,  List<String> dongList );
 
 	// 카테고리 목록 조회 
 	List<Map<String, String>> craigCategoryList();
