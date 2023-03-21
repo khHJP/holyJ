@@ -29,12 +29,31 @@
 
 
 
-<!-- 혜진도전영역입니다.. 0320 -->
-<select id="selectDongNearNames" resultMap="dongRaneMap">
-	select dong_near from dong_range where dong_no = ${dongNo}
+
+
+
+<!-- 혜진도전영역입니다.. 0320 와 arraysort어쩌고 오류뭐지 ? 배열 오류같은데 이거 왜 안돼 ? -->
+
+<select id="selectMydongName" resultType="string">
+	select dong_name from dong where dong_no = #{dongNo}
 </select>
 
-<resultMap type="dongRange" id="dongRaneMap">
+<select id="selectDongNearOnly"  resultType="string">
+	select dong_near from dong_range where dong_no = #{dongNo}
+</select>
+
+<select id="selectDongNearFar" resultType="string" >
+	select dong_far from dong_range where dong_no = #{dongNo}
+</select>
+
+
+
+
+
+<resultMap type="dongRange" id="dongRangeMap">
+	<id column="dong_no" property="dongNo"  />
+	<result column="dong_near" property="dongNear" /> 
+	<result column="dong_far" property="dongFar" />
 </resultMap>
 
 
