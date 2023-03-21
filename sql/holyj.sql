@@ -590,5 +590,3 @@ create table persistent_logins (
 );
 
 select * from persistent_logins;
-
-sele

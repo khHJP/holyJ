@@ -4,21 +4,51 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.craig.model.dao.CraigDao">
 
-<!-- ■ select - 단, 해당 멤버가 지정한 동네일것
-where절에 나오는 동 no 가 지금 로그인 한 사람의 동네 + 그 외 추가동네여야되는데 
-sec에서 다 뺄수있을까   -->
+<!-- ■ select - 단, 자기동네 + 해당 멤버가 지정한 동네 범위의 게시물일것 + 사진1개 -->
 <select id="craigList" resultMap="craigMap">
-	select *
-             from craig c left join craig_attachment ca
-                    on c.no = ca.craig_no
+	select cr.*,
+            d.dong_name,
+            c.attach_no,
+            c.original_filename,
+            c.re_filename
+	from ( 
+             select  ca.*  
+             from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+             where rnum= 1 ) c  right join craig cr 
+                    on c.craig_no = cr.no
               left   join  member m
-                    on c.writer = m.member_id 
-              join dong_range dr
-                    on m.dong_no = dr.dong_no
-	where dr.dong_no = 3
-	or dr.dong_no = 1
-	order by c.reg_date desc
+                    on cr.writer = m.member_id 
+              left join dong d
+                    on m.dong_no = d.dong_no
+              left join dong_range dr
+                    on d.dong_no = dr.dong_no
+	<where>
+		d.dong_name in
+		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+    </where>	
+	order by  cr.no desc
 
+<!-- 사진없이조회 하쒸이럼안됨 사진필요해
+select 	c.*,
+        d.dong_name 
+from craig c 
+     left   join  member m
+           on c.writer = m.member_id 
+     left join dong d
+           on m.dong_no = d.dong_no
+     left join dong_range dr
+           on d.dong_no = dr.dong_no
+	<where>
+	d.dong_name in
+	<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+		#{dongName}
+	</foreach>
+    </where>
+    order by no desc
+
+-->
 </select>
 
 <resultMap type="Craig" id="craigMap">
@@ -45,6 +75,12 @@ sec에서 다 뺄수있을까   -->
 		<result column="dong_range" property="dongRange" /> 
 	</association>
 	
+	<!-- dong -->
+	<association property="dong" javaType="dong" >
+		<id column="dong_no" property="dongNo" />
+		<result column="dong_name" property="dongName" />
+	</association>
+	
 	<!-- dong_range -->
 	<association property="dongrange" javaType="dongrange" >
 		<id column="dong_no" property="dongNo" />
@@ -52,7 +88,7 @@ sec에서 다 뺄수있을까   -->
 		<result column="dong_far" property="dongFar" />
 	</association>
 	
-	<!-- attachments | ofType 결과 한 행의 타입이래  -->
+	<!-- attachments  -->
 	<collection property="attachments" ofType="craigAttachment" >
 		<id column="attach_no" property="attachNo" />
 		<result column="original_filename" property="originalFilename" /> 

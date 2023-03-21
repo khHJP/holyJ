@@ -4,13 +4,13 @@ body {
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
+/* craig -  enroll, pickPlace 관련 css */
 h2{
 	margin-top: 100px;
 	text-align: center;
 	margin-bottom: 30px;
 }
 
-/* craig -  enroll, pickPlace 관련 css */
 div#craigBoardContainer{
 	width:690px; 
 	margin : auto;
@@ -22,8 +22,13 @@ div#craigBoardContainer{
 #pickPlace{
 	vertical-align: middle;
 	text-align:center;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
+	width: 80px;	
+	float: right;
+	margin-right: 20px;
 }
+
+
 .formtext{
 	margin-bottom:15px;
 	width:500px; 
@@ -41,20 +46,21 @@ div#craigBoardContainer{
 }
 
 
-/* 파일 */
+/* 파일
 div#craigBoardContainer label.custom-file-label{
 	text-align:left;
 	margin-left: 0;
 	width:550px;
 	font-weight: 500
 }
-
+ 
 .custom-file-label{
 	border : none;
 	border-bottom: none;
 	font-size: 15px;
 }
-
+*/
+ 
 .custom-file-input{
 	border : none;
 	width : 200px;
@@ -92,7 +98,9 @@ table td{
 
 #mapP{
 	text-align: left;
-	margin-bottom: 10px
+	margin-bottom: 10px;
+	font-weight: 200;
+	font-size: 14px;
 }
 
 .btn-outline-success{
@@ -110,44 +118,5 @@ table td{
 	text-align: center;
 	background-color: #c0c0c0; 
 }
-.pl{
-	width:100px; 
-	height: 32px; 
-	vertical-align: middle;
-	padding-bottom : 5px;
-	float: right;
-}
-
-@font-face {
-    font-family: 'BMJUA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* place
-#ment{
-	font-weight: bold;
-}
-
-.inputbuttons{
-	width:80px;
-	height:35px;
-	color: white;
-	border: none;
-}
-
-#placeCancel{
-	background-color: gray;
-}
-
-#placeEnroll{
-	background-color: #00d736;
-}
-
-.inputbuttons:hover{
-	border: 2px solid gray;
-}
 
 
- css 2 수정 */
