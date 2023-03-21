@@ -62,29 +62,7 @@ public class MemberController {
 		/* return "member/login"; */
 	}
 	
-	@PostMapping("/memberLogin.do")
-	public String memberLogin(String memberId, String password, Model model, RedirectAttributes redirectAttr) {
-		log.debug("memberId = {} ", memberId);
-		log.debug("password = {} ", password);
-		
-		log.debug(passwordEncoder.encode(password));
-		
-		// 회원 1명 조회
-		Member member = memberService.selectOneMember(memberId);
-		log.debug("member = {} ", member);
-		
-		// 인증
-		// 1. 로그인 성공한 경우
-		if(member != null && passwordEncoder.matches(password, member.getPassword())) {
-			model.addAttribute("loginMember", member); // requestScope -> sessionScope
-		}
-		// 2. 로그인 실패한 경우(아이디/비번 불일치)
-		else {
-			redirectAttr.addFlashAttribute("msg", "사용자 아이디 또는 비밀번호가 일치하지 않습니다.");
-		}
-		
-		return "redirect:/";
-	}
+	
 	
 	@GetMapping("/memberLogout.do")
 	public String memberLogout(SessionStatus status) {

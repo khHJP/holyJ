@@ -24,8 +24,8 @@ public class CraigServiceImpl implements CraigService {
 	private CraigDao craigDao;
 
 	@Override
-	public List<Craig> craigList(RowBounds rowBounds) {
-		return craigDao.craigList(rowBounds);
+	public List<Craig> craigList(RowBounds rowBounds, List<String> dongList ) {
+		return craigDao.craigList(rowBounds, dongList);
 	}
 
 	//카테고리 목록조회 

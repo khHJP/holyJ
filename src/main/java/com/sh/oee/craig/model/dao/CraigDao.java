@@ -14,7 +14,7 @@ import com.sh.oee.craig.model.dto.CraigAttachment;
 public interface CraigDao {
 
 	//전체목록조회
-	List<Craig> craigList(RowBounds rowBounds);
+	List<Craig> craigList(RowBounds rowBounds,  List<String> dongList );
 
 	@Select("select * from craig_category")
 	List<Map<String, String>> craigCategoryList();

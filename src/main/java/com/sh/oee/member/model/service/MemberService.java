@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Gu;
+import java.util.Map;
+
+import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 
 public interface MemberService {
@@ -26,8 +29,27 @@ public interface MemberService {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//혜진 도전,,
-	String[] selectDongNearNames(int dongNo);
+	List<DongRange> selectDongNearNames(int dongNo);
+	
+	//다시 
+	String selectDongNearOnly(int dongNo);
+
+	String selectDongNearFar(int dongNo);
+
+	//내동네
+	String selectMydongName(int dongNo);
 
 	
 

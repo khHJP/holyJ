@@ -1,12 +1,16 @@
 package com.sh.oee.member.model.dao;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Gu;
+import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 
 @Mapper
@@ -22,6 +26,12 @@ public interface MemberDao {
 	List<Dong> selectDongList();
 
 	/** 정은 끝 */
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -48,6 +58,14 @@ public interface MemberDao {
 
 
 
-
 		
+	List<DongRange> selectDongNearNames(int dongNo);
+
+	String selectDongNearOnly(int dongNo);
+
+	String selectDongNearFar(int dongNo);
+
+	String selectMydongName(int dongNo);
+
+	
 }
