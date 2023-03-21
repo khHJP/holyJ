@@ -5,20 +5,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<<<<<<< HEAD
-=======
-<!-- jquery -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<!-- bootstrap css -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
->>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래대화방" name="title"/>
 </jsp:include>
-
-
-
 
 <style>
 /* 주아체 */
@@ -71,6 +61,10 @@ main#chatWrap {
 .scrollarea::-webkit-scrollbar-track {
     background: #F2F3F6; 
 }
+
+#chatLog {
+	width: 715px;
+}
 </style>
 
 
@@ -86,6 +80,8 @@ main#chatWrap {
 	</symbol>
 </svg>
 <!-- svg 아이콘태그 end -->    
+
+
 <main id="chatWrap" class="d-flex flex-nowrap">
   <div id="prof-bar" class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
     <a href="${pageContext.request.contextPath}/member/myPage.do" class="d-block p-3 link-dark text-decoration-none">
@@ -190,7 +186,11 @@ main#chatWrap {
       </a>
     </div>
   </div>
-
+  
+ <div id="chatLog" class="h-auto d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+ 	
+ 	<jsp:include page="/WEB-INF/views/chat/chat.jsp"/>
+ </div>
 </main>
 <script>
 $(function () {
@@ -202,6 +202,14 @@ document.querySelector("#prof-bar").addEventListener('click', (e) => {
 	const $a = $("ul li a");
 	$a.tooltip('hide');
 }); 
+
+document.querySelector("#nickname").addEventListener('click', (e) => {
+	
+	const url = `${pageContext.request.contextPath}/chat/chat.do`;
+	const name = "chatroom";
+	const spec = "width=500px; height=630px";
+	open(url, name, spec);
+});
 </script>
   
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
