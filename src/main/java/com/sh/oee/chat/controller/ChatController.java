@@ -19,4 +19,9 @@ public class ChatController {
 	
 	@GetMapping("/craigChat.do")
 	public void craigChat() {}
+	
+	@GetMapping("/chat.do")
+	public void chat() {
+		
+	}
 }

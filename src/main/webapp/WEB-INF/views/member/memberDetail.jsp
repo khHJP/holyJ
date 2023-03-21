@@ -10,9 +10,6 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/memberdetail.css" />
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"> -->
 
 </head>
 <body>
@@ -20,12 +17,23 @@
 <br />
 	<table>
 		<th>
-			<td>
-				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
-			</td>
-			<td>
-				<input type="text" class="form-con" name="memberId" id="memberId" <%-- value='<sec:authentication property="principal.username" />'--%> readonly required/>
-			</td>
+			<div class="avatar-upload">
+			       <div class="avatar-edit">
+			           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+			           <label for="imageUpload">
+			           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload">
+			           </label>
+			       </div>
+			       <div class="avatar-preview">
+			       	<div>
+			           	<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="imagePreview">
+			           </div>
+			       </div>
+			   </div>
+			
+				<td>
+					<input type="text" class="form-con" name="memberId" id="memberId" value="${loginMember.memberId}" readonly required/>
+				</td>
 		</th>
 	</table>
 	<br /><br />
@@ -49,7 +57,7 @@
 				<p id="comment">-를 제외한 휴대폰번호를 입력해주세요.</p>
 			<div class="detail">
 				<label for="" id="update">지역</label>
-				<input type="text" class="form-control" name="dongno" id="dongno" <%-- value='<sec:authentication property="principal.password"/> --%>' required/>
+				<input type="text" class="form-control" name="dongno" id="dongno" <%-- value='<sec:authentication property="principal.password"/>' --%> required/>
 			</div>
 				<p id="comment"></p>
 			<br />
@@ -93,6 +101,23 @@
 			return false;
 		}
 	};
+	
+	//-------------------------------------------------------------------------------------------------
+	function readURL(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function(e) {
+	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+	            $('#imagePreview').hide();
+	            $('#imagePreview').fadeIn(650);
+	        }
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	$("#imageUpload").change(function() {
+	    readURL(this);
+	});
+	
 	</script>
 	
 </body>

@@ -9,12 +9,12 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/noticekeyword.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mylocal.css" />
 
 </head>
 <body>
 <br /><br />
-	<div class="together-container">
+	<div class="local-container">
 		<h1 class="subtitle">내 글 목록</h1>
 		<br />
 		

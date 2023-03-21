@@ -20,7 +20,7 @@
 				<i style="color: green;" class="fa-solid fa-magnifying-glass fa-2x"></i>
 			</button>
 			<!-- 글쓰기 버튼 -->
-			<button class="writebtn">
+			<button id="writebtn" class="writebtn">
 				<i style="color: green;" class="fa-solid fa-pencil fa-2x"></i>
 			</button>
 		</div>
@@ -37,7 +37,7 @@
 		<tbody>
 		<c:forEach items="${localList}" var="localall"> 	
 	 		<tr data-no="${localall.no}">
-	 			<td th:inline="text" style="padding-left:250px;" id="localList">${localall.title} <br>${localall.categoryNo}${localall.writer}
+	 			<td th:inline="text" style="padding-left:290px;" id="localList">${localall.title} <br>${localall.categoryNo}${localall.writer}
 	 			<fmt:parseDate value="${localall.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
 					<fmt:formatDate value="${regDate}" pattern="yy-MM-dd HH:mm"/><br></td>
 	 		</tr>

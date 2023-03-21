@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.oee.together.model.dao.TogetherDao">
+
+	<select id="selectTogetherList" resultMap="togetherMap">
+		select
+			t.*
+		from
+			together t join member m
+			on t.writer = m.member_id
+		where
+			m.member_id = #{t.writer}
+	</select>
+	
+	<resultMap type="together" id="togetherMap"></resultMap>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 혜진도전영역입니다.. 0320 -->
+<select id="selectDongNearNames" resultMap="dongRaneMap">
+	select dong_near from dong_range where dong_no = ${dongNo}
+</select>
+
+<resultMap type="dongRange" id="dongRaneMap">
+</resultMap>
+
+
+</mapper>
