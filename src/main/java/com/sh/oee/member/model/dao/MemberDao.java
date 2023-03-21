@@ -43,7 +43,7 @@ public interface MemberDao {
 	
 	
 	//혜진도전 0320
-	String[] selectDongNearNames(int dongNo);
+//	String[] selectDongNearNames(int dongNo);
 
 	
 
