@@ -8,7 +8,6 @@ create table GU (
 );
 
 create sequence seq_gu_no;
-select * from member;
 
 --=============================================
 -- 동 DONG
