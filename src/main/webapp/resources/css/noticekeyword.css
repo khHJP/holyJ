@@ -22,7 +22,7 @@
 }
 #searchimg{
 	width: 30px;
-    height: 45px;
+    height: 43.5px;
 }
 #search-btn{
 	background-color: white;
@@ -38,6 +38,7 @@
 	width: 15px;
     height: 15px;
     border-style:none;
+    margin-bottom: 4px;
 }
 #cancel-btn{
 	background: lightgreen;;

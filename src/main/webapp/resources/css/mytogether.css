@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.together-container{
+	width: 1000px;
+    margin: 0 auto;
+}
+.subtitle{
+	text-align : left;
+	font-size: 30px;
+}
