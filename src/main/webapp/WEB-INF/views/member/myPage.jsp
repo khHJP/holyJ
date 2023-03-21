@@ -24,7 +24,7 @@
 				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
 			</td>
 			<td>
-				<span id="nickname">오이</span>
+				<span id="nickname">${loginMember.nickname}</span>
 			</td>
 			<td>
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/myProfile.do'">프로필 보기</button>
