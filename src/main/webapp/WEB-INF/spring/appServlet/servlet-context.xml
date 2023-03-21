@@ -43,17 +43,6 @@
 			<mapping path="/**"/>
 			<beans:bean class="com.sh.oee.common.interceptor.LoggerInterceptor"/>
 		</interceptor>
-		<!-- 
-		<interceptor>
-			<mapping path="/member/memberDetail.do"/>
-			<mapping path="/member/memberUpdate.do"/>
-			<mapping path="/board/**.do"/>
-			<exclude-mapping path="/board/boardList.do"/>
-			<exclude-mapping path="/board/boardDetail.do"/>
-			<exclude-mapping path="/board/fileDownload.do"/>
-			<beans:bean class="com.sh.spring.common.interceptor.LoginInterceptor"/>
-		</interceptor> 
-		-->
 	</interceptors>
 	
 	<!-- #10.1. aop관련 어노테이션 등록설정 -->

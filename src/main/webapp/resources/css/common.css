@@ -130,18 +130,17 @@ min-height: 83px;
     background: #7FB77E;
     cursor: pointer;
 }
-.my-select a {
-	color: #F2F3F6;
-    padding: 0;
-	font-size: 14px;
-    font-family: 'Noto Sans KR', sans-serif;
+.subtitle {
+    border-style: none;
+    background-color: #f0f8ff00;
+    color: #F2F3F6;
+    font-size: 14px;
+	font-family: 'Noto Sans KR', sans-serif;
+	cursor: pointer;
 }
 .my-select:hover {
 	background: #868B94;
 	transition-duration: 0.4s;
-}
-.my-select a:hover {
-	color: white;
 }
 .show-toggle {
 	visibility: visible;
@@ -183,7 +182,7 @@ footer {
 /* login */
 .modal-content {
     width: 28rem;
-    height: 23.2rem;
+    /* height: 23.2rem; */
 }
 .login-header {
 	display: flex;
@@ -262,4 +261,28 @@ footer {
 .main-img img {
     width: 600px;
     height: 650px;
+}
+
+/* error */
+.acess-denied-container {
+    min-height: 500px;
+}
+.error-img {
+	text-align: center;
+    margin: 100px 0 40px;
+}
+.error-wrap {
+	font-family: 'Noto Sans KR', sans-serif;
+    padding: 15px 0;
+    text-align: center;
+}
+.error-wrap a {
+    width: 90px;
+    margin: 0 auto;
+    color: #56C271;
+    font-size: 19px;
+    font-weight: 500;
+}
+.error-wrap a:hover {
+	color: #FF8A3D;
 }

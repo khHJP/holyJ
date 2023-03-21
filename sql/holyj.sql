@@ -59,6 +59,8 @@ create table MEMBER (
 );
 
 alter table MEMBER add DELETE_DATE date default null; -- 탈퇴일 추가
+alter table MEMBER add enabled number default 1;
+alter table MEMBER add constraint ck_member_enabled check(enabled in (1, 0));
 
 
 --=============================================

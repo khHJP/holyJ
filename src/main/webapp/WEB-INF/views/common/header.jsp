@@ -12,7 +12,8 @@
 <title>오이마켓</title>
 <!-- jq추가 - 혜진 -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<!-- bootstrap js -->
+<!-- bootstrap js: jquery load 이후에 작성할것.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <!-- bootstrap css -->
@@ -26,7 +27,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-
 <script>
 /* 현재 타이틀에 색 입히기 */
 window.addEventListener('load', (e) => {
@@ -66,91 +66,52 @@ window.addEventListener('load', (e) => {
 				</ul>
 			</div>
 
-			<!-- 로그인전 -->		
-			<c:if test="${empty loginMember}">
+			<!-- 로그인 전 접근 가능 -->		
+			<sec:authorize access="isAnonymous()">
  			<div class="login-box">
 				<%-- <button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">로그인</button> --%>
-				<button type="button" class="btn" data-toggle="modal" data-target="#loginModal">
+				<button type="button" class="btn" data-toggle="modal" data-target="#loginModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">
  		 			로그인
 				</button>
 				<button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do'">회원가입</button>
 			</div>
-			</c:if>
-			<!-- 로그인후 -->
-			<c:if test="${not empty loginMember}">
+			</sec:authorize>
+			
+			<!-- 로그인 후 접근 가능 -->
+			<sec:authorize access="isAuthenticated()">
 			<div class="login-box">
 				<div class="notice-wrap">
 					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
 					<img src="${pageContext.request.contextPath}/resources/images/notification.png" alt="알림">
 				</div>
-				 
 				<div class="profile-wrap">
-					<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
+					<sec:authentication property="principal" var="loginMember"/>					
+					<img src="${pageContext.request.contextPath}/resources/images/${loginMember.profileImg}" alt="임시이미지">
 					<div class="my-select-box">
-						<span class="my-select"><a href="${pageContext.request.contextPath}/member/myPage.do" class="subtitle nav-link">나의 오이</a></span>
-						<span class="my-select"><a href="${pageContext.request.contextPath}/admin/adminList.do" class="subtitle nav-link">관리자페이지</a></span>
-						<span class="my-select"><a href="${pageContext.request.contextPath}/member/memberLogout.do" class="subtitle nav-link">로그아웃</a></span>
+						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/member/myPage.do';" class="subtitle">나의 오이</button></span>
+						
+						<!-- 관리자만 접근 가능  -->
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/admin/adminList.do';" class="subtitle">관리자페이지</button></span>
+						</sec:authorize>
+						
+						<form:form class="my-select" action="${pageContext.request.contextPath}/member/memberLogout.do" method="post">
+							<button class="subtitle" type="submit">
+								로그아웃
+							</button>
+						</form:form>
 					</div>	
 				</div>
 			</div><!-- end login-box --> 
-			</c:if>
+			</sec:authorize>
 		</div>
 	</header>
-	<!-- Modal시작 -->
-	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="login-header">
-					<div class="img-box">
-						<img src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png">
-					</div>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<!--로그인폼 -->
-				<form:form
-					action="${pageContext.request.contextPath}/member/memberLogin.do"
-					method="post">
-					<div class="modal-body">
-						<c:if test="${param.error != null}">
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<span class="text-danger">아이디 또는 비밀번호가 일치하지 않습니다.</span>
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-				            </div>
-						</c:if>
-						<input 
-							type="text" class="je-input" name="memberId"
-							placeholder="아이디" required> 
-						<br /> 
-						<input
-							type="password" class="je-input" name="password"
-							placeholder="비밀번호" required>
-						<div class="login-check">
-							<input type="checkbox" class="form-check-input" name="remember-me" id="remember-me"/>
-							<label for="remember-me" class="form-check-label">자동로그인</label>
-						</div>
-					</div>
-					<div class="login-footer">
-						<div>
-							<button type="submit" class="btn">로그인</button>
-							<button type="button" class="btn" data-dismiss="modal">취소</button>
-						</div>
-					</div>
-				</form:form>
-			</div>
-		</div>
-	</div>
-	<!-- Modal 끝-->
-	<section id="content">
-<c:if test="${not empty loginMember}">
+	<%-- <section id="content"> --%>
+<sec:authorize access="isAuthenticated()">
 <script>
 document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');
 });
 </script>
-</c:if>
+</sec:authorize>
