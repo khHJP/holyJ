@@ -11,4 +11,10 @@
 <resultMap type="local" id="localMap">
 </resultMap>
 
+<!-- insertLocal -->
+<insert id="insertLocalBoard">
+	insert into local(no, category_no, writer, title, content, reg_date, hits)
+		values(seq_local_no.nextval, #{categoryNo}, #{writer}, #{title}, #{content}, default, default)
+
+</insert>
 </mapper>

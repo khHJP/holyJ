@@ -31,10 +31,23 @@ public class LocalController {
 		
 		log.debug("localList : {}", localList);
 		log.debug("localCategory = {} ", localCategory);
-		model.addAttribute("localList", localList);
 		
+		model.addAttribute("localList", localList);
+		model.addAttribute("localCategory",localCategory);
 	}
 	
+	// 동네생활 글쓰기 페이지
+	@GetMapping("/localEnroll.do")
+	public void localEnroll(Model model) {
+		
+		List<Map<String,String>> localCategory = localService.localCategoryList();
+		
+		log.debug("localCategroy = {}", localCategory);
+		
+		model.addAttribute("localCategory",localCategory);
+	}
+	
+	//동네생활 글 등록
 	
 	
 	
