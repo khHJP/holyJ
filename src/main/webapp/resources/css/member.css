@@ -52,7 +52,7 @@
 	cursor: pointer;
 	transition-duration: 0.3s;
 }
-.dupl-msg {
+.dupl-msg, .check-msg {
 	display: block;
 	visibility: hidden;
     position: absolute;
@@ -64,6 +64,9 @@
 }
 .ok {
 	color: #4CACBC;
+}
+.check-msg {
+	top: 64px;
 }
 .form-select {
     width: 147px;

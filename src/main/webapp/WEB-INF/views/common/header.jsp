@@ -61,7 +61,7 @@ window.addEventListener('load', (e) => {
 						<a href="${pageContext.request.contextPath}/local/localList.do" class="title nav-link">동네생활</a>
 					</li>
 					<li id="list">
-						<a href="#" class="title nav-link">같이해요</a>
+						<a href="${pageContext.request.contextPath}/together/togetherList.do" class="title nav-link">같이해요</a>
 					</li>
 				</ul>
 			</div>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,71 +52,49 @@ public class CraigController {
 	
 	
 	// select all boardList
-	@GetMapping("/craigList.do")
-	public void craigList(@RequestParam(defaultValue = "1")int cpage, Model model, HttpSession session){
+    @GetMapping("/craigList.do")
+    public void craigList(@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication){
 
-		// member  
-		Member MemberSession = (Member) session.getAttribute("loginMember");
-		Member member = memberService.selectOneMember( MemberSession.getMemberId() );
-		log.debug("■ 찍히냐 member = {} ", member);
-		
-		
-		// dong range  
-		int dongNo = member.getDongNo();
-		String NF = member.getDongRange().toString();	
-		
-		/**
-		String  dongNearOnly = memberService.selectMydongName(dongNo ) + ","; //자기동네
-		String  dongNearFar = memberService.selectMydongName(dongNo ) + ","; //자기동네
+        // member  
+        Member member = ((Member)authentication.getPrincipal());
+        log.debug("■ 찍히냐 member = {} ", member);
+                
+        // dong range  
+        int dongNo = member.getDongNo();
+        String NF = member.getDongRange().toString();    
 
-		if(NF.equals("N")) {			
-			dongNearOnly += memberService.selectDongNearOnly(dongNo );
-			log.debug( "■ dongNearOnly = {}", dongNearOnly);
-			
-		}else {
-		        dongNearFar += memberService.selectDongNearOnly(dongNo ) + ",";
-				dongNearFar +=   memberService.selectDongNearFar(dongNo );
-			log.debug( "■ dongNearFar = {}", dongNearFar);
-			
-		}
-		
-		**/
+        String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
+               searchDong += memberService.selectDongNearOnly(dongNo );
+        
+        if(NF.equals("F")) {
+            searchDong += "," + memberService.selectDongNearFar(dongNo );
+            log.debug( "■ dongNearOnly = {}", searchDong);
+        }
+        
+        List<String> dongList = Arrays.asList(searchDong.split(","));
+        log.debug( "■ dongList = {}", dongList);
 
-		String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
-			   searchDong += memberService.selectDongNearOnly(dongNo );
-		
-		if(NF.equals("F")) {
-			searchDong += "," + memberService.selectDongNearFar(dongNo );
-			log.debug( "■ dongNearOnly = {}", searchDong);
-		}
-		
-		List<String> dongList = Arrays.asList(searchDong.split(","));
-		log.debug( "■ dongList = {}", dongList);
+        
+        List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
+        log.debug( "■ craigCategory = {}", craigCategory);
+        
+        // paging 
+        int limit = 12; //한페이지당 조회할 게시글 수 
+        int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
+    
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        
+        
+        //select all list  
+        List<Craig> craigList = craigService.craigList(rowBounds, dongList);
+        log.debug( "■ craigList = {}", craigList);
 
-	
-		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
-		log.debug( "■ craigCategory = {}", craigCategory);
-		
-		
-		// paging 
-		int limit = 12; //한페이지당 조회할 게시글 수 
-		int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
-	
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		
-		//select all list  
-		List<Craig> craigList = craigService.craigList(rowBounds, dongList);
-		log.debug( "■ craigList = {}", craigList);
-
-		model.addAttribute("craigList", craigList);
-		model.addAttribute("craigCategory", craigCategory);
-		model.addAttribute("member", member);
-		
-		return;
-	}
-	
-	
+        model.addAttribute("craigList", craigList);
+        model.addAttribute("craigCategory", craigCategory);
+        model.addAttribute("member", member);
+        
+        return;
+    }
 	
 	// ■ just go to the craig enroll page - 걍이동
 	@GetMapping("/craigEnroll.do")
