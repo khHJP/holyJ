@@ -24,7 +24,7 @@
 				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
 			</td>
 			<td>
-				<span id="nickname">${loginMember.nickname}</span>
+				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
 		</th>
 	</table>
@@ -32,7 +32,7 @@
 	<table id="mannertmp">
 		<th>
 			<td>매너온도</td>
-			<td>${loginMember.manner}</td>
+			<td><sec:authentication property="principal.manner"/></td>
 		</th>
 	</table>
 	<br />

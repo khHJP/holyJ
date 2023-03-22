@@ -17,39 +17,33 @@ public interface MemberService {
 	List<Gu> selectGuList();
 	
 	List<Dong> selectDongList();
+
 	
 	/** 정은 끝 */
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//혜진 도전,,
-	List<DongRange> selectDongNearNames(int dongNo);
-	
-	//다시 
-	String selectDongNearOnly(int dongNo);
+	/** 하나 시작 **/
+	int updateMember(Member member);
 
-	String selectDongNearFar(int dongNo);
+	int memberDelete(Member member);
+	
+	/** 하나 끝 **/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-	//내동네
-	String selectMydongName(int dongNo);
 
 	
 

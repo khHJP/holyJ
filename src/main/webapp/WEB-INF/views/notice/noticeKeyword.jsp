@@ -15,23 +15,27 @@
 <body>
 <br /><br />
 	<div class="keycontainer">
-		<h1 class="subtitle">알림 키워드 설정</h1>
+		<h1 class="sub_title">알림 키워드 설정</h1>
 		<br />
 		<div class="search-container">
-				<input type="text" id="search" placeholder="키워드를 입력해주세요.(예:자전거)"/>
-				<button id="search-btn">
-					<img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
-				</button>
+			<form:form name="keywordInsertFrm" action="${pageContext.request.contextPath}/notice/keywordInsert.do" method="post">
+						<input type="text" class="keyword" id="search" placeholder="키워드를 입력해주세요.(예:자전거)"/>
+					<button id="search-btn">
+						<img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
+					</button>
+			</form:form>
 		</div>
 		<br /><br />
 		<span id="upkword">등록한 키워드 */3</span>
 		<br />
 		<br />
 		<div class="showkword">
-				키워드
-				<button id="cancel-btn">
-					<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
-				</button>
+			<form:form name="keywordDeleteFrm" action="${pageContext.request.contextPath}/notice/keywordDelete.do" method="post">
+					키워드
+					<button id="cancel-btn">
+						<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
+					</button>
+			</form:form>
 		</div>
 	</div>
 </body>
