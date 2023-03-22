@@ -43,23 +43,6 @@ public class MemberServiceImpl implements MemberService {
 	/** 정은 끝 */
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
 
 	// 혜진꺼 다시
 	@Override
