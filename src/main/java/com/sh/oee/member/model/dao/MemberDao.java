@@ -44,21 +44,6 @@ public interface MemberDao {
 	
 	
 	
-	
-	
-<<<<<<< HEAD
-
-	/*
-	 * //혜진도전 0320 String[] selectDongNearNames(int dongNo);
-	 */
-=======
-//	//혜진도전 0320
-//	String[] selectDongNearNames(int dongNo);
-
->>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
-	
-
-
 
 
 
