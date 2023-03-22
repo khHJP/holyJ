@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!--  taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> 추가해야됨 나중에 -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> <!-- 0228 추가 -->
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> <!-- 0228 추가 -->
 
 <!DOCTYPE html>
 <html>
@@ -60,7 +63,7 @@ body {
 	<p style="margin: 0">만나서 거래할 때는 누구나 찾기 쉬운 공공장소가 좋아요.</p>
 	
 	<hr>
-	<form name="placeEnroll" method="post" action="`${pageContext.request.contextPath}/craig/craigEnroll.do">
+	<form:form name="placeEnroll" method="post" action="`${pageContext.request.contextPath}/craig/craigEnroll.do">
 	<div id="map" style="width:500px;height:300px; border: 1px solid green; margin: auto"></div> 				
 		<hr>
 		<p style="margin-bottom: 8px; margin-left: 10px">선택한 곳의 장소명을 입력해주세요 </p>
@@ -73,7 +76,7 @@ body {
 
 		<input style="margin-left : 160px" class ="inputbuttons"  type="button" id="placeCancel" value="취소" onclick="window.close();"/>		
 		<input  style="margin-left : 30px" class ="inputbuttons"  type="button"  id="placeEnroll"  value="등록" onclick="setTimeout( ()=> { setParentText()}, 500)" />
-	</form>
+	</form:form>
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
 	<script>

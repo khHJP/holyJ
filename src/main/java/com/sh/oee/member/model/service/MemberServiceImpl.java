@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	
+
 	
 	
 	//혜진도전,,0320
@@ -65,9 +65,7 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-
-
-	//다시
+	// 혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
@@ -84,5 +82,6 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberDao.selectMydongName(dongNo);
 	}
+
 	
 }

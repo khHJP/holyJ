@@ -56,8 +56,19 @@ public class CraigServiceImpl implements CraigService {
 	
 	@Override
 	public int insertCraigAttachment(CraigAttachment attach) {
-		// TODO Auto-generated method stub
 		return craigDao.insertCraigAttachment(attach);
+	}
+
+	
+	//select one
+	@Override
+	public Craig selectcraigOne(int no) {
+		return craigDao.selectcraigOne(no);
+	}
+
+	@Override
+	public String selectMyCraigCategory(int categoryNo) {
+		return craigDao.selectMyCraigCategory(categoryNo);
 	}
 
 }

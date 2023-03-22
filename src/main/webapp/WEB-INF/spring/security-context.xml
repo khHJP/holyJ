@@ -23,6 +23,8 @@
 		<intercept-url pattern="/member/memberEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		
+		<!-- 모든 url에 접근하려면 인증 받아야함 -->
+
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
 		<form-login 
@@ -36,9 +38,9 @@
 			
 		<remember-me
 			data-source-ref="dataSource"
-			token-validity-seconds="604800"/>
-			
-		<access-denied-handler error-page="/error/accessDenied.do"/> 
+			token-validity-seconds="604800"/><!-- 오이마켓은 1주동안 로그인이 유지 가능 -->
+
+		<access-denied-handler error-page="/error/accessDenied.do"/>
 		
 	</http>	
 	

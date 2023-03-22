@@ -25,4 +25,10 @@ public interface CraigDao {
 	//craig attachment등록
 	int insertCraigAttachment(CraigAttachment attach);
 
+	//craig 조인
+	Craig selectcraigOne(int no);
+
+	@Select("select CATEGORY_NAME from craig_category where category_no = #{categoryNo}")
+	String selectMyCraigCategory(int categoryNo);
+
 }
