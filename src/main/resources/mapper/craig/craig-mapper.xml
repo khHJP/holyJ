@@ -51,6 +51,24 @@ from craig c
 -->
 </select>
 
+
+<select id="selectcraigOne" resultMap="craigMap">
+select c.*, 
+            ca.attach_no,
+            ca.original_filename,
+            ca.re_filename,
+             (  select count(*) from craig_attachment  where craig_no =  c.no ) attach_count,
+            m.*
+from craig c  left  join  craig_attachment ca
+	 on c.no = ca.craig_no
+	    	 left join member m 
+	    on c.writer = m.member_id 
+ where c.no =  #{no}
+</select>
+
+
+
+
 <resultMap type="Craig" id="craigMap">
 	<id column="no"  property="no"/>
 	<result column="category_no" property="categoryNo"/>
@@ -66,13 +84,15 @@ from craig c
 	<result column="state" property="state"/>
 	<result column="buyer" property="buyer"/>
 	<result column="complete_date" property="completeDate"/>
-
 	<!-- member -->
 	<association property="member" javaType="member" >
 		<id column="member_id" property="memberId" />
 		<result column="name" property="name" />
 		<result column="dong_no" property="dongNo" />
-		<result column="dong_range" property="dongRange" /> 
+		<result column="dong_range" property="dongRange" />
+		<result column="manner" property="manner" /> 
+		<result column="nickname" property="nickname" />  
+		<result column="profile" property="profile" />  
 	</association>
 	
 	<!-- dong -->
@@ -111,6 +131,10 @@ from craig c
 <insert id="insertCraigAttachment">
 	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, default)
 </insert>
+
+
+
+
 
 
 </mapper>

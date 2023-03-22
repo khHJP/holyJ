@@ -24,5 +24,11 @@ public interface CraigService {
 	//첨부파일등록
 	int insertCraigAttachment(CraigAttachment attach);
 
+	//게시글+첨부파일 함께 조회 
+	Craig selectcraigOne(int no);
+
+	//내카테
+	String selectMyCraigCategory(int categoryNo);
+
 
 }
