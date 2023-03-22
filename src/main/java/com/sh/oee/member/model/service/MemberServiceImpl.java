@@ -53,11 +53,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	//혜진도전,,0320
-	@Override
-	public List<DongRange> selectDongNearNames(int dongNo) {
-		return memberDao.selectDongNearNames(dongNo);
-	}
+	/*
+	 * //혜진도전,,0320
+	 * 
+	 * @Override public List<DongRange> selectDongNearNames(int dongNo) { return
+	 * memberDao.selectDongNearNames(dongNo); }
+	 */
 
 
 
