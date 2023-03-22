@@ -8,10 +8,39 @@
 	
 	<resultMap type="together" id="togetherMap"></resultMap>	
 
+	
+	
+	
+	<!-- 정은 시작 -->
+	<!-- 동네 범위에 맞는 게시글 찾기 -->
+	<select id="selectTogetherListByDongName" resultMap="togetherMap">
+		select
+    		*
+		from
+			(
+			select
+				t.*,
+    			(
+        		select 
+        			dong_name 
+        		from 
+            		member m right join dong d
+                		on m.dong_no = d.dong_no
+        		where 
+        			member_id = t.writer
+        		) dong_name
+			from
+    			together t
+    		)
+		where
+    		dong_name in 
+    		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+				#{dongName}
+			</foreach>
+	</select>
+	
 
-
-
-
+	<!-- 정은 끝 -->
 
 
 

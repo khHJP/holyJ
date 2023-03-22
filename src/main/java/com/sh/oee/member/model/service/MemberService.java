@@ -19,6 +19,8 @@ public interface MemberService {
 	List<Dong> selectDongList();
 
 	
+	int insertMember(Member member);
+
 	/** 정은 끝 */
 	
 	/** 하나 시작 **/
@@ -42,10 +44,6 @@ public interface MemberService {
 	
 	
 	
-	
-	
-
-	// 혜진 코드 //
 	String selectDongNearOnly(int dongNo);
 
 	

@@ -36,6 +36,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
+	}
+	
 	/** 정은 끝 */
 	
 	/**
@@ -45,7 +50,12 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMember(Member member) {
 		return memberDao.updateMember(member);
 	}
-	
+	@Override
+	public int memberDelete(Member member) {
+		// TODO Auto-generated method stub
+		return memberDao.memberDelete(member);
+	}
+
 	
 	/**
 	 * 하나 끝
@@ -58,14 +68,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	
-	
-	
-	
-
-
-
-
 
 	// 혜진꺼 다시
 	@Override
@@ -84,11 +86,7 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberDao.updateMember(member);
 	}
-	@Override
-	public int memberDelete(Member member) {
-		// TODO Auto-generated method stub
-		return memberDao.memberDelete(member);
-	}
+
 	
 
 	

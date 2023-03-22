@@ -25,8 +25,25 @@
 		
 	<resultMap type="member" id="memberMap"></resultMap>	
 
-
-
+	
+	<insert id="insertMember">
+		insert into
+			member
+		values (
+			#{memberId},
+			#{password},
+			#{nickname},
+			#{phone},
+			default,
+			default,
+			#{dongNo},
+			#{dongRange},
+			default,
+			default,
+			default,
+			defaul
+		);
+	</insert>
 
 
 
