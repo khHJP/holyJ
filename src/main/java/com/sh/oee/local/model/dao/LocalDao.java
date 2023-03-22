@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.sh.oee.local.model.dto.Local;
+import com.sh.oee.local.model.dto.LocalAttachment;
 
 @Mapper
 public interface LocalDao {
@@ -18,4 +19,7 @@ public interface LocalDao {
 	@Select("select * from local_category")
 	List<Map<String, String>> localCategoryList();
 
+	int insertLocalBoard(Local local);
+	
+	int insertLocalAttachment(LocalAttachment attach);
 }
