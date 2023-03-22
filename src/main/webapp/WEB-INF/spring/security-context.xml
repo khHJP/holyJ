@@ -17,12 +17,12 @@
 	<!-- #7.2. 자원별 권한여부설정 -->
 	<http pattern="/resources/**" security="none"/>
 	<http auto-config="true">
-		<!-- <intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-		모든 url에 접근하려면 인증 받아야함
+		<!-- 모든 url에 접근하려면 인증 받아야함 -->
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
 		<form-login 
@@ -36,9 +36,9 @@
 			
 		<remember-me
 			data-source-ref="dataSource"
-			token-validity-seconds="604800"/>오이마켓은 1주동안 로그인이 유지 가능
+			token-validity-seconds="604800"/><!-- 오이마켓은 1주동안 로그인이 유지 가능 -->
 			
-		<access-denied-handler error-page="/error/accessDenied.do"/> -->
+		<access-denied-handler error-page="/error/accessDenied.do"/>
 		
 	</http>	
 	

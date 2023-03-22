@@ -26,4 +26,15 @@ public class OeeUtils {
 		return sdf.format(new Date()) + df.format(Math.random() * 1000) + ext;
 	}
 	
+	
+	//혜진추가
+	public static String convertLineFeedToBr(String str) {
+		return str.replaceAll("\n", "<br/>");
+	}
+	
+	public static String escapeHtml(String str) {
+		return str.replaceAll("<","&lt;").replaceAll(">", "&gt;");
+	}
+	
+	
 }

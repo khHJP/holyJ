@@ -42,24 +42,7 @@ public interface MemberDao {
 	
 	
 	
-	//혜진도전 0320
-	String[] selectDongNearNames(int dongNo);
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-		
-	List<DongRange> selectDongNearNames(int dongNo);
+	/**혜진도전 0320 **/
 
 	String selectDongNearOnly(int dongNo);
 

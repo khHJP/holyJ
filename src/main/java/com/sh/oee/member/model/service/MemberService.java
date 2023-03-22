@@ -40,16 +40,15 @@ public interface MemberService {
 	
 	
 	
-	//혜진 도전,,
-	List<DongRange> selectDongNearNames(int dongNo);
-	
-	//다시 
+
+	// 혜진 코드 //
 	String selectDongNearOnly(int dongNo);
 
 	String selectDongNearFar(int dongNo);
 
 	//내동네
 	String selectMydongName(int dongNo);
+
 
 	
 
