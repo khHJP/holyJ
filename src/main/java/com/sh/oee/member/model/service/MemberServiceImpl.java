@@ -35,6 +35,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectDongList();
 	}
 	
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
+	}
+	
 	/** 정은 끝 */
 	
 	
