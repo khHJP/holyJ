@@ -12,12 +12,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,36 +52,17 @@ public class CraigController {
 	
 	
 	
-	// select all boardList
+	// ■ select all boardList
 	@GetMapping("/craigList.do")
-	public void craigList(@RequestParam(defaultValue = "1")int cpage, Model model, HttpSession session){
+	public void craigList(@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication){
 
 		// member  
-		Member MemberSession = (Member) session.getAttribute("loginMember");
-		Member member = memberService.selectOneMember( MemberSession.getMemberId() );
+		Member member = ((Member)authentication.getPrincipal());
 		log.debug("■ 찍히냐 member = {} ", member);
-		
-		
+				
 		// dong range  
 		int dongNo = member.getDongNo();
 		String NF = member.getDongRange().toString();	
-		
-		/**
-		String  dongNearOnly = memberService.selectMydongName(dongNo ) + ","; //자기동네
-		String  dongNearFar = memberService.selectMydongName(dongNo ) + ","; //자기동네
-
-		if(NF.equals("N")) {			
-			dongNearOnly += memberService.selectDongNearOnly(dongNo );
-			log.debug( "■ dongNearOnly = {}", dongNearOnly);
-			
-		}else {
-		        dongNearFar += memberService.selectDongNearOnly(dongNo ) + ",";
-				dongNearFar +=   memberService.selectDongNearFar(dongNo );
-			log.debug( "■ dongNearFar = {}", dongNearFar);
-			
-		}
-		
-		**/
 
 		String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
 			   searchDong += memberService.selectDongNearOnly(dongNo );
@@ -91,18 +74,15 @@ public class CraigController {
 		
 		List<String> dongList = Arrays.asList(searchDong.split(","));
 		log.debug( "■ dongList = {}", dongList);
-
-	
-		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
-		log.debug( "■ craigCategory = {}", craigCategory);
 		
+		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
+	//	log.debug( "■ craigCategory = {}", craigCategory);
 		
 		// paging 
 		int limit = 12; //한페이지당 조회할 게시글 수 
 		int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
 	
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		
 		
 		//select all list  
 		List<Craig> craigList = craigService.craigList(rowBounds, dongList);
@@ -135,7 +115,7 @@ public class CraigController {
 	public String insertCraigBoard(Craig craig, @RequestParam("upFile") List<MultipartFile> upFiles, 
 			  RedirectAttributes redirectAttr){
 		
-	
+		log.debug("craig = {}", craig);
 		
 		String saveDirectory = application.getRealPath("/resources/upload/craig");
 		log.debug("saveDirectory = {}", saveDirectory);
@@ -184,13 +164,47 @@ public class CraigController {
 	  
 	  }
 	 
-	 // ■ just go to the detail Page - 걍이동
+	 // ■ select one craigboard
 	 @GetMapping("/craigDetail.do")
-	 public void craigDetail() {
-	  
-	  }
+	 public void craigDetail(@RequestParam int no, Model model) {
+		 Craig craigboard = craigService.selectcraigOne(no);
+		 
+		 craigboard.setContent(OeeUtils.convertLineFeedToBr(
+					OeeUtils.escapeHtml(craigboard.getContent())));
+		 
+		 log.debug("■ craigboard : " + craigboard);	
+		 model.addAttribute("craigboard", craigboard);
+	 }
 	 
-	
+	 
+	 
+	 @ResponseBody
+	 @GetMapping("/getMyCraigDong.do")
+	 public Map<String, Object> getMyCraigDong(@RequestParam int dongNo) {
+		 
+		 String dongName = memberService.selectMydongName(dongNo);
+		 log.debug( "■ dongName : " + dongName );
+		 
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("dongName", dongName);
+		 
+		 return map;
+	}
+	 
+	 @ResponseBody
+	 @GetMapping("/getMyCraigCategory.do")
+	 public Map<String,Object>  getMyCraigCategory(@RequestParam int categoryNo) {
+		 
+
+		 
+		 String categoryName = craigService.selectMyCraigCategory(categoryNo);
+		 log.debug( "■ categoryName : " + categoryName );
+		 
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("categoryName", categoryName);
+		 
+		 return map;
+	}
 
 	
 	

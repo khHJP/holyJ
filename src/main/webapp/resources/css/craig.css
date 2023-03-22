@@ -84,6 +84,13 @@ body {
 	
 }
 
+#crContent{
+	font-size: 18px;
+	color : black;
+	font-weight: 300;
+
+	
+}
 
 /* 글쓰기 
 #writeCraigbtn {
@@ -125,5 +132,64 @@ body {
    height : 600px;
    margin: 0 auto;  
 }
-
+---------- detail --------
 */
+#proimg{
+	width: 50px; height: 50px
+}
+
+#crboProfiletbl{
+	width :610px;
+	margin: 0 auto;
+	margin-top: 30px;
+	height: 100px;
+	margin-bottom: 30px;
+}
+
+#nickNdong{
+
+}
+
+#crboProfiletbl td{
+	padding-bottom: 5px;
+	font-size: 16px;	
+	height:25px
+		
+}
+
+#crboProfiletbl td{
+	font-size: 16px;	
+
+}
+
+#titletd{
+	font-size: 27px;
+}
+
+<!-- container >
+#crbigContainer {
+	margin: 0 auto;
+	width :610px;	
+	height: 400px;
+}
+
+#crPrice{
+	margin-top: 3px;
+	font-weight: 700;
+	font-size: 20px;
+	margin-bottom: 60px;	
+}
+
+.spcateNdate{
+	font-weight: 300;
+	font-size: 15px;	
+	color: light-gray;	
+}
+
+#craigPlace{
+	margin: 0 auto;
+	margin-top : 20px;
+	font-weight : 700;	
+	width:600px; 
+	font-size: 18px;	
+}

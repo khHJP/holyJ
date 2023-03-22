@@ -23,7 +23,6 @@ public interface MemberService {
 	
 	/** 하나 시작 **/
 	int updateMember(Member member);
-
 	int memberDelete(Member member);
 	
 	/** 하나 끝 **/
@@ -43,6 +42,30 @@ public interface MemberService {
 	
 	
 	
+	
+	
+
+	// 혜진 코드 //
+	String selectDongNearOnly(int dongNo);
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 
 	

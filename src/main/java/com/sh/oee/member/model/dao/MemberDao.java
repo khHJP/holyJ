@@ -54,7 +54,13 @@ public interface MemberDao {
 	
 	
 	
-	
-	
+	/**혜진도전 0320 **/
+
+	String selectDongNearOnly(int dongNo);
+
+	String selectDongNearFar(int dongNo);
+
+	String selectMydongName(int dongNo);
+
 	
 }
