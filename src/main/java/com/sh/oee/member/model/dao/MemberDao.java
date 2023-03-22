@@ -24,7 +24,11 @@ public interface MemberDao {
 	
 	@Select("select * from dong")
 	List<Dong> selectDongList();
+	
+	String getMyLocalByMember(Member loginMember);
 
+	int insertMember(Member member);
+	
 	/** 정은 끝 */
 	
 	
@@ -42,6 +46,24 @@ public interface MemberDao {
 	
 	
 	
+//	//혜진도전 0320
+//	String[] selectDongNearNames(int dongNo);
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	List<DongRange> selectDongNearNames(int dongNo);
 	/**혜진도전 0320 **/
 
 	String selectDongNearOnly(int dongNo);
