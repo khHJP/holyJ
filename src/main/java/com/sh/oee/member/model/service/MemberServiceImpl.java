@@ -38,37 +38,8 @@ public class MemberServiceImpl implements MemberService {
 	/** 정은 끝 */
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 * //혜진도전,,0320
-	 * 
-	 * @Override public List<DongRange> selectDongNearNames(int dongNo) { return
-	 * memberDao.selectDongNearNames(dongNo); }
-	 */
 
-
-
-
-
-
-
-
-
-	//다시
+	// 혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
@@ -85,5 +56,6 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberDao.selectMydongName(dongNo);
 	}
+
 	
 }

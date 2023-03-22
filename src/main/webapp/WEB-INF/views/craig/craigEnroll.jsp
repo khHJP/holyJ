@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> <!-- 0228 추가 -->
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> <!-- 0228 추가 -->
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래" name="title"/>
 </jsp:include>
@@ -42,10 +45,10 @@ button, input, optgroup, select, textarea {
 <h2> 내 물건 팔기  </h2>
 <div id="craigBoardContainer">
 	
-	<form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
-	 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do"  >
-		<input type="hidden" class="form-control" name="writer" id="writer" value="tigerhj" required>
-
+	<form:form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >
+	<sec:authentication property="principal" var="loginMember"/>
+		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
 		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
 		<!-- ●  첨부파일 ● -->	
 		<tr>
@@ -93,7 +96,11 @@ button, input, optgroup, select, textarea {
 	
 			<tr>
 				<th style="max-width : 100px;"><label for="price"> ￦ 가격 </label></th>
-				<td style="max-width:600px;"><input type="number" class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" style="width: 400px; margin-right: 90px"/>      <input type="checkbox" name="share" id="share" onclick="sharecheck(this)"> 나눔</td>
+					<td style="max-width:600px;"><input type="number" class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" style="width: 400px; margin-right: 90px; margin-bottom: 5px;"/>      
+						<input type="checkbox" name="share" id="share" onclick="sharecheck(this)"> 나눔
+						<p style="font-size: 12px; width:300px; margin-left: -20px; margin-bottom: 0">※ '삽니다'의 경우 원하시는 가격을 기재해주세요😊</p>
+						<p style="font-size: 12px; width:300px; margin-left: -8px">※ '나눔' 의 경우 가격은 자동으로 0원으로 변경됩니다😍</p>						
+					</td>
 			</tr>	
 
 			<tr>
@@ -129,12 +136,11 @@ button, input, optgroup, select, textarea {
 			</tr>
 	    </table>
 	    
-		<input class="btn btn-cancel" type="button" value="취소" onclick="history.go(-1)" ></button>
+		<input class="btn btn-cancel" type="button" value="취소" onclick="history.go(-1)" >
 		<input type="submit" class="btn btn-outline-success" value="완료" >
 		<hr style="border : 1px solid lightgray; margin-top: 20px; width: 700px" />
-	</form><br><br>
+	</form:form><br><br>
 </div>
-
 
 
 
@@ -218,46 +224,38 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 }
 </script>
 
-
-
 <script>
-	//	장소고르기
-	document.querySelector("#pickPlace").addEventListener('click', (e) => {
-		e.preventDefault();
-		
-		const url = `${pageContext.request.contextPath}/craig/craigPickPlace.do`;
-		const name = "pickPlace"; // popup의 window이름. 브라우져가 탭,팝업윈도우를 관리하는 이름
-		const spec = "width=530px, height=580px";
-		open(url, name, spec);
-	});
+//	장소고르기
+document.querySelector("#pickPlace").addEventListener('click', (e) => {
+	e.preventDefault();
+	
+	const url = `${pageContext.request.contextPath}/craig/craigPickPlace.do`;
+	const name = "pickPlace"; // popup의 window이름. 브라우져가 탭,팝업윈도우를 관리하는 이름
+	const spec = "width=530px, height=580px";
+	open(url, name, spec);
+});
 </script>	
 
 <script>
 const latitude = document.querySelector("#latitude");
 const longitude = document.querySelector("#longitude");
 
-
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+var mapContainer = document.getElementById('map'), // 지도 div 
    mapOption = { 
-       center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
-       level: 3 // 지도의 확대 레벨
+       center: new kakao.maps.LatLng(latitude, longitude), // 중심좌표
+       level: 3 
    };
 
-var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도생성
 
-// 마커가 표시될 위치입니다 
-var markerPosition  = new kakao.maps.LatLng(latitude, longitude); 
+var markerPosition  = new kakao.maps.LatLng(latitude, longitude); // 마커가 표시될 위치
 
-// 마커를 생성합니다
-var marker = new kakao.maps.Marker({
+var marker = new kakao.maps.Marker({ //마커
     position: markerPosition
 });
 
-// 마커가 지도 위에 표시되도록 설정합니다
+// 마커 지도 위에 표시
 marker.setMap(map);
-
-// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-// marker.setMap(null);    
 </script>
 
 <script>
@@ -272,7 +270,7 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.onload = (e) => {
 			// 읽기 작업 완료시 호출될 load이벤트핸들러
 			document.querySelector("#col_img_viewer").src = e.target.result; 
-			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};
 	}
 	if(img.files[1]){
@@ -282,7 +280,7 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.onload = (e) => {
 			// 읽기 작업 완료시 호출될 load이벤트핸들러
 			document.querySelector("#col_img_viewer2").src = e.target.result; 
-			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+	//		document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};
 	}	
 	if(img.files[2]){
@@ -292,7 +290,7 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.onload = (e) => {
 			// 읽기 작업 완료시 호출될 load이벤트핸들러
 			document.querySelector("#col_img_viewer3").src = e.target.result; 
-			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+		//	document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};	
 	}	
 

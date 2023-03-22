@@ -96,7 +96,7 @@ window.addEventListener('load', (e) => {
 						</sec:authorize>
 						
 						<form:form class="my-select" action="${pageContext.request.contextPath}/member/memberLogout.do" method="post">
-							<button class="subtitle" type="submit">
+							<button class="subtitle" type="submit" style="z-index: 111">
 								로그아웃
 							</button>
 						</form:form>
