@@ -6,12 +6,13 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
 
 @Mapper
 public interface TogetherDao {
 
-	List<Together> selectTogetherList(String memberId);
+	List<Together> selectTogetherList(Member member);
 	
 	@Select("select * from together_category")
 	List<Map<String,String>> selectTogetherCategory();

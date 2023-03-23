@@ -7,9 +7,16 @@
 
 	
 	<resultMap type="together" id="togetherMap"></resultMap>	
-
-	
-	
+	<!-- 하나 시작 -->
+	<select id="selectTogetherList" resultMap="togetherMap">
+	select
+		*
+	from
+		together
+	where
+		writer = #{memberId}
+	</select>
+	<!-- 하나 끝 -->
 	
 	<!-- 정은 시작 -->
 	<!-- 동네 범위에 맞는 게시글 찾기 -->

@@ -8,3 +8,6 @@
 	text-align : left;
 	font-size: 30px;
 }
+.table td, .table th{
+	border : none;
+}
