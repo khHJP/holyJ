@@ -62,18 +62,6 @@ public class MemberController {
 		model.addAttribute("dongList", dongList);
 	}
 
-	@GetMapping("/memberLogin.do")
-	public void memberLogin() {
-		/* return "member/login"; */
-	}
-
-	@GetMapping("/memberLogout.do")
-	public String memberLogout(SessionStatus status) {
-		if (!status.isComplete()) {
-			status.setComplete();
-		}
-
-	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAtrr) {
 		log.debug("member = {}", member);
@@ -91,11 +79,13 @@ public class MemberController {
 		return "redirect:/";
 	}
 
+
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {
 		/* return "member/login"; */
 	}
-	
+
+
 	@GetMapping("/memberLogout.do")
 	public String memberLogout(SessionStatus status) {
 		if (!status.isComplete()) {
