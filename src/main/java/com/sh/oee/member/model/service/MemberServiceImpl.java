@@ -67,27 +67,24 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	
-
-	// 혜진꺼 다시
+// 혜진 시작 - 70번째줄  혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
 	}
 
-//	@Override
-//	public String selectDongNearFar(int dongNo) {
-//		return memberDao.selectDongNearFar(dongNo);
-//	}
+	@Override
+	public String selectDongNearFar(int dongNo) {
+		return memberDao.selectDongNearFar(dongNo);
+	}
 
 	//내동네
-//	@Override
-//	public String selectMydongName(int dongNo) {
-//		// TODO Auto-generated method stub
-//		return memberDao.updateMember(member);
-//	}
+	@Override
+	public String selectMydongName(int dongNo) {
+		// TODO Auto-generated method stub
+		return memberDao.selectMydongName(dongNo);
+	}
 
-	
-
-	
 }
+
+// 혜진끝 - 90번쨰줄 

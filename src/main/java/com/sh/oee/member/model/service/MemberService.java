@@ -44,13 +44,19 @@ public interface MemberService {
 	
 	
 	
-	String selectDongNearOnly(int dongNo);
+
 
 	
+// 혜진영역 	
 	
-	
-	
-	
+String selectDongNearOnly(int dongNo);
+
+String selectDongNearFar(int dongNo);
+
+String selectMydongName(int dongNo);
+
+//혜진영역 
+
 	
 	
 	
