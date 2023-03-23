@@ -1,6 +1,7 @@
 package com.sh.oee.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,10 @@ public class AdminController {
 	@Autowired
 	public AdminService adminService;
 	
-	@GetMapping("/adminList.do")
-	public void adminList(Model model) {}
+	@GetMapping("/adminMemberList.do")
+	public void adminMemberList(Model model) {
+		List<Member> adminMemberList = adminService.selectAdminMemberList();
+		log.debug("adminMemberList = ()", adminMemberList);
+		model.addAttribute("adminMemberList", adminMemberList);
+	}
 }

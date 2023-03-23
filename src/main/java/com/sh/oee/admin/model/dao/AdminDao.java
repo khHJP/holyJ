@@ -9,6 +9,8 @@ import com.sh.oee.member.model.dto.Member;
 @Mapper
 public interface AdminDao {
 
-	List<Member> adminList();
+	List<Member> selectAdminList();
+
+	List<Member> selectAdminMemberList();
 
 }

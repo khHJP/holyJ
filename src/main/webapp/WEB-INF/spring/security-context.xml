@@ -41,7 +41,11 @@
 		<remember-me
 			data-source-ref="dataSource"
 			token-validity-seconds="604800"/><!-- 오이마켓은 1주동안 로그인이 유지 가능 -->
+
+
+			
 		<access-denied-handler error-page="/error/accessDenied.do"/>
+		
 
 	</http>	
 	

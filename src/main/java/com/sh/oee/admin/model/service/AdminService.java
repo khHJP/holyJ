@@ -6,4 +6,6 @@ import com.sh.oee.member.model.dto.Member;
 
 public interface AdminService {
 
+	List<Member> selectAdminMemberList();
+
 }
