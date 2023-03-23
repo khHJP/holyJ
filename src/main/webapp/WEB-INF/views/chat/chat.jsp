@@ -14,42 +14,67 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chat/chatroom.css" />
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
 </style>
 
 <script>
+/* 채팅방 메뉴버튼 토글  */
 $(document).ready(function(){
 	$('#action_menu_btn').click(function(){
 		$('.action_menu').toggle();
 	});
-		});
+});
+		
+/* 채팅방 스크롤 최하단 고정  */		
+$(document).ready(function(){
+	$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
+});
 </script>
 
 </head>
 <body>
 <div class="chat h-100">
 	<div class="card">
-		<div class="card-header msg_head align-top">
+		<!-- 채팅방 헤더 start -->
+		<div class="card-header msg_head align-top"> 
 			<div class="d-flex bd-highlight">
 				<div class="user_info">
 					<span class="nickname">당근당근</span>
 					<span class="manner badge bg-success">36.5</span>
 				</div>
+				<!-- 메뉴버튼 이미지  -->
 				<svg id="action_menu_btn" class="bi bi-three-dots-vertical" width="24" height="24" role="img" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 					<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
 				</svg>
 			</div>
+			<!-- 메뉴버튼 토글시  -->
 			<div class="action_menu">
 				<ul>
 					<li>신고하기 </li>
 					<li>채팅방 나가기</li>
-
 				</ul>
 			</div>
 		</div>
-		<div class="messages">
+		<!-- 채팅방 헤더 end -->
+		
+		<!-- 게시글정보 start -->
+		<div id="craig_bar">
+			<div class="craig_info_wrap">
+				<img src="/oee/resources/upload/craig/20230321_011132421503.png" alt="" />
+				<div class="craig_text">
+					<p class="craig_status">판매중</p> 
+					<p class="craig_name">춘배안경케이스</p>
+					<span class="price">8,000원</span>
+				</div>
+			</div>
+			<button type="button" class="btn btn-outline-secondary">약속잡기</button>
+		</div>
+		<!-- 게시글정보 end -->
+		
+		<!-- 채팅방 메시지내용 start  -->
+		<div id="message-container" class="messages scrollarea" style="overflow-y: scroll; height: 600px;">
 			<ul class="list-unstyled">
 				<li class="sent">
 					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="">
@@ -100,15 +125,16 @@ $(document).ready(function(){
 				
 			</ul>
 		</div>
-		<div class="card-footer align-bottom">
-			<div class="input-group">
-				<div class="input-group-append">
-					<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-				</div>
-				<textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-				<div class="input-group-append">
-					<span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
-				</div>
+		<!-- 채팅방 메시지내용 end  -->
+		<div class="message-input">
+			<div class="wrap">
+			<input type="text" placeholder="메시지 보내기">
+			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+			<button class="submit">
+			<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+  				<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+			</svg>
+			</button>
 			</div>
 		</div>
 </div>

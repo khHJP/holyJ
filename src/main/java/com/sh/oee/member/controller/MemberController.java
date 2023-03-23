@@ -100,7 +100,7 @@ public class MemberController {
 	public void memberLogin() {
 		/* return "member/login"; */
 	}
-	
+
 	/**
 	 * 로그아웃
 	 * @param status
