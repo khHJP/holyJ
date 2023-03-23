@@ -17,11 +17,17 @@ public interface MemberService {
 	List<Gu> selectGuList();
 	
 	List<Dong> selectDongList();
+
 	
 	int insertMember(Member member);
 
 	/** 정은 끝 */
 	
+	/** 하나 시작 **/
+	int updateMember(Member member);
+	int memberDelete(Member member);
+	
+	/** 하나 끝 **/
 	
 	
 	
@@ -32,22 +38,21 @@ public interface MemberService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	String selectDongNearOnly(int dongNo);
 
-	String selectDongNearFar(int dongNo);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-	//내동네
-	String selectMydongName(int dongNo);
 
 
 	

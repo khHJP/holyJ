@@ -26,39 +26,62 @@
 			       </div>
 			       <div class="avatar-preview">
 			       	<div>
-			           	<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="imagePreview">
+			           	<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>" alt="프로필" id="imagePreview">
 			           </div>
 			       </div>
 			   </div>
 			
 				<td>
-					<input type="text" class="form-con" name="memberId" id="memberId" value="${loginMember.memberId}" readonly required/>
+					<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
 				</td>
 		</th>
 	</table>
 	<br /><br />
-	<%-- <sec:authentication property="principal" var="loginMember"/> --%>
+	<sec:authentication property="principal" var="loginMember"/>
 	<div id="update-container">
 		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
 			<div class="detail">
 				<label for="" id="update">닉네임</label>
-				<input type="text" class="form-control" name="nickname" id="nickname" <%-- value='<sec:authentication property="principal.name"/>' --%> required/>
+				<input type="text" class="form-control" name="nickname" id="nickname" value='<sec:authentication property="principal.nickname"/>' required/>
 			</div>
 				<p id="comment">한글 2~8자의 닉네임을 입력해주세요.</p>
 			<div class="detail">
 				<label for="" id="update">비밀번호</label>
-				<input type="text" class="form-control" name="password" id="password" <%-- value='<sec:authentication property="principal.password"/>' --%> required/>
+				<input type="text" class="form-control" name="password" id="password" value="" required/>
 			</div>
 				<p id="comment">영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
 			<div class="detail">
 				<label for="" id="update">휴대폰 번호</label>
-				<input type="tel" class="form-control" name="phone" id="phone" maxlength="11" value="${loginMember.phone}" required/>
+				<input type="tel" class="form-control" name="phone" id="phone" maxlength="11" value='<sec:authentication property="principal.phone"/>' required/>
 			</div>
 				<p id="comment">-를 제외한 휴대폰번호를 입력해주세요.</p>
-			<div class="detail">
+				<!-- ------------------------------------------------ -->
+				<div class="detail">
+					<label for="" id="update">주소</label>
+					<select class="form-select" id="gu-select" name="gu" aria-label="Default select example">
+						<option selected>구 선택</option>
+							<c:forEach items="${guList}" var="gu">
+				           		<option>${gu.guName}</option>
+					  		</c:forEach> 
+					</select>
+					<select class="form-select" id="dong-select" name="dong" aria-label="Default select example">
+						<option selected>동 선택</option>
+						<c:forEach items="${dongList}" var="dong">
+							<option <%-- value='<sec:authentication property="principal.dongName"/>' --%> class="dong-option ${dong.guNo}">${dong.dongName}</option>
+						</c:forEach>
+					</select>
+					<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example">
+						<option selected>범위 선택</option>
+						<option value="N">근처동네 3개</option>
+						<option value="F">근처동네 5개</option>
+					</select>
+				</div>
+				<!-- ------------------------------------------------ 
+			 <div class="detail">
 				<label for="" id="update">지역</label>
-				<input type="text" class="form-control" name="dongno" id="dongno" <%-- value='<sec:authentication property="principal.password"/>' --%> required/>
-			</div>
+				<input type="text" class="form-control" name="dongNo" id="dongNo" value='<sec:authentication property="principal.dongNo"/>' required/>
+			</div> 
+			-->
 				<p id="comment"></p>
 			<br />
 			<div id="update-btn">
@@ -88,7 +111,7 @@
 		}
 		
 		// 비밀번호는 영문자, 숫자를 포함한 8자 이상
-		if(!/^[a-zA-Z][0-9]{8,}$/.test(password.value)){
+		if(!/^[A-Za-z0-9]{8,}$/.test(password.value)){
 			alert("비밀번호는 영문자, 숫자를 포함한 8자 이상을 입력해주세요");
 			password.select();
 			return false;
@@ -107,8 +130,8 @@
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
-	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
 	            $('#imagePreview').hide();
+	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
 	            $('#imagePreview').fadeIn(650);
 	        }
 	        reader.readAsDataURL(input.files[0]);

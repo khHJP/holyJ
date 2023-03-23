@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,10 +57,22 @@ public class MemberController {
 		log.debug("guList = {}", guList);
 		List<Dong> dongList = memberService.selectDongList();
 		log.debug("dongList = {}", dongList);
-		
+
 		model.addAttribute("guList", guList);
 		model.addAttribute("dongList", dongList);
 	}
+
+	@GetMapping("/memberLogin.do")
+	public void memberLogin() {
+		/* return "member/login"; */
+	}
+
+	@GetMapping("/memberLogout.do")
+	public String memberLogout(SessionStatus status) {
+		if (!status.isComplete()) {
+			status.setComplete();
+		}
+
 	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAtrr) {
@@ -98,10 +111,10 @@ public class MemberController {
 		Map<String, Object> map = new HashMap<>();
 		Member member = memberService.selectOneMember(memberId);
 		boolean available = (member == null);
-		
+
 		map.put("memberId", memberId);
 		map.put("available", available);
-		
+
 		return map;
 	}
 	
@@ -150,8 +163,62 @@ public class MemberController {
 	}
 
 	@GetMapping("/memberDetail.do")
-	public void memberDetail() {
+	public void memberDetail(Model model, Authentication authentication) {
+		List<Gu> guList = memberService.selectGuList();
+		log.debug("guList = {}", guList);
+		List<Dong> dongList = memberService.selectDongList();
+		log.debug("dongList = {}", dongList);
+
+		model.addAttribute("guList", guList);
+		model.addAttribute("dongList", dongList);
+		
+		log.debug("authentication = {}", authentication);
+		log.debug("member = {}", model);
+		/*
+		Member princiapal = (Member) authentication.getPrincipal();
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
+		*/
 	}
+
+	@GetMapping("/myLocal.do")
+	public void myLocal(Model model, String memberId) {
+		
+
+	}
+
+	
+	 @GetMapping("/myTogether.do") 
+	 public void together(@RequestParam String memberId, Model model) { 
+		 log.debug("memberId = {}", memberId);
+	  
+	 }
+	 
+	 @PostMapping("/memberUpdate.do")
+		public String memberUpdate(Member member, Authentication authentication) {
+			log.debug("member = {}", member);
+			// 1. db변경
+			int result = memberService.updateMember(member);
+			// 2. security context의 인증객체 갱신
+			Member newMember = member;
+			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+					newMember,
+					authentication.getCredentials(),
+					authentication.getAuthorities()
+			);
+			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+			
+			return "redirect:/member/memberDetail.do";
+	 }
+	 
+	 @PostMapping("/memberDelete.do")
+	 public String memberDelete(Member member, Authentication authentication) {
+		 log.debug("member = {}", member);
+		 // 1. db변경
+		 int result = memberService.memberDelete(member);
+		 
+		 return "redirect:/";
+	 }
+	 
 
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성
