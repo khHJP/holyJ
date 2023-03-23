@@ -92,7 +92,7 @@ window.addEventListener('load', (e) => {
 						
 						<!-- 관리자만 접근 가능  -->
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/admin/adminList.do';" class="subtitle">관리자페이지</button></span>
+						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/admin/adminMemberList.do';" class="subtitle">관리자페이지</button></span>
 						</sec:authorize>
 						
 						<form:form class="my-select" action="${pageContext.request.contextPath}/member/memberLogout.do" method="post">
