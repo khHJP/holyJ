@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.craig.model.dao.CraigDao">
 
-<!-- ■ select - 단, 자기동네 + 해당 멤버가 지정한 동네 범위의 게시물일것 + 사진1개 -->
+<!-- ■ select all -->
 <select id="craigList" resultMap="craigMap">
 	select cr.*,
             d.dong_name,
@@ -30,25 +30,6 @@
     </where>	
 	order by  cr.no desc
 
-<!-- 사진없이조회 하쒸이럼안됨 사진필요해
-select 	c.*,
-        d.dong_name 
-from craig c 
-     left   join  member m
-           on c.writer = m.member_id 
-     left join dong d
-           on m.dong_no = d.dong_no
-     left join dong_range dr
-           on d.dong_no = dr.dong_no
-	<where>
-	d.dong_name in
-	<foreach collection="list" item="dongName" open="(" close=")" separator=",">
-		#{dongName}
-	</foreach>
-    </where>
-    order by no desc
-
--->
 </select>
 
 

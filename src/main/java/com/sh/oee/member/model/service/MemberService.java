@@ -53,8 +53,10 @@ String selectDongNearOnly(int dongNo);
 
 String selectDongNearFar(int dongNo);
 
+
 //내동네
 String selectMydongName(int dongNo);
+
 
 
 //혜진영역 

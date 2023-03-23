@@ -206,6 +206,18 @@ public class CraigController {
 		 return map;
 	}
 
+	 // ■ just go to the place - 걍이동
+	 @GetMapping("/craigUpdate.do")
+	 public void craigUpdate(@RequestParam int no, Model model) {
+		 Craig craigboard = craigService.selectcraigOne(no);
+		 List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
+
+			
+			
+		 model.addAttribute("craigboard", craigboard);
+		 model.addAttribute("craigCategory", craigCategory);
+
+	  }
 	
 	
 }

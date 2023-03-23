@@ -45,10 +45,12 @@ carousel-control-prev-icon{ background-color: black;}
 .btn-success{	background-color: #28A745;	color: white; font-weight: 400; float:right; font-size: 16px;}
 .btn-success:hover{	background-color: green;}
 
-.btn-danger{ background-color:#DC3545; color: white; font-weight: 400; float:right; font-size: 16px; }
+.btn-danger{ background-color:#DC3545; margin-right :0; color: white; font-weight: 400; float:right; font-size: 16px; }
 .btn-danger:hover{	background-color: #B10009;}
-.btn-warning{ background-color: yellow; margin-left: 10px; font-size: 16px;  }
-.btn-secondary{ font-size: 16px; }
+.btn-warning{ background-color: #FEC106; margin-right :0; margin-left: 10px; font-size: 16px; color : white;  font-weight: 400;   }
+.btn-warning:hover{ background-color: #F7AF00; margin-left: 10px; font-size: 16px;  }
+.btn-dark{ background-color: black; font-size: 16px; color : white; font-weight: 400; float:right;  }
+.btn-dark:hover{ background-color: gray; font-size: 16px; color : white; }
 #map{ margin: 0 auto;}
 </style>
 <br>
@@ -166,8 +168,8 @@ carousel-control-prev-icon{ background-color: black;}
 
 <sec:authentication property="principal" var="loginMember"/>
 <c:if test="${craigboard.member.memberId == loginMember.memberId}">
-	<button type="button" class="btn btn-warning" style="float: right; margin-top : 20px; margin-right: 0	"> 수정하기 </button>
-	<button type="button" class="btn btn-secondary" style="margin-left: 20px; margin-top : 20px; float: right"> 삭제하기 </button>		
+	<button id="btnUpdate" type="button" class="btn btn-warning" style="float: right; margin-top : 20px;"> 수정하기 </button>
+	<button type="button" class="btn btn-dark" style="margin-left: 30px; margin-right: -1px;  margin-top : 20px; float: right"> 삭제하기 </button>		
 </c:if>
 </div>
 
@@ -198,7 +200,14 @@ window.addEventListener('load', () => {
 		data : { categoryNo : '${craigboard.categoryNo}'},
 		success(data){
 			console.log( data );
-			crcate.innerHTML =   data.categoryName  ;
+			
+			const nm =  data.categoryName;
+			if(nm == '삽니다'){
+				crcate.innerHTML = `<b>\${nm}</b>`  ;
+				$("#crcate").css("color","red");
+			}else{
+				crcate.innerHTML = nm  ;
+			}
 		},
 		error : console.log
 	});
@@ -242,8 +251,13 @@ var infowindow = new kakao.maps.InfoWindow({
 infowindow.open(map, marker); 
 </script>
 
-
-
+<script>
+document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
+	console.log(e.target);
+	const craigno = '${craigboard.no}'
+	location.href = `${pageContext.request.contextPath}/craig/craigUpdate.do?no=\${craigno}`;
+});
+</script>
 
 
 

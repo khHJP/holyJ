@@ -67,9 +67,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	
-
-	// 혜진꺼 다시
+// 혜진 시작 - 70번째줄  혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
@@ -87,6 +85,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMydongName(dongNo);
 	}
 
+
 	
 	
 	/*
@@ -98,5 +97,7 @@ public class MemberServiceImpl implements MemberService {
 
 	
 
-	
+
 }
+
+// 혜진끝 - 90번쨰줄 
