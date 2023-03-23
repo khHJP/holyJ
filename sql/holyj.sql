@@ -58,7 +58,7 @@ create table MEMBER (
 );
 
 alter table MEMBER add DELETE_DATE date default null; -- 탈퇴일 추가
-alter table MEMBER add enabled number default 1;
+alter table MEMBER add ENABLED number default 1;
 alter table MEMBER add constraint ck_member_enabled check(enabled in (1, 0));
 
 alter table member modify profile_img default 'oee.png'; -- 확장자 수정
