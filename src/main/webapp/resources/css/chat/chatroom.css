@@ -1,5 +1,10 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
+article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: flex;
+}
+
+
 body {
     margin: 0;
     font-family: 'Noto Sans KR', sans-serif;
@@ -17,48 +22,50 @@ body {
 .chat{
 	margin-top: auto;
 	margin-bottom: auto; 
+	position: relative;
+	max-height: 100%;
 }
 
 .card{
-	height: 100%;
 	background-color: white !important;
 	margin-top: 0;
 }
 
 .card-header{
-	border-bottom: 0 !important;
+	background-color: white !important;
+	height: 72px;
+	padding-top: 20px;
 }
  .card-footer{
 	border-top: 0 !important;
+	position: absolute;
+	bottom: 0;
+	display: inline-block;
+	width: 100%;
 }
 
-.type_msg{
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color:white !important;
-	height: 60px !important;
-	overflow-y: auto;
+/* 스크롤바 관련  */
+.scrollarea {
+   overflow-y: auto;
 }
-.type_msg:focus{
-    box-shadow:none !important;
-    outline:0px !important;
+.scrollarea::-webkit-scrollbar {
+    width: 8px; 
 }
-.attach_btn{
-	border-radius: 15px 0 0 15px !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color: white !important;
-	cursor: pointer;
+.scrollarea::-webkit-scrollbar-thumb {
+    background: #B1D7B4;
+    border-radius: 10px;
+    border: 1px solid #7FB77E;
 }
-.send_btn{
-	border-radius: 0 15px 15px 0 !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color: white !important;
-	cursor: pointer;
-} 
+.scrollarea::-webkit-scrollbar-track {
+    background: #F2F3F6; 
+}
+
 
 /*********** 채팅방 상단바 ************/
+.msg_head{
+	position: relative;
+}
+/* 대화상대정보 */
 .user_info{
 	margin-top: auto;
 	margin-bottom: auto;
@@ -67,25 +74,68 @@ body {
 .user_info span.nickname {
 	font-size: 20px;
 	color: #212124;
+	font-weight: bold;
 }
 .user_info span.manner {
 	font-size: 10px;
 	color: white;
 	background-color: #56C271 !important;
 }
-/*---------------------------------*/	
 
-.msg_head{
-	position: relative;
+/* 중고거래 게시글 정보 */
+#craig_bar{
+	height: 140px;
+	background-color: white;
+	border-bottom: 1px solid rgba(0, 0, 0, .125);
+	vertical-align: middle;
+	padding-top: 10px;
+    padding-bottom: 65px;
 }
 
+#craig_bar .craig_info_wrap {
+	height: 100%;
+	position: relative;
+	margin-left: 35px;
+	margin-top: 10px;
+}
+#craig_bar .craig_info_wrap img {
+	width: 60px;
+	border-radius:10%;
+	float: left;
+}
+
+#craig_bar .craig_text {
+	position: relative;
+    right: -10px;
+}
+#craig_bar .craig_text .craig_name {
+	display: inline;
+	margin-left: 3px;
+}
+#craig_bar .craig_text .craig_status {
+	display: inline;
+	font-weight: bold;
+}
+
+#craig_bar .craig_text .price {
+	display: block;
+	font-weight: bold;
+}
+
+
+#craig_bar button {
+	position: relative;
+	width: 100px;
+	margin-left: 35px;
+	font-size: 15px;
+}
 
 /*********** 채팅방 메뉴 ************/
 #action_menu_btn{
 	position: absolute;
 	right: 10px;
-	top: 10px;
-	color: white;
+	top: 24px;
+	color: #4D5159;
 	cursor: pointer;
 	font-size: 20px;
 }
@@ -95,9 +145,10 @@ body {
     background-color: rgb(255 255 255);
     color: black;
     border-radius: 3px;
-    top: 30px;
+    top: 58px;
     right: 15px;
 	display: none;
+	border: 1px solid rgba(0,0,0,.125);
 }
 .action_menu ul{
 	list-style: none;
@@ -107,22 +158,60 @@ body {
 .action_menu ul li{
 	width: 100%;
 	padding: 10px 15px;
-	margin-bottom: 5px;
 }
-.action_menu ul li i{
-	padding-right: 10px;
-}
+
 .action_menu ul li:hover{
 	cursor: pointer;
 	background-color: rgba(0,0,0,0.2);
 }
 /*--------------------------------*/
-.chat .messages::-webkit-scrollbar {
-  width: 8px;
-  background: transparent;
+
+/* 채팅방 하단 메시지입력바  */
+.message-input {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	z-index: 99;	
+	background: white;
 }
-.chat .messages::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
+.message-input .wrap {
+	position: relative;
+}
+
+.message-input .wrap input {
+	padding: 16px 32px 16px 23px;
+	font-family: 'Noto Sans KR', sans-serif;
+    float: left;
+    border: none;
+    width: calc(100% - 90px);
+    font-size: 0.8rem;
+    color: #32465a;
+	outline: none;
+}
+input, button, select, textarea{
+	line-height: inherit;
+}
+
+.message-input .wrap button { 
+	float: right;
+	border: none;
+	width: 50px;
+	cursor: pointer;
+	background-color: white;
+	color: #868B94;
+	outline: none;
+	font-size: 0.8rem;
+}
+.message-input .wrap button svg{
+	margin: 18px 10px 10px 10px;
+	
+}
+.message-input .wrap .attachment{
+	margin: 20px 10px 10px 10px;
+	right: 65px;
+	z-index: 4;
+	color: #435f7a;
+	cursor: pointer;
 }
 
 body .chat {
@@ -145,7 +234,6 @@ body .chat {
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    padding-inline-start: 40px;
 }
 .card .messages ul li {
 	display: inline-block;
