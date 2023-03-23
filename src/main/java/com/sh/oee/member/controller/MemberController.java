@@ -68,6 +68,7 @@ public class MemberController {
 		model.addAttribute("guList", guList);
 		model.addAttribute("dongList", dongList);
 	}
+
 	
 	/**
 	 * 회원가입 정보 DB에 저장

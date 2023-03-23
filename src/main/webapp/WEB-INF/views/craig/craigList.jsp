@@ -77,8 +77,6 @@
 	}
 </style>
 <%-- 해야되는거 - 사진뽑기 / read카운트 처리 / 페이징 --%>
-
-
 	 <span id="memberInfo" ></span>
 	 
 	   <div class="searchdiv" style="position: relative; top: 38px; left: 550px; ">
@@ -127,9 +125,6 @@
 						<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
 							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 14px;">나눔💚</p>
 						</c:if>
-<%-- 							<p id="crprice" class="crpp"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
-							<p id="crdong" class="crpp"><fmt:parseDate value="${craig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="date" />
-										<fmt:formatDate value='${date}' pattern="yyyy년 MM월 dd일" /></p> --%>
 							<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
 							</div>
 						</div>
@@ -160,28 +155,7 @@
 		    </li>
 		  </ul>
 		</nav>
-		
-		
-		
-<%-- 원래 펼친 카테고리
-	   <table id="tblcate">
-		   <tr  style="height:100px;" >
-		   		<th style="height:45px; width:190px; text-align:left; font-size: 21px; background-color: white; color:black" id="btct" >중고거래 카테고리</th>
-		   </tr>
-		   
-		   <c:forEach items="${craigCategory}" var="category"> 	
-	 		<tr  data-no="${category.no}" style="height:50px;">
-	 			<td id="eachcate" style="height:30px; background-color: green;">${category.CATEGORY_NAME}</td>
-	 		</tr>
-		    </c:forEach>
-	   </table>
- 	<table>
-		<c:forEach items="${craigList}" var="craig">
-			<td>${craig.no}</td>
-			<td>${craig.title}</td>
-			<td>${craig.writer}</td>
-		</c:forEach>
-	</table> --%>
+
 
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
@@ -194,10 +168,7 @@ document.querySelectorAll("span[data-no]").forEach( (tr)=>{
 	})
 })
 
-
-
-
-//카테고리뽑기
+//category
 document.querySelectorAll("tr[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
 		console.log(e.target);
