@@ -42,11 +42,11 @@ button, input, optgroup, select, textarea {
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
 
 
-<h2> 내 물건 팔기  </h2>
+<h2> 내 물건 수정하기  </h2>
 <div id="craigBoardContainer">
 	
-	<form:form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
-	 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >
+	<form:form id="craigUpdateFrm" name="craigUpdateFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/craig/craigBoardUpdate.do?${_csrf.parameterName}=${_csrf.token}"  >
 	<sec:authentication property="principal" var="loginMember"/>
 		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
 		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
@@ -66,8 +66,8 @@ button, input, optgroup, select, textarea {
 		</div>
 		<div class="input-group mb-3" style="padding:0px;">
 		  <div class="custom-file" >
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple >
-		    <label class="custom-file-label" for="upFile1" >파일을 선택하세요(최대3개까지 가능)</label>
+		    <input type="file" class="custom-file-input" name="upFile" id="upFile1"  multiple >
+		    <label class="custom-file-label" for="upFile1" >파일을 재선택하세요(최대3개까지 가능)</label>
 		    <br><p style="margin-top: 150px; margin-left: -200px; font-weight: 300; font-size: 14px;">※ 여러장을 올리고 싶으시면 shift+이미지를 선택해보세요!</p>
 		  </div>
 		</div><br><br><br>
@@ -78,21 +78,22 @@ button, input, optgroup, select, textarea {
 <!-- 		<table id="crentb" style="border: 1.5px solid lightgray;border-top:2px solid lightgray; border-bottom:2px solid lightgray;padding: 10px; margin-bottom: 20px"  >-->			
 			<tr>
 				<th><label for="title"> 글 제목  </label></th>
-				<td style="max-width:650px;"><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" required></td>
+				<td style="max-width:650px;"><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" value="${craigboard.title}" required></td>
 			</tr>
 			
 			<tr>
-				<th style="max-width : 100px;" ><label for="category"> 카테고리 </label></th>
+				<th style="max-width : 100px;" ><label for="category"> 카테고리 </label></th> 
 				<td style="max-width:650px; text-align: left">
 				<c:forEach items="${craigCategory}" var="category"> 	
-					<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}" style="margin-left: 12px"> <label for="categoryNo">${category.CATEGORY_NAME}</label> 
+					<input class="raidoss" type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}" style="margin-left: 12px" /> 
+					<label for="categoryNo">${category.CATEGORY_NAME}</label> 
 				</c:forEach>
 				</td>
 			</tr>	
 	
 			<tr>
 				<th style="max-width : 100px;"><label for="price"> ￦ 가격 </label></th>
-					<td style="max-width:600px;"><input type="number" class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" style="width: 400px; margin-right: 90px; margin-bottom: 5px;"/>      
+					<td style="max-width:600px;"><input type="number" class="formtext" name="price" id="price" placeholder="숫자만 입력해주세요" value="${craigboard.price}" style="width: 400px; margin-right: 90px; margin-bottom: 5px;"/>      
 						<input type="checkbox" name="share" id="share" onclick="sharecheck(this)"> 나눔
 						<p style="font-size: 12px; width:300px; margin-left: -20px; margin-bottom: 0">※ '삽니다'의 경우 원하시는 가격을 기재해주세요😊</p>
 						<p style="font-size: 12px; width:300px; margin-left: -8px">※ '나눔' 의 경우 가격은 자동으로 0원으로 변경됩니다😍</p>						
@@ -105,7 +106,7 @@ button, input, optgroup, select, textarea {
 
 			<tr>
 				<th colspan="2" style="padding-bottom: 20px;">
-			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 내용을 작성해주세요 ✍️"  style="min-width:650px; height: 90px"  required="required"></textarea></br></br>
+			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 내용을 작성해주세요 ✍️"  style="min-width:650px; height: 90px"  required="required"></textarea></br>
 			    </th>
 		    </tr>
 			
@@ -142,19 +143,9 @@ button, input, optgroup, select, textarea {
 
 
 <script>
-
-/* 
-const cateno = document.querySelector("#categoryNo");
-cateno.addEventListener( 'click', (e)=>{
-	console.log(e.target);
-	console.log(e.target.value);
-	const no = e.target.dataset.no;
-	console.log( no );
-	
-}) */
-//카테고리뽑기
+// category
 document.querySelectorAll("input[data-no]").forEach( (input)=>{
-	
+
 	input.addEventListener('click', (e) => {
 		
 		const no = input.dataset.no;
@@ -185,7 +176,7 @@ function sharecheck(){
 };
 
 //form 유효성검사 
-document.craigEnrollFrm.onsubmit = (e) =>{
+document.craigUpdateFrm.onsubmit = (e) =>{
 	console.log ( e );
 
 	const title = e.target.title; 
@@ -291,5 +282,86 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 
 </script>
 
+
+<script>
+window.addEventListener('load', () => {
+	const latitude = '${craigboard.latitude}';
+	const longitude = '${craigboard.longitude}';
+	const placeDetail = '${craigboard.placeDetail}';
+	document.querySelector("#placeDetail").value  = placeDetail;
+	
+	const orgcate  = "${craigboard.categoryNo}";	
+	document.querySelectorAll("input[data-no]").forEach( (input)=>{
+
+		const inputValue = input.value;
+		if( orgcate == inputValue){
+			$(input).attr("checked", true);
+		}
+	});//
+	
+	//map
+	var mapContainer = document.getElementById('map'), // 지도div 
+	   mapOption = { 
+	       center: new kakao.maps.LatLng(latitude, longitude), // 중심좌표
+	       level: 3 
+	   };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+
+	var markerPosition  = new kakao.maps.LatLng(latitude, longitude);  // 마커가 표시될 위치
+
+	var marker = new kakao.maps.Marker({ // 마커생성
+	    position: markerPosition
+	});
+
+	marker.setMap(map);
+	
+	//share
+	const share = document.querySelector("#share");		
+
+	console.log( ${craigboard.price == 0 && craigboard.categoryNo != 7 } )
+	if( ${craigboard.price == 0 && craigboard.categoryNo != 7 } ){
+		$(share).attr("checked", true);
+	}
+	
+	//file
+	const uploadedFile = document.querySelector("#upFile1");
+	console.log( "여긴가?", uploadedFile);
+
+	const fileo = '${craigboard.attachments[0].reFilename}'
+	const filet = '${craigboard.attachments[1].reFilename}'
+	const fileth = '${craigboard.attachments[2].reFilename}'
+
+	if(fileo != null){
+		document.querySelector("#col_img_viewer").src = `${pageContext.request.contextPath}/resources/upload/craig/\${fileo}`;
+		$("#upFile1").attr('value', fileo);
+		uploadedFile.value = fileo;
+		
+	}else{
+		document.querySelector("#col_img_viewer").src = "";
+	}
+	
+	if(filet != null){
+		document.querySelector("#col_img_viewer2").src = `${pageContext.request.contextPath}/resources/upload/craig/\${filet}`;
+		$("#upFile1").attr('value', filet);
+		uploadedFile.value = filet;
+		
+	}else{
+		document.querySelector("#col_img_viewer2").src = "";
+	}
+	
+	
+	if(fileth != null){
+		document.querySelector("#col_img_viewer3").src = `${pageContext.request.contextPath}/resources/upload/craig/\${fileth}`;
+		$("#upFile1").attr('value', fileth);
+		uploadedFile.value = fileth;		
+	}else{
+		document.querySelector("#col_img_viewer3").src = "";
+	}
+
+})
+</script>
+
+	
 <br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

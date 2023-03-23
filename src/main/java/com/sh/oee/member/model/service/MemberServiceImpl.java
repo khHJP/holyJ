@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
 	public List<Dong> selectDongList() {
 		return memberDao.selectDongList();
 	}
+
 	
 	@Override
 	public int insertMember(Member member) {
@@ -42,9 +43,31 @@ public class MemberServiceImpl implements MemberService {
 	
 	/** 정은 끝 */
 	
-	
+	/**
+	 * 하나 시작
+	 */
+	@Override
+	public int updateMember(Member member) {
+		return memberDao.updateMember(member);
+	}
+	@Override
+	public int memberDelete(Member member) {
+		// TODO Auto-generated method stub
+		return memberDao.memberDelete(member);
+	}
 
-	// 혜진꺼 다시
+	
+	/**
+	 * 하나 끝
+	 */
+	
+	
+	
+	
+	
+	
+	
+// 혜진 시작 - 70번째줄  혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
@@ -62,5 +85,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMydongName(dongNo);
 	}
 
-	
 }
+
+// 혜진끝 - 90번쨰줄 
