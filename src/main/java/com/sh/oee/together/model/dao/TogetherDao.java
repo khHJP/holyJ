@@ -8,11 +8,15 @@ import org.apache.ibatis.annotations.Select;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
+import com.sh.oee.together.model.dto.TogetherEntity;
 
 @Mapper
 public interface TogetherDao {
 
+
 	List<Together> selectTogetherList(Member member);
+	
+	List<TogetherEntity> selectTogetherList(String memberId);
 	
 	@Select("select * from together_category")
 	List<Map<String,String>> selectTogetherCategory();

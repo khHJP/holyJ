@@ -5,8 +5,10 @@ import java.util.Map;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
+import com.sh.oee.together.model.dto.TogetherEntity;
 
 public interface TogetherService {
+
 
 	List<Together> selectTogetherList(Member member);
 

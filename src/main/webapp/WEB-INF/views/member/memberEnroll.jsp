@@ -51,13 +51,13 @@
 	            		<option value="${gu.guNo}">${gu.guName}</option>
 			  		</c:forEach> 
 			</select>
-			<select class="form-select" id="dong-select" name="dong" aria-label="Default select example">
+			<select class="form-select" id="dong-select" name="dongNo" aria-label="Default select example" required>
 				<option selected>동 선택</option>
 				<c:forEach items="${dongList}" var="dong">
 					<option value="${dong.dongNo}" class="dong-option ${dong.guNo}">${dong.dongName}</option>
 				</c:forEach>
 			</select>
-			<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example">
+			<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example" required>
 				<option selected>범위 선택</option>
 				<option value="N">근처동네 3개</option>
 				<option value="F">근처동네 5개</option>
@@ -69,8 +69,6 @@
 	</form:form>
 </div>
 <script>
-
-
 /* 선택한 구에 따른 동 변화 */
 document.querySelector("#gu-select").addEventListener('change', (e) => {
 	const dong = document.querySelector("#dong-select");
@@ -173,19 +171,19 @@ document.querySelector("#pwdCheck").addEventListener('keyup', (e) => {
 });
 
 /* 유효성 검사 */ 
-document.memberEnrollFrm.onsubmit = (e) => {
-	e.preventDefault();
+document.memberEnrollFrm.addEventListener('submit', (e) => {
 	
 	// 아이디, 비밀번호 
 	if(idValid === 0 || pwdValid.value === 0)
-		return false;
+		e.preventDefault();
 	
+	console.log("idValid : ", idValid, "pwdValid : ", pwdValid);
 	// 닉네임
 	const nickname = document.querySelector("#nickname");
 	if(!/^.[가-힣]{2,}$/.test(nickname.value)){
 		nickname.select();
 		nickname.previousElementSibling.style.color='#E64848';
-		return false;
+		e.preventDefault();
 	}
 	else
 		nickname.previousElementSibling.style.color='#868B94';
@@ -195,7 +193,7 @@ document.memberEnrollFrm.onsubmit = (e) => {
 	if(!/^.\d{10,11}$/.test(phone.value)){
 		phone.select();
 		phone.previousElementSibling.style.color="#E64848"
-		return false;
+			e.preventDefault();
 	}
 	else
 		phone.previousElementSibling.style.color='#868B94';
@@ -206,19 +204,19 @@ document.memberEnrollFrm.onsubmit = (e) => {
 	if(dong.value === '동 선택'){
 		errorMsg.style.color="#E64848";
 		dong.focus();
-		return false;
+		e.preventDefault();
 	}
 	
 	const dongRange = document.querySelector("#dong-range-select");
 	if(dongRange.value === '범위 선택'){
 		errorMsg.style.color="#E64848";
 		dong.focus();
-		return false;
+		e.preventDefault();
 	}
 	
 	return true;
 	
-};
+});
 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

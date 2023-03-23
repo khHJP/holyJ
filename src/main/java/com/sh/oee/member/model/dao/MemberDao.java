@@ -31,6 +31,8 @@ public interface MemberDao {
 
 	int insertMember(Member member);
 	
+	int insertauthority(String memberId);
+	
 	/** 정은 끝 */
 
 	/**
