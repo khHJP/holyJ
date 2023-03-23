@@ -43,6 +43,8 @@ public interface MemberService {
 	
 	
 
+	// 혜진 코드 //
+
 
 //	//혜진 도전,,
 //	List<DongRange> selectDongNearNames(int dongNo);
@@ -51,6 +53,7 @@ public interface MemberService {
 
 
 	// 혜진 코드 //
+
 
 
 
