@@ -16,4 +16,9 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminDao adminDao;
 
+	@Override
+	public List<Member> selectAdminMemberList() {
+		return adminDao.selectAdminMemberList();
+	}
+
 }
