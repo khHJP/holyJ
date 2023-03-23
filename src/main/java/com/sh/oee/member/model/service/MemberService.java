@@ -42,11 +42,6 @@ public interface MemberService {
 	
 	
 	
-<<<<<<< HEAD
-	// 혜진 코드 //
-=======
-
->>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 	String selectDongNearOnly(int dongNo);
 
 	String selectDongNearFar(int dongNo);
