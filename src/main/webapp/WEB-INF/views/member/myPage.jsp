@@ -24,7 +24,7 @@
 				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
 			</td>
 			<td>
-				<span id="nickname">${loginMember.nickname}</span>
+				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
 			<td>
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/myProfile.do'">프로필 보기</button>
@@ -55,13 +55,13 @@
 				<li id="menu">동네생활</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/list.png" alt="" id="mypageimg"/>
-					<a href="${pageContext.request.contextPath}/local/myLocal.do">동네생활 글/댓글</a>
+					<a href="${pageContext.request.contextPath}/member/myLocal.do">동네생활 글/댓글</a>
 				</li>
 				<hr />
 				<li id="menu">같이해요</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/list.png" alt="" id="mypageimg"/>
-					<a href="${pageContext.request.contextPath}/together/myTogether.do">나의 같이해요</a>
+					<a href="${pageContext.request.contextPath}/member/myTogether.do">나의 같이해요</a>
 				</li>
 				<hr />
 				<li id="menu">채팅</li>

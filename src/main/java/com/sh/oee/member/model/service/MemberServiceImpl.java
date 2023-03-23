@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
 	public List<Dong> selectDongList() {
 		return memberDao.selectDongList();
 	}
+
 	
 	@Override
 	public int insertMember(Member member) {
@@ -42,8 +43,23 @@ public class MemberServiceImpl implements MemberService {
 	
 	/** 정은 끝 */
 	
+	/**
+	 * 하나 시작
+	 */
+	@Override
+	public int updateMember(Member member) {
+		return memberDao.updateMember(member);
+	}
+	@Override
+	public int memberDelete(Member member) {
+		// TODO Auto-generated method stub
+		return memberDao.memberDelete(member);
+	}
 
 	
+	/**
+	 * 하나 끝
+	 */
 	
 	
 	
@@ -52,23 +68,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	
-	
-	
-
-	
-	
-	//혜진도전,,0320
-//	@Override
-//	public List<DongRange> selectDongNearNames(int dongNo) {
-//		return memberDao.selectDongNearNames(dongNo);
-//	}
-
-
-
-
-
-
 
 	// 혜진꺼 다시
 	@Override
@@ -87,6 +86,17 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberDao.selectMydongName(dongNo);
 	}
+
+	
+	
+	/*
+	 * //내동네 --- 이거 제껀데욥,,, 일단 주석해뒀습니당 
+	 * 
+	 * @Override public String selectMydongName(int dongNo) { // TODO Auto-generated
+	 * method stub return memberDao.updateMember(member); }
+	 */
+
+	
 
 	
 }
