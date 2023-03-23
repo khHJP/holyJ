@@ -3,7 +3,6 @@ package com.sh.oee.together.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,8 +27,6 @@ public class TogetherController {
 	@Autowired
 	private TogetherService togetherService;
 	
-	@Autowired
-	private ServletContext application;
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -72,6 +68,11 @@ public class TogetherController {
 		
 	}
 	
+	@GetMapping("/togetherDetail.do")
+	public void togetherDetail(@RequestParam int no, Model model) {
+		log.debug("no = {}", no);
+		
+	}
 	
 	/** 정은 끝 👻 */
 	

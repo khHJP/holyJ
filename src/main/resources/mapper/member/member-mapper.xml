@@ -12,7 +12,17 @@
 		where
 			member_id = #{memberId}
 	</select>
-	
+		<update id="updateMember"> 
+		update 
+			member 
+		set 
+			nickname = #{nickname}, 
+			password = #{password}, 
+			phone = #{phone}
+		where 
+			member_id = #{ memberId } 
+		</update>
+		
 	<resultMap type="member" id="memberMap"></resultMap>	
 
 	<!-- 정은 시작 -->
