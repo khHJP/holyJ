@@ -72,7 +72,8 @@ public class MemberController {
 		if (!status.isComplete()) {
 			status.setComplete();
 		}
-
+		return "redirect:/";
+	}
 	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAtrr) {
