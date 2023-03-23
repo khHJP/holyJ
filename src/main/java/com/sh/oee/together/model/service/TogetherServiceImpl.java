@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sh.oee.together.model.dao.TogetherDao;
 import com.sh.oee.together.model.dto.Together;
+import com.sh.oee.together.model.dto.TogetherEntity;
 
 @Service
 public class TogetherServiceImpl implements TogetherService {
@@ -16,7 +17,7 @@ public class TogetherServiceImpl implements TogetherService {
 	private TogetherDao togetherDao;
 
 	@Override
-	public List<Together> selectTogetherList(String writer) {
+	public List<TogetherEntity> selectTogetherList(String writer) {
 		return togetherDao.selectTogetherList(writer);
 	}
 

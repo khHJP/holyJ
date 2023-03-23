@@ -4,16 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.together.model.dao.TogetherDao">
 
-
-	
+		
 	<resultMap type="together" id="togetherMap"></resultMap>	
 
 	
-	
-	
 	<!-- 정은 시작 -->
 	<!-- 동네 범위에 맞는 게시글 찾기 -->
-	<select id="selectTogetherListByDongName" resultMap="togetherMap">
+	<select id="selectTogetherListByDongName" resultMap="togetherDetailMap">
 		select
     		*
 		from
@@ -39,25 +36,29 @@
 			</foreach>
 	</select>
 	
-
+	<resultMap type="together" id="togetherDetailMap">
+		<id column="NO" property="no"/>
+		<result column="WRITER" property="writer"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="JOIN_CNT" property="joinCnt"/>
+		<result column="DATE_TIME" property="dateTime"/>
+		<result column="PLACE" property="place"/>
+		<result column="GENDER" property="gender"/>
+		<result column="AGE" property="age"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="STATUS" property="status"/>
+		<association property="member" javaType="member">
+			<id column="member_id" property="memberId"/>
+		</association>
+		<association property="dong" javaType="dong">
+			<id column="DONG_NO" property="dongNo"/>
+			<result column="DONG_NAME" property="dongName"/>
+		</association>
+	</resultMap>
 	<!-- 정은 끝 -->
 
-
-
-
-
-
-
-
-
-
-<!-- 혜진도전영역입니다.. 0320 -->
-<select id="selectDongNearNames" resultMap="dongRaneMap">
-	select dong_near from dong_range where dong_no = ${dongNo}
-</select>
-
-<resultMap type="dongRange" id="dongRaneMap">
-</resultMap>
 
 
 </mapper>

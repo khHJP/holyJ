@@ -27,13 +27,12 @@
 	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView">
 		<beans:property name="contentType" value="application/json;charset=utf-8"/>
 	</beans:bean>
+	
 	<!-- #13.2. BeanNameViewResolver 빈등록 -->
 	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
 		<!-- 처리순서 1로 높혀서 InternalResourceViewResolver보다 먼저 처리되도록 함. -->
 		<beans:property name="order" value="1"/>
 	</beans:bean>
-	
-	
 	
 	<context:component-scan base-package="com.sh.oee" />
 	
@@ -43,13 +42,21 @@
 			<mapping path="/**"/>
 			<beans:bean class="com.sh.oee.common.interceptor.LoggerInterceptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/member/memberLogin.do"/>
+			<exclude-mapping path="/member/memberEnroll.do"/>
+			<exclude-mapping path="/member/checkIdDuplicate.do"/>
+			<beans:bean class="com.sh.oee.common.interceptor.CookieInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	<!-- #10.1. aop관련 어노테이션 등록설정 -->
 	<!-- #12.1. root-context의 트랜잭션 설정을 servlet-context에도 적용 -->
 	<aop:aspectj-autoproxy/>
 	
-		<!-- #11.1 파일업로드 처리용 MultipartResolver 빈 등록 -->
+	<!-- #11.1 파일업로드 처리용 MultipartResolver 빈 등록 -->
 	<beans:bean 
 		id="multipartResolver" 
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
