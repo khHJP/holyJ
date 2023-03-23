@@ -241,11 +241,11 @@ public class MemberController {
 	 
 	 @PostMapping("/updateProfile.do")
 	 public void updateProfile(HttpServletRequest request, HttpServletResponse response) {
-		
+	 }
 
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성
 	// -------------- 하나 끝 --------------------------------------------
 
-}
+
 }
