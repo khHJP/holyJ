@@ -17,9 +17,10 @@ public interface MemberService {
 	List<Gu> selectGuList();
 	
 	List<Dong> selectDongList();
-
 	
 	int insertMember(Member member);
+	
+	int insertauthority(String memberId);
 
 	/** 정은 끝 */
 	
@@ -45,10 +46,15 @@ String selectMydongName(int dongNo);
 
 
 
+
 //혜진영역 
+
 
 
 
 	
 
 }
+
+
+

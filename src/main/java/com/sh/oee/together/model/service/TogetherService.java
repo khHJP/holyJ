@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.sh.oee.together.model.dto.Together;
+import com.sh.oee.together.model.dto.TogetherEntity;
 
 public interface TogetherService {
 
-	List<Together> selectTogetherList(String writer);
+	List<TogetherEntity> selectTogetherList(String writer);
 
 	List<Map<String,String>> selectTogetherCategory();
 

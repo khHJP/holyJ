@@ -12,10 +12,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(callSuper = true)
 public class Member implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
