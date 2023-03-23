@@ -73,12 +73,14 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
-	
+
+
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {
 		/* return "member/login"; */
 	}
-	
+
+
 	@GetMapping("/memberLogout.do")
 	public String memberLogout(SessionStatus status) {
 		if (!status.isComplete()) {

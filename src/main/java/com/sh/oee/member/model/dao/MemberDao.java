@@ -32,7 +32,6 @@ public interface MemberDao {
 	int insertMember(Member member);
 	
 	/** 정은 끝 */
-	
 
 	/**
 	 * 하나 시작
@@ -53,16 +52,6 @@ public interface MemberDao {
 	
 	
 	
-	
-	
-	
-	
-	
-
-
-
-
-
 
 
 
