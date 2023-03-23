@@ -25,7 +25,7 @@ main#chatWrap {
    max-width: 73rem;
    max-height: 50rem;
    margin: 0 auto;
-   border: 1px solid black;
+   border: 1px solid rgba(0,0,0,.125);
    font-family: 'Noto Sans KR', sans-serif;
  }
 #content {
@@ -68,20 +68,6 @@ main#chatWrap {
 </style>
 
 
-<!-- svg 아이콘태그 start  -->  
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-	<symbol id="craigChatIcon" viewBox="0 0 16 16">
-  		<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-  	</symbol>
-</svg> 
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-	<symbol id="togetherChatIcon" viewBox="0 0 16 16">
-  		<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-	</symbol>
-</svg>
-<!-- svg 아이콘태그 end -->    
-
-
 <main id="chatWrap" class="d-flex flex-nowrap">
   <div id="prof-bar" class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
     <a href="${pageContext.request.contextPath}/member/myPage.do" class="d-block p-3 link-dark text-decoration-none">
@@ -90,12 +76,16 @@ main#chatWrap {
     <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
       <li class="nav-item">
         <a href="#" class="nav-link active py-3 border-bottom rounded-0" data-toggle="tooltip" data-placement="right" aria-label="craigChatList" title="중고거래">
-          <svg id="craigChat" class="bi pe-none" width="24" height="24" role="img" aria-label="craigChatList"><use xlink:href="#craigChatIcon"></use></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" id="craigChat" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart" width="24" height="24" role="img" aria-label="craigChatList">
+          	<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
         </a>
       </li>
       <li class="nav-item">
         <a href="#" class="nav-link py-3 border-bottom rounded-0" data-toggle="tooltip" data-placement="right" aria-label="togetherChatList" title="같이해요">
-          <svg id="togetherChat" class="bi pe-none" width="24" height="24" role="img" aria-label="togetherChatList"><use xlink:href="#togetherChatIcon"></use></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" id="togetherChat" class="bi bi-people-fill" viewBox="0 0 16 16" width="24" height="24" role="img" aria-label="togetherChatList">
+        	<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+          </svg>
         </a>
       </li>
     </ul>
@@ -207,7 +197,7 @@ document.querySelector("#nickname").addEventListener('click', (e) => {
 	
 	const url = `${pageContext.request.contextPath}/chat/chat.do`;
 	const name = "chatroom";
-	const spec = "width=500px; height=630px";
+	const spec = "width=500px, height=790px";
 	open(url, name, spec);
 });
 </script>

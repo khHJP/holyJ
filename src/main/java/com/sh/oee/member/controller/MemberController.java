@@ -94,7 +94,11 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+
 	
+
+
+
 
 	
 	@ResponseBody

@@ -31,20 +31,6 @@ public interface MemberService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 
 	
 // 혜진영역 	
@@ -61,22 +47,6 @@ String selectMydongName(int dongNo);
 
 //혜진영역 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-	
 
 
 	
