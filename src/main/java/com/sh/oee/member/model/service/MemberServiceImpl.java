@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.oee.member.model.dao.MemberDao;
 import com.sh.oee.member.model.dto.Dong;
@@ -13,6 +14,9 @@ import com.sh.oee.member.model.dto.Gu;
 import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 
+import lombok.NonNull;
+
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -37,9 +41,19 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int insertMember(Member member) {
-		return memberDao.insertMember(member);
+		// 회원정보등록
+		int result = memberDao.insertMember(member);
+		// 회원권한등록
+		insertauthority(member.getMemberId());
+		
+		return result;
 	}
 	
+	@Override
+	public int insertauthority(String memberId) {
+		return memberDao.insertauthority(memberId);
+	}
+
 	/** 정은 끝 */
 	
 	

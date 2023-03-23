@@ -29,6 +29,8 @@ public interface MemberDao {
 
 	int insertMember(Member member);
 	
+	int insertauthority(String memberId);
+	
 	/** 정은 끝 */
 	
 	
@@ -45,17 +47,7 @@ public interface MemberDao {
 	
 	
 	
-	
-<<<<<<< HEAD
 
-	/*
-	 * //혜진도전 0320 String[] selectDongNearNames(int dongNo);
-	 */
-=======
-//	//혜진도전 0320
-//	String[] selectDongNearNames(int dongNo);
-
->>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 	
 
 

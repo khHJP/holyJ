@@ -19,6 +19,8 @@ public interface MemberService {
 	List<Dong> selectDongList();
 	
 	int insertMember(Member member);
+	
+	int insertauthority(String memberId);
 
 	/** 정은 끝 */
 	

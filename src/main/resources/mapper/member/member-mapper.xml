@@ -8,14 +8,14 @@
 		select
 			*
 		from
-			member
+		    member
 		where
 			member_id = #{memberId}
 	</select>
 	
 	<resultMap type="member" id="memberMap"></resultMap>	
 
-	
+	<!-- 정은 시작 -->
 	<insert id="insertMember">
 		insert into
 			member
@@ -31,13 +31,20 @@
 			default,
 			default,
 			default,
-			defaul
-		);
+			default
+		)
+	</insert>
+	
+	<insert id="insertauthority">
+		insert into
+			authority
+		values (
+			#{memberId},
+			'ROLE_USER'
+		)
 	</insert>
 
-
-
-
+	<!-- 정은 끝 -->
 
 
 

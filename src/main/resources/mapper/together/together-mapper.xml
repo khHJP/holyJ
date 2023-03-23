@@ -21,7 +21,7 @@
 	
 	<!-- 정은 시작 -->
 	<!-- 동네 범위에 맞는 게시글 찾기 -->
-	<select id="selectTogetherListByDongName" resultMap="togetherMap">
+	<select id="selectTogetherListByDongName" resultMap="togetherDetailMap">
 		select
     		*
 		from
@@ -47,7 +47,27 @@
 			</foreach>
 	</select>
 	
-
+	<resultMap type="together" id="togetherDetailMap">
+		<id column="NO" property="no"/>
+		<result column="WRITER" property="writer"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="JOIN_CNT" property="joinCnt"/>
+		<result column="DATE_TIME" property="dateTime"/>
+		<result column="PLACE" property="place"/>
+		<result column="GENDER" property="gender"/>
+		<result column="AGE" property="age"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="STATUS" property="status"/>
+		<association property="member" javaType="member">
+			<id column="member_id" property="memberId"/>
+		</association>
+		<association property="dong" javaType="dong">
+			<id column="DONG_NO" property="dongNo"/>
+			<result column="DONG_NAME" property="dongName"/>
+		</association>
+	</resultMap>
 	<!-- 정은 끝 -->
 
 

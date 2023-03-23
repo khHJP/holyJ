@@ -51,31 +51,32 @@
 						<div class="together-content">
 							<div class="together-header">
 								<c:if test="${together.status eq 'Y'}">
-									<span>모집중</span>
+									<span class="status">모집중</span>
 								</c:if>
 								<c:if test="${together.status eq 'N'}">
-									<span>모집완료</span>
+									<span class="to-status">모집완료</span>
 								</c:if>
-								<span>${category[together.categoryNo - 1].CATEGORY_NAME}</span>
+								<span class="to-category">${category[together.categoryNo - 1].CATEGORY_NAME}</span>
+								<span class="to-dong">${together.dong.dongName}</span>
 							</div>
 							<div class="together-body">
 								<h4>${together.title}</h4>
 								<!-- 나이 선택 -->
 								<c:if test="${together.gender eq 'A'}">
-									<span>성별무관</span>
+									<span class="to-gender">성별무관</span>
 								</c:if>
 								<c:if test="${together.gender eq 'F'}">
-									<span>여성</span>
+									<span class="to-gender">여성</span>
 								</c:if>
 								<c:if test="${together.gender eq 'M'}">
-									<span>남성</span>
+									<span class="to-gender">남성</span>
 								</c:if>
 								<!-- 나이 선택 -->
 								<c:if test="${together.age eq '100'}">
-									<span>나이무관</span>
+									<span class="to-age">나이무관</span>
 								</c:if>
 								<c:if test="${together.age ne '100'}">
-									<span>${together.age}대이상</span>
+									<span class="to-age">${together.age}대이상</span>
 								</c:if>
 								<!-- 날짜 (형식 바꿔야함) -->
 								<p>${together.dateTime}</p>

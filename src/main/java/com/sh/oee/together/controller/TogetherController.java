@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sh.oee.together.model.dto.Together;
+import com.sh.oee.together.model.dto.TogetherEntity;
 import com.sh.oee.together.model.service.TogetherService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class TogetherController {
 	public void together(@RequestParam String writer, Model model) {
 		log.debug("writer = {}", writer);
 		
-		List<Together> Together = togetherService.selectTogetherList(writer);
+		List<TogetherEntity> Together = togetherService.selectTogetherList(writer);
 		
 		log.debug("Together = {}",Together);
 		
@@ -49,8 +50,12 @@ public class TogetherController {
 	//-------------- 하나 끝 ------------------------------------------
 	
 	
+	/** 정은 시작 👻 */
+	
 	/**
-	 * 정은 시작 👻
+	 * 같이해요 목록조회
+	 * @param session
+	 * @param model
 	 */
 	@GetMapping("/togetherList.do")
 	public void togetherList(HttpSession session, Model model) {
@@ -60,6 +65,7 @@ public class TogetherController {
 		
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		List<Together> togetherList = togetherService.selectTogetherListByDongName(myDongList);
+		log.debug("togetherList = {}", togetherList);
 		
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("togetherList", togetherList);
@@ -67,8 +73,6 @@ public class TogetherController {
 	}
 	
 	
-	/**
-	 * 정은 끝 👻
-	 */
+	/** 정은 끝 👻 */
 	
 }
