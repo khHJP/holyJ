@@ -61,7 +61,7 @@ window.addEventListener('load', (e) => {
 						<a href="${pageContext.request.contextPath}/local/localList.do" class="title nav-link">동네생활</a>
 					</li>
 					<li id="list">
-						<a href="#" class="title nav-link">같이해요</a>
+						<a href="${pageContext.request.contextPath}/together/togetherList.do" class="title nav-link">같이해요</a>
 					</li>
 				</ul>
 			</div>
@@ -96,7 +96,7 @@ window.addEventListener('load', (e) => {
 						</sec:authorize>
 						
 						<form:form class="my-select" action="${pageContext.request.contextPath}/member/memberLogout.do" method="post">
-							<button class="subtitle" type="submit">
+							<button class="subtitle" type="submit" style="z-index: 111">
 								로그아웃
 							</button>
 						</form:form>

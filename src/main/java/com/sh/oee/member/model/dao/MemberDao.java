@@ -3,10 +3,12 @@ package com.sh.oee.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Gu;
@@ -24,27 +26,36 @@ public interface MemberDao {
 	
 	@Select("select * from dong")
 	List<Dong> selectDongList();
+	
+	String getMyLocalByMember(Member loginMember);
 
+	int insertMember(Member member);
+	
 	/** 정은 끝 */
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//혜진도전 0320
-	String[] selectDongNearNames(int dongNo);
+	/**
+	 * 하나 시작
+	 */
+	int updateMember(Member member);
+	@Update("UPDATE member SET delete_date = sysdate WHERE member_id = #{ memberId }")
+	int memberDelete(Member member);
+	/**
+	 * 하나 끝
+	 */
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 
@@ -60,6 +71,7 @@ public interface MemberDao {
 
 		
 	List<DongRange> selectDongNearNames(int dongNo);
+	/**혜진도전 0320 **/
 
 	String selectDongNearOnly(int dongNo);
 

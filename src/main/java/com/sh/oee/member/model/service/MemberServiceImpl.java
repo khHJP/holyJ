@@ -34,55 +34,60 @@ public class MemberServiceImpl implements MemberService {
 	public List<Dong> selectDongList() {
 		return memberDao.selectDongList();
 	}
+
+	
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
+	}
 	
 	/** 정은 끝 */
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//혜진도전,,0320
+	/**
+	 * 하나 시작
+	 */
 	@Override
-	public List<DongRange> selectDongNearNames(int dongNo) {
-		return memberDao.selectDongNearNames(dongNo);
+	public int updateMember(Member member) {
+		return memberDao.updateMember(member);
+	}
+	@Override
+	public int memberDelete(Member member) {
+		// TODO Auto-generated method stub
+		return memberDao.memberDelete(member);
 	}
 
+	
+	/**
+	 * 하나 끝
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
 
-
-
-
-
-
-
-
-	//다시
+	// 혜진꺼 다시
 	@Override
 	public String selectDongNearOnly(int dongNo) {
 		return memberDao.selectDongNearOnly(dongNo);
 	}
 
-	@Override
-	public String selectDongNearFar(int dongNo) {
-		return memberDao.selectDongNearFar(dongNo);
-	}
+//	@Override
+//	public String selectDongNearFar(int dongNo) {
+//		return memberDao.selectDongNearFar(dongNo);
+//	}
 
 	//내동네
-	@Override
-	public String selectMydongName(int dongNo) {
-		// TODO Auto-generated method stub
-		return memberDao.selectMydongName(dongNo);
-	}
+//	@Override
+//	public String selectMydongName(int dongNo) {
+//		// TODO Auto-generated method stub
+//		return memberDao.updateMember(member);
+//	}
+
+	
+
 	
 }

@@ -12,11 +12,38 @@
 		where
 			member_id = #{memberId}
 	</select>
-	
+		<update id="updateMember"> 
+		update 
+			member 
+		set 
+			nickname = #{nickname}, 
+			password = #{password}, 
+			phone = #{phone}
+		where 
+			member_id = #{ memberId } 
+		</update>
+		
 	<resultMap type="member" id="memberMap"></resultMap>	
 
-
-
+	
+	<insert id="insertMember">
+		insert into
+			member
+		values (
+			#{memberId},
+			#{password},
+			#{nickname},
+			#{phone},
+			default,
+			default,
+			#{dongNo},
+			#{dongRange},
+			default,
+			default,
+			default,
+			defaul
+		);
+	</insert>
 
 
 
