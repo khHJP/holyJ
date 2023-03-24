@@ -23,6 +23,10 @@
 		<intercept-url pattern="/member/memberEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/member/checkIdDuplicate.do" access="isAnonymous()"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<!-- 🐹 효정 03/24 stomp endoint 추가 🐹-->
+		<intercept-url pattern="/stomp/**" access="permitAll"/>
+		<intercept-url pattern="/chat/**" access="permitAll"/>
+		<!-- 🐹 ********* 효정 end ********* 🐹-->
 		<!-- 모든 url에 접근하려면 인증 받아야함 -->
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
