@@ -16,5 +16,7 @@ public interface TogetherService {
 
 	List<Together> selectTogetherListByDongName(List<String> myDongList);
 
+	Together selectTogetherByNo(int no);
+
 
 }
