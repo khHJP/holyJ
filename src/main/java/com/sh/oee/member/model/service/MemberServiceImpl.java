@@ -99,6 +99,19 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMydongName(dongNo);
 	}
 
+
+	
+	
+	/*
+	 * //내동네 --- 이거 제껀데욥,,, 일단 주석해뒀습니당 
+	 * 
+	 * @Override public String selectMydongName(int dongNo) { // TODO Auto-generated
+	 * method stub return memberDao.updateMember(member); }
+	 */
+
+	
+
+
 }
 
 // 혜진끝 - 90번쨰줄

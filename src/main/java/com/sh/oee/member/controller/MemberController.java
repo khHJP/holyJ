@@ -67,6 +67,10 @@ public class MemberController {
 		model.addAttribute("dongList", dongList);
 	}
 
+
+
+	
+
 	
 	/**
 	 * 회원가입 정보 DB에 저장
@@ -74,6 +78,7 @@ public class MemberController {
 	 * @param redirectAtrr
 	 * @return
 	 */
+
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAtrr) {
 		log.debug("member = {}", member);
@@ -90,6 +95,7 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+
 	
 	/**
 	 * 로그인 폼 불러오기
@@ -98,6 +104,9 @@ public class MemberController {
 	public void memberLogin() {
 		/* return "member/login"; */
 	}
+
+
+
 
 	/**
 	 * 로그아웃
@@ -112,6 +121,7 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+
 	
 	/**
 	 * 아이디 중복체크 (비동기)

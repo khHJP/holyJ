@@ -11,10 +11,40 @@
 <resultMap type="local" id="localMap">
 </resultMap>
 
+
+
 <!-- insertLocal -->
 <insert id="insertLocalBoard">
-	insert into local(no, category_no, writer, title, content, reg_date, hits)
-		values(seq_local_no.nextval, #{categoryNo}, #{writer}, #{title}, #{content}, default, default)
-
+	insert into 
+		local(no, category_no, writer, title, content, reg_date, hits)
+	values(
+		seq_local_no.nextval, 
+		#{categoryNo}, 
+		#{writer}, 
+		#{title}, 
+		#{content}, 
+		default, 
+		default
+	)
+	<selectKey order="AFTER" resultType="_int" keyProperty="no">
+		select 
+			seq_local_no.currval 
+		from 
+			dual
+	</selectKey>
 </insert>
+
+<insert id="insertLocalAttachment">
+	insert into 
+		local_Attachment 
+	values(
+		seq_local_attach_no.nextval, 
+		#{localNo}, 
+		#{originalFilename}, 
+		#{reFilename}, 
+		default
+	)
+</insert>
+
+
 </mapper>

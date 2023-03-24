@@ -35,6 +35,7 @@ public interface MemberDao {
 	
 	/** 정은 끝 */
 
+
 	/**
 	 * 하나 시작
 	 */
@@ -45,6 +46,7 @@ public interface MemberDao {
 	 * 하나 끝
 	 */
 
+
 	
 	
 	
@@ -54,12 +56,33 @@ public interface MemberDao {
 	
 	
 	
+
+	
+	
+	
+	
+	
+
+
+//	//혜진도전 0320
+//	String[] selectDongNearNames(int dongNo);
+
+
+
+	
+
+
+
+
+
+
 
 
 
 
 /**혜진도전 0320 -- 70번쨰줄 시작 **/
 	List<DongRange> selectDongNearNames(int dongNo);
+
 
 	String selectDongNearOnly(int dongNo);
 

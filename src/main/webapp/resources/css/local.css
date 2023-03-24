@@ -47,5 +47,14 @@ li#localcate{
 	padding:2px;
 }
 
-/* localList */
-
+/* localEnroll */
+.localEnrollContainer{
+	margin:auto;
+	text-align:center;
+	padding-left:250px;
+}
+input{
+	
+	text-align:center;
+	margin-left:250px;s
+}
