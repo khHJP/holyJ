@@ -12,5 +12,10 @@ public class ChatServiceImpl implements ChatService {
 
 	@Autowired
 	private ChatDao chatDao;
+
+	@Override // 로그인한 사용자 id, 중고거래 게시글no로 chatroomId 찾기
+	public String findCraigChatroomId(String memberId, int craigNo) {
+		return chatDao.findCraigChatroomId(memberId, craigNo);
+	}
 	
 }

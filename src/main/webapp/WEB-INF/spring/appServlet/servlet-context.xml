@@ -4,7 +4,9 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
@@ -78,4 +80,11 @@
 		</beans:property>
 	</beans:bean>
 	
+	<!-- 🐹 #15.1. stomp endpoint 등록  03/24 효정 추가 🐹-->
+	<websocket:message-broker application-destination-prefix="/app"> <!-- messageHandler  -->
+		<websocket:stomp-endpoint path="/stomp"> 			<!-- stomp 엔드포인트 (header.jsp)  -->
+			<websocket:sockjs/> 							<!-- sockjs 등록 -->
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/topic, /app"/> 	<!-- simplebroker가 처리할 prefix  -->
+	</websocket:message-broker>
 </beans:beans>
