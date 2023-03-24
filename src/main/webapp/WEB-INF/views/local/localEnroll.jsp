@@ -8,7 +8,7 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/local.css" >
 </head>
-<h2>동네생활 글쓰기</h2>
+<h5>동네생활 글쓰기</h5>
 <div id="localEnrollConatainer">
 	<form id="localEnrollFrm" method="post" enctype="multipart/form-data" name="localEnrollFrm"
 	action="${pageContext.request.contextPath}/local/localBoardEnroll.do">
@@ -16,11 +16,18 @@
 		<table>
 		<!--부트스트랩 쓸 것-->
 			<tr>
-				<ul class="category-dropdown">
-				<c:forEach items="${localCategory}" var="category">
-					<li data-no="${category.no}"}><a class="category-item" href="#">${category.CATEGORY_NAME}</a></li>
-				</c:forEach>
-				</ul>
+				<!-- 카테고리 -->
+				<div class="btn-group">
+				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				   카테고리
+				  </button>
+				  <ul class="dropdown-menu" role="menu">
+				  <c:forEach items="${localCategory}" var="category">
+				    <li data-no="${category.no}">${category.CATEGORY_NAME}</li>
+				  </c:forEach>
+				   
+				  </ul>
+				</div>
 			</tr>
 			<tr>
 				<td><input type="text" class="localTitle" placeholder="제목" name="title" id="title" required></td>
@@ -48,18 +55,17 @@
 </div>
 <script>
 //카테고리
-document.querySelectorAll("input[data-no]").forEach( (input)=>{
-	
-	input.addEventListener('click', (e) => {
-		
-		const no = input.dataset.no;
-		console.log( "no", no );
 
-		const optionValue = input.value;
-		console.log( "inputValue", inputValue );	
-				
+document.querySelectorAll("tr[data-no]").forEach( (tr)=>{
+	tr.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log( tr );
+		
+		const no = tr.dataset.no;
+		console.log( no );
 	})
 })
+
 
 //유효성 검사
 
