@@ -1,0 +1,247 @@
+@charset "UTF-8";
+
+/* togetherList */
+.together-list-container, .together-container {
+    width: 1050px;
+	min-height: 1000px;
+    margin: 0 auto;
+    margin-top: 60px;
+}
+.together-list-wrap {
+    margin: 0 auto;
+    width: 900px;
+    display: flex;
+    justify-content: space-between;
+}
+.category-nav {
+	text-align: center;
+}
+.category-img {
+    border-radius: 2rem;
+    display: flex;
+    width: 65px;
+    height: 65px;
+    align-items: center;
+    background-color: #F2F3F6;
+    justify-content: center;
+}
+.category-img img {
+    height: 45px;
+}
+.category-name p {
+	margin: 0;
+    margin-top: 10px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.etc-wrap {
+	display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    border-top: 1px solid #868B94;
+    padding-top: 20px;
+}
+.together-content-wrap {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.together-content-wrap table {
+	width: 100%;
+}
+.together-content {
+    width: 500px;
+    height: 200px;
+    padding: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    border-bottom: 1px solid #868B94;
+    /* border: 1px solid RGB(192, 195, 199); */
+    /* border-radius: 0.5rem; */
+    transition-duration: 0.6s;
+}
+.together-content:hover {
+	cursor: pointer;
+	border-radius: 5px;
+	background-color: #F2F3F6;
+	transition-duration: 0.6s;
+}
+.together-header {
+    padding: 10px 16px 2px;
+}   
+.together-header span, .to-datetime {
+    font-size: 0.9rem;
+}
+.to-status {
+    color: #56C271;
+    font-weight: 700;
+}
+.to-category, .to-dong {
+	color: #868B94;
+}
+.together-body {
+	padding: 4px 14px;
+}
+.together-body h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+.to-required, .to-cnt, .to-time {
+    margin-bottom: 0.45rem;
+}
+.to-required span{
+    font-size: 0.88rem;
+}
+.to-time {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.to-time i {
+    margin-right: 4px;
+}
+.to-gender, .to-datetime {
+	margin: 0;
+	margin-left: 7px;
+}
+
+/* togetherDetail */
+p {
+	margin: 0
+}
+.together-wrap {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.writer-info-box {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0px;
+    border-bottom: 1px solid RGB(237, 238, 240);
+}
+.writer-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profile-box img {
+    width: 70px;
+    height: auto;
+}
+.manner-box p {
+	margin: 0;
+    text-align: right;
+    font-size: 15px;
+    color: #868B94;
+}
+.temperature span, .temperature i {
+    font-size: 23px;
+    font-weight: 600;
+}
+.bi-thermometer-low {
+	color: #3AB0FF;
+}
+.bi-thermometer-half {
+	color: #56C271;
+}
+.bi-thermometer-high {
+	color: #F94C66;
+}
+.detail-box {
+	height: 58px;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.detail-box p:first-of-type {
+    font-weight: 700;
+    font-size: 19px;
+}
+.category-box, .header-box {
+	margin: 20px 0;
+}
+.category-box span{
+    color: #4D5159;
+    background-color: #F2F3F6;
+    padding: 6px 8px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.category-box i {
+	margin-right: 3px;
+    cursor: pointer;
+}
+.header-box {
+    display: flex;
+    justify-content: space-between;
+}
+.info-box {
+	display: flex;
+}
+.status-box h2, .title-box h2 {
+	margin-right: 10px;
+}
+.ing {
+    color: #56C271;
+}
+.end {
+	color: #868B94;
+}
+.choose-box {
+	position: relative;
+}
+.bi-three-dots-vertical {
+    font-size: 30px;
+    cursor: pointer;
+}
+.choose {
+    width: 90px;
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+    right: 0;
+	visibility: hidden;
+}
+.choose button {
+    border: 1px solid RGB(237, 238, 240);
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 2px;
+}
+.open {
+	visibility: visible;
+}
+.content-box, .content-detail-box {
+	margin: 38px 0;
+}
+.content-box {
+	position: relative;
+}
+.info {
+    display: flex;
+    margin: 15px 0;
+    font-size: 18px;
+}
+.info i {
+	margin-right: 10px;
+}
+.modify-box {
+	position: absolute;
+	right: 0;
+	bottom: -20px;
+}
+.btn:focus {
+	outline: 0;
+    box-shadow: 0 0 0 0 rgba(0,123,255,.25);
+}
+.join {
+    color: #F2F3F6;
+    background-color: #7FB77E;
+}
+.join:hover {
+	background-color: #7AA874;
+}
+.content-detail-box p {
+	font-size: 18px;
+}

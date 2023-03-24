@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sh.oee.common.OeeUtils;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.dto.TogetherEntity;
@@ -59,23 +60,50 @@ public class TogetherController {
 	 */
 	@GetMapping("/togetherList.do")
 	public void togetherList(HttpSession session, Model model) {
-		// 나의 동네 범위
+		// 나의 동네범위 꺼내기
 		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
 		log.debug("myDongList ={}", myDongList);
 		
+		// 업무로직
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		List<Together> togetherList = togetherService.selectTogetherListByDongName(myDongList);
 		log.debug("togetherList = {}", togetherList);
 		
+		// view 전달
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("togetherList", togetherList);
 		
 	}
 	
+	/**
+	 * 같이해요 상세조회
+	 * @param no
+	 * @param model
+	 */
 	@GetMapping("/togetherDetail.do")
-	public void togetherDetail(@RequestParam int no, Model model) {
+	public void togetherDetail(@RequestParam String category, @RequestParam int no, Model model) {
 		log.debug("no = {}", no);
 		
+		// 업무로직
+		Together together = togetherService.selectTogetherByNo(no);
+		log.debug("together = {}", together);
+		
+		// 개행, 자바스크립트 코드 방어
+		together.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(together.getContent())));
+		
+		// view 전달
+		model.addAttribute("together", together);
+		model.addAttribute("category", category);
+		
+	}
+	
+	@GetMapping("/togetherEnroll.do")
+	public void togetherEnroll(Model model) {	
+		// 업무로직
+		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
+		
+		// view 전달
+		model.addAttribute("categorys", categorys);
 	}
 	
 	/** 정은 끝 👻 */
