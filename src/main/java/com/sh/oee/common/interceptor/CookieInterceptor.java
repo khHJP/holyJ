@@ -20,7 +20,7 @@ public class CookieInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		log.debug("쿠키 불러오기 했음..?");
+	//	log.debug("쿠키 불러오기 했음..?");
 		
 		HttpSession session = request.getSession();
 		
@@ -30,9 +30,9 @@ public class CookieInterceptor implements HandlerInterceptor {
 	                if (cookie.getName().equals("myDongList")) {
 	                	String dongListStr = cookie.getValue(); // 쿠키값 스트링으로 변경
 	                	String dongList = URLDecoder.decode(dongListStr);
-	                	log.debug("dongList = {}", dongList);
+	//                	log.debug("dongList = {}", dongList);
 	                    List<String> myDongList = Arrays.asList(dongList.split(":"));
-	                    log.debug("myDongList = {}", myDongList);
+	//                  log.debug("myDongList = {}", myDongList);
 	                    request.getSession().setAttribute("myDongList", myDongList);
 	                    break;
 	                }

@@ -19,7 +19,7 @@
 		<br />
 		<div class="search-container">
 			<form:form action="${pageContext.request.contextPath}/notice/insertKeyword.do?${_csrf.parameterName}=${_csrf.token}" method="post">
-                        <input type="text" class="keyword" id="search" name="noticeKeyword" placeholder="키워드를 입력해주세요.(예:자전거)" required/>
+                        <input type="text" class="keyword" id="search" name="keyword" placeholder="키워드를 입력해주세요.(예:자전거)" required/>
                     <button id="search-btn" type="submit">
                         <img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
                     </button>
