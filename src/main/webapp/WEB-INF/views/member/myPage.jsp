@@ -67,7 +67,7 @@
 				<li id="menu">채팅</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/chat.png" alt="" id="mypageimg"/>
-					<a href="">채팅방</a>
+					<a href="${pageContext.request.contextPath}/chat/chatList.do">채팅방</a>
 				</li>
 			</ul>
 		</div>

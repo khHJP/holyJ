@@ -45,6 +45,19 @@ window.addEventListener('load', (e) => {
 	alert('${msg}');
 	</script>
 </c:if>
+<!-- 🐹 효정 03/24 로그인시 websocket연결 start 🐹 -->
+<sec:authorize access="isAuthenticated()">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+	const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
+	const stompClient = Stomp.over(ws);
+	stompClient.connect({}, (frame) => {
+		console.log("연결 성공!", frame); 
+	});
+	</script>
+</sec:authorize>
+<!-- 🐹 효정 03/24 로그인시 websocket연결 end 🐹 -->
 </head>
 <body>
 <div id="container">

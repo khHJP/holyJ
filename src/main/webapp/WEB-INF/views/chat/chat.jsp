@@ -15,9 +15,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chat/chatroom.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-
-</style>
+<!-- sockjs 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- StompJs 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 /* 채팅방 메뉴버튼 토글  */
@@ -31,6 +32,30 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
 });
+
+/* 구독 */
+setTimeout(() => {
+	
+	// lastCheck();
+	
+	// /app/chat 메시지 수신시 처리 핸들러
+	stompClient.subscribe(`/app/chat/${chatroomId}`, (message) => {
+		
+	});
+	
+}, 500); //connect 이후 실행처리
+
+/* 메시지 전송처리 - 전송버튼 클릭이벤트 */
+const chatroomId = '${chatroomId}'; // 채팅방번호
+
+document.querySelector("#sendBtn").addEventListener("click", (e) => {
+	// 메시지 읽어오기
+	const msg = document.querySelector("#msg");
+	if(!msg.value) return; // 메시지 없을시 return 
+	console.log(msg);
+	
+});
+
 </script>
 
 </head>
@@ -74,7 +99,7 @@ $(document).ready(function(){
 		<!-- 게시글정보 end -->
 		
 		<!-- 채팅방 메시지내용 start  -->
-		<div id="message-container" class="messages scrollarea" style="overflow-y: scroll; height: 600px;">
+		<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
 			<ul class="list-unstyled">
 				<li class="sent">
 					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="">
@@ -128,9 +153,9 @@ $(document).ready(function(){
 		<!-- 채팅방 메시지내용 end  -->
 		<div class="message-input">
 			<div class="wrap">
-			<input type="text" placeholder="메시지 보내기">
+			<input type="text" id="msg"  placeholder="메시지 보내기">
 			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-			<button class="submit">
+			<button id="sendBtn" type="button">
 			<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
   				<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
 			</svg>

@@ -1,9 +1,5 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
-article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
-    display: flex;
-}
-
 
 body {
     margin: 0;
@@ -17,8 +13,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
+footer{
+	display: flex;
+}
 .chat{
 	margin-top: auto;
 	margin-bottom: auto; 
@@ -169,7 +170,7 @@ body {
 /* 채팅방 하단 메시지입력바  */
 .message-input {
 	position: absolute;
-	bottom: 0;
+	bottom: -36px;
 	width: 100%;
 	z-index: 99;	
 	background: white;
@@ -184,7 +185,7 @@ body {
     float: left;
     border: none;
     width: calc(100% - 90px);
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: #32465a;
 	outline: none;
 }
@@ -214,12 +215,11 @@ input, button, select, textarea{
 	cursor: pointer;
 }
 
-body .chat {
-	height: 100%;
-	overflow: hidden;
-}
 
 /* 메시지영역  */
+#message-container {
+	height: 550px;
+}
 .card .messages {
 	height: auto;
 	min-height: calc(100% - 140px);
@@ -245,6 +245,11 @@ body .chat {
     list-style: none;
     position: relative;
 }
+
+.card .messages ul :last-child { /* 마지막메시지 하단 여백주기 */
+	padding-bottom: 20px;
+}
+
 
 /* 프로필이미지 */
 .card .messages ul li img {
@@ -287,6 +292,7 @@ body .chat {
 .messages ul li.replies p {
 	background: #7FB77E;
 	float: right;
+	color: white;
 }
 .messages ul li.replies .msg_time{
     position: relative;

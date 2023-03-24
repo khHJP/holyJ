@@ -23,7 +23,9 @@
 
 main#chatWrap {
    max-width: 73rem;
+   mam-width: 73rem;
    max-height: 50rem;
+   min-height: 50rem;
    margin: 0 auto;
    border: 1px solid rgba(0,0,0,.125);
    font-family: 'Noto Sans KR', sans-serif;
@@ -42,7 +44,7 @@ main#chatWrap {
 	height: 72px;
 }
 #chatList > div#nickname > span {
-	font-size: 17px;
+	font-size: 20px;
 	font-weight: bold;
 }
 
@@ -64,6 +66,22 @@ main#chatWrap {
 
 #chatLog {
 	width: 715px;
+}
+
+/* 채팅목록 */
+#chatList {
+
+}
+#chatList-wrap img{
+	width: 40px;
+	border-radius:50%;
+	float: left;
+}
+.chatList-header {
+	margin-right: 150px;
+}
+.col-10 {
+	max-width: 100%;	
 }
 </style>
 
@@ -96,14 +114,23 @@ main#chatWrap {
     <div id="nickname" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
       <span>닉네임</span>
     </div>
+    <!-- 채팅목록 start  -->
     <div class="list-group list-group-flush border-bottom scrollarea">
-      <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small>Wed</small>
+      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+        <div id="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+        	 <img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지"/>
+        	<div class="chatList-header">
+        		       <strong class="mb-1">당근당근</strong>
+			          <small>역삼동</small>
+			          <small>시간</small>
+		        <div class="last-chatting small">마지막채팅내용</div>
+        	
+        	</div>
+   
+        
         </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
       </a>
+      
       <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
         <div class="d-flex w-100 align-items-center justify-content-between">
           <strong class="mb-1">List group item heading</strong>
@@ -139,41 +166,7 @@ main#chatWrap {
         </div>
         <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
       </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small class="text-muted">Tues</small>
-        </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small class="text-muted">Mon</small>
-        </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small class="text-muted">Wed</small>
-        </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small class="text-muted">Tues</small>
-        </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">List group item heading</strong>
-          <small class="text-muted">Mon</small>
-        </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-      </a>
+     
     </div>
   </div>
   
@@ -197,7 +190,7 @@ document.querySelector("#nickname").addEventListener('click', (e) => {
 	
 	const url = `${pageContext.request.contextPath}/chat/chat.do`;
 	const name = "chatroom";
-	const spec = "width=500px, height=790px";
+	const spec = "width=500px, height=790px, scrollbars=yes";
 	open(url, name, spec);
 });
 </script>
