@@ -32,6 +32,11 @@ public class TogetherServiceImpl implements TogetherService {
 		return togetherDao.selectTogetherListByDongName(myDongList);
 	}
 
+	@Override
+	public Together selectTogetherByNo(int no) {
+		return togetherDao.selectTogetherByNo(no);
+	}
+
 
 	
 }

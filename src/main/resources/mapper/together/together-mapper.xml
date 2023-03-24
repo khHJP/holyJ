@@ -44,6 +44,34 @@
     		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
 				#{dongName}
 			</foreach>
+		order by 
+			reg_date desc
+	</select>
+	
+	<!-- 같이해요 한건 조회 -->
+	<select id="selectTogetherByNo" resultMap="togetherDetailMap">
+		select
+		    t.*,
+		    (select nickname from member where member_id = t.writer) nickname,
+		    (select manner from member where member_id = t.writer) manner,
+		    (select profile_img from member where member_id = t.writer) profile_img
+		from
+			(
+		    select
+		        t.*,
+		        (
+		        select 
+		            dong_name 
+		        from 
+		            member m right join dong d
+		                on m.dong_no = d.dong_no
+		        where member_id = t.writer
+		        ) dong_name
+		from
+		    together t
+		    ) t
+		where
+		    no = #{no}
 	</select>
 	
 	<resultMap type="together" id="togetherDetailMap">
@@ -60,13 +88,17 @@
 		<result column="REG_DATE" property="regDate"/>
 		<result column="STATUS" property="status"/>
 		<association property="member" javaType="member">
-			<id column="member_id" property="memberId"/>
+			<id column="MEMBER_ID" property="memberId"/>
+			<result column="NICKNAME" property="nickname"/>
+			<result column="MANNER" property="manner"/>
+			<result column="PROFILE_IMG" property="profileImg"/>
 		</association>
 		<association property="dong" javaType="dong">
 			<id column="DONG_NO" property="dongNo"/>
 			<result column="DONG_NAME" property="dongName"/>
 		</association>
 	</resultMap>
+	
 	<!-- 정은 끝 -->
 
 

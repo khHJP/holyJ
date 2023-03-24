@@ -8,7 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="같이해요" name="title"/>
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together/together.css" />
 <div class="together-list-container">
 	<div class="together-list-wrap">
 		<div class="category-nav">
@@ -35,7 +35,7 @@
   			<label for="checked-box">모집중인 글만 보기</label>
 		</div>
 		<div class="enroll-box">
-			<button class="btn">글쓰기</button>
+			<button class="btn enroll">글쓰기</button>
 		</div>
 	</div><!-- end etc-box -->
 	<div class="together-content-wrap">
@@ -47,16 +47,18 @@
 					<c:if test="${vs.index % 2 == 0}">
 						<tr class="to-table-tr">
 					</c:if>
-					<td class="together-view" data-no="${together.no}">
+					<td class="together-view" data-no="${together.no}" data-category="${category[together.categoryNo - 1].CATEGORY_NAME}">
 						<div class="together-content">
 							<div class="together-header">
 								<c:if test="${together.status eq 'Y'}">
-									<span class="to-status">모집중</span>&middot;
+									<span class="to-status ing">모집중</span>
 								</c:if>
 								<c:if test="${together.status eq 'N'}">
-									<span class="to-status">모집완료</span>&middot;
+									<span class="to-status end">모집완료</span>
 								</c:if>
-								<span class="to-category">${category[together.categoryNo - 1].CATEGORY_NAME}</span>&middot;
+								&nbsp;&middot;&nbsp;
+								<span class="to-category">${category[together.categoryNo - 1].CATEGORY_NAME}</span>
+								&nbsp;&middot;&nbsp;
 								<span class="to-dong">${together.dong.dongName}</span>
 							</div>
 							<div class="together-body">
@@ -65,14 +67,15 @@
 								<div class="to-required">
 									<i class="bi bi-people-fill"></i>
 									<c:if test="${together.gender eq 'A'}">
-										<span class="to-gender">성별무관</span>&middot;
+										<span class="to-gender">성별무관</span>
 									</c:if>
 									<c:if test="${together.gender eq 'F'}">
-										<span class="to-gender">여성</span>&middot;
+										<span class="to-gender">여성</span>
 									</c:if>
 									<c:if test="${together.gender eq 'M'}">
-										<span class="to-gender">남성</span>&middot;
+										<span class="to-gender">남성</span>
 									</c:if>
+									&nbsp;&middot;&nbsp;
 									<!-- 나이 선택 -->
 									<c:if test="${together.age eq '100'}">
 										<span class="to-age">나이무관</span>
@@ -88,8 +91,8 @@
 								</div>
 								<!-- 채팅 후 다시 작성 -->
 								<div class="to-cnt">
-									<i class="bi bi-emoji-sunglasses"></i>
-									<i class="bi bi-emoji-sunglasses"></i>
+									<i class="bi bi-person-circle"></i>
+									<i class="bi bi-person-circle"></i>
 									<span>2/4명</span>
 								</div>
 							</div>
@@ -103,15 +106,20 @@
 		</table>
 	</div>
 </div>
-
 <script>
 /* 같이해요 상세페이지 이동 */
 document.querySelectorAll(".together-view").forEach((together) => {
 	together.addEventListener('click', (e) => {
 		const no = together.dataset.no; // 버블링 잊지말자!
-		console.log(no);
-		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?no=' + no;
+		const category = together.dataset.category;
+		console.log(no, category);
+		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?category=' + category + "&no=" + no;
 	});
+});
+
+/* 글쓰기 폼 이동 */
+document.querySelector(".enroll").addEventListener('click', (e) => {
+	location.href = '${pageContext.request.contextPath}/together/togetherEnroll.do';
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

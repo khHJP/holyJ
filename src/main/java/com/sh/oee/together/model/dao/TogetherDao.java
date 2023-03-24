@@ -23,4 +23,6 @@ public interface TogetherDao {
 
 	List<Together> selectTogetherListByDongName(List<String> myDongList);
 
+	Together selectTogetherByNo(int no);
+
 }
