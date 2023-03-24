@@ -3,20 +3,36 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.notice.model.dao.NoticeDao">
-
-<!-- <insert id="keywordInsert">
-	insert into
+	<!-- 하나 시작 -->
+	<insert id="insertKeyword">
+		insert into
+			notice_keyword
+		values(
+			seq_keyword_no.nextval, 
+			#{memberId},
+			#{keyword},
+			default
+		)
+	</insert>
+	<delete id="deleteKeyword">
+		delete from
+			notice_keyword
+		where
+			no = #{no}
+	
+	</delete>
+	<select id="selectKeywordList" resultMap="noticeKeywordMap">
+	select
+		*
+	from
 		notice_keyword
-	values(
-		seq_notice_keyword_no.nextval, 
-		#{memberId},
-		#{keyword},
-		default
-	)
-</insert> -->
-
+	where
+		member_id = #{memberId}
+	</select>
+	<!-- 하나 끝 -->
 	
 <resultMap type="notice" id="noticeMap"></resultMap>	
+<resultMap type="noticeKeyword" id="noticeKeywordMap"></resultMap>	
 
 
 

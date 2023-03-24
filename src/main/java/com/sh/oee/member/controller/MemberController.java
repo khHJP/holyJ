@@ -1,5 +1,6 @@
 package com.sh.oee.member.controller;
 
+
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,11 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -133,6 +131,8 @@ public class MemberController {
 		return map;
 	}
 	
+	/*@PostMapping("/loginSuccess.do")
+	public String loginSuccess(HttpSession session, Model model) {
 	/**
 	 * 로그인 성공시 작동
 	 * @param response
@@ -179,9 +179,12 @@ public class MemberController {
 		log.debug("location = {}", location);
 		
 		return "redirect:" + location;
+
 	}	
-	
-	/** 정은 끝 */
+
+	/**
+	 * 정은 끝
+	 */
 
 	// --------------- 하나 시작----------------------------------------
 	@GetMapping("/myPage.do")
@@ -204,24 +207,11 @@ public class MemberController {
 		
 		log.debug("authentication = {}", authentication);
 		log.debug("member = {}", model);
-		/*
+		
 		Member princiapal = (Member) authentication.getPrincipal();
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
-		*/
-	}
-
-	@GetMapping("/myLocal.do")
-	public void myLocal(Model model, String memberId) {
 		
-
 	}
-
-	
-	 @GetMapping("/myTogether.do") 
-	 public void together(@RequestParam String memberId, Model model) { 
-		 log.debug("memberId = {}", memberId);
-	  
-	 }
 	 
 	 @PostMapping("/memberUpdate.do")
 		public String memberUpdate(Member member, Authentication authentication) {
@@ -241,7 +231,7 @@ public class MemberController {
 	 }
 	 
 	 @PostMapping("/memberDelete.do")
-	 public String memberDelete(Member member, Authentication authentication) {
+	 public String memberDelete(Member member) {
 		 log.debug("member = {}", member);
 		 // 1. db변경
 		 int result = memberService.memberDelete(member);
@@ -249,9 +239,13 @@ public class MemberController {
 		 return "redirect:/";
 	 }
 	 
+	 @PostMapping("/updateProfile.do")
+	 public void updateProfile(HttpServletRequest request, HttpServletResponse response) {
+	 }
 
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성
 	// -------------- 하나 끝 --------------------------------------------
+
 
 }

@@ -7,12 +7,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.dto.TogetherEntity;
 import com.sh.oee.together.model.service.TogetherService;
@@ -33,14 +35,16 @@ public class TogetherController {
 	
 	//--------------- 하나 시작 ---------------------------------------
 	@GetMapping("/myTogether.do")
-	public void together(@RequestParam String writer, Model model) {
-		log.debug("writer = {}", writer);
+	public void together(Authentication authentication, Model model) {
+		// member  
+		Member member = ((Member)authentication.getPrincipal());
+		log.debug("member = {} ", member);
 		
-		List<TogetherEntity> Together = togetherService.selectTogetherList(writer);
+		List<Together> myTogether = togetherService.selectTogetherList(member);
 		
-		log.debug("Together = {}",Together);
+		log.debug("myTogether = {}",myTogether);
 		
-		model.addAttribute("Together",Together);
+		model.addAttribute("myTogether",myTogether);
 	}
 		
 	//-------------- 하나 끝 ------------------------------------------

@@ -21,7 +21,7 @@
 	<table>
 		<th>
 			<td>
-				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
+				<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>" alt="임시이미지" id="profile">
 			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>

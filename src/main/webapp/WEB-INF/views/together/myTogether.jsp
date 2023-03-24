@@ -18,19 +18,17 @@
 		<h1 class="sub_title">내 글 목록</h1>
 		<br />
 <section id="board-container" class="container">
-	<table id="tbl-board" class="table table-striped table-hover">
-		<c:forEach items="${togetherList}" var="board">
-			<tr data-no="${together.no}">
-				<td>${together.status}</td>
-				<td>${together.title}</td>
-				<td>${together.age}</td>
-				<td>${together.dateTime}</td>
-				<td>${together.joinCount}</td>
-				<%-- <td>
-					<fmt:parseDate value="${together.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="createdAt"/>
-					<fmt:formatDate value="${createdAt}" pattern="yy-MM-dd HH:mm"/>
+	<table id="tbl-board" class="table">
+		<c:forEach items="${myTogether}" var="together">
+			<tr data-no="${together.no}" id="no">
+				<td id="status">${together.status}</td>
+				<th id="title">${together.title}</th>
+				<td id="age">${together.age}</td>
+				<td id="dateTime">
+					<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
+					<fmt:formatDate value="${dateTime}" pattern="yy-MM-dd HH:mm"/>
 				</td>
-				<td>${together.readCount}</td> --%>
+				<td id="joinCnt">${together.joinCnt}</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -38,10 +36,9 @@
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
-		// console.log(e.target, tr);
+		//console.log(e.target, tr);
 		const no = tr.dataset.no;
 		console.log(no);
-		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?no=' + no;
 	});
 });
 </script>		
