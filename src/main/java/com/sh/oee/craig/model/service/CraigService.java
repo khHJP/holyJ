@@ -30,5 +30,15 @@ public interface CraigService {
 	//내카테
 	String selectMyCraigCategory(int categoryNo);
 
+	//update -사실은 insert도같이 
+	int updateCraigBoard(Craig craig);
+
+	
+	//delete 원래 첨부파일
+	int deleteCraigAttachment(int orifileattno);
+
+	//첨부파일 조회 
+	List<CraigAttachment> selectcraigAttachments(int no);
+
 
 }
