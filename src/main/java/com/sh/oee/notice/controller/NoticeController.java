@@ -41,26 +41,21 @@ public class NoticeController {
 		model.addAttribute("noticeKeyword",noticeKeyword);
 		
 	}
-	@ExceptionHandler
+
 	@PostMapping("/insertKeyword.do")
-	public String insertKeyword(
-			@RequestParam String noticeKeyword, 
-			@RequestParam Authentication authentication, 
+	public String insertKeyword(NoticeKeyword keyword, Authentication authentication, 
 			RedirectAttributes redirectAttr) {
 		
 		// member  		
 		Member member = ((Member)authentication.getPrincipal());
 		log.debug("member = {}", member);
 		
-		Map<String, Object> param = new HashMap<>();
-		param.put("noticeKeyword", noticeKeyword);
-		param.put("member", member);
+		log.debug("keyword = {}", keyword);
+		int result = noticeService.insertKeyword(keyword, member);
 		
-		log.debug("param = {}",param);
-		/* log.debug("noticeKeyword = {}", noticeKeyword); */
-		
-		int result = noticeService.insertKeyword(param);
 		redirectAttr.addFlashAttribute("msg", "키워드를 성공적으로 등록했습니다.");
+		
+		
 		return "redirect:/notice/noticeKeywordList.do";
 		
 	}

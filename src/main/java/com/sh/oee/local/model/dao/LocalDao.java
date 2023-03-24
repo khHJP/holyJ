@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.sh.oee.local.model.dto.Local;
+import com.sh.oee.member.model.dto.Member;
 
 @Mapper
 public interface LocalDao {
@@ -17,5 +18,10 @@ public interface LocalDao {
 	//카테고리
 	@Select("select * from local_category")
 	List<Map<String, String>> localCategoryList();
+
+	// ----------------------------- 하나 시작 -----------------------------------------------
+	@Select("select * from local where writer = #{memberId}")
+	List<Local> selectLocalList(Member member);
+	// ----------------------------- 하나 끝 -----------------------------------------------
 
 }

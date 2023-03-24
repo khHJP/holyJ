@@ -28,6 +28,7 @@ import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 
 import com.sh.oee.craig.model.service.CraigService;
+import com.sh.oee.local.model.dto.Local;
 import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
@@ -220,4 +221,148 @@ public class CraigController {
 	  }
 	
 	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 /*
+	  * 하나시작
+	  */
+	 
+	 @GetMapping("/mySalCraig.do")
+		public void mySalCraig(Authentication authentication, Model model) {
+			// member  
+			Member member = ((Member)authentication.getPrincipal());
+			log.debug("member = {} ", member);
+			/*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+			*/
+		}
+	 @GetMapping("/mySalFCraig.do")
+	 public void mySalFCraig(Authentication authentication, Model model) {
+		 // member  
+		 Member member = ((Member)authentication.getPrincipal());
+		 log.debug("member = {} ", member);
+		 /*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+		  */
+	 }
+	 @GetMapping("/myBuyFCraig.do")
+	 public void myBuyFCraig(Authentication authentication, Model model) {
+		 // member  
+		 Member member = ((Member)authentication.getPrincipal());
+		 log.debug("member = {} ", member);
+		 /*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+		  */
+	 }
+	 /*
+	  * 하나끝
+	  */
 }

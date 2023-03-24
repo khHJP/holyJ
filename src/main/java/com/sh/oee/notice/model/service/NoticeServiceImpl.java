@@ -17,9 +17,9 @@ public class NoticeServiceImpl implements NoticeService {
 	private NoticeDao noticeDao;
 
 	@Override
-	public int insertKeyword(Map<String, Object> param) {
+	public int insertKeyword(NoticeKeyword keyword, Member member) {
 		// TODO Auto-generated method stub
-		return noticeDao.insertKeyword(param);
+		return noticeDao.insertKeyword(keyword, member);
 	}
 
 	@Override
