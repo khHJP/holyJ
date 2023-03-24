@@ -21,7 +21,7 @@
 	<table>
 		<th>
 			<td>
-				<img src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지" id="profile">
+				<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>" alt="임시이미지" id="profile">
 			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
@@ -41,11 +41,11 @@
 				</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/sal.png" alt="" id="mypageimg"/>
-					<a href="">판매내역</a>
+					<a href="${pageContext.request.contextPath}/craig/mySalCraig.do">판매내역</a>
 				</li>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/buy.png" alt="" id="mypageimg"/>
-					<a href="">구매내역</a>
+					<a href="${pageContext.request.contextPath}/craig/myBuyCraig.do">구매내역</a>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/heart.png" alt="" id="mypageimg"/>
 					<a href="">관심목록</a>

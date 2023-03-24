@@ -12,38 +12,76 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mytogether.css" />
 
 </head>
-<body>
 <br /><br />
 	<div class="together-container">
 		<h1 class="sub_title">내 글 목록</h1>
-		<br />
+	
 <section id="board-container" class="container">
-	<table id="tbl-board" class="table">
+	<table id="tbl-board" class="table table-striped table-hover">
 		<c:forEach items="${myTogether}" var="together">
-			<tr data-no="${together.no}" id="no">
-				<td id="status">${together.status}</td>
-				<th id="title">${together.title}</th>
-				<td id="age">${together.age}</td>
-				<td id="dateTime">
-					<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
-					<fmt:formatDate value="${dateTime}" pattern="yy-MM-dd HH:mm"/>
-				</td>
-				<td id="joinCnt">${together.joinCnt}</td>
-			</tr>
+				 <tr data-no="${together.no}" id="tr-table">
+					<c:choose>
+						<c:when test="${not empty myTogether}">
+							<c:if test="${together.status eq 'Y'}">
+								<td class="span1" id="status-y">모집중</td>
+							</c:if>
+							<c:if test="${together.status eq 'N'}">
+								<td class="span1" id="status-n">모집완료</td>
+							</c:if>
+							<td class="span1" id="toTitle">${together.title}</td>
+							<c:if test="${together.age eq '100'}">
+								<td class="span1" id="toAge">
+								<img src="${pageContext.request.contextPath}/resources/images/human.png" alt="" id="togetherimg"/>
+								누구나 참여가능</td>
+							</c:if>
+							<c:if test="${together.age ne '100'}">
+								<td class="span1" id="toAge">
+								<img src="${pageContext.request.contextPath}/resources/images/human.png" alt="" id="togetherimg"/>
+								${together.age}대</td>
+							</c:if>
+							<td class="span1" id="toDteTime">
+								<img src="${pageContext.request.contextPath}/resources/images/calendar.png" alt="" id="togetherimg"/>
+								<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
+								<fmt:formatDate value="${dateTime}" pattern="yy-MM-dd HH:mm"/>
+							</td>
+							<td class="span1" id="toJoinCnt">
+								<img src="${pageContext.request.contextPath}/resources/images/humans.png" alt="" id="togetherimg"/>
+							${together.joinCnt}명</td>
+						</c:when>
+						<c:otherwise>
+							<td colspan="5">옹잉?? 작성하신 게시물이 없어용!!</td>
+						</c:otherwise>
+					</c:choose>
+				</tr>
 		</c:forEach>
+				<%-- <tr data-no="${together.no}">
+					<c:if test="${together.status eq 'Y'}">
+						<td class="span1" id="status-y">모집중</td>
+					</c:if>
+					<c:if test="${together.status eq 'N'}">
+						<td class="span1" id="status-n">모집완료</td>
+					</c:if>
+						<td>${together.age}</td>
+						<td>
+							<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
+							<fmt:formatDate value="${dateTime}" pattern="yy-MM-dd HH:mm"/>
+						</td>
+						<td>${together.joinCnt}</td>
+					</tr>
+				</c:forEach> --%>
 	</table>
-</section> 
+</section> 	
+	</div>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
-		//console.log(e.target, tr);
+		// console.log(e.target, tr);
 		const no = tr.dataset.no;
 		console.log(no);
+	
+		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?no=' + no;
 	});
 });
+
 </script>		
-		
-				
-	</div>
-</body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

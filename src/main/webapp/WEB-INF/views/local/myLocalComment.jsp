@@ -15,7 +15,7 @@
 <body>
 <br /><br />
 	<div class="local-container">
-		<h1 class="sub_title">내 글 목록</h1>
+		<h1 class="sub_title">내 댓글 목록</h1>
 		<br />
 		<div>
 			<ul class="local-ul">

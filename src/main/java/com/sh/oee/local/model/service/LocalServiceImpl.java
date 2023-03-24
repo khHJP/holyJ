@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sh.oee.local.model.dao.LocalDao;
 import com.sh.oee.local.model.dto.Local;
+import com.sh.oee.member.model.dto.Member;
 
 @Service
 public class LocalServiceImpl implements LocalService {
@@ -26,5 +27,13 @@ public class LocalServiceImpl implements LocalService {
 	public List<Map<String, String>> localCategoryList() {
 		return localDao.localCategoryList();
 	}
+
+	// ----------------------------- 하나 시작 -----------------------------------------------
+	@Override
+	public List<Local> selectLocalList(Member member) {
+		// TODO Auto-generated method stub
+		return localDao.selectLocalList(member);
+	}
+	// ----------------------------- 하나 끝 -----------------------------------------------
 	
 }
