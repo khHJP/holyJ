@@ -3,6 +3,7 @@ package com.sh.oee.craig.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
@@ -30,5 +31,21 @@ public interface CraigDao {
 
 	@Select("select CATEGORY_NAME from craig_category where category_no = #{categoryNo}")
 	String selectMyCraigCategory(int categoryNo);
+
+	
+	//update
+	int updateCraigBoard(Craig craig);
+
+	int updateCraigAttachment(CraigAttachment attach);
+
+	@Delete("delete from craig_attachment where attach_no = #{orifileattno}")
+	int deleteCraigAttachment(int orifileattno);
+
+	//in up
+	int upinsertCraigAttachment(CraigAttachment attach);
+
+	
+	//select all
+	List<CraigAttachment> selectcraigAttachments(int no);
 
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -205,19 +206,84 @@ public class CraigController {
 		 
 		 return map;
 	}
+	 
 
 	 // ■ just go to the place - 걍이동
 	 @GetMapping("/craigUpdate.do")
 	 public void craigUpdate(@RequestParam int no, Model model) {
 		 Craig craigboard = craigService.selectcraigOne(no);
 		 List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
-
-			
+		 //orifile
+		 List<CraigAttachment> originalCraigFiles  = craigService.selectcraigAttachments(no);
+		 log.debug( "■ originalCraigFiles : " + originalCraigFiles );
 			
 		 model.addAttribute("craigboard", craigboard);
 		 model.addAttribute("craigCategory", craigCategory);
+		 model.addAttribute("originalCraigFiles", originalCraigFiles);
 
 	  }
+
+
+	 @PostMapping("/craigBoardUpdate.do")
+	 public String craigboardUpdate(@RequestParam int no, Model model,Craig craig, @RequestParam(required = false, defaultValue = "0", value="attachNo")  List<Integer> attachNo,
+			 @RequestParam("upFile") List<MultipartFile> upFiles,  RedirectAttributes redirectAttr ) {
+	 
+			 List<CraigAttachment> originalCraigFiles  = craigService.selectcraigAttachments(no);
+			 
+			 Craig craigboard  = craigService.selectcraigOne(no);
+			 log.debug( "■ 원래 기존객체 craigboard : " + craigboard ); 
+			 log.debug( "■ 넘어온 attachNo -- 내가 지운거만 안넘어오는거같은데: " + attachNo );
+			 
 	
-	
+			 // 1 - 원래 파일이 없다면 ? 지워야된다 원래 51 52 53 / 넘어온게 51 52 
+			 
+			
+			 originalCraigFiles.removeAll( attachNo );
+			 int delno =  Integer.parseInt( originalCraigFiles.toString());
+			 log.debug( "■ delno지워야되는번호  : " + delno );
+			 int delResult = craigService.deleteCraigAttachment(delno);
+					 log.debug( "■ 사진 지움 여부 : " + delResult );
+			
+					 
+			 // 2- 원래 파일 no가 넘어왔으면 ?  있으면 지우지도말고 저장하지도 말아야됨 
+			 
+			 // 3 - 새로운 파일이라면 ? 걍 저장만하면됨 
+			 String saveDirectory = application.getRealPath("/resources/upload/craig");
+
+		 	// 첨부파일저장 방법1 - 1)서버컴퓨터에저장 및 attachment 객체 만들기 
+			for(MultipartFile upFile : upFiles) {
+				log.debug("upFile = {}", upFile);
+				log.debug("upFile - = {}", upFile.getOriginalFilename());
+				log.debug("upFile-size = {}", upFile.getSize());	
+			
+				if(upFile.getSize() > 0 ) {//1-1)저장 
+					String renamedFilename =  OeeUtils.renameMultipartFile( upFile );
+					String originalFilename = upFile.getOriginalFilename();
+					File destFile = new File(saveDirectory, renamedFilename);
+					
+					try {
+						upFile.transferTo(destFile);	
+					}catch(IllegalStateException | IOException e){
+						log.error(e.getMessage(), e);
+					}
+					
+					//1-2) attachment 객체생성 및  board에 추가
+					CraigAttachment attach = new CraigAttachment();
+						attach.setReFilename(renamedFilename);
+						attach.setOriginalFilename(originalFilename);
+						craig.addAttachment(attach);
+				}
+			}//end multi
+		 
+			//새로 파일 저장까지 추가 
+			int result = craigService.updateCraigBoard(craig);
+			log.debug( "■ update_result : " + result );
+
+			redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 수정했습니다😘");
+			
+
+			return "redirect:/craig/craigDetail.do?no="+no;
+	 }
+
+
 }
