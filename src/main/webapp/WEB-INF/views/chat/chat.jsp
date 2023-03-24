@@ -15,9 +15,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chat/chatroom.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-
-</style>
+<!-- sockjs 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- StompJs 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 /* 채팅방 메뉴버튼 토글  */
@@ -31,6 +32,19 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
 });
+
+/* 구독 */
+setTimeout(() => {
+	
+	// lastCheck();
+	
+	// /app/chat 메시지 수신시 처리 핸들러
+	stompClient.subscribe(`/app/chat/${chatroomId}`, (message) => {
+		
+	});
+	
+}, 500); //connect 이후 실행처리
+
 </script>
 
 </head>
@@ -74,7 +88,7 @@ $(document).ready(function(){
 		<!-- 게시글정보 end -->
 		
 		<!-- 채팅방 메시지내용 start  -->
-		<div id="message-container" class="messages scrollarea" style="overflow-y: scroll; height: 600px;">
+		<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
 			<ul class="list-unstyled">
 				<li class="sent">
 					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="">

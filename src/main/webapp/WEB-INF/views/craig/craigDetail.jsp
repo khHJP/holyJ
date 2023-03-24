@@ -154,7 +154,7 @@ carousel-control-prev-icon{ background-color: black;}
 
 		
 		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
-		<button type="button" class="btn btn-success" style="display:inline-block; margin-top: -10px  ;"> 채팅하기 </button>
+		<button id="chatBtn" type="button" class="btn btn-success" style="display:inline-block; margin-top: -10px  ;"> 채팅하기 </button>
 		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
 
 
@@ -284,23 +284,12 @@ document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 
 <!-- ★★★★★★ 250번 라인부터 시작  -   채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★ -->
 <script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.querySelector("#chatBtn").addEventListener('click', (e) => {
+	const url = `${pageContext.request.contextPath}/chat/chat.do?chatroomId=\{chatroomId}`;
+	const name = "chatroom";
+	const spec = "width=500px, height=790px, scrollbars=yes";
+	open(url, name, spec);
+});
 
 </script>
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
