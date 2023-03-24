@@ -8,8 +8,9 @@ import com.sh.oee.notice.model.dto.NoticeKeyword;
 
 public interface NoticeService {
 
-	int insertKeyword(NoticeKeyword keyword, Member member);
 
 	List<NoticeKeyword> selectKeywordList(Member member);
+
+	int insertKeyword(Map<String, Object> param);
 
 }
