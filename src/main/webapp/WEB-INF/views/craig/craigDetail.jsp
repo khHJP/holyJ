@@ -154,7 +154,7 @@ carousel-control-prev-icon{ background-color: black;}
 
 		
 		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
-		<button type="button" class="btn btn-success" style="display:inline-block; margin-top: -10px  ;"> 채팅하기 </button>
+		<button type="button"  id="chatBtn"  class="btn btn-success" style="display:inline-block; margin-top: -10px  ;"> 채팅하기 </button>
 		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
 
 
@@ -178,7 +178,7 @@ carousel-control-prev-icon{ background-color: black;}
 
 <script>
 window.addEventListener('load', () => {
-	
+
 	const memberInfo = document.querySelector("#memberInfo");
 	
 	$.ajax({
@@ -191,7 +191,7 @@ window.addEventListener('load', () => {
 		},
 		error : console.log
 	});
-	
+
 	const crcate = document.querySelector("#crcate");
 	$.ajax({
 		url : `${pageContext.request.contextPath}/craig/getMyCraigCategory.do`,
@@ -215,11 +215,13 @@ window.addEventListener('load', () => {
 });
 </script>
 
+
 <script>
 //거래희망장소
-const latitude = '${craigboard.latitude}'
-const longitude = '${craigboard.longitude}'
-const placeDetail = '${craigboard.placeDetail}'
+
+const latitude = '${craigboard.latitude}';
+const longitude = '${craigboard.longitude}';
+const placeDetail = '${craigboard.placeDetail}';
 
 var mapContainer = document.getElementById('map'), // 지도div 
    mapOption = { 
@@ -236,6 +238,7 @@ var marker = new kakao.maps.Marker({ // 마커생성
 });
 
 // 지도위에 마커 
+ 
 marker.setMap(map);
 
 var iwContent = `<div style="padding:5px; padding-left:20px; font-size:14px; text-align:center;">
@@ -243,14 +246,20 @@ var iwContent = `<div style="padding:5px; padding-left:20px; font-size:14px; tex
 				 </div>`,
     iwPosition = new kakao.maps.LatLng(latitude, longitude); //
 
+
+
+   
 var infowindow = new kakao.maps.InfoWindow({
     position : iwPosition, 
     content : iwContent 
 });
-  
+console.log( "infowindow ", infowindow  )  
 infowindow.open(map, marker); 
+
 </script>
 
+<sec:authentication property="principal" var="loginMember" />
+<c:if test="${loginMember.memberId == craigboard.writer }">       
 <script>
 document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 	console.log(e.target);
@@ -258,6 +267,7 @@ document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 	location.href = `${pageContext.request.contextPath}/craig/craigUpdate.do?no=\${craigno}`;
 });
 </script>
+</c:if>
 
 
 
@@ -271,39 +281,18 @@ document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+<!--  앗 284로 내려옴 -->
 <!-- ★★★★★★ 250번 라인부터 시작  -   채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★ -->
 <script>
+document.querySelector("#chatBtn").addEventListener('click', (e) =>{
+    console.log( e.target );
+    const craigno = '${craigboard.no}';
+	location.href = `${pageContext.request.contextPath}/chat/craigChat.do?no=\${craigno}`;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 </script>
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
+
 
 
 
