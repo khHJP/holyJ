@@ -43,7 +43,7 @@
 	<div id="proupdate">
 		<hr />
 		<li id="sala">
-		<a href="">판매 상품 *개</a>
+		<a href="${pageContext.request.contextPath}/craig/mySalCraig.do">판매 상품 *개</a>
 		</li>
 		<hr />
 		<li id="sala">

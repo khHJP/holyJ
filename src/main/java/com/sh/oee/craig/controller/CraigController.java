@@ -29,6 +29,7 @@ import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 
 import com.sh.oee.craig.model.service.CraigService;
+import com.sh.oee.local.model.dto.Local;
 import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
@@ -234,7 +235,7 @@ public class CraigController {
 			 log.debug( "■ 원래 기존객체 craigboard : " + craigboard ); 
 			 log.debug( "■ 넘어온 attachNo -- 내가 지운거만 안넘어오는거같은데: " + attachNo );
 			 
-	
+
 			 // 1 - 원래 파일이 없다면 ? 지워야된다 원래 51 52 53 / 넘어온게 51 52 
 			 
 			
@@ -286,4 +287,149 @@ public class CraigController {
 	 }
 
 
+	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 /*
+	  * 하나시작
+	  */
+	 
+	 @GetMapping("/mySalCraig.do")
+		public void mySalCraig(Authentication authentication, Model model) {
+			// member  
+			Member member = ((Member)authentication.getPrincipal());
+			log.debug("member = {} ", member);
+			/*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+			*/
+		}
+	 @GetMapping("/mySalFCraig.do")
+	 public void mySalFCraig(Authentication authentication, Model model) {
+		 // member  
+		 Member member = ((Member)authentication.getPrincipal());
+		 log.debug("member = {} ", member);
+		 /*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+		  */
+	 }
+	 @GetMapping("/myBuyFCraig.do")
+	 public void myBuyFCraig(Authentication authentication, Model model) {
+		 // member  
+		 Member member = ((Member)authentication.getPrincipal());
+		 log.debug("member = {} ", member);
+		 /*
+			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			
+			log.debug("mySalCraig = {}",mySalCraig);
+			
+			model.addAttribute("mySalCraig",mySalCraig);
+		  */
+	 }
+	 /*
+	  * 하나끝
+	  */
 }
