@@ -19,10 +19,10 @@
 		</div>
 		<div class="oee-link">
 			<a href="https://github.com/khHJP/holyJ">
-				<img alt="깃허브" src="${pageContext.request.contextPath}/resources/images/github.png">
+				<i class="bi bi-github"></i>
 			</a>
 			<a href="#">
-				<img alt="유튜브" src="${pageContext.request.contextPath}/resources/images/youtube.png">
+				<i class="bi bi-youtube"></i>
 			</a>
 			<a href="https://shqkel.notion.site/Holy-J-4e729e2f8bfb448dbf0dacef6502887d">
 				<img alt="노션" src="${pageContext.request.contextPath}/resources/images/notion.png">

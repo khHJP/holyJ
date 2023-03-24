@@ -70,7 +70,6 @@ window.addEventListener('load', (e) => {
 			<!-- 로그인 전 접근 가능 -->		
 			<sec:authorize access="isAnonymous()">
  			<div class="login-box">
-				<%-- <button class="btn" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">로그인</button> --%>
 				<button type="button" class="btn" data-toggle="modal" data-target="#loginModal" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do'">
  		 			로그인
 				</button>
@@ -82,8 +81,8 @@ window.addEventListener('load', (e) => {
 			<sec:authorize access="isAuthenticated()">
 			<div class="login-box">
 				<div class="notice-wrap">
-					<img src="${pageContext.request.contextPath}/resources/images/bookmark.png" alt="키워드알림">
-					<img src="${pageContext.request.contextPath}/resources/images/notification.png" alt="알림">
+					<i class="bi bi-bookmark"></i>
+					<i class="bi bi-bell"></i>
 				</div>
 				<div class="profile-wrap">
 					<sec:authentication property="principal" var="loginMember"/>					
