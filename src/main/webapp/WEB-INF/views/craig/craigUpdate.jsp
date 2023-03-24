@@ -48,21 +48,39 @@ button, input, optgroup, select, textarea {
 	<form:form id="craigUpdateFrm" name="craigUpdateFrm"  enctype ="multipart/form-data"  method="post"
 	 action="${pageContext.request.contextPath}/craig/craigBoardUpdate.do?${_csrf.parameterName}=${_csrf.token}"  >
 	<sec:authentication property="principal" var="loginMember"/>
+		<input type="hidden" class="form-control" name="no" id="no" value="${craigboard.no}" required>
 		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
 		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
 		<!-- ●  첨부파일 ● -->	
 		<tr>
+
 		<th style="max-width : 100px; min-width: 100px;" colspan="2">
 		<div style="display: flex; margin:20px 0px 10px 0px;">
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
+				 <c:if test="${ originalCraigFiles[0] != null }">
+				 	<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                	${originalCraigFiles[0].reFilename }<a href='#this' name='file-delete'>삭제</a>
+	                <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[0].attachNo >0 ? originalCraigFiles[0].attachNo : 0 }">
+                </c:if>
 			</div>
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
+				<c:if test="${originalCraigFiles[1].reFilename  != null }">
+					<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+	                ${originalCraigFiles[1].reFilename }<a href='#this' name='file-delete'>삭제</a>
+                 <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[1].attachNo >0 ? originalCraigFiles[1].attachNo : 0 }">
+                </c:if>
 			</div>	
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
-			</div>		
+				<c:if test="${originalCraigFiles[2].reFilename != null }">
+					<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+	                ${originalCraigFiles[2].reFilename }<a href='#this' name='file-delete'>삭제</a>
+                <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[2].attachNo >0 ? originalCraigFiles[2].attachNo : 0 }">
+                </c:if>
+                
+			</div>	
 		</div>
 		<div class="input-group mb-3" style="padding:0px;">
 		  <div class="custom-file" >
@@ -78,7 +96,15 @@ button, input, optgroup, select, textarea {
 <!-- 		<table id="crentb" style="border: 1.5px solid lightgray;border-top:2px solid lightgray; border-bottom:2px solid lightgray;padding: 10px; margin-bottom: 20px"  >-->			
 			<tr>
 				<th><label for="title"> 글 제목  </label></th>
-				<td style="max-width:650px;"><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" value="${craigboard.title}" required></td>
+				<td style="max-width:650px;">
+					<input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" value="${craigboard.title}" required>
+					<select onclick = "selectState(this.value);" id="state" name="state" class="form-select" aria-label="Default select example" >
+					    <option  value="CR1">예약중</option>
+					    <option  value="CR2">판매중</option>
+					    <option  value="CR3">판매완료</option>
+				    </select>	
+				</td>
+
 			</tr>
 			
 			<tr>
@@ -221,6 +247,14 @@ document.querySelector("#pickPlace").addEventListener('click', (e) => {
 	const spec = "width=530px, height=580px";
 	open(url, name, spec);
 });
+
+
+//state
+const selectState = (e) =>{
+	console.log( e);
+	console.log( "원래값", "${craigboard.state}");
+	
+};
 </script>	
 
 <script>
@@ -288,7 +322,12 @@ window.addEventListener('load', () => {
 	const latitude = '${craigboard.latitude}';
 	const longitude = '${craigboard.longitude}';
 	const placeDetail = '${craigboard.placeDetail}';
+	document.querySelector("#latitude").value  = latitude;
+	document.querySelector("#longitude").value  = longitude;
 	document.querySelector("#placeDetail").value  = placeDetail;
+	
+	const state = "${craigboard.state}";
+	document.querySelector("#state").value  = state;
 	
 	const orgcate  = "${craigboard.categoryNo}";	
 	document.querySelectorAll("input[data-no]").forEach( (input)=>{
@@ -300,6 +339,8 @@ window.addEventListener('load', () => {
 	});//
 	
 	//map
+	
+
 	var mapContainer = document.getElementById('map'), // 지도div 
 	   mapOption = { 
 	       center: new kakao.maps.LatLng(latitude, longitude), // 중심좌표
@@ -332,36 +373,51 @@ window.addEventListener('load', () => {
 	const filet = '${craigboard.attachments[1].reFilename}'
 	const fileth = '${craigboard.attachments[2].reFilename}'
 
-	if(fileo != null){
+	console.log( "fileo?", fileo);
+	console.log( filet.length );
+	console.log( "fileth?", fileth);
+	
+	if(fileo != null && fileo != "" && fileo.length>2 ){
 		document.querySelector("#col_img_viewer").src = `${pageContext.request.contextPath}/resources/upload/craig/\${fileo}`;
-		$("#upFile1").attr('value', fileo);
-		uploadedFile.value = fileo;
 		
-	}else{
-		document.querySelector("#col_img_viewer").src = "";
+	}else if( fileo == null || fileo=="" ||  fileo.length<2 ){
+		document.querySelector("#col_img_viewer").src == ``;
 	}
 	
-	if(filet != null){
+	if(filet != null && filet != "" && filet.length>2  ){
+		console.log( "두번째 널인데요?");
 		document.querySelector("#col_img_viewer2").src = `${pageContext.request.contextPath}/resources/upload/craig/\${filet}`;
-		$("#upFile1").attr('value', filet);
-		uploadedFile.value = filet;
 		
-	}else{
-		document.querySelector("#col_img_viewer2").src = "";
+	}else if( filet == null || filet=="" ||  filet.length<2   ){
+		document.querySelector("#col_img_viewer2").src == ``;
 	}
 	
 	
-	if(fileth != null){
+	if( fileth != null && fileth != "" && fileth.length>2){
 		document.querySelector("#col_img_viewer3").src = `${pageContext.request.contextPath}/resources/upload/craig/\${fileth}`;
-		$("#upFile1").attr('value', fileth);
-		uploadedFile.value = fileth;		
-	}else{
-		document.querySelector("#col_img_viewer3").src = "";
+	}else if( fileth == null || fileth=="" ||  fileth.length<2 ){
+		document.querySelector("#col_img_viewer3").src == ``;
 	}
-
+	
 })
 </script>
+<script>
+//삭제
+$(document).ready(function() {
+      $("a[name='file-delete']").on("click", function(e) {
+          e.preventDefault();
+          deleteFile($(this));
+      });
+      
 
+      function deleteFile(obj) {
+    	  console.log(  obj.parent().children() );
+    	  obj.parent().children()[0].src == ``;
+//          obj.parent().remove();
+      }
+  })
+
+</script>
 	
 <br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

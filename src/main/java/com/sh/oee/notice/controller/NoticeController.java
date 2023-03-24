@@ -42,22 +42,31 @@ public class NoticeController {
 		
 	}
 
-	@PostMapping("/insertKeyword.do")
-	public String insertKeyword(NoticeKeyword keyword, Authentication authentication, 
-			RedirectAttributes redirectAttr) {
-		
-		// member  		
-		Member member = ((Member)authentication.getPrincipal());
-		log.debug("member = {}", member);
-		
-		log.debug("keyword = {}", keyword);
-		int result = noticeService.insertKeyword(keyword, member);
-		
-		redirectAttr.addFlashAttribute("msg", "키워드를 성공적으로 등록했습니다.");
-		
-		
-		return "redirect:/notice/noticeKeywordList.do";
-		
-	}
+	 @ExceptionHandler
+	    @PostMapping("/insertKeyword.do")
+	    public String insertKeyword( @RequestParam String keyword, Authentication authentication, 
+	            RedirectAttributes redirectAttr) {
+	        
+	        // member          
+//	        Member member = ((Member)authentication.getPrincipal());
+	        
+	        String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+	        
+	        log.debug("memberId = {}", memberId);
+	        
+	        Map<String, Object> param = new HashMap<>();
+	        param.put("keyword", keyword);
+	        param.put("memberId", memberId);
+	        
+	        log.debug("param = {}",param);
+	        /* log.debug("noticeKeyword = {}", noticeKeyword); */
+	        
+	        int result = noticeService.insertKeyword(param);
+	        log.debug("result = {}",result);
+	        
+	        redirectAttr.addFlashAttribute("msg", "키워드를 성공적으로 등록했습니다.");
+	        return "redirect:/notice/noticeKeywordList.do";
+	        
+	    }
 	//-------------------------------하나 끝---------------------
 }

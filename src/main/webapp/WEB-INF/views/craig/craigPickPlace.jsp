@@ -63,7 +63,7 @@ body {
 	<p style="margin: 0">만나서 거래할 때는 누구나 찾기 쉬운 공공장소가 좋아요.</p>
 	
 	<hr>
-	<form:form name="placeEnroll" method="post" action="`${pageContext.request.contextPath}/craig/craigEnroll.do">
+	<form:form name="placeEnroll" method="post" action="opener.location.href">
 	<div id="map" style="width:500px;height:300px; border: 1px solid green; margin: auto"></div> 				
 		<hr>
 		<p style="margin-bottom: 8px; margin-left: 10px">선택한 곳의 장소명을 입력해주세요 </p>
@@ -86,6 +86,7 @@ body {
     var latitudevalue ="";
  
 	window.addEventListener('load', () => {
+		console.log( opener.location.href );
 		getUserLocation();
 		
      });

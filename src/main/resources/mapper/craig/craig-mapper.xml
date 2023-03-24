@@ -113,9 +113,39 @@ from craig c  left  join  craig_attachment ca
 	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, default)
 </insert>
 
+<update id="updateCraigBoard">
+update craig
+set category_no = #{categoryNo},
+	title = #{title},
+	content = #{content},
+	latitude = #{latitude},
+	longitude = #{longitude},
+	place_detail = #{placeDetail},
+	price = #{price},
+	state = #{state}
+where no = #{no}	
+</update>
+
+<update id="updateCraigAttachment">
+	update craig_attachment
+	set re_filename = #{reFilename}
+	where craig_no = #{craigNo}
+</update>
+
+<!--  새로파일저장 - 잘되면 원래꺼쓰기 -->
+<insert id="upinsertCraigAttachment">
+	insert into craig_attachment
+	values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename} , #{reFilename}, default)
+</insert>
 
 
+<select id="selectcraigAttachments" resultMap="craigAttachMap">
+	select *
+	from craig_attachment
+	where craig_no = #{no}
+</select>
 
-
+<resultMap type="CraigAttachment" id="craigAttachMap">
+</resultMap>
 
 </mapper>
