@@ -51,21 +51,31 @@ public class LocalController {
 	
 	//동네생활 게시물 목록
 	@GetMapping("/localList.do")
-	public void localList(Model model , HttpSession session) {
+	public void localList(Model model , HttpSession session, Authentication authentication) {
 	
-		List<Local> localList = localService.localList();
+		//글 목록
+		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
+		log.debug("dongList = {}",myDongList);
+		
 		List<Map<String,String>> localCategory = localService.localCategoryList();
-		
-//		Member MemberSession = (Member) session.getAttribute("loginMember");
-//		Member member = memberService.selectOneMember(MemberSession.getMemberId());
-//		log.debug("member = {}" , member);
-		
-		log.debug("localList : {}", localList);
+		List<Local> localList = localService.selectLocalListByDongName(myDongList);
+		//동네정보 가져오기
+		log.debug("localList = {}", localList);
 		log.debug("localCategory = {} ", localCategory);
 		
+		//아이디 가져오기
+		Member member =((Member)authentication.getPrincipal());
+		log.debug("writeMemebr = {}", member);
+//		
+		
+		
+		//view단
 		model.addAttribute("localList", localList);
 		model.addAttribute("localCategory",localCategory);
+//		model.addAttribute("member",member);
 	}
+	
+	
 	
 	// 동네생활 글쓰기 페이지
 	@GetMapping("/localEnroll.do")
@@ -122,6 +132,17 @@ public class LocalController {
 	}
 	
 	
+	//한건조회(상세페이지)
+	@GetMapping("/localDetail.do")
+	public void localDetail(@RequestParam int no, Model model) {
+		Local localdetail = localService.selectLocalOne(no);
+		
+		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
+		
+		log.debug("localdetail : {}", localdetail);
+		
+		model.addAttribute("localdetail",localdetail);
+	}
 	
 	
 	

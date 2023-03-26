@@ -13,7 +13,7 @@ import com.sh.oee.member.model.dto.Member;
 public interface LocalService {
 
 	//동네생활 전체목록
-	List<Local> localList();
+	List<Local> selectLocalListByDongName(List<String> myDongList);
 
 	//카테고리
 	List<Map<String, String>> localCategoryList();
@@ -23,9 +23,14 @@ public interface LocalService {
 	
 	//첨부파일 등록
 	int insertLocalAttachment(LocalAttachment attach);
-
+	
+	//게시글 한건 조히
+	Local selectLocalOne(int no);
+	
+	
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	List<Local> selectLocalList(Member member);
 	// ----------------------------- 하나 끝 -----------------------------------------------
+
 
 }

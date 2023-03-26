@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 
 import lombok.AllArgsConstructor;
@@ -16,14 +17,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(callSuper = true)
 public class Local extends LocalEntity {
+	
 	private int attachCount;
 	private List<LocalAttachment> attachments = new ArrayList<>();
 	private Member member;
+	private Dong dong;
 	
 	
-	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits) {
+	//기본생성자
+	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, int attachCount) {
 		super(no, categoryNo, writer, title, content, regDate, hits);
-		this.attachCount = attachCount;
 	}
 	
 	
@@ -34,15 +37,18 @@ public class Local extends LocalEntity {
 	}
 
 
-
+	//매개변수생성자 (다 넣은 것)
 	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits,
-			int attachCount, List<LocalAttachment> attachments, Member member) {
+			int attachCount, List<LocalAttachment> attachments, Member member, Dong dong) {
 		super(no, categoryNo, writer, title, content, regDate, hits);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;
+		this.dong = dong;
 	}
+	
+	
 
-
+	
 
 }

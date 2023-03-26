@@ -27,8 +27,8 @@ public class LocalServiceImpl implements LocalService {
 	
 	//동네생활 전체 목록 조회
 	@Override
-	public List<Local> localList() {
-		return localDao.localList();
+	public List<Local> selectLocalListByDongName(List<String> myDongList) {
+		return localDao.selectLocalListByDongName(myDongList);
 	}
 	
 	//카테고리
@@ -66,5 +66,11 @@ public class LocalServiceImpl implements LocalService {
 	@Override
 	public int insertLocalAttachment(LocalAttachment attach) {
 		return localDao.insertLocalAttachment(attach);
+	}
+	
+	//게시글 한건 조회
+	@Override
+	public Local selectLocalOne(int no) {
+		return localDao.selectLocalOne(no);
 	}
 }
