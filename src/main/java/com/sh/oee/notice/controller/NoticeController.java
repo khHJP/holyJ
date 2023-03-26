@@ -61,8 +61,8 @@ public class NoticeController {
 	        log.debug("param = {}",param);
 	        /* log.debug("noticeKeyword = {}", noticeKeyword); */
 	        
-	        int result = noticeService.insertKeyword(param);
-	        log.debug("result = {}",result);
+	    //    int result = noticeService.insertKeyword(param);
+	     //   log.debug("result = {}",result);
 	        
 	        redirectAttr.addFlashAttribute("msg", "키워드를 성공적으로 등록했습니다.");
 	        return "redirect:/notice/noticeKeywordList.do";

@@ -120,6 +120,7 @@ carousel-control-prev-icon {
 }
 </style>
 <br>
+
 <c:if
 	test="${fn:length(craigboard.attachments) >= 1 && craigboard.attachments[0].reFilename != null}">
 	<div id="carouselExampleIndicators" class="carousel slide"
@@ -272,14 +273,14 @@ carousel-control-prev-icon {
 
 	<sec:authentication property="principal" var="loginMember" />
 	<c:if test="${craigboard.member.memberId == loginMember.memberId}">
-		<button id="btnUpdate" type="button" class="btn btn-warning"
-			style="float: right; margin-top: 20px;">수정하기</button>
-		<button type="button" class="btn btn-dark"
-			style="margin-left: 30px; margin-right: -1px; margin-top: 20px; float: right">
-			삭제하기</button>
+		<button id="btnUpdate" type="button" class="btn btn-warning" style="float: right; margin-top: 20px;">수정하기</button>
+		<button type="button" id="btnDelete" class="btn btn-dark" style="margin-left: 30px; margin-right: -1px; margin-top: 20px; float: right">삭제하기</button>
 	</c:if>
 </div>
-
+<form:form id="craigDeleteFrm" name="craigDeleteFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/craig/craigBoardDelete.do?${_csrf.parameterName}=${_csrf.token}"  >
+	 <input type="hidden" name="no" id="delno" value="${craigboard.no}" >
+</form:form>
 
 
 
@@ -373,6 +374,13 @@ document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 	const craigno = '${craigboard.no}'
 	location.href = `${pageContext.request.contextPath}/craig/craigUpdate.do?no=\${craigno}`;
 });
+
+document.querySelector("#btnDelete").addEventListener('click', (e) =>{
+	console.log(e.target);
+	if(confirm("정말 게시글을 삭제하시겠습니까 ⁉️ ")){
+		  document.craigDeleteFrm.submit();	
+		}	
+});
 </script>
 </c:if>
 
@@ -405,7 +413,7 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 	});
 		
 });
-	
+</script>	
 
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
 

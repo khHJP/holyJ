@@ -59,25 +59,25 @@ button, input, optgroup, select, textarea {
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
 				 <c:if test="${ originalCraigFiles[0] != null }">
-				 	<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-                	${originalCraigFiles[0].reFilename }<a href='#this' name='file-delete'>삭제</a>
+				 	<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[0].reFilename }</span>
+                	<a href='#this' name='file-delete'>삭제</a>
 	                <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[0].attachNo >0 ? originalCraigFiles[0].attachNo : 0 }">
                 </c:if>
 			</div>
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
 				<c:if test="${originalCraigFiles[1].reFilename  != null }">
-					<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-	                ${originalCraigFiles[1].reFilename }<a href='#this' name='file-delete'>삭제</a>
-                 <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[1].attachNo >0 ? originalCraigFiles[1].attachNo : 0 }">
+					<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[1].reFilename }</span>
+		            <a href='#this' name='file-delete'>삭제</a>
+        	        <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[1].attachNo >0 ? originalCraigFiles[1].attachNo : 0 }">
                 </c:if>
 			</div>	
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
 				<c:if test="${originalCraigFiles[2].reFilename != null }">
-					<span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-	                ${originalCraigFiles[2].reFilename }<a href='#this' name='file-delete'>삭제</a>
-                <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[2].attachNo >0 ? originalCraigFiles[2].attachNo : 0 }">
+					<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[2].reFilename }</span>
+					<a href='#this' name='file-delete'>삭제</a>
+                	<input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[2].attachNo >0 ? originalCraigFiles[2].attachNo : 0 }">
                 </c:if>
                 
 			</div>	
@@ -411,8 +411,25 @@ $(document).ready(function() {
       
 
       function deleteFile(obj) {
-    	  console.log(  obj.parent().children() );
-    	  obj.parent().children()[0].src == ``;
+    	
+    	  const p = obj.parent();
+    	  console.log( p );
+    	 
+    	  console.log( p.children('img')[0] );
+      	  $(p).children('img').removeAttr('src');
+      	  
+      	  
+    	  $(p).children('span').remove();
+    	  $(p).children('a').remove();
+    	  $(p).children('input').remove();
+ //   	  p.children('a')[0].remove();
+ //   	  $('obj.parent()').children('input')[0].remove();
+ //   	  const p = obj.parent();
+  //  	  obj.parent().children().remove();
+
+//    	  console.log(obj.parent().children());
+ //   	  obj.parent().children().innerHTML += `<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">`;
+    	  
 //          obj.parent().remove();
       }
   })
