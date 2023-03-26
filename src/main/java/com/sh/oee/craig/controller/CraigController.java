@@ -416,7 +416,7 @@ public class CraigController {
 			model.addAttribute("mySalCraig",mySalCraig);
 		  */
 	 }
-	 @GetMapping("/myBuyFCraig.do")
+	 @GetMapping("/myBuyCraig.do")
 	 public void myBuyFCraig(Authentication authentication, Model model) {
 		 // member  
 		 Member member = ((Member)authentication.getPrincipal());

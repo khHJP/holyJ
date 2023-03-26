@@ -17,11 +17,12 @@
 		<h1 class="sub_title">내 글 목록</h1>
 	
 <section id="board-container" class="container">
+	<c:set var="category" value="${categorys}" scope="page"/>
 	<table id="tbl-board" class="table table-striped table-hover">
 		<c:forEach items="${myTogether}" var="together">
-				 <tr data-no="${together.no}" id="tr-table">
+				 <tr data-no="${together.no}" id="tr-table" data-category="${category[togetherEntity.categoryNo].CATEGORY_NAME}">
 					<c:choose>
-						<c:when test="${not empty myTogether}">
+						<c:when test="${not empty together.no}">
 							<c:if test="${together.status eq 'Y'}">
 								<td class="span1" id="status-y">모집중</td>
 							</c:if>
@@ -77,9 +78,10 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
 		// console.log(e.target, tr);
 		const no = tr.dataset.no;
-		console.log(no);
+		const category = tr.dataset.category;
+		console.log(no, category);
 	
-		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?no=' + no;
+		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?category=' + category + "&no=" + no;
 	});
 });
 

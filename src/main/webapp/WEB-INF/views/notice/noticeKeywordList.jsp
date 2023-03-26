@@ -32,21 +32,36 @@
 			</form:form> --%>
 		</div>
 		<br /><br />
-		<span id="upkword">등록한 키워드 */3</span>
+		<span id="upkword">등록한 키워드 2/3</span>
 		<br />
 		<br />
-		<div class="showkword">
-			<%-- <form name="keywordDeleteFrm" action="${pageContext.request.contextPath}/notice/deleteKeyword.do" method="post">
-					키워드
-					<button id="cancel-btn" type="submit">
-						<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
-					</button>
-			</form> --%>
+			<table id="tbl-board" class="table">
+					<c:forEach items="${noticeKeyword}" var="keyword">
+						 <tr data-no="${keyword.no}" name="no" id="tr-table">
+						 	<div class="showkword" id="noKeyword">${keyword.keyword}
+							<form:form id="deleteKeywordFrm" name="deleteKeywordFrm">
+								<button id="cancel-btn">
+									<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
+								</button>
+							</form:form>
+							</div>
+						</tr>								
+					</c:forEach>
+			</table>			
 		</div>
-	</div>
 </body>
 <script>
-
-
-</script>
+    document.deleteKeyword.DeleteFrm.addEventListener('submit', (e) => {
+    	e.preventDefault();
+    	$.ajax({
+    		url : `${pageContext.request.contextPath}/notice/deleteKeyword.do`,
+    		data : {no : e.target.no.value},
+    		method : 'POST',
+    		success(data){
+    			console.log(data); 
+    		},
+    		error : console.log
+    	})
+    });
+    </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

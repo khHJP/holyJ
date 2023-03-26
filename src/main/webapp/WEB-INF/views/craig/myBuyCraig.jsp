@@ -15,25 +15,11 @@
 <body>
 <br /><br />
 	<div class="local-container">
-		<h1 class="sub_title">내 댓글 목록</h1>
+		<h1 class="sub_title">나의 구매내역</h1>
 		<br />
-		<div>
-			<ul class="local-ul">
-				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocal.do">게시글</a></li>
-				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocalComment.do">댓글</a></li>
-			</ul>
-		</div>
+	
 		<hr />
-<section id="board-container" class="container">
-	<table id="tbl-board" class="table table-hover">
-		<c:forEach items="${myLocalComment}" var="localCo">
-				 <tr data-no="${localCo.localNo}" id="tr-table">
-					<td class="span1" id="toTitle">${localCo.content}</td>
-					<%-- <td class="span1" id="toTitle">${localCo.no.title}</td> --%>
-				</tr>
-		</c:forEach>
-	</table>
-</section> 	
+	
 	</div>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
@@ -42,7 +28,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		const no = tr.dataset.no;
 		console.log(no);
 	
-	//	location.href = '${pageContext.request.contextPath}/local/localDetail.do?no=' + no;
+	//	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
 	});
 });		
 		

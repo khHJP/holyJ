@@ -26,7 +26,7 @@ public interface MemberService {
 	
 	/** 하나 시작 **/
 	int updateMember(Member member);
-	int memberDelete(Member member);
+	int memberDelete(String memberId);
 	
 	/** 하나 끝 **/
 	
