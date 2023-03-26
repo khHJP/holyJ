@@ -4,11 +4,82 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.local.model.dao.LocalDao">
 
-<select id="localList" resultMap="localMap">
-	select * from local
+<resultMap type="local" id="localMap"></resultMap>
+<!-- 동네생활 글 목록 -->
+<select id="selectLocalListByDongName" resultMap="localDetailMap">
+	select 
+		* 
+	from
+		(
+		select
+			l.*,
+			(
+			select
+				dong_name
+			from
+				member m right join dong d
+					on m.dong_no =  d.dong_no
+			where
+				member_id = l.writer
+			) dong_name
+		from
+			local l
+		)
+	<where>
+		dong_name in
+		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+	</where>
+	order by 
+		reg_date desc
 </select>
 
-<resultMap type="local" id="localMap">
+ <select id="selectLocalOne" resultMap="localDetailMap">
+	select 
+		l.*,
+		la.attach_no,
+		la.original_filename,
+		la.re_filename,
+		(select
+			count(*)
+		 from local_attachment 
+		 where local_no = l.no
+		) attach_count,
+		m.*
+	from
+		local l left join local_attachment la
+			on l.no = la.local_no
+				left join member m
+			on l.writer = m.member_id
+	where l.no = #{no}
+</select>
+
+<resultMap type="local" id="localDetailMap">
+	<id column="NO" property="no"></id>
+	<result column="CATEGORY_NO" property="categoryNo" />
+	<result column="WRITER" property="writer" />
+	<result column="TITLE" property="title" />
+	<result column="CONTENT" property="content" />
+	<result column="REG_DATE" property="regDate" />
+	<result column="HITS" property="hits" />
+	<association property="member" javaType="member">
+		<id column="MEMBER_ID" property="memberId"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="MANNER" property="manner"/>
+		<result column="PROFILE_IMG" property="profileImg"/>
+	</association>
+	<association property="dong" javaType="dong">
+		<id column="DONG_NO" property="dongNo"/>
+		<result column="DONG_NAME" property="dongName"/>
+	</association>
+	<collection property="attachments" ofType="localAttachment">
+		<id column="ATTACH_NO" property="attachNo"/>
+		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
+		<result column="RE_FILENAME" property="reFilename"/>
+		<result column="REG_DATE" property="regDate"/>
+	
+	</collection>
 </resultMap>
 
 
@@ -56,7 +127,10 @@
 	where 
 		lc.writer = #{memberId}
 
+
+
 </select>
 <resultMap type="localComment" id="localCommentMap"></resultMap>	
 
+>>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 </mapper>
