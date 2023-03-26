@@ -417,7 +417,7 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 		});		
 
 });
->>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
+
 </script>	
 
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
