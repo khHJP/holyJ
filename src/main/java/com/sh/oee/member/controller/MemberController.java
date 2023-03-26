@@ -50,7 +50,7 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	/** 정은 시작 */
+	/** 👻 정은 시작 👻 */
 	
 	/**
 	 * 회원가입 폼 불러오기
@@ -58,19 +58,16 @@ public class MemberController {
 	 */
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll(Model model) {
+		// 업무로직
 		List<Gu> guList = memberService.selectGuList();
 		log.debug("guList = {}", guList);
 		List<Dong> dongList = memberService.selectDongList();
 		log.debug("dongList = {}", dongList);
 
+		// view 전달
 		model.addAttribute("guList", guList);
 		model.addAttribute("dongList", dongList);
 	}
-
-
-
-	
-
 	
 	/**
 	 * 회원가입 정보 DB에 저장
@@ -89,24 +86,20 @@ public class MemberController {
 		member.setPassword(encodePassword);
 		log.debug("member = {} ", member);
 		
+		// 업무로직
 		int result = memberService.insertMember(member);
 		
+		// view 전달
 		redirectAtrr.addFlashAttribute("msg", "오이 가족이 되신걸 환영합니다!"); // msg 안나옴,, 왤까,,?
 		
 		return "redirect:/";
 	}
-
 	
 	/**
 	 * 로그인 폼 불러오기
 	 */
 	@GetMapping("/memberLogin.do")
-	public void memberLogin() {
-		/* return "member/login"; */
-	}
-
-
-
+	public void memberLogin() {}
 
 	/**
 	 * 로그아웃
@@ -118,7 +111,6 @@ public class MemberController {
 		if (!status.isComplete()) {
 			status.setComplete();
 		}
-		
 		return "redirect:/";
 	}
 
@@ -132,17 +124,18 @@ public class MemberController {
 	@GetMapping("/checkIdDuplicate.do")
 	public Map<String, Object> checkIdDuplicate(@RequestParam String memberId){
 		Map<String, Object> map = new HashMap<>();
+		
+		// 업무로직
 		Member member = memberService.selectOneMember(memberId);
 		boolean available = (member == null);
 
+		// view 전달
 		map.put("memberId", memberId);
 		map.put("available", available);
 
 		return map;
 	}
 	
-	/*@PostMapping("/loginSuccess.do")
-	public String loginSuccess(HttpSession session, Model model) {
 	/**
 	 * 로그인 성공시 작동
 	 * @param response
@@ -192,11 +185,9 @@ public class MemberController {
 
 	}	
 
-	/**
-	 * 정은 끝
-	 */
+	/** 👻 정은 끝 👻 */
 
-	// --------------- 하나 시작----------------------------------------
+	/** 🐱 하나 시작 🐱 */
 	@GetMapping("/myPage.do")
 	public void myPage() {
 	}
@@ -254,7 +245,7 @@ public class MemberController {
 
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성
-	// -------------- 하나 끝 --------------------------------------------
+	 /** 🐱 하나 끝 🐱 */
 
 
 }
