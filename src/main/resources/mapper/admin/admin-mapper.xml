@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.admin.model.dao.AdminDao">
 
-	<select id="selectAdminMemberList" resultMap="adminMap">
+	<select id="selectAdminMemberList" resultMap="adminMemberMap">
 		select
 			*
 		from
@@ -15,6 +15,28 @@
 			enroll_date desc
 	</select>
 	
-	<resultMap type="member" id="adminMap"></resultMap>
+	<resultMap type="member" id="adminMemberMap"></resultMap>
+	
+	<select id="selectAdminBoardReport" resultMap="adminBoardReportMap">
+		select
+			*
+		from
+			board_report
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="boardReport" id="adminBoardReportMap"></resultMap>
+	
+	<select id="selectAdminUserReport" resultMap="adminUserReportMap">
+		select
+			*
+		from
+			user_report
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="userReport" id="adminUserReportMap"></resultMap>
 
 </mapper>

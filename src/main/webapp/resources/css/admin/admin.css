@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+/* 글꼴 주아체 */
+@font-face {
+    font-family: 'BMJUA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* section */
+#admin-container {
+	width: 1200px;
+	margin: 0 auto;
+	margin-top: 10px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* sidebar */
+#sidebar {
+	float: left;
+	width: 200px;
+}
+
+.sidebar-nav {
+	margin-bottom: 10px;
+}
+
+.sidebar-nav-list {
+	padding: 5px;
+	list-style-type: none;
+	font-size: 18px;
+}
+
+/* search */
+#search {
+	width: 1000px; 
+	height: 50px; 
+	border-radius: 50px;
+}
+
+/* table */
+table {
+    text-align: center;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid black;
+}
+
+tr:first-child {
+	width: 30px;
+}
+
+#table-content:hover {
+	cursor: pointer;
+	background-color: #F2F3F6;
+}
