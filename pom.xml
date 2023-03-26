@@ -221,13 +221,13 @@
 		
 		<!-- #12.2. jackson의존 -->
 		<!-- #14. json처리용 jackson의존 -->   
-       	<!--
+     
        	<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.3</version>
 		</dependency> 
-		-->
+
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
