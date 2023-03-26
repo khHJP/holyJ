@@ -400,19 +400,28 @@ document.querySelector("#btnDelete").addEventListener('click', (e) =>{
 <!-- ★★★★★★ 250번 라인부터 시작  -   채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★ -->
 <script>
 document.querySelector("#chatBtn").addEventListener('click', (e) => {
-	// 1. 현재 로그인중인 사용자 아이디, 해당 게시글번호 가지고 craig_chat에 내역있는지 먼저 확인
-	const craigNo = '${craigboard.no}';
-	const sellerId = '${craigboard.member.memberId}';
+	const craigNo = ${craigboard.no}
 	$.ajax({
-		url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}/\${sellerId}`,
+		url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
 		method : 'GET',
+		dataType : "json",
 		success(data){
-			console.log(data)
+			const {memberId, chatroomId} = data;
+			
+			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
+			const name = "chatroom";
+			const spec = "width=500px, height=790px, scrollbars=yes";
+			open(url, name, spec);
 		},
 		error : console.log
-	});
-		
+		});		
+
 });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 </script>	
 
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
