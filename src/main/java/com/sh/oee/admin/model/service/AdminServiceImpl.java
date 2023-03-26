@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.oee.admin.model.dao.AdminDao;
 import com.sh.oee.member.model.dto.Member;
+import com.sh.oee.report.model.dto.BoardReport;
+import com.sh.oee.report.model.dto.UserReport;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -19,6 +21,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<Member> selectAdminMemberList() {
 		return adminDao.selectAdminMemberList();
+	}
+
+	@Override
+	public List<BoardReport> selectAdminBoardReport() {
+		return adminDao.selectAdminBoardReport();
+	}
+
+	@Override
+	public List<UserReport> selectAdminUserReport() {
+		return adminDao.selectAdminUserReport();
 	}
 
 }
