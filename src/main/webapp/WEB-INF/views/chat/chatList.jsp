@@ -172,7 +172,7 @@ main#chatWrap {
   
  <div id="chatLog" class="h-auto d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
  	
- 	<jsp:include page="/WEB-INF/views/chat/chat.jsp"/>
+ 	<jsp:include page="/WEB-INF/views/chat/craigChatroom.jsp"/>
  </div>
 </main>
 <script>

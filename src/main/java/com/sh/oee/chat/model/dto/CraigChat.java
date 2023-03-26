@@ -17,6 +17,7 @@ public class CraigChat  {
 	private String chatroomId; // 대화방id
 	@NonNull
 	private String memberId; // 참여자id
+	@NonNull
 	private int craigNo; // 게시글번호
 	private LocalDateTime regDate; // 등록일
 	private LocalDateTime delDate; // 퇴장일
