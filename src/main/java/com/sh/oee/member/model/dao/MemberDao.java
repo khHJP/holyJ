@@ -41,7 +41,7 @@ public interface MemberDao {
 	 */
 	int updateMember(Member member);
 	@Update("UPDATE member SET delete_date = sysdate WHERE member_id = #{ memberId }")
-	int memberDelete(Member member);
+	int memberDelete(String memberId);
 	/**
 	 * 하나 끝
 	 */

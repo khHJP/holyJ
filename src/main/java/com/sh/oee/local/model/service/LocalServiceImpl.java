@@ -11,7 +11,7 @@ import com.sh.oee.local.model.dao.LocalDao;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
-
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -43,6 +43,11 @@ public class LocalServiceImpl implements LocalService {
 		// TODO Auto-generated method stub
 		return localDao.selectLocalList(member);
 	}
+	@Override
+	public List<LocalComment> selectLocalCommentList(String memberId) {
+		// TODO Auto-generated method stub
+		return localDao.selectLocalCommentList(memberId);
+	}
 	// ----------------------------- 하나 끝 -----------------------------------------------
 	
 	//게시글 등록
@@ -67,4 +72,5 @@ public class LocalServiceImpl implements LocalService {
 	public int insertLocalAttachment(LocalAttachment attach) {
 		return localDao.insertLocalAttachment(attach);
 	}
+
 }

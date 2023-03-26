@@ -45,6 +45,18 @@
 		default
 	)
 </insert>
+<select id="selectLocalCommentList" resultMap="localCommentMap">
+	
+	select 
+		lc.* ,
+		l.*
+	from 
+		local_comment lc join local l 
+		on l.no = lc.local_no
+	where 
+		lc.writer = #{memberId}
 
+</select>
+<resultMap type="localComment" id="localCommentMap"></resultMap>	
 
 </mapper>

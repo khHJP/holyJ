@@ -64,13 +64,13 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMember(Member member) {
 		return memberDao.updateMember(member);
 	}
-	@Override
-	public int memberDelete(Member member) {
-		// TODO Auto-generated method stub
-		return memberDao.memberDelete(member);
-	}
 
 	
+	@Override
+	public int memberDelete(String memberId) {
+		// TODO Auto-generated method stub
+		return memberDao.memberDelete(memberId);
+	}
 	/**
 	 * 하나 끝
 	 */
@@ -98,6 +98,7 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return memberDao.selectMydongName(dongNo);
 	}
+
 
 
 	

@@ -22,10 +22,12 @@ td{
 	font-size: 25px;
     font-weight: 600;
 }
-#mannertmp{
-	padding-left : 30px;
-	font-size : 22px;
-	font-weight : 500;
+#tmp{
+	font-size: 17px;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+    padding: 3px
 }
 #proupdate{
     padding-left:70px;

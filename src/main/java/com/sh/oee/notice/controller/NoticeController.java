@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.oee.member.model.dto.Member;
@@ -42,7 +44,7 @@ public class NoticeController {
 		
 	}
 
-	 @ExceptionHandler
+	 
 	    @PostMapping("/insertKeyword.do")
 	    public String insertKeyword( @RequestParam String keyword, Authentication authentication, 
 	            RedirectAttributes redirectAttr) {
@@ -68,6 +70,14 @@ public class NoticeController {
 	        redirectAttr.addFlashAttribute("msg", "키워드를 성공적으로 등록했습니다.");
 	        return "redirect:/notice/noticeKeywordList.do";
 	        
+	    }
+	    
+	    @PostMapping("/deleteKeyword.do")
+	    public ResponseEntity<?> deleteKeyword(@RequestParam int no, RedirectAttributes redirectAttr){
+			log.debug("no = {}", no);
+			
+			redirectAttr.addFlashAttribute("msg", "키워드를 삭제했습니다.");
+			return noticeService.deleteKeyword(no);
 	    }
 	//-------------------------------하나 끝---------------------
 }

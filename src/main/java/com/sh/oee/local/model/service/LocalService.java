@@ -6,7 +6,7 @@ import java.util.Map;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
-
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -26,6 +26,8 @@ public interface LocalService {
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	List<Local> selectLocalList(Member member);
+	List<LocalComment> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------
+
 
 }
