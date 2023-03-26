@@ -17,13 +17,13 @@ import com.sh.oee.member.model.dto.Member;
 public interface LocalDao {
 
 	//동네생활 전체목록
-	List<Local> localList();
+	List<Local> selectLocalListByDongName(List<String> myDongList);
 	
 	//카테고리
 	@Select("select * from local_category")
 	List<Map<String, String>> localCategoryList();
 
-
+	//게시판 글등록
 	int insertLocalBoard(Local local);
 	
 	int insertLocalAttachment(LocalAttachment attach);
@@ -34,6 +34,9 @@ public interface LocalDao {
 	
 	List<LocalComment> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------
+
+	//게시글 한건 조회
+	Local selectLocalOne(int no);
 
 
 

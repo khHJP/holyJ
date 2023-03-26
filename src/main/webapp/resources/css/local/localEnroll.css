@@ -1,0 +1,69 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+input[type=file]::file-selector-button {
+  width: 100px;
+  height: 30px;
+  background: #fff;
+  border: 1px solid rgb(77,77,77);
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    background: rgb(77,77,77);
+    color: #fff;
+  }
+}
+
+input[type=file]{
+	padding-left:20px;
+}
+
+div#localEnrollContainer{
+	width:690px; 
+	margin : auto;
+	text-align:center;
+	padding-top: 50px;
+
+}
+
+input[type="button"] {
+	border-radius:10px;
+	border:none;
+	font-size:18px;
+	margin:auto;
+	padding:5px;
+	color:#7FB77E;
+}
+
+input[type="submit"] {
+	border-radius:10px;
+	color:#7FB77E;
+	border:none;
+	font-size:18px;
+	margin:auto;
+	padding:5px;
+}
+
+textarea {
+	width : 1400px;
+	height : 300px;
+	padding-left:40px;
+	border:none;
+}
+
+input[type="text"]{
+	width : 1400px;
+	padding-left:40px;
+	border:none;
+}
+
+select {
+	border:none;
+	width : 1400px;
+	height:50px;
+	color : gray;
+	padding-left:40px;
+}
+
+option{
+	padding-left:40px;
+}
