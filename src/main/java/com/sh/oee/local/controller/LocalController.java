@@ -214,12 +214,15 @@ public class LocalController {
 	}
 	// 댓글 가져오기
 	@GetMapping("/myLocalComment.do")
-	public void localComment(Model model) {		
-		//List<LocalComment> myLocalComment = localService.selectLocalCommentList();
+	public void localComment(Authentication authentication, Model model) {		
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
 		
-		//log.debug("myLocalComment = {}",myLocalComment);
+		List<LocalComment> myLocalComment = localService.selectLocalCommentList(memberId);
 		
-		//model.addAttribute("myLocalComment",myLocalComment);
+		
+		log.debug("myLocalComment = {}",myLocalComment);
+		
+		model.addAttribute("myLocalComment",myLocalComment);
 	}
 	
 	//-------------- 하나 끝 ------------------------------------------

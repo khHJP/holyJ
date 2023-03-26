@@ -18,7 +18,8 @@
 
 	<table>
 		<th>
-			<form name="profileUpdateFrm">
+				
+		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
 				<div class="avatar-upload">
 				       <div class="avatar-edit">
 				           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
@@ -28,11 +29,11 @@
 				       </div>
 				       <div class="avatar-preview">
 				       	<div>
-				           	<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>"  alt="프로필" id="imagePreview">
+				           	<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
 				           </div>
 				       </div>
 				   </div>
-				</form>
+				
 					<td>
 						<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
 					</td>
@@ -41,8 +42,6 @@
 	<br /><br />
 	<sec:authentication property="principal" var="loginMember"/>
 	<div id="update-container">
-	
-		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
 		<!-- form:form 태그는 유효 아이디값 하나가 hidden 으로 생성된다. -->
 			<div class="detail">
 				<label for="" id="update">닉네임</label>
@@ -56,11 +55,11 @@
 				<p id="comment">영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
 			<div class="detail">
 				<label for="" id="update">휴대폰 번호</label>
-				<input type="tel" class="form-control" name="phone" id="phone" maxlength="11" value="${loginMember.phone}" required/>
+				<input type="tel" class="form-control" name="phone" id="phone" maxlength="11" value='<sec:authentication property="principal.phone"/>' required/>
 			</div>
 				<p id="comment">-를 제외한 휴대폰번호를 입력해주세요.</p>
 				<!-- ------------------------------------------------ -->
-				<div class="detail">
+				<%-- <div class="detail">
 					<label for="" id="update">주소</label>
 					<select class="form-select" id="gu-select" name="gu" aria-label="Default select example">
 						<option selected>구 선택</option>
@@ -71,7 +70,7 @@
 					<select class="form-select" id="dong-select" name="dong" aria-label="Default select example">
 						<option selected>동 선택</option>
 						<c:forEach items="${dongList}" var="dong">
-							<option <%-- value='<sec:authentication property="principal.dongName"/>' --%> class="dong-option ${dong.guNo}">${dong.dongName}</option>
+							<option value='<sec:authentication property="principal.dongName"/>' class="dong-option ${dong.guNo}">${dong.dongName}</option>
 						</c:forEach>
 					</select>
 					<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example">
@@ -79,7 +78,7 @@
 						<option value="N">근처동네 3개</option>
 						<option value="F">근처동네 5개</option>
 					</select>
-				</div>
+				</div> --%>
 				<!-- ------------------------------------------------ 
 			 <div class="detail">
 				<label for="" id="update">지역</label>
@@ -94,7 +93,7 @@
 			</div>
 		</form:form>
 	</div>
-<form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form>
+<form:form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form:form>
 <script>
 	const deleteMember = () => {
 		if(confirm('정말 회원탈퇴하시겠습니까?')){
@@ -115,12 +114,12 @@
 		}
 		
 		// 비밀번호는 영문자, 숫자를 포함한 8자 이상
-		/*if(!/^[A-Za-z0-9]{8,}$/.test(password.value)){
+		if(!/^[A-Za-z0-9]{8,}$/.test(password.value)){
 			alert("비밀번호는 영문자, 숫자를 포함한 8자 이상을 입력해주세요");
 			password.select();
 			return false;
 		}
-		*/
+		
 		// 전화번호는 숫자 01012345678 형식
 		if(!/^010[0-9]{8}$/.test(phone.value)){
 			alert("-를 제외한 휴대폰 번호를 입력해주세요.");

@@ -33,7 +33,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		const no = tr.dataset.no;
 		console.log(no);
 	
-	//	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
+	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
 	});
 });		
 		
