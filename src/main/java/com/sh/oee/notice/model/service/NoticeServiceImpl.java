@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.sh.oee.member.model.dto.Member;
@@ -16,16 +17,23 @@ public class NoticeServiceImpl implements NoticeService {
 	@Autowired
 	private NoticeDao noticeDao;
 
-	@Override
-	public int insertKeyword(NoticeKeyword keyword, Member member) {
-		// TODO Auto-generated method stub
-		return noticeDao.insertKeyword(keyword, member);
-	}
 
 	@Override
 	public List<NoticeKeyword> selectKeywordList(Member member) {
 		// TODO Auto-generated method stub
 		return noticeDao.selectKeywordList(member);
+	}
+
+	@Override
+	public int insertKeyword(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return noticeDao.insertKeyword(param);
+	}
+
+	@Override
+	public ResponseEntity<?> deleteKeyword(int no) {
+		// TODO Auto-generated method stub
+		return noticeDao.deleteKeyword(no);
 	}
 
 

@@ -198,7 +198,7 @@ public class MemberController {
 
 	@GetMapping("/memberDetail.do")
 	public void memberDetail(Model model, Authentication authentication) {
-		List<Gu> guList = memberService.selectGuList();
+		/*List<Gu> guList = memberService.selectGuList();
 		log.debug("guList = {}", guList);
 		List<Dong> dongList = memberService.selectDongList();
 		log.debug("dongList = {}", dongList);
@@ -206,7 +206,7 @@ public class MemberController {
 		model.addAttribute("guList", guList);
 		model.addAttribute("dongList", dongList);
 		
-		log.debug("authentication = {}", authentication);
+		log.debug("authentication = {}", authentication);*/
 		log.debug("member = {}", model);
 		
 		Member princiapal = (Member) authentication.getPrincipal();
@@ -216,27 +216,26 @@ public class MemberController {
 	 
 	 @PostMapping("/memberUpdate.do")
 		public String memberUpdate(Member member, Authentication authentication) {
+		 
+			 String rawPassword = member.getPassword();
+			 String encodePassword = passwordEncoder.encode(rawPassword);
+			 member.setPassword(encodePassword);
+			 
 			log.debug("member = {}", member);
 			// 1. db변경
-			int result = memberService.updateMember(member);
-			// 2. security context의 인증객체 갱신
-			Member newMember = member;
-			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
-					newMember,
-					authentication.getCredentials(),
-					authentication.getAuthorities()
-			);
-			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+			int result = memberService.updateMember(member);			
 			
-			return "redirect:/member/memberDetail.do";
+			return "redirect:/member/myProfile.do";
 	 }
 	 
 	 @PostMapping("/memberDelete.do")
-	 public String memberDelete(Member member) {
-		 log.debug("member = {}", member);
+	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr) {
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("memberId = {}", memberId);
 		 // 1. db변경
-		 int result = memberService.memberDelete(member);
+		 int result = memberService.memberDelete(memberId);
 		 
+		 redirectAttr.addFlashAttribute("msg", "탈퇴되었습니다.");
 		 return "redirect:/";
 	 }
 	 

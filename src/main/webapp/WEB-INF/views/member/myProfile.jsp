@@ -26,14 +26,9 @@
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
+			<td><span id="tmp"><sec:authentication property="principal.manner"/></span></td>
 		</th>
-	</table>
-	<br />
-	<table id="mannertmp">
-		<th>
-			<td>매너온도</td>
-			<td><sec:authentication property="principal.manner"/></td>
-		</th>
+
 	</table>
 	<br />
 	<div id="proupdate">
@@ -47,7 +42,7 @@
 		</li>
 		<hr />
 		<li id="sala">
-		<a href="">받은매너평가
+		<a href="${pageContext.request.contextPath}/manner/myManner.do">받은매너평가
 		</a>
 		</li>
 		<hr />

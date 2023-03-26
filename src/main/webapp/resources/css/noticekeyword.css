@@ -45,6 +45,7 @@
     cursor: pointer;
     border-style: none;
 }
+
 .showkword{
 	display: inline-block;
     width: 90px;
@@ -52,5 +53,11 @@
     border: 1px solid;
     border-radius: 10px;
     margin-left: 10px;
-    background: lightgreen;;
+    background: lightgreen;
+}
+#command{
+	display: flex;
+}
+#deleteKeywordFrm{
+	float : right;
 }

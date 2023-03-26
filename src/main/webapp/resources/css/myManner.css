@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+.manner-container{
+	width: 1000px;
+    margin: 0 auto;
+}
+.sub_title{
+	text-align : left;
+	font-size: 30px;
+}
+#smile{
+	width:30px;
+	height:30px;
+}
+.manner-sub{
+	padding-left: 5px;
+    font-weight: bold;
+    font-size:20px;
+}
+.manner-ti{
+	display: flex;
+	padding-bottom: 10px;
+}
+#mannerhu{
+	width:30px;
+	height:30px;
+}
+.span1{
+	font-size: 20px;
+    padding: 6px 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+#count{
+	float: right;
+}
