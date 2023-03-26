@@ -1,10 +1,100 @@
 @charset "UTF-8";
+h5, h6 {
+	margin-bottom: 0;
+}
+label {
+	margin-bottom: 0;
+}
 
 /* togetherEnroll */
+.to-input {
+    width: 30rem;
+    height: 2rem;
+    border: 1px solid #868B94;
+    border-radius: 0.4rem;
+    padding: 0.35rem;
+}
+.data-box {
+	margin-top: 0.25rem;
+}
 .enroll-container {
 	width: 1200px;
 	margin: 0 auto;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 .enroll-wrap {
-	
+    width: 1050px;
+    margin: 0 auto;
+    margin-top: 6rem;
+}
+.page-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+[name="togetherEnrollFrm"] {
+    padding: 0 15.5rem;
+    margin-bottom: 5rem;
+}
+.content-box {
+	margin: 0 0 1rem;
+}
+.to-title {
+	margin: 0 0.4rem;
+    font-weight: 500;
+}
+.minus, .plus {
+	cursor: pointer;
+}
+.join-cnt {
+    border-style: none;
+    width: 25px;
+	margin-left: 19px;
+}
+.sub-box {
+	display: flex;
+	    align-items: center;
+} 
+.date-container {
+	display: flex;
+    align-items: flex-end;
+}
+.date-box {
+    margin-right: 9.5rem;
+}
+.time-box  {
+	display: flex;
+	flex-direction: column;
+}
+.time-wrap{
+	display: flex;
+}
+.time-radio {
+    margin-right: 0.5rem;
+}
+.select {
+	width: 70px;
+    border-radius: 0.3rem;
+}
+.content {
+	display: block;
+	margin-top: 0.5rem;
+    border-radius: 0.3rem;
+    overflow: scroll;
+}
+.btn-box {
+    text-align: center;
+}
+.to-submit {
+    width: 100%;
+    padding: 0.38rem;
+    border-radius: 0.3rem;
+    border: 1px solid;
+    background-color: #7FB77E;
+    color: #F2F3F6;
+    cursor: pointer;    
+    transition-duration: .2s;
+}
+.to-submit:hover {
+	background-color: #70a36f;
+    transition-duration: .2s;
 }
