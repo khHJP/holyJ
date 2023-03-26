@@ -13,7 +13,7 @@
 	rel="stylesheet">
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="회원목록관리" name="title" />
+	<jsp:param value="게시글신고관리" name="title" />
 </jsp:include>
 
 <section id="admin-container">
@@ -33,7 +33,7 @@
 		<ul class="sidebar-nav">
 			<h3>회원</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminMemberList.do" style="text-decoration: none; color: #56C271;"> 회원 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminMemberList.do" style="text-decoration: none; color: black;"> 회원 관리 </a></li>
 		</ul>
 		<ul class="sidebar-nav">
 			<h3>신고</h3>
@@ -47,40 +47,36 @@
 	</div>
 	<div id="admin-content">
 		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
-		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">회원 관리</h1>
+		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">게시글 신고 관리</h1>
 		<table>
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>ID</th>
-					<th>NICKNAME</th>
-					<th>PHONE</th>
-					<th>MANNER</th>
-					<th>DONG</th>
-					<th>DONG RANGE</th>
-					<th>REPORT</th>
-					<th>ENROLL DATE</th>
+					<th>WRITER</th>
+					<th>TYPE</th>
+					<th>POST</th>
+					<th>REASON</th>
+					<th>REG DATE</th>
+					<th>STATUS</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${not empty adminMemberList}">
-					<c:forEach items="${adminMemberList}" var="adminMember" varStatus="vs">
-						<tr id="table-content">
-							<td>${vs.count}</td>
-							<td>${adminMember.memberId}</td>
-							<td>${adminMember.nickname}</td>
-							<td>${adminMember.phone}</td>
-							<td>${adminMember.manner}</td>
-							<td>${adminMember.dongNo}</td>
-							<td>${adminMember.dongRange}</td>
-							<td>${adminMember.reportCnt}</td>
-							<td>${adminMember.enrollDate}</td>
+				<c:if test="${not empty adminBoardReport}">
+					<c:forEach items="${adminBoardReport}" var="adminBoardReport">
+						<tr class="table-content">
+							<td>${adminBoardReport.reportNo}</td>
+							<td>${adminBoardReport.writer}</td>
+							<td>${adminBoardReport.reportType}</td>
+							<td>${adminBoardReport.reportPostNo}</td>
+							<td>${adminBoardReport.reasonNo}</td>
+							<td>${adminBoardReport.regDate}</td>
+							<td>${adminBoardReport.status}</td>
 						</tr>
 					</c:forEach>
 				</c:if>
-				<c:if test="${empty adminMemberList}">
+				<c:if test="${empty adminBoardReport}">
 					<tr>
-						<td colspan="10">조회된 데이터가 없습니다.</td>
+						<td colspan="7">조회된 데이터가 없습니다.</td>
 					</tr>
 				</c:if>
 			</tbody>
