@@ -71,16 +71,16 @@ window.addEventListener('load', (e) => {
 <div class="enroll-container">
 	<div class="enroll-wrap">
 		<div class="page-title">
-			<h2>무엇을 같이할까요?</h2>
+			<h2>[수정] 무엇을 같이할까요?</h2>
 		</div>
-		<form:form name="togetherEnrollFrm">
+		<form:form name="togetherUpdateFrm">
 			<div class="together-wrap">
 				<div class="content-box">
 					<div class="sub-box">
 						<i class="bi bi-blockquote-left"></i>
 						<label class="to-title">제목</label>
 					</div>
-					<input type="text" name="title" class="to-input" id="title" placeholder="제목을 입력해주세요">
+					<input type="text" name="title" class="to-input" id="title" placeholder="제목을 입력해주세요" value="${together.title}">
 					<p class="error-msg title-error">제목을 입력해주세요.(5글자 이상)</p>
 				</div>
 				<div class="content-box">
@@ -90,7 +90,8 @@ window.addEventListener('load', (e) => {
 					</div>
 					<div class="data-box">
 						<c:forEach items="${categorys}" var="category" varStatus="vs">
-							<input class="category" type="radio" name="categoryNo" id="category${vs.count}" value="${category.CATEGORY_NO}">
+							<input class="category" type="radio" name="categoryNo" id="category${vs.count}" 
+								   value="${category.CATEGORY_NO}" ${together.categoryNo eq category.CATEGORY_NO ? 'checked' : ''}>
 							<label class="category-label" for="category${vs.count}">
 								${category.CATEGORY_NAME}
 							</label>
@@ -104,7 +105,7 @@ window.addEventListener('load', (e) => {
 							<i class="bi bi-diagram-2"></i>
 							<label for="joinCnt" class="to-title">인원</label>
 							<i class="bi bi-dash-circle minus"></i>
-							<input type="number" class="join-cnt" value="3" name="joinCnt" readonly/>
+							<input type="number" class="join-cnt" value="${together.joinCnt}" name="joinCnt" readonly/>
 							<i class="bi bi-plus-circle plus"></i>
 						</div>
 						<div class="content-box">
@@ -113,16 +114,16 @@ window.addEventListener('load', (e) => {
 								<label for="age_100" class="to-title">나이</label>
 							</div>
 							<div class="data-box">
-								<input type="radio" name="age" id="age_100" value="100" checked>
+								<input type="radio" name="age" id="age_100" 
+									   value="100" ${together.age eq age ? 'checked' : ''}>
 								<label for="age_100">누구나</label>
-								<input type="radio" name="age" id="age_20" value="20">
-								<label for="age_20">20대</label>
-								<input type="radio" name="age" id="age_30" value="30">
-								<label for="age_30">30대</label>
-								<input type="radio" name="age" id="age_40" value="40">
-								<label for="age_40">40대</label>
-								<input type="radio" name="age" id="age_50" value="50">
-								<label for="age_50">50대</label>
+								<c:forEach begin="20" end="50" var="age">
+									<c:if test="${age % 10 == 0}">
+										<input type="radio" name="age" id="age_${age}" 
+											   value="${age}" ${together.age eq age ? 'checked' : ''}>								
+										<label for="age_${age}">${age}대</label>
+									</c:if>
+								</c:forEach>
 							</div>
 						</div>
 						<div class="content-box">
@@ -131,11 +132,14 @@ window.addEventListener('load', (e) => {
 								<label for="gender_A" class="to-title">성별</label>
 							</div>
 							<div class="data-box">
-								<input type="radio" class="gender" name="gender" id="gender_A" value="A" checked>
+								<input type="radio" class="gender" name="gender" id="gender_A" 
+									   value="A" ${together.gender eq 'A' ? 'checked' : ''}>
 								<label for="gender_A">누구나</label>
-								<input type="radio" class="gender" name="gender" id="gender_F" value="F">
+								<input type="radio" class="gender" name="gender" id="gender_F" 
+									   value="F" ${together.gender eq 'F' ? 'checked' : ''}>
 								<label for="gender_F">여자만</label>
-								<input type="radio" class="gender" name="gender" id="gender_M" value="M">
+								<input type="radio" class="gender" name="gender" id="gender_M" 
+									   value="M" ${together.gender eq 'M' ? 'checked' : ''}>
 								<label for="gender_M">남자만</label>
 							</div>
 						</div>
@@ -186,21 +190,21 @@ window.addEventListener('load', (e) => {
 					<div class="content-box">
 						<i class="bi bi-geo-alt"></i>
 						<label class="to-title">장소</label>
-						<input type="text" name="place" class="to-input place" style="display: block;" placeholder="장소를 직접 입력해주세요!">
+						<input type="text" name="place" class="to-input place" style="display: block;" placeholder="장소를 직접 입력해주세요!" value="${together.place}">
 						<p class="error-msg place-error">장소를 입력해주세요.(5글자 이상)</p>
 					</div>
 				</div>
 				<div class="content-box">
 					<i class="bi bi-pencil-square"></i>
 					<label class="to-title">모임 내용</label>
-					<textarea rows="10" cols="65" class="content" name="content" style="resize: none;">내용을 작성해주세요.</textarea>
+					<textarea rows="10" cols="65" class="content" name="content" style="resize: none;">${together.content}</textarea>
 				</div>
 			</div>
 			<sec:authentication property="principal" var="loginMember"/>
 			<input type="hidden" name="writer" value="${loginMember.memberId}">
 			<div class="btn-box">
 				<input class="btn btn-cancel" type="button" value="취소" onclick="history.go(-1)" >
-				<input type="submit" value="등록하기" class="to-submit">
+				<input type="submit" value="수정하기" class="to-submit">
 			</div>
 		</form:form>
 	</div>
@@ -230,7 +234,7 @@ document.querySelector(".plus").addEventListener("click", (e) => {
 });
 
 /* 유효성검사 */
-document.togetherEnrollFrm.addEventListener('submit', (e) => {
+document.togetherUpdateFrm.addEventListener('submit', (e) => {
 	
 	const title = document.querySelector("#title");
 	const categorys = document.querySelectorAll(".category");

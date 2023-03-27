@@ -87,7 +87,10 @@
 								<!-- 날짜 (형식 바꿔야함) -->
 								<div class="to-time">
 									<i class="bi bi-calendar4-week"></i>
-									<p class="to-datetime">${together.dateTime}</p>
+									<p class="to-datetime">
+										<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
+										<fmt:formatDate value="${dateTime}" pattern="MM월 dd일 E요일 HH시 mm분"/>
+									</p>
 								</div>
 								<!-- 채팅 후 다시 작성 -->
 								<div class="to-cnt">

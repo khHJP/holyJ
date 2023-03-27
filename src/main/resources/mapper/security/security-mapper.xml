@@ -11,6 +11,8 @@
 			member
 		where 
 			member_id = #{username}
+			and
+			delete_date is null
 	</select>
 	
 	<select id="selectAuthorities" resultMap="authorityMap">
