@@ -120,6 +120,7 @@ carousel-control-prev-icon {
 }
 </style>
 <br>
+
 <c:if
 	test="${fn:length(craigboard.attachments) >= 1 && craigboard.attachments[0].reFilename != null}">
 	<div id="carouselExampleIndicators" class="carousel slide"
@@ -219,6 +220,12 @@ carousel-control-prev-icon {
 </table>
 <!-- contents -->
 <div id="crbigContainer">
+	<c:if test="${craigboard.state == 'CR1'}">
+	<span class="badge badge-success" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 예약중 </span>
+	</c:if>
+	<c:if test="${craigboard.state == 'CR3'}">
+	<span class="badge badge-secondary" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+	</c:if>
 	<p id="titletd">${craigboard.title}</p>
 
 	<!-- like 테이블에서 지금 로그인한 멤버가 이 게시물을 좋아요 한 이력이 없다면 .. 걍여기다가 img끼워넣음될듯 ajax -->
@@ -256,13 +263,21 @@ carousel-control-prev-icon {
 
 
 
-		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
+		<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  -->
+		<sec:authentication property="principal" var="loginMember" />
+		<c:if test="${craigboard.member.memberId != loginMember.memberId}">
 		<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
 		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
-
-
+		</c:if>	
+		
+		<!-- ★★★★ 로그인한사람 = 글쓴이  경우 채팅하기 버튼 ★★★★★  -->
+		<sec:authentication property="principal" var="loginMember" />
+		<c:if test="${craigboard.member.memberId == loginMember.memberId}">
+			<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
+		<!-- ★★★★ 채팅하기 버튼 ★★★★★  -->
+		</c:if>	
 	</div>
-</div>
+</div><br>
 <hr
 	style="width: 610px; margin: 0 auto; margin-top: 30px; margin-bottom: 30px; border: 1px solid lightgray" />
 
@@ -271,15 +286,15 @@ carousel-control-prev-icon {
 	<div id="map" style="width: 600px; height: 300px; border: none;"></div>
 
 	<sec:authentication property="principal" var="loginMember" />
-	<c:if test="${craigboard.member.memberId == loginMember.memberId}">
-		<button id="btnUpdate" type="button" class="btn btn-warning"
-			style="float: right; margin-top: 20px;">수정하기</button>
-		<button type="button" class="btn btn-dark"
-			style="margin-left: 30px; margin-right: -1px; margin-top: 20px; float: right">
-			삭제하기</button>
+	<c:if test="${craigboard.member.memberId == loginMember.memberId  }">
+		<button id="btnUpdate" type="button" class="btn btn-warning" style="float: right; margin-top: 20px;">수정하기</button>
+		<button type="button" id="btnDelete" class="btn btn-dark" style="margin-left: 30px; margin-right: -1px; margin-top: 20px; float: right">삭제하기</button>
 	</c:if>
 </div>
-
+<form:form id="craigDeleteFrm" name="craigDeleteFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/craig/craigBoardDelete.do?${_csrf.parameterName}=${_csrf.token}"  >
+	 <input type="hidden" name="no" id="delno" value="${craigboard.no}" >
+</form:form>
 
 
 
@@ -360,36 +375,71 @@ var infowindow = new kakao.maps.InfoWindow({
     position : iwPosition, 
     content : iwContent 
 });
-console.log( "infowindow ", infowindow  )  
 infowindow.open(map, marker); 
-
 </script>
+
+
+
+
 
 <sec:authentication property="principal" var="loginMember" />
 <c:if test="${loginMember.memberId == craigboard.writer }">       
 <script>
+
+const updateBtn = document.querySelector("#btnUpdate");
+const sale = "${craigboard.state}";
+
+if(sale == 'CR3'){
+	$(updateBtn).attr("disabled", true);
+	$(updateBtn).css("cursor", 'not-allowed');
+} 
+
+
 document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 	console.log(e.target);
 	const craigno = '${craigboard.no}'
 	location.href = `${pageContext.request.contextPath}/craig/craigUpdate.do?no=\${craigno}`;
 });
+
+document.querySelector("#btnDelete").addEventListener('click', (e) =>{
+	console.log(e.target);
+	if(confirm("정말 게시글을 삭제하시겠습니까 ⁉️ ")){
+		  document.craigDeleteFrm.submit();	
+		}	
+});
+
+document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
+	const craigNo = ${craigboard.no}
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
+		method : 'GET',
+		dataType : "json",
+		success(data){
+			const {memberId, chatroomId} = data;
+			
+			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
+			const name = "chatroom";
+			const spec = "width=500px, height=790px, scrollbars=yes";
+			open(url, name, spec);
+		},
+		error : console.log
+		});		
+
+});
+<!-- ★★★★★★★★★★★★  로그인한사람 나 == 글쓰니인경우  채팅방 들어가는 코드   ★★★★★★★★★★★★★ -->
+document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
+	const craigNo = ${craigboard.no}
+	location.href = `${pageContext.request.contextPath}/chat/chatList.do`;
+
+});
+<!--  ★★★★★★★★★★★★   채팅방 들어가는 코드   ★★★★★★★★★★★★★★★★★★★ -->
 </script>
 </c:if>
 
 
-
-
-
-
-
-
-
-
-
-
-
-<!--  앗 284로 내려옴 -->
-<!-- ★★★★★★ 250번 라인부터 시작  -   채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★ -->
+<!-- ★★★★★★ 411번 라인부터 시작  -   로그인한사람 나 != 글쓰니가 아닐경우 !! '채팅하기' 버튼일 경우 채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★-->
+<sec:authentication property="principal" var="loginMember" />
+<c:if test="${loginMember.memberId != craigboard.writer }">  
 <script>
 document.querySelector("#chatBtn").addEventListener('click', (e) => {
 	const craigNo = ${craigboard.no}
@@ -410,10 +460,7 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 
 });
 </script>	
-
-<!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
-
-
+</c:if>
 
 
 <br><br><br><br><br><br><br><br><br>
