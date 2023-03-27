@@ -3,6 +3,7 @@ package com.sh.oee.together.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -12,7 +13,6 @@ import com.sh.oee.together.model.dto.TogetherEntity;
 
 @Mapper
 public interface TogetherDao {
-
 
 	List<Together> selectTogetherList(Member member);
 	
@@ -24,5 +24,14 @@ public interface TogetherDao {
 	List<Together> selectTogetherListByDongName(List<String> myDongList);
 
 	Together selectTogetherByNo(int no);
+
+	int insertTogether(TogetherEntity together);
+
+	int insertTogetherChat(Map<String, Object> param);
+
+	@Delete("delete together where no = #{no}")
+	int togetherDelete(int no);
+
+	int togetherUpdate(TogetherEntity together);
 
 }

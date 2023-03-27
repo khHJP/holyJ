@@ -16,8 +16,8 @@ import com.sh.oee.member.model.dto.Member;
 
 import lombok.NonNull;
 
-@Transactional(rollbackFor = Exception.class)
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
