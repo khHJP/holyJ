@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.buy-container{
+	width: 1000px;
+    margin: 0 auto;
+}
+.sub_title{
+	text-align : left;
+	font-size: 30px;
+}
+#img{
+	width: 130px;
+	height: 130px;
+}
+
+#buyTitle{
+	font-size: 18px;
+	font-weight : 600;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+#hogi{
+	display: block;
+}

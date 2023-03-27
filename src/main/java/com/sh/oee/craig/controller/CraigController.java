@@ -31,6 +31,7 @@ import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.dto.CraigPage;
 import com.sh.oee.craig.model.service.CraigService;
+import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
 
@@ -610,17 +611,17 @@ public class CraigController {
 		  */
 	 }
 	 @GetMapping("/myBuyCraig.do")
-	 public void myBuyFCraig(Authentication authentication, Model model) {
+	 public void myBuyCraig(Authentication authentication, Model model) {
 		 // member  
-		 Member member = ((Member)authentication.getPrincipal());
-		 log.debug("member = {} ", member);
-		 /*
-			List<Craig> mySalCraig = craigService.mySalCraig(member);
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("member = {} ", memberId);
+		
+		 List<Craig> myBuyCraig = craigService.myBuyCraig(memberId);
 			
-			log.debug("mySalCraig = {}",mySalCraig);
+		log.debug("myBuyCraig = {}",myBuyCraig);
 			
-			model.addAttribute("mySalCraig",mySalCraig);
-		  */
+		model.addAttribute("myBuyCraig",myBuyCraig);
+		 
 	 }
 	 /*
 	  * 하나끝

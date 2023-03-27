@@ -9,7 +9,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/memberdetail.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberdetail.css" />
 
 </head>
 <body>
