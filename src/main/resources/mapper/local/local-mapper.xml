@@ -131,6 +131,4 @@
 
 </select>
 <resultMap type="localComment" id="localCommentMap"></resultMap>	
-
->>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 </mapper>

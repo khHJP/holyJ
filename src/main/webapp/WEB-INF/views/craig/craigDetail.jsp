@@ -409,8 +409,6 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 		});		
 
 });
-
-
 </script>	
 
 <!-- ★★★★★★   채팅방 들어가는 코드   ★★★★★★★ -->
