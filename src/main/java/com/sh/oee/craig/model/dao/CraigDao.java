@@ -6,10 +6,12 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
+import com.sh.oee.craig.model.dto.CraigPage;
 
 @Mapper
 public interface CraigDao {
@@ -47,5 +49,18 @@ public interface CraigDao {
 	
 	//select all
 	List<CraigAttachment> selectcraigAttachments(int no);
+
+	@Delete("delete from craig where no = #{no}")
+	int deleteCraigBoard(int no);
+
+	@Delete("delete from craig_attachment where craig_no = #{no}")
+	int deleteCraigBoardAttachment(int no);
+
+	//
+	int craigReadCount(int no);
+
+	
+	//페이지
+	int getContentCnt(List<String> dongList);
 
 }

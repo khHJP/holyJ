@@ -58,8 +58,15 @@ public class ChatController {
 		log.debug("구매자 = {}", memberId);
 		
 		// 2. 게시글 번호로 게시글객체 -> 판매자정보 꺼내기
-		Craig craig = craigService.selectcraigOne(craigNo);
+//		Craig craig = craigService.selectcraigOne(craigNo);
+//		String sellerId = craig.getWriter();
+		
+//----------------- 혜진 추가	-----------------------------------------			
+		boolean hasRead = true; // 원래 썼던 코드는 주석해두고, 혜진추가 0326
+		Craig craig = craigService.selectcraigOne(craigNo, hasRead);
 		String sellerId = craig.getWriter();
+//---------------------------------------------------------------------	
+		
 		log.debug("판매자 = {}", sellerId);
 		
 
@@ -143,9 +150,15 @@ public class ChatController {
 		Member otherUser = memberService.selectOneMember(otherUserId);
 //		log.debug("otherUser = {}", otherUser);
 		model.addAttribute("otherUser", otherUser);
-		
+
 		// 4. 해당게시글 찾기 
-		Craig craig = craigService.selectcraigOne(craigNo);
+//		Craig craig = craigService.selectcraigOne(craigNo); 
+
+//----------------- 혜진 추가	-----------------------------------------	
+		boolean hasRead = true; //혜진추가 0326
+		Craig craig = craigService.selectcraigOne(craigNo, hasRead); 
+//------------------------------------------------------------------	
+		
 		log.debug("craig = {}", craig);
 		model.addAttribute("craig", craig);
 		
