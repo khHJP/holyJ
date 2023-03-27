@@ -9,7 +9,7 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mylocal.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/local/mylocalCo.css" />
 
 </head>
 <body>
@@ -20,7 +20,7 @@
 		<div>
 			<ul class="local-ul">
 				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocal.do">게시글</a></li>
-				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocalComment.do">댓글</a></li>
+				<li><a class="command" id="local-li" href="${pageContext.request.contextPath}/local/myLocalComment.do">댓글</a></li>
 			</ul>
 		</div>
 		<hr />
@@ -28,8 +28,8 @@
 	<table id="tbl-board" class="table table-hover">
 		<c:forEach items="${myLocalComment}" var="localCo">
 				 <tr data-no="${localCo.localNo}" id="tr-table">
-					<td class="span1" id="toTitle">${localCo.content}</td>
-					<%-- <td class="span1" id="toTitle">${localCo.no.title}</td> --%>
+					<td class="span1" id="loContent">${localCo.content}</td>
+					<td class="span1" id="loTitle">'${localCo.title}'</td>
 				</tr>
 		</c:forEach>
 	</table>

@@ -9,7 +9,7 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mylocal.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/local/mylocal.css" />
 
 </head>
 <body>
@@ -19,7 +19,7 @@
 		<br />
 		<div>
 			<ul class="local-ul">
-				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocal.do">게시글</a></li>
+				<li><a class="board"id="local-li" href="${pageContext.request.contextPath}/local/myLocal.do">게시글</a></li>
 				<li><a id="local-li" href="${pageContext.request.contextPath}/local/myLocalComment.do">댓글</a></li>
 			</ul>
 		</div>

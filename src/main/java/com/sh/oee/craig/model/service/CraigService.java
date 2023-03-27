@@ -43,6 +43,10 @@ public interface CraigService {
 	//첨부파일 조회 
 	List<CraigAttachment> selectcraigAttachments(int no);
 
+
+	//---------------------하나 시작------------------------
+	List<Craig> myBuyCraig(String memberId);
+	//---------------------하나 끝-------------------------
 	
 	//게시글 + 첨부파일 삭제 - ok
 	int deleteCraigBoard(int no);

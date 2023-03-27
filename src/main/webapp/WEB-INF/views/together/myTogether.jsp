@@ -9,7 +9,7 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mytogether.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together/mytogether.css" />
 
 </head>
 <br /><br />
