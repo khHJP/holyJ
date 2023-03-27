@@ -34,7 +34,7 @@ public interface CraigService {
 	String selectMyCraigCategory(int categoryNo);
 
 	//update -사실은 insert도같이 
-	int updateCraigBoard(Craig craig, List<MultipartFile> upFiles);
+	int updateCraigBoard(Craig craig);
 
 	
 	//delete 원래 첨부파일

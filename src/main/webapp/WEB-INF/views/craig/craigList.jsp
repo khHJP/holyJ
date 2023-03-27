@@ -102,7 +102,7 @@
 	</div>
 	
 		<!-- whole List  -->
-		<h3 style="margin-top: 30px; text-align: center;">중고거래 인기매물</h3>
+		<h3 style="margin-top: 30px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
 		
 		<table id="craigWholeListTbl">
 		<tbody>
@@ -110,7 +110,7 @@
 			<c:if test="${vs.index%4==0}">
 				<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
 			</c:if>
-				  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 350px; padding: 10px">
+				  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
 					<div class="explains">
 						<div>
 						<%-- 예약중 / 판매완료만꺼내기	<p id="crtitle">${craig.state}</p> --%>
@@ -124,10 +124,18 @@
 						</c:if>
 							<p id="crtitle" class="crpp">${craig.title}</p>
 						<c:if test="${craig.price > 0}">
-							<p id="crprice" class="crpp"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
 						</c:if>
+	
+						<c:if test="${craig.state == 'CR1'}">
+							<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+						</c:if>
+						<c:if test="${craig.state == 'CR3'}">
+							<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+						</c:if>
+	
 						<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
-							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 14px;">나눔💚</p>
+							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 						</c:if>
 							<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
 							</div>

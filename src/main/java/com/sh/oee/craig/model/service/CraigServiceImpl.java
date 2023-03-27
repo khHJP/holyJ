@@ -80,7 +80,7 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.selectMyCraigCategory(categoryNo);
 	}
 
-	/**
+	
 	//update 
 	@Override
 	public int updateCraigBoard(Craig craig) {
@@ -103,46 +103,9 @@ public class CraigServiceImpl implements CraigService {
 		}
 		return result;
 	}
-**/
+
+
 	
-	@Override
-	public int updateCraigBoard(Craig craig, List<MultipartFile> upFiles) {
-		//글만등록 
-		int result =  craigDao.updateCraigBoard(craig);
-		log.debug("■ craig no = {}", craig.getNo());
-		
-		//craig에 원래있던번호 +방금 등록한 파일번호 ?
-		List<Object> upFiless = null;
-		
-		for(int i=0; i<craig.getAttachments().size(); i++ ) {
-			upFiless.add( craig.getAttachments().get(i).getAttachNo());
-		}
-		
-		// 지금 가지고 온 파일no와 비교 ?기존등록된 파일들고오기 
-		for(int i=0; i<upFiless.size(); i++) {
-	       int attachno = (int) upFiles.get(i).get
-	       
-	       if(! upFiles.contains(attachno) ) {
-	           craigDao.deleteCraigAttachment(attachno);
-	       }
-		}
-		
-		
-		//첨부파일등록
-		List<CraigAttachment> attachments = craig.getAttachments();
-		log.debug("■ 멀티플은 없는데 이게 찍힌다고 ? attachments = {}", attachments);
-		
-		
-		if(attachments.size() > 0 ) {
-	
-			for(CraigAttachment attach : attachments) {
-				
-				attach.setCraigNo(craig.getNo());
-				result = upinsertCraigAttachment(attach);
-			}	
-		}
-		return result;
-	}
 	
 	private int upinsertCraigAttachment(CraigAttachment attach) {
 		// TODO Auto-generated method stub

@@ -33,7 +33,7 @@ button, input, optgroup, select, textarea {
 	border: 1px solid gray; 
 }
 
-
+#title{width: 400px;}
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig2.css" />
@@ -59,33 +59,37 @@ button, input, optgroup, select, textarea {
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
 				 <c:if test="${ originalCraigFiles[0] != null }">
-				 	<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[0].reFilename }</span>
+				 	<span class="glyphicon glyphicon-camera" id="span1" aria-hidden="true">${originalCraigFiles[0].originalFilename }</span>
                 	<a href='#this' name='file-delete'>삭제</a>
-	                <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[0].attachNo >0 ? originalCraigFiles[0].attachNo : 0 }">
+	                <input type="hidden" name="attachNo" id="attachNo1" value="${originalCraigFiles[0].attachNo >0 ? originalCraigFiles[0].attachNo : 0 }">
                 </c:if>
 			</div>
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
 				<c:if test="${originalCraigFiles[1].reFilename  != null }">
-					<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[1].reFilename }</span>
+					<span class="glyphicon glyphicon-camera" id="span2" aria-hidden="true">${originalCraigFiles[1].originalFilename }</span>
 		            <a href='#this' name='file-delete'>삭제</a>
-        	        <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[1].attachNo >0 ? originalCraigFiles[1].attachNo : 0 }">
+        	        <input type="hidden" name="attachNo" id="attachNo2" value="${originalCraigFiles[1].attachNo >0 ? originalCraigFiles[1].attachNo : 0 }">
                 </c:if>
+                
+                
 			</div>	
 			<div id="col_img"  style="margin-top : 0px" >
 				<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
 				<c:if test="${originalCraigFiles[2].reFilename != null }">
-					<span class="glyphicon glyphicon-camera" aria-hidden="true">${originalCraigFiles[2].reFilename }</span>
+					<span class="glyphicon glyphicon-camera" id="span3" aria-hidden="true">${originalCraigFiles[2].originalFilename }</span>
 					<a href='#this' name='file-delete'>삭제</a>
-                	<input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[2].attachNo >0 ? originalCraigFiles[2].attachNo : 0 }">
+                	<input type="hidden" name="attachNo" id="attachNo3"  value="${originalCraigFiles[2].attachNo >0 ? originalCraigFiles[2].attachNo : 0 }">
                 </c:if>
                 
 			</div>	
 		</div>
 		<div class="input-group mb-3" style="padding:0px;">
 		  <div class="custom-file" >
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1"  multiple >
-		    <label class="custom-file-label" for="upFile1" >파일을 재선택하세요(최대3개까지 가능)</label>
+		  
+  		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple="multiple"  >
+		    <label class="custom-file-label" for="upFile1" >파일을 재선택하세요(최대3개까지 가능)</label><br>
+		
 		    <br><p style="margin-top: 150px; margin-left: -200px; font-weight: 300; font-size: 14px;">※ 여러장을 올리고 싶으시면 shift+이미지를 선택해보세요!</p>
 		  </div>
 		</div><br><br><br>
@@ -98,11 +102,13 @@ button, input, optgroup, select, textarea {
 				<th><label for="title"> 글 제목  </label></th>
 				<td style="max-width:650px;">
 					<input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" value="${craigboard.title}" required>
-					<select onclick = "selectState(this.value);" id="state" name="state" class="form-select" aria-label="Default select example" >
+					<div >
+					<select onclick = "selectState(this.value);"  class="custom-select"  id="state" name="state"  style="max-width:100px; height: 31px; border-radius: 10px"  >
 					    <option  value="CR1">예약중</option>
 					    <option  value="CR2">판매중</option>
 					    <option  value="CR3">판매완료</option>
 				    </select>	
+				    </div>
 				</td>
 
 			</tr>
@@ -251,9 +257,8 @@ document.querySelector("#pickPlace").addEventListener('click', (e) => {
 
 //state
 const selectState = (e) =>{
-	console.log( e);
-	console.log( "원래값", "${craigboard.state}");
-	
+	console.log( "원래값", e);
+//	console.log( "원래값", "${craigboard.state}");
 };
 </script>	
 
@@ -288,14 +293,27 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer").src = e.target.result; 
 //			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+
+			const span1 = document.querySelector("#span1");
+			const inputAttachNoone = document.querySelector("#attachNo1");
+			
+			console.log( img.files[0] );
+			span1.innerHTML = img.files[0].name;
+			inputAttachNoone.value = "";
 		};
 	}
 	if(img.files[1]){
 		const fr = new FileReader(); 
 		fr.readAsDataURL(img.files[1]); 
 		fr.onload = (e) => {
-			document.querySelector("#col_img_viewer2").src = e.target.result; 
-//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+			document.querySelector("#col_img_viewer2").src = e.target.result;
+
+			const span2 = document.querySelector("#span2");
+			const inputAttachNo = document.querySelector("#attachNo2");
+			
+			console.log( img.files[1] );
+			span2.innerHTML = img.files[1].name;
+			inputAttachNo.value = "";
 		};
 	}	
 	if(img.files[2]){
@@ -305,6 +323,14 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer3").src = e.target.result; 
 //			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
+//			const img3 = document.querySelector("#col_img_viewer3");
+			const span3 = document.querySelector("#span3");
+			const inputAttachThree = document.querySelector("#attachNo3");
+		
+			console.log( img.files[2] );
+			span3.innerHTML = img.files[2].name;
+			inputAttachThree.value = "";
+			
 		};	
 	}	
 
@@ -328,6 +354,11 @@ window.addEventListener('load', () => {
 	
 	const state = "${craigboard.state}";
 	document.querySelector("#state").value  = state;
+	
+	if(state.value == 'CR3'){
+		alert("판매완료로 지정할 시 다시는 '판매중' 혹은 '예약중'으로 변경이 불가합니다! ")	
+	}
+	
 	
 	const orgcate  = "${craigboard.categoryNo}";	
 	document.querySelectorAll("input[data-no]").forEach( (input)=>{
@@ -409,7 +440,46 @@ $(document).ready(function() {
           deleteFile($(this));
       });
       
+      <%--
+      $('.custom-file-label').on("click", function(e) {
+    	  
+   		  const pd = document.querySelector("#col_img_viewer");
+    		
+    	  const p = $(pd).parent();
+    	  console.log( "s나와라" );
+    	  console.log( p );
+     	 
+    	  console.log( p.children('img')[0] );
+      	  $(p).children('img').removeAttr('src');
+      	  
+      	  
+    	  $(p).children('span').remove();
+    	  $(p).children('a').remove();
+    	  $(p).children('input').remove();
+ 		
+    	  
+// <input type="hidden" name="attachNo" id="attachNo" value="${originalCraigFiles[0].attachNo >0 ? originalCraigFiles[0].attachNo : 0 }">
 
+      });
+      
+      $('.custom-file-input').on("click", function(e) {
+    	  
+    	  const delbtn = document.querySelector("a[name='file-delete']");
+
+   		  const pd = document.querySelector("#col_img_viewer");
+    		
+    	  const p = $(pd).parent();
+    	  console.log( "s나와라" );
+    	  console.log( p );
+     	 
+    	  console.log( p.children('img')[0] );
+      	  $(p).children('img').removeAttr('src');
+    	  $(p).children('span').remove();
+    	  $(p).children('a').remove();
+    	  $(p).children('input').remove();
+      });
+      --%>
+  
       function deleteFile(obj) {
     	
     	  const p = obj.parent();
@@ -422,15 +492,6 @@ $(document).ready(function() {
     	  $(p).children('span').remove();
     	  $(p).children('a').remove();
     	  $(p).children('input').remove();
- //   	  p.children('a')[0].remove();
- //   	  $('obj.parent()').children('input')[0].remove();
- //   	  const p = obj.parent();
-  //  	  obj.parent().children().remove();
-
-//    	  console.log(obj.parent().children());
- //   	  obj.parent().children().innerHTML += `<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">`;
-    	  
-//          obj.parent().remove();
       }
   })
 

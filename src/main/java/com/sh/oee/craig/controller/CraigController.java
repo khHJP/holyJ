@@ -36,6 +36,7 @@ import com.sh.oee.member.model.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @RequestMapping("/craig")
 @Controller
@@ -79,15 +80,6 @@ public class CraigController {
 		
 		List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
 	 // log.debug( "■ craigCategory = {}", craigCategory);
-		
-
-
-			
-		
-		
-		
-		
-		
 		
 		// paging 
 		int limit = 12; //한페이지당 조회할 게시글 수 
@@ -404,45 +396,42 @@ public class CraigController {
 		 	Craig craigboard  = craigService.selectcraigOne(no, hasRead);
 		 
 		 	
-		 	// 기존에있던 attachment db를 끌고왓으면 이전에 저장된거 끌고올수있음 ex) 90 91 92 
+		 	// attachment db 조회 ex) 90 91 92 
 			List<CraigAttachment> originalCraigFiles  = craigService.selectcraigAttachments(no);
-			
-			
-			// originalCraigFiles을 list에 넣기 
-			List<Integer> orifileno = new ArrayList<>();
+			List<Integer> orifileno = new ArrayList<>(); // list에 넣기 
 			 
 			 for(int i=0; i<originalCraigFiles.size();  i++) {
 				 orifileno.add( originalCraigFiles.get(i).getAttachNo());
 			 }
 			 
-			 log.debug( "■ orifileno(원래 db에 있던애들_: " + orifileno ); 
-			 log.debug( "■ 넘어온 attachNo(내가 지운거만 안넘어옴 ex_(90) 91 92 +93 : " + attachNo );
+			 log.debug( "■ orifileno(원래 db에 있던애들_: " + orifileno ); //90 91 92
+			 log.debug( "■ 넘어온 attachNo(내가 지운거만 안넘어옴 ex_(90) 91 92 +93 : " + attachNo ); // 91 92
 
+			 List<Integer> delList =  new ArrayList<>();
 			 
-			 
-			 
-			 //지울경우 90일 경우 
-			 int delno = 0;
+			 // case - delete [90일 경우   ex_(90) 91 92 +93] 
+			 orifileno.removeAll( attachNo );  // 대신 원본 배열 변형생김 
 			 for(int i=0; i<orifileno.size(); i++) {
-				 if( !orifileno.contains(attachNo)) {				 
-
-					 delno = orifileno.get(i);
-					 log.debug( "■ delno지워야되는번호  : " + delno);
-					 
-					 int delResult = craigService.deleteCraigAttachment(delno);
-					 log.debug( "■ 사진 지움 여부 : " + delResult );						 
-				 }
-			 }	
-			 
+				 int delno = orifileno.get(i);
+				 delList.add(delno);
+				 
+				 log.debug( "■ delno 지워야되는번호  : " + delList);
+				 
+				 int delResult = craigService.deleteCraigAttachment(delList.get(i));
+				 log.debug( "■ 사진 지움 여부 : " + delResult );						 
+			 }
 			 
 			 
 			for(MultipartFile upFile : upFiles) {
+					int i =0;
 					log.debug("upFile = {}", upFile);
 					log.debug("upFile - = {}", upFile.getOriginalFilename());
 					log.debug("upFile-size = {}", upFile.getSize());	
 				
 					if(upFile.getSize() > 0 ) {//1-1) 저장할거찾는중  
-						 log.debug( "♠♠♠ UPFILE : " + upFile ); //뭐가넘어오지 ?  
+						 log.debug( "♠♠♠ UPFILE : " + upFile ); //뭐가넘어오지 ? 91 92 93인가?   
+// ♠♠♠ UPFILE : MultipartFile[field="upFile", filename=chair3.png, contentType=image/png, size=216132]
+						 
 						String renamedFilename =  OeeUtils.renameMultipartFile( upFile );
 						String originalFilename = upFile.getOriginalFilename();
 						File destFile = new File(saveDirectory, renamedFilename);
@@ -455,24 +444,23 @@ public class CraigController {
 						
 						//1-2) attachment 객체생성 및  board에 추가
 						CraigAttachment attach = new CraigAttachment();
-					
-						if( attach.getAttachNo() != delno) { // 90이 아니면 저장해라 그럼 91 92 93 다시 되나?
-
+					   
+//						if( attach.getAttachNo() !=  attachNo.get(i) ) { // 91 92는 이미있으니까 저장하면 안됨 
+							log.debug("여기들어와야돼 : ", attach );
+//							i++;	
 							attach.setReFilename(renamedFilename);
 							attach.setOriginalFilename(originalFilename);
 							craig.addAttachment(attach);
-					
-						}
+//						}
 						
-				}//end multi
-			
-			 
-					//새로 파일 저장까지 추가 
-					int result = craigService.updateCraigBoard(craig, upFiles);
-					log.debug( "■ update_result : " + result );
-		
-					redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 수정했습니다😘");
-					return "redirect:/craig/craigDetail.do?no="+no;
+					}//end if
+			}// end multi 
+					 
+			int result = craigService.updateCraigBoard(craig);
+			log.debug( "■ real_update_result : " + result );
+
+			redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 수정했습니다😘");
+			return "redirect:/craig/craigDetail.do?no="+no;
 
 	 }
 	 
