@@ -4,10 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.together.model.dao.TogetherDao">
 
-		
-	<resultMap type="together" id="togetherMap"></resultMap>	
-
-	<!-- 하나 시작 -->
+	<!-- 🐱 하나 시작 🐱 -->
 	<select id="selectTogetherList" resultMap="togetherMap">
 	select
 		*
@@ -16,9 +13,11 @@
 	where
 		writer = #{memberId}
 	</select>
-	<!-- 하나 끝 -->
 	
-	<!-- 정은 시작 -->
+	<resultMap type="together" id="togetherMap"></resultMap>	
+	<!-- 🐱 하나 끝 🐱 -->
+	
+	<!-- 👻 정은 시작 👻 -->
 	<!-- 동네 범위에 맞는 게시글 찾기 -->
 	<select id="selectTogetherListByDongName" resultMap="togetherDetailMap">
 		select
@@ -99,7 +98,65 @@
 		</association>
 	</resultMap>
 	
-	<!-- 정은 끝 -->
+	<!-- 게시글 등록 -->
+	<insert id="insertTogether">
+		insert into 
+		    together
+		values (
+		    SEQ_TOGETHER_NO.nextval,
+		    #{writer},
+		    #{categoryNo},
+		    #{title},
+		    #{content},
+		    #{joinCnt},
+		    #{dateTime},
+		    #{place},
+		    #{gender},
+		    #{age},
+		    default,
+		    default
+		)
+		<selectKey order="AFTER" resultType="_int" keyProperty="no">
+			select 
+				SEQ_TOGETHER_NO.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<!-- 같이해요 등록시 글쓴이 채팅방에 등록 -->
+	<insert id="insertTogetherChat">
+		insert into 
+		    together_chat
+		values (
+		    SEQ_TOGETHER_CHATROOM_NO.nextval,
+		    #{togetherNo},
+		    #{memberId},
+		    #{role},
+		    default,
+		    default
+		)
+	</insert>
+	
+	<!-- 같이해요 수정 -->
+	<update id="togetherUpdate">
+		update
+			together
+		set
+			writer = #{writer},
+			category_no = #{categoryNo},
+			title = #{title},
+			content = #{content},
+			join_cnt = #{joinCnt},
+			date_time = #{dateTime},
+			place = #{place},
+			gender = #{gender},
+			age = #{age}
+		where
+			no = #{no}
+	</update>
+	
+	<!-- 👻 정은 끝 👻 -->
 
 
 

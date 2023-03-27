@@ -9,7 +9,6 @@ import com.sh.oee.together.model.dto.TogetherEntity;
 
 public interface TogetherService {
 
-
 	List<Together> selectTogetherList(Member member);
 
 	List<Map<String,String>> selectTogetherCategory();
@@ -18,5 +17,10 @@ public interface TogetherService {
 
 	Together selectTogetherByNo(int no);
 
+	int insertTogether(TogetherEntity together);
+
+	int togetherDelete(int no);
+
+	int togetherUpdate(TogetherEntity together);
 
 }
