@@ -20,12 +20,28 @@
 		<!--부트스트랩 쓸 것-->
 			<!-- 카테고리 -->
 			<div class="category-box">
-				<select class="form-select" id="category-select" aria-label="Default select example">
-				  <option selected>카테고리</option>
-				  	<c:forEach items="${localCategory}" var="category">
-				  		<option data-no="${category.categoryNo}" value="${category.CATEGORY_NO}">${category.CATEGORY_NAME} </option>
-				  	</c:forEach>
-				</select>
+			 	<table>
+				<tr>
+				<th style="max-width : 100px;" ><label for="category"> 카테고리 </label></th>
+				<td style="max-width:650px; text-align: left">
+				<c:forEach items="${localCategory}" var="category"> 	
+					<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}"> <label for="categoryNo">${category.CATEGORY_NAME}</label> 
+				</c:forEach>
+				</td>
+			</tr>
+			</table>
+			 
+			<!--  
+			<select class="category-select" aria-label="Default select example">
+				<!--  <option selected> 카테고리 </option> -->
+				<c:forEach items="${localCategory}" var="category">
+					<option value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}">${category.CATEGORY_NAME}</option>
+				</c:forEach>
+			</select>
+			--> 
+			
+			
+			
 			</div>
 			<hr>
 			<div class="title-box">
@@ -43,40 +59,50 @@
 	</form>
 </div>
 <script>
-//카테고리
 
-document.querySelectorAll("option[data-no]").forEach( (option)=>{
+
+//카테고리
+document.querySelectorAll("input[data-no]").forEach( (input)=>{
+	
 	option.addEventListener('click', (e) => {
 		
-		const no = option.dataset.no;
-		console.log( "no",no );
-		
-		const optionValue = option.value;
-		console.log("optionValue", optionValue);
-	});
+		const no = input.dataset.no;
+		console.log( "no", no );
+
+		const optionValue = input.value;
+		console.log( "inputValue", inputValue );
+
+	})
 });
 
-
-//유효성 검사
-document.localEnrollFrm.onsubmit = (e) => {
+//유효성검사 
+document.craigEnrollFrm.onsubmit = (e) =>{
 	console.log ( e );
+
+	const title = e.target.title; 
+	const content  = e.target.content;
+
 	
-	const title = e.target.title;
-	const content = e.target.content;
 	
+	//제목 작성하지 않은경우 
 	if( !/^.+$/.test(title.value)){
-		alert("제목을 작성해주세요");
+		alert("제목을 작성해주세요!");
 		title.select();
 		return false;
 	}
 	
+	//내용 없는경우
 	if(!/^.|\n+$/.test(content.value)){
-		alert("내용을 작성해주세요");
+		alert("내용을 작성해주세요!");
 		content.select();
 		return false;
 	}
+	
 }
+</script>
 
+
+<script>
 //첨부파일
 document.querySelector("#upFile1").addEventListener('change', (e) => {
 	const img = e.target;
