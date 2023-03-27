@@ -8,7 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -50,6 +50,12 @@ public interface CraigDao {
 	//select all
 	List<CraigAttachment> selectcraigAttachments(int no);
 
+
+	//-----------------------하나시작------------------------
+	
+	List<Craig> myBuyCraig(String memberId);
+	//-----------------------하나시작------------------------
+
 	@Delete("delete from craig where no = #{no}")
 	int deleteCraigBoard(int no);
 

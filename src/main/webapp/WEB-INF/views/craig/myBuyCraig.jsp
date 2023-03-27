@@ -9,17 +9,36 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mylocal.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig/myBuyCraig.css" />
 
 </head>
 <body>
 <br /><br />
-	<div class="local-container">
-		<h1 class="sub_title">나의 구매내역</h1>
+	<div class="buy-container">
+		<h1 class="sub_title">구매내역</h1>
 		<br />
 	
-		<hr />
-	
+	<section id="board-container" class="container">
+		<table id="tbl-board" class="table">
+			<c:forEach items="${myBuyCraig}" var="buy">
+					 <tr data-no="${buy.no}" id="tr-table">
+				 		<td>
+							<c:if test="${buy.attachments[0].reFilename != null}">
+							   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${buy.attachments[0].reFilename}"/>
+							</c:if>
+							<c:if test="${buy.attachments[0].reFilename==null}">
+							    <img id="img" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/>
+							</c:if> 
+						</td>
+							<td class="span1" id="buyTitle">${buy.title}</td>
+							<td class="span1" id="buyPlace">${buy.placeDetail}</td>
+							<td class="span1" id="buyCom">거래완료</td>						
+							<td class="span1" id="buyPrice">${buy.price}</td>
+						</tr>
+						<td id="hogi">보낸 후기 보기</td>
+			</c:forEach>
+		</table>
+	</section> 
 	</div>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
@@ -28,7 +47,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		const no = tr.dataset.no;
 		console.log(no);
 	
-	//	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
+	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
 	});
 });		
 		
