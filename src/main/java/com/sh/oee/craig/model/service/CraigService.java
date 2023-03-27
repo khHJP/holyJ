@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.dto.CraigEntity;
+import com.sh.oee.craig.model.dto.CraigPage;
 
 public interface CraigService {
 
@@ -25,8 +27,9 @@ public interface CraigService {
 	int insertCraigAttachment(CraigAttachment attach);
 
 	//게시글+첨부파일 함께 조회 
-	Craig selectcraigOne(int no);
+	Craig selectcraigOne(int no, boolean hasRead);
 
+	
 	//내카테
 	String selectMyCraigCategory(int categoryNo);
 
@@ -40,9 +43,21 @@ public interface CraigService {
 	//첨부파일 조회 
 	List<CraigAttachment> selectcraigAttachments(int no);
 
+
 	//---------------------하나 시작------------------------
 	List<Craig> myBuyCraig(String memberId);
 	//---------------------하나 끝-------------------------
+	
+	//게시글 + 첨부파일 삭제 - ok
+	int deleteCraigBoard(int no);
+
+	
+	//조회수증가 - 보류 0325
+	int craigReadCount(int no);
+
+	
+	//페이지 나오게 
+	int getContentCnt(List<String> dongList );
 
 
 }

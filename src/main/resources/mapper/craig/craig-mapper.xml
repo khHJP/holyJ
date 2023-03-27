@@ -171,4 +171,33 @@ where
 <resultMap type="CraigAttachment" id="craigAttachMap">
 </resultMap>
 
+
+<update id="craigReadCount">
+	update craig 
+	set hits = hits +1 
+	where no = #{no}
+</update>
+
+
+<!--  페이지 구하기  -->
+<select  id="getContentCnt" resultType="_int">
+	select count(*)
+	from ( 
+             select  ca.*  
+             from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+             where rnum= 1 ) c  right join craig cr 
+                    on c.craig_no = cr.no
+              left   join  member m
+                    on cr.writer = m.member_id 
+              left join dong d
+                    on m.dong_no = d.dong_no
+              left join dong_range dr
+                    on d.dong_no = dr.dong_no
+	<where>
+		d.dong_name in
+		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+    </where>	
+</select>
 </mapper>
