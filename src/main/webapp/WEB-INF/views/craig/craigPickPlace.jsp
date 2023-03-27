@@ -71,7 +71,7 @@ body {
 		<input type="hidden"  name="latitude" id="platitude" value="" />
 		<input type="hidden"  name="longitude" id="longitude" value=""  />
 		<br><br>	
-		<div id="clickLatlng" style="font-size: 13px; margin : -20px 0 10px 20px; width:400px">
+		<div id="clickLatlng" style="font-size: 13px; visibility:hidden;  margin : -20px 0 10px 20px; width:400px">
 		</div>
 
 		<input style="margin-left : 160px" class ="inputbuttons"  type="button" id="placeCancel" value="취소" onclick="window.close();"/>		

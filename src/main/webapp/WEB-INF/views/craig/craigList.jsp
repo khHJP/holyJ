@@ -31,13 +31,12 @@
 	#writeCraigbtn:hover { border-color:  #28a745; }
 	
 	#memberInfo{
-		width: 120px;
+		width: 100px;
 		border:1px solid lightgray;
-		position: relative;
-		left: 420px;
-		top:71px;
-		height: 50px;
-		padding: 8px;
+		height: 38px;
+		padding: 6px;
+		padding-bottom : 12px;
+		vertical-align :middle;
 		border-radius: 5px 5px 5px 5px;
 		
 	}
@@ -51,54 +50,59 @@
 		width : 700px;	
 	}
 	
-	.explains{
-		margin-bottom: 50px;
-		width : 240px;
-		margin: auto;
+	.explains{ margin-bottom: 50px; width : 240px; margin: auto; }
+	
+	#eachimg{ border-radius: 15px 15px 15px 15px;  margin-bottom: 15px; }
+	
+	.page-link{ color: green; }
+	
+	.pne{ margin: 0 auto; }
+	
+	.pagination{ text-align: center; justify-content: center; }
+	
+	#searchToWriteDiv{
+		margin: 0 auto; text-align: center;
+		display: flex; justify-content: center; margin-left: -110px;
 	}
 	
-	#eachimg{
-		border-radius: 15px 15px 15px 15px; 
-		margin-bottom: 15px;
-	}
+	.searchdiv { margin-left: 1px; display: inline-block; width: 760px; }
 	
-	.page-link{
-		color: green;
-	}
-	
-	.pne{
-		margin: 0 auto;
-	}
-	
-	.pagination{
-	
-	text-align: center;
-	justify-content: center;
-	}
+/* header */
+.nav-link{ margin-top: -5px }
+.profile-wrap{ margin-top: 5px }
+.login-box { width: 140px;
+    display: flex; align-items: center;
+    justify-content: flex-end;  margin-top: -5px ;
+}
+
 </style>
-<%-- 해야되는거 - 사진뽑기 / read카운트 처리 / 페이징 --%>
-	 <span id="memberInfo" ></span>
-	 
-	   <div class="searchdiv" style="position: relative; top: 38px; left: 550px; ">
+<%-- 해야되는거 - read카운트 처리  --%>
+<br><br><br>
+	<div id="searchToWriteDiv">
+	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
+			<button type="button" style="width:160px; height:36px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    	중고거래 카테고리
+			</button>
+		  	<ul class="dropdown-menu">
+			  <c:forEach items="${craigCategory}" var="category">
+			    <li data-no="${category.no}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
+		   	  </c:forEach>
+			 </ul>
+		</div>
+		
+		<span id="memberInfo" ></span>
+		
+	    <div class="searchdiv">
 	      <input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
 	      <button type="submit" class="searchButton">
 	        <i class="fa fa-search"></i>
 	     </button>
        	 <button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
-	   </div>
-
-	   <div class="btn-group">
-		  <button type="button" style="width:160px; margin-left: 250px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    중고거래 카테고리
-		  </button>
-		  <ul class="dropdown-menu">
-		  <c:forEach items="${craigCategory}" var="category">
-		    <li data-no="${category.no}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
-	   	  </c:forEach>
-		  </ul>
-		</div>
+	    </div>
+	</div>
+	
 		<!-- whole List  -->
-		<h3 style="margin-top: 30px; text-align: center;">중고거래 인기매물</h3>
+		<h3 style="margin-top: 30px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
 		
 		<table id="craigWholeListTbl">
 		<tbody>
@@ -106,7 +110,7 @@
 			<c:if test="${vs.index%4==0}">
 				<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
 			</c:if>
-				  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 350px; padding: 10px">
+				  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
 					<div class="explains">
 						<div>
 						<%-- 예약중 / 판매완료만꺼내기	<p id="crtitle">${craig.state}</p> --%>
@@ -120,10 +124,18 @@
 						</c:if>
 							<p id="crtitle" class="crpp">${craig.title}</p>
 						<c:if test="${craig.price > 0}">
-							<p id="crprice" class="crpp"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
 						</c:if>
+	
+						<c:if test="${craig.state == 'CR1'}">
+							<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+						</c:if>
+						<c:if test="${craig.state == 'CR3'}">
+							<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+						</c:if>
+	
 						<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
-							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 14px;">나눔💚</p>
+							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 						</c:if>
 							<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
 							</div>
@@ -134,26 +146,40 @@
 		</c:if>
 		</c:forEach>
 		</tbody>
-		</table><br><br><br>
+		</table><br><br><br><br><br>
 
-		<nav aria-label="Page navigation example pne">
-		  <ul class="pagination">
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		        <span class="sr-only">Previous</span>
-		      </a>
-		    </li>
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    <li class="page-item"><a class="page-link" href="#">2</a></li>
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		        <span class="sr-only">Next</span>
-		      </a>
-		    </li>
-		  </ul>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<!--  pre   --> 
+	        <c:choose>
+	           <c:when test="${craigPage.prevPage <= 0 }">
+	             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+			    </c:when>
+	            <c:otherwise>	
+	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${craigPage.prevPage}">Previous</a></li>
+	 			</c:otherwise>
+	        </c:choose>
+	 		<!--  now --> 
+	        <c:forEach var="cpage"  begin="${craigPage.min}" end="${craigPage.max}">       
+	          <c:choose>
+				<c:when test="${cpage == craigPage.currentPage}">
+			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${cpage}">${cpage}</a></li>
+			    </c:when>			    
+			    <c:otherwise>
+			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=+${cpage}">${cpage}</a></li>
+			    </c:otherwise>
+			 </c:choose>  
+			</c:forEach>
+			 <!-- next -->
+		    <c:choose>
+	          <c:when test="${craigPage.max >= craigPage.pageCnt }">
+			    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+			  </c:when>	          
+	          <c:otherwise>
+			     <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			   </c:otherwise>
+	        </c:choose>    
+			</ul>
 		</nav>
 
 
@@ -193,9 +219,9 @@ document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 		console.log(e.target);
 		console.log( td );
 		
-		const crno = td.dataset.crno;
-		console.log( crno );
-		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+crno;
+		const no = td.dataset.crno;
+		console.log( no );
+		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;
 		
 	})
 })
@@ -223,5 +249,5 @@ window.addEventListener('load', () => {
 
 </script>
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
