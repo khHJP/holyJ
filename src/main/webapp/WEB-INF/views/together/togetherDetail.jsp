@@ -121,9 +121,9 @@ window.addEventListener('load', (e) => {
 			</div>
 			<div class="info appointmen">
 				<i class="bi bi-calendar4-week"></i>
-				<!-- 날짜 뭔가,, 잘못됐다,,, -->
 				<p class="datetime">
-					${together.dateTime}
+					<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
+					<fmt:formatDate value="${dateTime}" pattern="MM월 dd일 E요일 HH시 mm분"/>
 				</p>
 			</div>
 			<div class="info place">
@@ -135,8 +135,8 @@ window.addEventListener('load', (e) => {
 				<button class="join btn">참가하기</button>
 				<!-- 😺 채팅 참여하기 😺 -->
 				<c:if test="${together.writer eq loginMember.memberId}">
-						<button class="btn">수정</button>
-						<button class="btn">삭제</button>
+						<button class="btn modify">수정</button>
+						<button class="btn delete">삭제</button>
 				</c:if>
 			</div>
 		</div>
@@ -151,6 +151,30 @@ window.addEventListener('load', (e) => {
 		</div>
 	</div>
 </div>
+<!-- 삭제하기 히든폼 -->
+<c:if test="${together.writer eq loginMember.memberId}">
+<form:form name="togetherDeleteFrm" action="${pageContext.request.contextPath}/together/togetherDelete.do" method="post">
+	<input type="hidden" value="${together.no}" name="no">
+</form:form>
+</c:if>
+<!-- 👻 정은 시작 👻 -->
+<script>
+/* 같이해요 수정 */
+document.querySelector(".modify").addEventListener('click', (e) => {
+	const no = '${together.no}';
+	location.href = '${pageContext.request.contextPath}/together/togetherUpdate.do?no=' + no;	
+});
+
+/* 같이해요 삭제 */
+document.querySelector(".delete").addEventListener('click', (e) => {
+	if(confirm('해당 게시글을 삭제하시겠습니까?')){
+		document.togetherDeleteFrm.submit();
+	}
+});
+
+</script>
+<!-- 👻 정은 끝 👻 -->
+
 <script>
 /* 클릭 잘되는지 한번 만들어봤어욤! 지우고 다시하셔도 됩니다! */
 document.querySelector(".join").addEventListener('click', (e) => {
