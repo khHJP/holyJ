@@ -110,6 +110,13 @@ public class CraigServiceImpl implements CraigService {
 	public List<CraigAttachment> selectcraigAttachments(int no) {
 		return craigDao.selectcraigAttachments(no);
 	}
+//-------------------------- 하나 시작 --------------------------------------
+	@Override
+	public List<Craig> myBuyCraig(String memberId) {
+		// TODO Auto-generated method stub
+		return craigDao.myBuyCraig(memberId);
+	}
+//-------------------------- 하나 끝 --------------------------------------
 
 }
 

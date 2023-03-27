@@ -40,5 +40,9 @@ public interface CraigService {
 	//첨부파일 조회 
 	List<CraigAttachment> selectcraigAttachments(int no);
 
+	//---------------------하나 시작------------------------
+	List<Craig> myBuyCraig(String memberId);
+	//---------------------하나 끝-------------------------
+
 
 }

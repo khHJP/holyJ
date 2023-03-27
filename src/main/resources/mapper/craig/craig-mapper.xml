@@ -145,6 +145,29 @@ where no = #{no}
 	where craig_no = #{no}
 </select>
 
+
+
+
+
+
+
+
+<!--******************************* 하나 시작 *******************************-->
+<select id="myBuyCraig" resultMap="craigMap">
+select
+	c.*,
+	ca.*
+from
+	craig c join craig_attachment ca
+	on c.no = ca.craig_no
+where
+	buyer = #{memberId}
+	
+</select>
+<!--******************************** 하나 끝 *********************************-->
+
+
+
 <resultMap type="CraigAttachment" id="craigAttachMap">
 </resultMap>
 

@@ -22,15 +22,8 @@
 	color: black;
 	font-size:20px;
 }
-#local-li:hover{
-	
-}
-#category{
-	background-color :#27ae60;
-	width: 115px;
-	border-radius: 10px;
-	color : white;
-	text-align: center;
+.command{	
+	font-weight:bold;
 }
 #tr-table{
     display: flex;
@@ -41,6 +34,12 @@ td.span1{
 	border-top:0px;
 	padding:3px
 }
-#toTitle{
-	font-size: 18px;
+#loContent{
+	font-size: 18px;	
+	font-weight:bold;
+}
+#loTitle{
+	padding-left: 10px;
+	font-size: 15px;
+	color: grey;
 }

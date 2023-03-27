@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocalComment {
+public class LocalComment extends LocalEntity{
 	private int commentNo;
 	private int localNo;
 	private String writer;
@@ -17,4 +17,6 @@ public class LocalComment {
 	private int commentLevel;
 	private String content;
 	private LocalDateTime regDate;
+	private LocalEntity localEntity;
+	
 }
