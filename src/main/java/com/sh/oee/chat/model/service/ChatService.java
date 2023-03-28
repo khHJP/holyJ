@@ -16,4 +16,10 @@ public interface ChatService {
 
 	String findOtherFromCraigChat(Map<String, Object> startUser);
 
+	List<String> findCraigChatList(Map<String, Object> craigChatMap);
+
+	String findLastChatByChatroomId(String chatroomId);
+
+	int insertCraigMsg(CraigMsg craigMsg);
+
 }
