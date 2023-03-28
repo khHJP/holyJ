@@ -17,7 +17,7 @@
 	<!-- 카테고리 넣어라 -->
 		<div class="memberInfo">
 		<div>
-			<span>${localdetail.CATEGORY_NAME}</span>
+			<span>${localdetail.categoryNo}</span>
 		</div>
 			<div class="profileimg">
 				<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">
