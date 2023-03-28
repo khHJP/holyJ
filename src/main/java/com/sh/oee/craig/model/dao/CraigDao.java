@@ -69,6 +69,11 @@ public interface CraigDao {
 	
 	//페이지
 	int getContentCnt(List<String> dongList);
+	
+	// 🐹 ------- 효정 start ---------- 🐹
+	@Select("select * from craig where no = #{craigNo}")
+	Craig findCraigByCraigNo(int craigNo);
+	// 🐹 --------- 효정 end ---------- 🐹	
 
 	//wish
 	int selectCraigWish(Map<String, Object> param);

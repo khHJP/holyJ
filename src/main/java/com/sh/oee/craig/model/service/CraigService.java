@@ -59,6 +59,7 @@ public interface CraigService {
 	//페이지 나오게 
 	int getContentCnt(List<String> dongList );
 
+
 	//wish 조회 
 	int selectCraigWish(Map<String, Object> param);
 
@@ -68,6 +69,11 @@ public interface CraigService {
 
 	//wish insert 
 	int InsertCraigWish(Map<String, Object> param);
+
+
+	// 🐹 ------- 효정 start ---------- 🐹	
+	Craig findCraigByCraigNo(int craigNo);
+	// 🐹 --------- 효정 end ---------- 🐹	
 
 
 }
