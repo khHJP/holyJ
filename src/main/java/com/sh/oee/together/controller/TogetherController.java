@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.Authentication;
@@ -65,18 +66,32 @@ public class TogetherController {
 	 * @param model
 	 */
 	@GetMapping("/togetherList.do")
-	public void togetherList(HttpSession session, Model model) {
+	public void togetherList(@RequestParam(defaultValue = "1") int currentPage, HttpSession session, Model model) {
+		log.debug("currentPage = {}", currentPage);
+		
 		// 나의 동네범위 꺼내기
 		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
 		log.debug("myDongList ={}", myDongList);
+
+		// 페이지처리
+		int limit = 4;
+		int offset = (currentPage - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		int totalCount = togetherService.getTogetherTotalCount(myDongList);
+		log.debug("totalCount = {}", totalCount);
+		
+		// 전체 페이지 수 계산
+		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
 		
 		// 업무로직
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
-		List<Together> togetherList = togetherService.selectTogetherListByDongName(myDongList);
+		List<Together> togetherList = togetherService.selectTogetherListByDongName(myDongList, rowBounds);
 		log.debug("togetherList = {}", togetherList);
 		
 		// view 전달
 		model.addAttribute("categorys", categorys);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("togetherList", togetherList);
 		
 	}
@@ -241,9 +256,28 @@ public class TogetherController {
 		int result = togetherService.togetherDelete(no);
 		
 		// view 전달
-		redirectAttr.addFlashAttribute("msg", "게시글을 삭제했습니다!");
+		redirectAttr.addFlashAttribute("msg", "게시글을 삭제했습니다😊");
 		
 		return "redirect:/together/togetherList.do";
+	}
+	
+	/**
+	 * 같이해요 모임종료
+	 * @param no
+	 * @param redirectAttr
+	 * @return
+	 */
+	@PostMapping("/togetherStatusUpdate.do")
+	public String togetherStatusUpdate(@RequestParam int no, RedirectAttributes redirectAttr) {
+		log.debug("no = {}", no);
+		
+		// 업무로직
+		int result = togetherService.togetherStatusUpdate(no);
+		
+		// view 전달
+		redirectAttr.addFlashAttribute("msg", "모임이 종료되었습니다!😊");
+		
+		return "redirect:/together/togetherDetail.do?no=" + no;
 	}
 	
 	/** 👻 정은 끝 👻 */

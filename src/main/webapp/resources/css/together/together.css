@@ -3,9 +3,15 @@
 /* togetherList */
 .together-list-container, .together-container {
     width: 1050px;
-	min-height: 1000px;
     margin: 0 auto;
     margin-top: 60px;
+}
+.together-list-container {
+	position: relative;
+	min-height: 780px;
+}
+.together-container {
+	min-height: 1000px;
 }
 .together-list-wrap {
     margin: 0 auto;
@@ -64,6 +70,7 @@
 	cursor: pointer;
 	border-radius: 5px;
 	background-color: #F2F3F6;
+	box-shadow: 5px 5px 12px #868B94;
 	transition-duration: 0.6s;
 }
 .together-header {
@@ -244,4 +251,16 @@ p {
 }
 .content-detail-box p {
 	font-size: 18px;
+}
+.pagebar-box {
+	position: absolute;
+    bottom: 5px;
+    width: 100%;
+} 
+.pagination a {
+	color: #56C271;
+}
+.page-item.active .page-link {
+    background: #56C271;
+    border-color: #56C271;
 }
