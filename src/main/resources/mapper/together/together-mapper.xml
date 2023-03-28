@@ -47,6 +47,35 @@
 			reg_date desc
 	</select>
 	
+	<!-- 같이해요 게시글 수 조회 -->
+	<select id="getTogetherTotalCount" resultMap="togetherTotalCountMap">
+		select
+			count(*)
+		from
+			(
+			select
+				t.*,
+    			(
+        		select 
+        			dong_name 
+        		from 
+            		member m right join dong d
+                		on m.dong_no = d.dong_no
+        		where 
+        			member_id = t.writer
+        		) dong_name
+			from
+    			together t
+    		)
+		where
+    		dong_name in 
+    		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+				#{dongName}
+			</foreach>
+	</select>
+	
+	<resultMap id="togetherTotalCountMap" type="java.lang.Integer" />
+	
 	<!-- 같이해요 한건 조회 -->
 	<select id="selectTogetherByNo" resultMap="togetherDetailMap">
 		select
