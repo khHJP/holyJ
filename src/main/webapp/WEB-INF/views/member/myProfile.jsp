@@ -32,7 +32,7 @@
 	</table>
 	<br />
 	<div id="proupdate">
-		<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/memberDetail.do'" id="probut">프로필 수정</button>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/pwCheck.do'" id="probut">프로필 수정</button>
 	</div>
 	<br />
 	<div id="proupdate">

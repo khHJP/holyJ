@@ -18,7 +18,7 @@
 		delete from
 			notice_keyword
 		where
-			no = #{no}
+			no = #{keywordNo}
 	
 	</delete>
 	<select id="selectKeywordList" resultMap="noticeKeywordMap">

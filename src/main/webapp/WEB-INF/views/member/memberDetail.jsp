@@ -58,34 +58,6 @@
 				<input type="tel" class="form-control" name="phone" id="phone" maxlength="11" value='<sec:authentication property="principal.phone"/>' required/>
 			</div>
 				<p id="comment">-를 제외한 휴대폰번호를 입력해주세요.</p>
-				<!-- ------------------------------------------------ -->
-				<%-- <div class="detail">
-					<label for="" id="update">주소</label>
-					<select class="form-select" id="gu-select" name="gu" aria-label="Default select example">
-						<option selected>구 선택</option>
-							<c:forEach items="${guList}" var="gu">
-				           		<option>${gu.guName}</option>
-					  		</c:forEach> 
-					</select>
-					<select class="form-select" id="dong-select" name="dong" aria-label="Default select example">
-						<option selected>동 선택</option>
-						<c:forEach items="${dongList}" var="dong">
-							<option value='<sec:authentication property="principal.dongName"/>' class="dong-option ${dong.guNo}">${dong.dongName}</option>
-						</c:forEach>
-					</select>
-					<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example">
-						<option selected>범위 선택</option>
-						<option value="N">근처동네 3개</option>
-						<option value="F">근처동네 5개</option>
-					</select>
-				</div> --%>
-				<!-- ------------------------------------------------ 
-			 <div class="detail">
-				<label for="" id="update">지역</label>
-				<input type="text" class="form-control" name="dongNo" id="dongNo" value='<sec:authentication property="principal.dongNo"/>' required/>
-			</div> 
-			-->
-				<p id="comment"></p>
 			<br />
 			<div id="update-btn">
 			<input type="submit" class="btn btn-outline-success" value="수정" >&nbsp;
@@ -104,7 +76,6 @@
 		const nickname = document.querySelector("#nickname");
 		const password = document.querySelector("#password");
 		const phone = document.querySelector("#phone");
-		const dongNo = document.querySelector("#dongNO");
 		
 		// 닉네임 - 한글 2~8자 이상
 		if(!/^[가-힣]{2,8}$/.test(nickname.value)){

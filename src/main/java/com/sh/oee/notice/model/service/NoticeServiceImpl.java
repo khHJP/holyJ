@@ -31,9 +31,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public ResponseEntity<?> deleteKeyword(int no) {
+	public int deleteKeyword(int keywordNo) {
 		// TODO Auto-generated method stub
-		return noticeDao.deleteKeyword(no);
+		return noticeDao.deleteKeyword(keywordNo);
 	}
 
 

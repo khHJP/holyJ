@@ -20,23 +20,32 @@
 	
 	<section id="board-container" class="container">
 		<table id="tbl-board" class="table">
-			<c:forEach items="${myBuyCraig}" var="buy">
-					 <tr data-no="${buy.no}" id="tr-table">
-				 		<td>
-							<c:if test="${buy.attachments[0].reFilename != null}">
-							   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${buy.attachments[0].reFilename}"/>
-							</c:if>
-							<c:if test="${buy.attachments[0].reFilename==null}">
-							    <img id="img" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/>
-							</c:if> 
-						</td>
-							<td class="span1" id="buyTitle">${buy.title}</td>
-							<td class="span1" id="buyPlace">${buy.placeDetail}</td>
-							<td class="span1" id="buyCom">거래완료</td>						
-							<td class="span1" id="buyPrice">${buy.price}</td>
-						</tr>
-						<td id="hogi">보낸 후기 보기</td>
-			</c:forEach>
+		<c:choose>
+			<c:when test="${not empty myBuyCraig}">
+				<c:forEach items="${myBuyCraig}" var="buy">
+						 <tr data-no="${buy.no}" id="tr-table">
+					 		<td>
+								<c:if test="${buy.attachments[0].reFilename != null}">
+								   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${buy.attachments[0].reFilename}"/>
+								</c:if>
+								<c:if test="${buy.attachments[0].reFilename==null}">
+								    <img id="img" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/>
+								</c:if> 
+							</td>
+								<td class="span1" id="buyTitle">${buy.title}</td>
+								<td class="span1" id="buyPlace">${buy.placeDetail}</td>
+								<td class="span1" id="buyCom">거래완료</td>						
+								<td class="span1" id="buyPrice">${buy.price}</td>
+							</tr>
+							<th id="hogi">보낸 후기 보기</th>
+				</c:forEach>
+			</c:when>
+				<c:otherwise>
+					<div id="empty">
+						<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
+					옹잉?? 구매하신 내역이 없어용!!</div>
+				</c:otherwise>
+			</c:choose>
 		</table>
 	</section> 
 	</div>
