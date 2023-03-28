@@ -163,6 +163,12 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.getContentCnt(dongList);
 	}
 	
+	// 🐹 ------- 효정 start ---------- 🐹	
+	@Override
+	public Craig findCraigByCraigNo(int craigNo) {
+		return craigDao.findCraigByCraigNo(craigNo);
+	}
+	// 🐹 --------- 효정 end ---------- 🐹	
 
 }
 

@@ -15,6 +15,7 @@ body {
     justify-content: center;
     overflow-x: hidden;
     overflow-y: hidden;
+    aspect-ratio: 16 / 9;
 }
 
 footer{

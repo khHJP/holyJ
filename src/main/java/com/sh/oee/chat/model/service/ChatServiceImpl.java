@@ -63,5 +63,32 @@ public class ChatServiceImpl implements ChatService {
 	public String findOtherFromCraigChat(Map<String, Object> startUser) {
 		return chatDao.findOtherFromCraigChat(startUser);
 	}
+
+	/**
+	 * SELECT
+	 * - CRAIG_CHAT에서 craigChatMap에 담아온 memberId, 게시글id로 판매자 채팅목록 조회
+	 */
+	@Override
+	public List<String> findCraigChatList(Map<String, Object> craigChatMap) {
+		return chatDao.findCraigChatList(craigChatMap);
+	}
+
+	/**
+	 * SELECT
+	 * - CRAIG_MSG에서 chatroomId에 해당하는 마지막 채팅 가져오기
+	 */
+	@Override
+	public String findLastChatByChatroomId(String chatroomId) {
+		return chatDao.findLastChatByChatroomId(chatroomId);
+	}
+
+	/**
+	 * INSERT
+	 * - 받아온 중고거래 채팅방의 메시지를 CRAIG_MSG에 삽입
+	 */
+	@Override
+	public int insertCraigMsg(CraigMsg craigMsg) {
+		return chatDao.insertCraigMsg(craigMsg);
+	}
 	
 }

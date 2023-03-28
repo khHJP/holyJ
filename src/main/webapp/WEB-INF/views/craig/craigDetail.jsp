@@ -408,29 +408,15 @@ document.querySelector("#btnDelete").addEventListener('click', (e) =>{
 		}	
 });
 
-document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
-	const craigNo = ${craigboard.no}
-	$.ajax({
-		url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
-		method : 'GET',
-		dataType : "json",
-		success(data){
-			const {memberId, chatroomId} = data;
-			
-			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-			const name = "chatroom";
-			const spec = "width=500px, height=790px, scrollbars=yes";
-			open(url, name, spec);
-		},
-		error : console.log
-		});		
 
-});
 <!-- ★★★★★★★★★★★★  로그인한사람 나 == 글쓰니인경우  채팅방 들어가는 코드   ★★★★★★★★★★★★★ -->
 document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 	const craigNo = ${craigboard.no}
-	location.href = `${pageContext.request.contextPath}/chat/chatList.do`;
 
+	const url = `${pageContext.request.contextPath}/chat/craigChatList.do?craigNo=\${craigNo}`;
+	const name = "craigChatList";
+	const spec = "width=500px, height=790px, scrollbars=yes";
+	open(url, name, spec);
 });
 <!--  ★★★★★★★★★★★★   채팅방 들어가는 코드   ★★★★★★★★★★★★★★★★★★★ -->
 </script>

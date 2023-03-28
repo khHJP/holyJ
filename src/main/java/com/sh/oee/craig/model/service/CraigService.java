@@ -59,5 +59,8 @@ public interface CraigService {
 	//페이지 나오게 
 	int getContentCnt(List<String> dongList );
 
+	// 🐹 ------- 효정 start ---------- 🐹	
+	Craig findCraigByCraigNo(int craigNo);
+	// 🐹 --------- 효정 end ---------- 🐹	
 
 }
