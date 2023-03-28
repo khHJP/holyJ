@@ -1,5 +1,6 @@
 package com.sh.oee.chat.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,60 @@ public class ChatController {
 	@Autowired
 	private MemberService memberService;
 	
-	@GetMapping("/chatList.do")
-	public void chatList(Model model) {
-		// 중고거래 채팅목록 조회
+	
+	/**
+	 * 중고거래 게시글 작성자가 본인 게시글에서 대화중인 채팅방 선택시
+	 */
+	@GetMapping("/craigChatList.do")
+	public void craigChatList(@PathVariable int craigNo, Authentication authentication, Model model) {
+		// 1. 로그인한 사용자 id 꺼내기 (판매자)
+		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
+		log.debug("판매자 = {}", memberId);
 
+		// 2. memberId, craigNo로 chatroom_id 조회
+		Map<String, Object> craigChatMap = new HashMap<>();
+		craigChatMap.put("memberId", memberId);
+		craigChatMap.put("craigNo", craigNo);
+
+		// 3. 해당 chatroomId로 모든 채팅방 조회해 List에 담기
+		List<String> craigChatList = chatService.findCraigChatList(craigChatMap);
+		log.debug("채팅방id = {}", craigChatList);
+		
+		// 대화상대 list
+		List<Member> chatMembers = new ArrayList<>();
+		
+		// 받은 메시지 list
+		List<CraigMsg> craigMsg = new ArrayList<>();
+		
+		// member + 마지막채팅 map 
+		Map<String, Object> chatMap = new HashMap<>();
+		
+		// 1. 멤버객체, 걔의마지막채팅 / 2. 멤버객체, 걔의 마지막채팅... 
+		
+		
+		// 4. chatroomId 순회 -> msg내역 조회
+		for(String chatroomId : craigChatList) {
+			craigMsg = chatService.findCraigMsgBychatroomId(chatroomId);
+			
+			String lastChat = chatService.findLastChatByChatroomId(chatroomId);
+			
+			// 4-1 . msg가 존재한다면?
+			if(lastChat != null) {
+				Map<String, Object> map = new HashMap<>();
+					map.put("memberId", memberId);
+					map.put("chatroomId", chatroomId);
+				// 대화상대 id를 찾아옴
+				String chatMember = chatService.findOtherFromCraigChat(map);
+				// id로 member객체 찾아 chatMembers 리스트에 추가
+				
+				chatMap.put("member", memberService.selectOneMember(chatMember));
+
+				
+				chatMembers.add(memberService.selectOneMember(chatMember));
+			}
+		}
+		// 5. model에 대화중인 member객체를 담은 chatMembers 리스트 넣기
+		model.addAttribute("chatMembers", "chatMembers");		
 	}
 	
 	/**
@@ -58,43 +109,34 @@ public class ChatController {
 		log.debug("구매자 = {}", memberId);
 		
 		// 2. 게시글 번호로 게시글객체 -> 판매자정보 꺼내기
-//		Craig craig = craigService.selectcraigOne(craigNo);
-//		String sellerId = craig.getWriter();
+		// 게시글정보만 가져오는 메소드 새로 추가함! 
+		Craig craig = craigService.findCraigByCraigNo(craigNo);
 		
-//----------------- 혜진 추가	-----------------------------------------			
-		boolean hasRead = true; // 원래 썼던 코드는 주석해두고, 혜진추가 0326
-		Craig craig = craigService.selectcraigOne(craigNo, hasRead);
 		String sellerId = craig.getWriter();
-//---------------------------------------------------------------------	
-		
 		log.debug("판매자 = {}", sellerId);
 		
-
 		// 3. memberId, craigNo로 chatroom_id 조회
 		// parameter는 1개만 가능하므로 Map에 담는다
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("craigNo", craigNo);
-		
+
 		String chatroomId = chatService.findCraigChatroomId(craigChatMap);
+	
+		 // 채팅방 첫 입장시 
+		if(chatroomId == null) { 
+		// 1. chatroomId 생성 chatroomId =
+		 generateCraigChatroomId(); log.debug("채팅방번호 = {}", chatroomId);
+		  
+		 // 2. craig_chat 테이블에 2행 insert (로그인한 사용자memberId, 게시글 작성자 sellerId)
+		 List<CraigChat> chatMembers = Arrays.asList( new CraigChat(chatroomId,
+		 memberId, craigNo), new CraigChat(chatroomId, sellerId, craigNo)); int result
+		 = chatService.createCraigChatroom(chatMembers); 
+		 }
+		 
+		 Map<String, Object> map = new HashMap<>(); map.put("memberId", memberId);
+		 map.put("chatroomId", chatroomId);
 
-		// 채팅방 첫 입장시
-		if(chatroomId == null) {
-			// 1. chatroomId 생성
-			chatroomId = generateCraigChatroomId();
-			log.debug("채팅방번호 = {}", chatroomId);
-			
-			// 2. craig_chat 테이블에 2행 insert (로그인한 사용자memberId, 게시글 작성자 sellerId)
-			List<CraigChat> chatMembers = Arrays.asList(
-					new CraigChat(chatroomId, memberId, craigNo),
-					new CraigChat(chatroomId, sellerId, craigNo));
-			int result = chatService.createCraigChatroom(chatMembers);
-		}
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("memberId", memberId);
-		map.put("chatroomId", chatroomId);
-		
 		return map;
 	}
 	
@@ -136,8 +178,8 @@ public class ChatController {
 		model.addAttribute("memberId", memberId);
 		
 		// 2. 전달받은 chatroomId로 대화내역 찾기
-		List<CraigMsg> craigMsg = chatService.findCraigMsgBychatroomId(chatroomId);
-		model.addAttribute("craigMsg", craigMsg);
+		List<CraigMsg> craigMsgs = chatService.findCraigMsgBychatroomId(chatroomId);
+		model.addAttribute("craigMsgs", craigMsgs);
 		
 		// 3. 대화상대 정보 찾기
 		// 채팅방 아이디로 채팅방을 조회하고, 나온 멤버중 본인을 제외한 멤버 가져옴
@@ -152,15 +194,11 @@ public class ChatController {
 		model.addAttribute("otherUser", otherUser);
 
 		// 4. 해당게시글 찾기 
-//		Craig craig = craigService.selectcraigOne(craigNo); 
+		Craig craig = craigService.findCraigByCraigNo(craigNo);
 
-//----------------- 혜진 추가	-----------------------------------------	
-		boolean hasRead = true; //혜진추가 0326
-		Craig craig = craigService.selectcraigOne(craigNo, hasRead); 
-//------------------------------------------------------------------	
-		
 		log.debug("craig = {}", craig);
 		model.addAttribute("craig", craig);
+		model.addAttribute("chatroomId", chatroomId);
 		
 		return "chat/craigChatroom";
 	}

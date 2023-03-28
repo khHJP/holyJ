@@ -129,5 +129,4 @@
 		lc.writer = #{memberId}
 </select>
 <resultMap type="localComment" id="localCommentMap"></resultMap>	
-
 </mapper>
