@@ -31,13 +31,13 @@
 <body>
 	<c:if test="${memberId != craig.writer}">
 		<div class="chat h-100">
-			<div class="card">
+			<div class="card" style="min-height: 760px; max-height: 100%; min-width: 500px;">
 				<!-- 채팅방 헤더 start -->
 				<div class="card-header msg_head align-top">
 					<div class="d-flex bd-highlight">
 						<div class="user_info">
-							<span class="nickname">${otherUser.nickname}</span> <span
-								class="manner badge bg-success">${otherUser.manner}</span>
+							<span class="nickname">${otherUser.nickname}</span> 
+							<span class="manner badge bg-success">${otherUser.manner}</span>
 						</div>
 						<!-- 메뉴버튼 이미지  -->
 						<svg id="action_menu_btn" class="bi bi-three-dots-vertical"
@@ -61,13 +61,12 @@
 				<!-- 게시글정보 start -->
 				<div id="craig_bar">
 					<div class="craig_info_wrap">
-						<c:if test="${craig.attachments[0].reFilename == null}">
-							<img src="/oee/resources/images/OEE-LOGO2.png" alt="" />
+			
+						<c:if test="${craigImg[0] == null}">	
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
 						</c:if>
-						<c:if test="${craig.attachments[0].reFilename != null}">
-							<img
-								src="/oee/resources/upload/craig/${craig.attachments[0].reFilename}"
-								alt="" />
+						<c:if test="${craigImg[0] != null}">
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/upload/craig/${craigImg[0].reFilename}"alt="" />
 						</c:if>
 						<div class="craig_text">
 							<p class="craig_status">
@@ -98,23 +97,27 @@
 					style="overflow-y: scroll;">
 					<ul class="list-unstyled">
 						<c:forEach items="${craigMsgs}" var="craigMsg">
-					
+							<!-- java.util.Date 빈등록  -->
+							<jsp:useBean id="sentTime" class="java.util.Date">
+								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
+							</jsp:useBean>
+							<!-- 내가 보낸 메시지일때 -->
+							<c:if test="${memberId == craigMsg.writer}">
+	
+								<li class="replies">
+									<p>${craigMsg.content}</p>	
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+								</li>
+							</c:if>
+							<!-- 다른사람이 보낸 메시지일때 -->
+							<c:if test="${memberId != craigMsg.writer}">
+								<li class="sent">
+									<img src="/oee/resources/upload/profile/${otherUser.profileImg}" alt="">
+									<p>${craigMsg.content}</p>	
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+								</li>
+							</c:if>
 						</c:forEach>
-
-						<li class="replies"><img
-							src="http://emilcarlsson.se/assets/harveyspecter.png" alt="">
-							<p>최근 7년동안 자바 분야의 베스트 셀러 1위를 지켜온 '자바의 정석'의 최신판. 저자가 카페에서 12년간
-								직접 독자들에게 답변을 해오면서 초보자가 어려워하는 부분을 잘 파악하고 쓴 책. 뿐만 아니라 기존의 경력자들을 위해
-								자바의 최신기능(람다와 스트림)을 자세하면서도 깊이있게 설명하고 있다. 저자가 2002년부터 꾸준히 집필해온 책으로
-								깊이와 세밀함 그리고 저자의 정성과 노력이 돋보이는 책이다. 12년간 저자가 카페에서 손수 답변해줬다는 사실은 이
-								책에 대한 신뢰를 갖게 한다.</p> <span class="msg_time">8:40 오후</span></li>
-
-						<li class="sent"><img
-							src="http://emilcarlsson.se/assets/mikeross.png" alt="">
-							<p>이렇게 난 또 (fiction in fiction) 잊지 못하고 (fiction in fiction) 내
-								가슴 속에 끝나지 않을 이야길 쓰고 있어 널 붙잡을게 (fiction in fiction) 놓지 않을게
-								(fiction in fiction in fiction) 끝나지 않은 너와 나의 이야기 속에서 오늘도 in
-								fiction</p> <span class="msg_time">8:40 오후</span></li>
 
 					</ul>
 				</div>
@@ -216,6 +219,7 @@ function convertTime(now){
 		default :
 			daynight = '오후';
 			hour -= 12;
+			hour = '0' + hour;
 			break;
 		}
 	} 
