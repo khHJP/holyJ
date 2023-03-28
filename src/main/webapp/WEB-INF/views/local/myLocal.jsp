@@ -26,27 +26,36 @@
 		<hr />
 <section id="board-container" class="container">
 	<table id="tbl-board" class="table table-hover">
-		<c:forEach items="${myLocal}" var="local">
-				 <tr data-no="${local.no}" id="tr-table">
-					<c:choose>
-						<c:when test="${local.categoryNo eq '1'}">
-								<td class="span1" id="category">동네생활</td>
-						</c:when>
-						<c:when test="${local.categoryNo eq '2'}">
-								<td class="span1" id="category">동네소식</td>
-						</c:when>
-						<c:when test="${local.categoryNo eq '3'}">
-								<td class="span1" id="category">분실/실종센터</td>
-						</c:when>
-						<c:otherwise>
-								<td class="span1" id="category">해주세요</td>
-						</c:otherwise>
-					</c:choose>
-						<td class="span1" id="toTitle">
-						<span id="qu">Q.&nbsp</span> 
-						${local.title}</td>
-				</tr>
-		</c:forEach>
+		<c:choose>
+				<c:when test="${not empty myLocal}">
+					<c:forEach items="${myLocal}" var="local">
+							 <tr data-no="${local.no}" id="tr-table">
+								<c:choose>
+									<c:when test="${local.categoryNo eq '1'}">
+											<td class="span1" id="category">동네생활</td>
+									</c:when>
+									<c:when test="${local.categoryNo eq '2'}">
+											<td class="span1" id="category">동네소식</td>
+									</c:when>
+									<c:when test="${local.categoryNo eq '3'}">
+											<td class="span1" id="category">분실/실종센터</td>
+									</c:when>
+									<c:otherwise>
+											<td class="span1" id="category">해주세요</td>
+									</c:otherwise>
+								</c:choose>
+									<td class="span1" id="toTitle">
+									<span id="qu">Q.&nbsp</span> 
+									${local.title}</td>
+							</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div id="empty">
+						<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
+					옹잉?? 작성하신 게시물이 없어용!!</div>
+				</c:otherwise>
+			</c:choose>
 	</table>
 </section> 	
 	</div>
@@ -57,7 +66,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		const no = tr.dataset.no;
 		console.log(no);
 	
-	//	location.href = '${pageContext.request.contextPath}/local/localDetail.do?no=' + no;
+		location.href = '${pageContext.request.contextPath}/local/localDetail.do?no=' + no;
 	});
 });		
 		

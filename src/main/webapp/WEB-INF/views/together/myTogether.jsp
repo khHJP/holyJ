@@ -17,12 +17,12 @@
 		<h1 class="sub_title">내 글 목록</h1>
 	
 <section id="board-container" class="container">
-	<c:set var="category" value="${categorys}" scope="page"/>
-	<table id="tbl-board" class="table table-striped table-hover">
-		<c:forEach items="${myTogether}" var="together">
-				 <tr data-no="${together.no}" id="tr-table" data-category="${category[togetherEntity.categoryNo].CATEGORY_NAME}">
-					<c:choose>
-						<c:when test="${not empty together.no}">
+	<c:set var="category" value="${categorys}"/>
+	<table id="tbl-board" class="table table-hover">
+			<c:choose>
+				<c:when test="${not empty myTogether}">
+					<c:forEach items="${myTogether}" var="together">
+							 <tr data-no="${together.no}" id="tr-table" data-category="${category[together.categoryNo - 1].CATEGORY_NAME}">
 							<c:if test="${together.status eq 'Y'}">
 								<td class="span1" id="status-y">모집중</td>
 							</c:if>
@@ -48,28 +48,15 @@
 							<td class="span1" id="toJoinCnt">
 								<img src="${pageContext.request.contextPath}/resources/images/humans.png" alt="" id="togetherimg"/>
 							${together.joinCnt}명</td>
+									</tr>
+							</c:forEach>
 						</c:when>
 						<c:otherwise>
-							<td colspan="5">옹잉?? 작성하신 게시물이 없어용!!</td>
+							<div id="empty">
+								<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
+							옹잉?? 작성하신 게시물이 없어용!!</div>
 						</c:otherwise>
 					</c:choose>
-				</tr>
-		</c:forEach>
-				<%-- <tr data-no="${together.no}">
-					<c:if test="${together.status eq 'Y'}">
-						<td class="span1" id="status-y">모집중</td>
-					</c:if>
-					<c:if test="${together.status eq 'N'}">
-						<td class="span1" id="status-n">모집완료</td>
-					</c:if>
-						<td>${together.age}</td>
-						<td>
-							<fmt:parseDate value="${together.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
-							<fmt:formatDate value="${dateTime}" pattern="yy-MM-dd HH:mm"/>
-						</td>
-						<td>${together.joinCnt}</td>
-					</tr>
-				</c:forEach> --%>
 	</table>
 </section> 	
 	</div>

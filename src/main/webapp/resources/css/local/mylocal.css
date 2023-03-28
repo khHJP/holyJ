@@ -11,7 +11,9 @@
 #qu{
 	color : green;
 }
-
+#tr-table:hover{
+	cursor:pointer;
+}
 .local-ul{
     display: flex;
     flex-direction: row;
@@ -43,4 +45,15 @@ td.span1{
 }
 #toTitle{
 	font-size: 18px;
+}
+#empty{
+	display: inline-block;
+    width: 1000px;
+    height: 150px;
+    font-size: 25px;
+	text-align : center;
+	margin-top : 50px;
+}
+#emptyimg{
+	width: 50px;
 }
