@@ -15,22 +15,22 @@ body {
     justify-content: center;
     overflow-x: hidden;
     overflow-y: hidden;
-    aspect-ratio: 16 / 9;
 }
 
 footer{
 	display: flex;
 }
-.chat{
+.chat {
 	margin-top: auto;
 	margin-bottom: auto; 
 	position: relative;
 	max-height: 100%;
 }
 
-.card{
+.card {
 	background-color: white !important;
 	margin-top: 0;
+	min-width: 500px;
 }
 
 .card-header{
@@ -84,7 +84,7 @@ footer{
 	background-color: #56C271 !important;
 }
 
-/* 중고거래 게시글 정보 */
+/********** 중고거래 게시글 정보 ************/
 #craig_bar{
 	height: 140px;
 	background-color: white;
@@ -102,6 +102,7 @@ footer{
 }
 #craig_bar .craig_info_wrap img {
 	width: 60px;
+	height: 60px;
 	border-radius:10%;
 	float: left;
 }
@@ -127,8 +128,8 @@ footer{
 
 #craig_bar button {
 	position: relative;
-	width: 100px;
-	margin-left: 35px;
+    margin-left: 35px;
+    margin-top: 3px;
 	font-size: 15px;
 }
 

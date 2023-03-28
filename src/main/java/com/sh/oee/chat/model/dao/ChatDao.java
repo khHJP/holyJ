@@ -20,7 +20,7 @@ public interface ChatDao {
 	@Insert("insert into craig_chat (chatroom_id, member_id, craig_no) values(#{chatroomId}, #{memberId}, #{craigNo})")
 	int insertCraigChatroom(CraigChat craigChat);
 
-	@Select("select * from craig_msg where chatroom_id = #{chatroomId}")
+	@Select("select * from craig_msg where chatroom_id = #{chatroomId} order by msg_no")
 	List<CraigMsg> findCraigMsgBychatroomId(String chatroomId);
 
 	@Select("select member_id from craig_chat where chatroom_id = #{chatroomId} and member_id != #{memberId}")
