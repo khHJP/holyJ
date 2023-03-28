@@ -15,6 +15,6 @@ public interface NoticeDao {
 
 	int insertKeyword(Map<String, Object> param);
 
-	ResponseEntity<?> deleteKeyword(int no);
+	int deleteKeyword(int keywordNo);
 
 }

@@ -63,7 +63,7 @@ public class NoticeController {
 	        log.debug("param = {}",param);
 	        /* log.debug("noticeKeyword = {}", noticeKeyword); */
 	        
-	    //    int result = noticeService.insertKeyword(param);
+	         int result = noticeService.insertKeyword(param);
 	     //   log.debug("result = {}",result);
 
 	        
@@ -73,11 +73,11 @@ public class NoticeController {
 	    }
 	    
 	    @PostMapping("/deleteKeyword.do")
-	    public ResponseEntity<?> deleteKeyword(@RequestParam int no, RedirectAttributes redirectAttr){
-			log.debug("no = {}", no);
+	    public int deleteKeyword(int keywordNo, RedirectAttributes redirectAttr){
+			log.debug("keywordNo = {}", keywordNo);
 			
 			redirectAttr.addFlashAttribute("msg", "키워드를 삭제했습니다.");
-			return noticeService.deleteKeyword(no);
+			return noticeService.deleteKeyword(keywordNo);
 	    }
 	//-------------------------------하나 끝---------------------
 }

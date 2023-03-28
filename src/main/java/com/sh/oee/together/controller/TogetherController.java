@@ -45,10 +45,12 @@ public class TogetherController {
 		Member member = ((Member)authentication.getPrincipal());
 		log.debug("member = {} ", member);
 		
+		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		List<Together> myTogether = togetherService.selectTogetherList(member);
 		
 		log.debug("myTogether = {}",myTogether);
 		
+		model.addAttribute("categorys", categorys);
 		model.addAttribute("myTogether",myTogether);
 	}
 		

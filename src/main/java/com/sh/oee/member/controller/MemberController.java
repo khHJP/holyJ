@@ -197,50 +197,60 @@ public class MemberController {
 	}
 
 	@GetMapping("/memberDetail.do")
-	public void memberDetail(Model model, Authentication authentication) {
-		/*List<Gu> guList = memberService.selectGuList();
-		log.debug("guList = {}", guList);
-		List<Dong> dongList = memberService.selectDongList();
-		log.debug("dongList = {}", dongList);
-
-		model.addAttribute("guList", guList);
-		model.addAttribute("dongList", dongList);
-		
-		log.debug("authentication = {}", authentication);*/
-		log.debug("member = {}", model);
-		
+	public void memberDetail(Authentication authentication) {
 		Member princiapal = (Member) authentication.getPrincipal();
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
 		
 	}
 	 
 	 @PostMapping("/memberUpdate.do")
-		public String memberUpdate(Member member, Authentication authentication) {
-		 
-			 String rawPassword = member.getPassword();
-			 String encodePassword = passwordEncoder.encode(rawPassword);
-			 member.setPassword(encodePassword);
-			 
+		public String memberUpdate(Member member, Authentication authentication,RedirectAttributes redirectAttr) {
 			log.debug("member = {}", member);
+			String rawPassword = member.getPassword();
+			String encodePassword = passwordEncoder.encode(rawPassword);
+			member.setPassword(encodePassword);
 			// 1. db변경
 			int result = memberService.updateMember(member);			
 			
-			return "redirect:/member/myProfile.do";
+			// 2. security context의 인증객체 갱신
+			Member newMember = memberService.selectOneMember(member.getMemberId());
+			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+					newMember,
+					authentication.getCredentials(),
+					authentication.getAuthorities()
+			);
+			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+			
+			redirectAttr.addFlashAttribute("msg", "회원 정보 수정 성공!");
+			
+			return "redirect:/member/memberDetail.do";
 	 }
 	 
 	 @PostMapping("/memberDelete.do")
-	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr) {
+	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr, SessionStatus status) {
 		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
 		 log.debug("memberId = {}", memberId);
 		 // 1. db변경
 		 int result = memberService.memberDelete(memberId);
 		 
+		 if(!status.isComplete()) {
+		status.setComplete();}
+		 
 		 redirectAttr.addFlashAttribute("msg", "탈퇴되었습니다.");
 		 return "redirect:/";
 	 }
 	 
-	 @PostMapping("/updateProfile.do")
-	 public void updateProfile(HttpServletRequest request, HttpServletResponse response) {
+	 @PostMapping("/pwCheck.do")
+	 public String pwdoubleCheck(Authentication authentication) {
+		 String password = ((Member) authentication.getPrincipal()).getPassword();
+		 List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
+		 
+		 
+		 
+		 return "redirect:/member/memberDetail.do";
+	 }
+	 @GetMapping("/pwCheck.do")
+	 public void pwCheck(Authentication authentication) {
 	 }
 
 	// @RequestMapping("/member") 작성
