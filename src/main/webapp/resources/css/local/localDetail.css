@@ -1,1 +1,18 @@
 @charset "UTF-8";
+.memberInfo{
+	display:flex;
+	justify-content:left;
+	margin-left:200px;
+	margin-top:70px;
+}
+.profileimg img{
+	width:100px;
+	height:auto;
+}
+.detailInfo{
+	height: 58px;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}

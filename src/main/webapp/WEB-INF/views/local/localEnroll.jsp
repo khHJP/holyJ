@@ -22,8 +22,8 @@
 			<div class="category-box">
 			 	<table>
 				<tr>
-				<th style="max-width : 100px;" ><label for="category"> 카테고리 </label></th>
-				<td style="max-width:650px; text-align: left">
+				<th ><label for="category"> 카테고리 </label></th>
+				<td style="text-align: center;">
 				<c:forEach items="${localCategory}" var="category"> 	
 					<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}"> <label for="categoryNo">${category.CATEGORY_NAME}</label> 
 				</c:forEach>
@@ -33,7 +33,7 @@
 			 
 			<!--  
 			<select class="category-select" aria-label="Default select example">
-				<!--  <option selected> 카테고리 </option> -->
+				 <option selected> 카테고리 </option>
 				<c:forEach items="${localCategory}" var="category">
 					<option value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}">${category.CATEGORY_NAME}</option>
 				</c:forEach>
@@ -49,8 +49,8 @@
 				<textarea class="localContent" name="content" id="content" placeholder="내용" required="required"></textarea>
 				<hr>
 			</div>
-		<!-- 첨부파일 미리보기 외 않되? -->	
-			<input type="file" name="upFile" id="upFile1" multiple>	 
+		
+			<input type="file" name="upFile" id="upFile1">	 
 		 <hr>
 		<div style="display:inline-block; margin: 0 30px;  float: right;">
 		<input type="button" class="cancelbtn" value="취소" onclick="history.go(-1)">
@@ -64,7 +64,7 @@
 //카테고리
 document.querySelectorAll("input[data-no]").forEach( (input)=>{
 	
-	option.addEventListener('click', (e) => {
+	input.addEventListener('click', (e) => {
 		
 		const no = input.dataset.no;
 		console.log( "no", no );
@@ -101,23 +101,4 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 }
 </script>
 
-
-<script>
-//첨부파일
-document.querySelector("#upFile1").addEventListener('change', (e) => {
-	const img = e.target;
-	
-	if(img.files[0]){
-		const reader = new FileReader(); 
-		reader.readAsDataURL(img.files[0]); 
-		reader.onload = (e) => {
-			document.querySelector("img_viewer").src = e.target.result; 
-		};	
-
-	else {
-		 파일 선택 취소
-		document.querySelector("img_viewer").src = "";
-	};
-});
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

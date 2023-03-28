@@ -16,18 +16,32 @@
 	<div class="localboard-wrap">
 	<!-- 카테고리 넣어라 -->
 		<div class="memberInfo">
+		<div>
+			<span>${localdetail.CATEGORY_NAME}</span>
+		</div>
 			<div class="profileimg">
 				<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">
 			</div>
 			<div class="detailInfo">
 				<p>${localdetail.member.nickname}</p>
-				<p>${localdetail.dong.dongName}</p> <!-- 왜 안보이지 ㄱ-(query오류ㅎㅎ 다시짜기) -->
+				<span>${localdetail.dong.dongName}</span>
 				&nbsp;
 				<fmt:parseDate value="${localdetail.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
 					<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
 			</div>
-			
 		</div>
+			<div>
+				<h4>${localdetail.title}</h4>
+			</div>
+			<div>
+				<p>${localdetail.content }</p>
+			</div>
+			<div>
+				<c:if test="${localdetail.attachments[0].reFilename!=null}">
+						    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+								    src="${pageContext.request.contextPath}/resources/upload/local/${localdetail.attachments[0].reFilename}"/></a><br/>
+						</c:if>
+			</div>
 		
 	</div>
 </div>

@@ -59,6 +59,7 @@
 						    <a><img id="localimg"  style="display : inline-block; height : 40px; width:40px; " 
 								    src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/></a><br/>
 						</c:if>
+						
 			</div>
 			</td>
 			<c:if test="${vs.index %1== 1}">
