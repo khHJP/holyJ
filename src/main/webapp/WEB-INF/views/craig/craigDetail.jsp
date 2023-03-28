@@ -241,11 +241,11 @@
 	<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
 
 	<c:if test="${findCraigWish == 0 or findCraigWish == null}">
-		<img id="heart_empty" style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
+		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
 		class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="임시이미지">
 	</c:if>
 	<c:if test="${findCraigWish == 1}">
-		<img id="heartRed" style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
+		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
 		class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
 	</c:if>
 	</span> 
@@ -269,8 +269,8 @@
 
 	<div id="crContent" style="font-size: 17px; height: 200px">${craigboard.content}</div>
 
-	<div style="margin-bottom: 10px; height: 90px">
-		<span>관심</span> <span id="spancrWish"></span> <span> | 채팅</span>
+	<div style="margin-bottom: 10px; height: 90px; ">
+		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> | 조회 </span> <span id="spancrReadCount"></span>
 		
 		<button type="button" class="btn btn-danger" style="display: inline-block; margin-top: -10px;">신고하기</button>
@@ -291,7 +291,7 @@
 	</div>
 </div>
 
-<hr style="width: 610px; margin: 0 auto; margin-top: 30px; margin-bottom: 30px; border: 1px solid lightgray" />
+<hr style="width: 610px; margin: 0 auto; margin-top: 50px; margin-bottom: 30px; border: 1px solid lightgray" />
 
 <div id="craigPlace">
 	<p style="text-align: left">거래 희망 장소</p>
@@ -324,7 +324,8 @@ window.addEventListener('load', () => {
 		dataType : 'json',
 		data : { dongNo : '${craigboard.member.dongNo}'},
 		success(data){
-			memberInfo.innerHTML =   data.dongName  ;
+			console.log(data);
+			memberInfo.innerHTML =   data.guName.guName + " " + data.dongName  ;
 		},
 		error : console.log
 	});
@@ -349,8 +350,22 @@ window.addEventListener('load', () => {
 		error : console.log
 	});
 
+
+	//관심수 
+	$.ajax({
+		url : `${pageContext.request.contextPath}/craig/selectCraigWishOne.do`,
+		method : 'get',
+		data : {no : '${craigboard.no}'},
+		dataType : 'json',
+		success(data){
+			console.log(data);
+			const spancrWish = document.querySelector("#spancrWish");
+			spancrWish.innerHTML = parseInt(data); 
+		},
+		error : console.log
+	})
 	
-});
+});//end function
 </script>
 
 
@@ -417,9 +432,7 @@ if(sale == 'CR3'){
 		<button id="btnUpdate" type="button" class="btn btn-warning" style="pointer-events: none; float: right; margin-top: 10px; margin-bottom: 60px; margin-left: 50px; padding-bottom:20px; height:37px; background-color:white; color:black; vertical-align: middle; " disabled >수정하기</button>
 			</span>`;
 	$(li).prepend(text);
---%>
-
-		
+--%>		
 } 
 
 
@@ -522,83 +535,75 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 	      });
 	      $(this).children().css('background', options.color);
 	    });
+	    
 	  },
 	  
 	  accordionMenu: function(options){
 	    
-	    var defaults = {
-	      speed: 400
-	    }
-	    var options =  $.extend(defaults, options);
+		    var defaults = {
+		      speed: 400
+		    }
+		    var options =  $.extend(defaults, options);
 	
-	    return this.each(function(){
-	      
-	      $(this).addClass('tb-mobile-menu');
-	      var menuItems = $(this).children('li');
-	      menuItems.find('.sub-menu').parent().addClass('tb-parent');
-	      $('.tb-parent ul').hide();
-	      $('.tb-parent > a').on('click', function(event) {
-	        event.stopPropagation();
-	        event.preventDefault();
-	        $(this).siblings().slideToggle(options.speed);
-	      });
-	      
-	    });
-	  }
+		    return this.each(function(){
+		      
+		      $(this).addClass('tb-mobile-menu');
+		      var menuItems = $(this).children('li');
+		      menuItems.find('.sub-menu').parent().addClass('tb-parent');
+		      $('.tb-parent ul').hide();
+		      $('.tb-parent > a').on('click', function(event) {
+		        event.stopPropagation();
+		        event.preventDefault();
+		        $(this).siblings().slideToggle(options.speed);
+		      });
+		      
+		    });
+	  }//accordionMenu
+	  
+	  
 	});
+	
+	
 	
 	$('#menu-toggle').threeBarToggle({color: 'green', width: 30, height: 25});
 	$('#menu').accordionMenu();
 
-//관심
-const hearts = document.querySelector(".hearts");
-
-hearts.addEventListener('click', (e) => {
-	console.log( e.target );
-<%--
-	$.ajax({
-		url : `${pageContext.request.contextPath}/craig/insertOrDeleteCraigWish.do`,
-		method : 'post',
-		beforeSend:(xhr)=>{
-		    xhr.setRequestHeader('${_csrf.headerName}','${_csrf.token}');
-		},
-		data : { wish : '${findCraigWish}',
-				   no : '${craigboard.no}',
-				 memberId : '<sec:authentication property="principal.username" />'},  //1 또는 0을 받아야 insert or delete를 한다
-		success(data){
-			console.log( data );			
-		},
-		error(jqxhr, textStatus, err ){
-			console.log(jqxhr, textStatus, err);
-		}	
-	});
---%>
-
-	const csrfHeader = "${_csrf.headerName}";
-	const csrfToken = "${_csrf.token}";
-	const headers = {};
-	headers[csrfHeader] = csrfToken;
-
-	$.ajax({
-		url : `${pageContext.request.contextPath}/craig/insertOrDeleteCraigWish.do`,
-		method : 'post',
-		headers,
-		data : { wish : '${findCraigWish}',
-				   no : '${craigboard.no}',
-				 memberId : '<sec:authentication property="principal.username" />'},  //1 또는 0을 받아야 insert or delete를 한다
-		success(data){
-			console.log( data );			
-		},
-		error(jqxhr, textStatus, err ){
-			console.log(jqxhr, textStatus, err);
-		}	
-	});
-
-
-});
-
 </script>
-
+<script>
+	document.querySelector(".hearts").addEventListener('click', (e) => {
+		const img = e.target;
+		console.log( img );
+	
+		const spancrWish = document.querySelector("#spancrWish")
+		const csrfHeader = "${_csrf.headerName}";
+		const csrfToken = "${_csrf.token}";
+		const headers = {};
+		headers[csrfHeader] = csrfToken;
+		
+		$.ajax({
+		    url : `${pageContext.request.contextPath}/craig/insertOrDeleteCraigWish.do`,
+		    method : 'post',
+		    headers,
+		    data : { no : '${craigboard.no}',
+		             memberId : '<sec:authentication property="principal.username" />'},  //1 또는 0을 받아야 insert or delete를 한다
+		    dataType : 'json',
+	           success(data){
+		    	if(data == 1){
+		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_red.png`;
+		    		spancrWish.innerHTML =  parseInt(spancrWish.innerHTML)+ parseInt(1);
+		    	}
+		    	else{
+		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_empty.png`;
+		    		spancrWish.innerHTML =  parseInt(spancrWish.innerHTML) - parseInt(1);
+	
+		    	}
+		    },
+		    error(jqxhr, textStatus, err ){
+		        console.log(jqxhr, textStatus, err);
+		    }   
+		})//end-ajax   
+	});//end of pushheart 
+</script>
 
 <br><br><br><br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

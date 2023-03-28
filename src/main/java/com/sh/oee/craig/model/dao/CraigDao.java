@@ -18,7 +18,7 @@ import com.sh.oee.craig.model.dto.CraigPage;
 public interface CraigDao {
 
 	//전체목록조회
-	List<Craig> craigList(RowBounds rowBounds,  List<String> dongList );
+	List<Craig> craigList( List<String> dongList,  RowBounds rowBounds );
 
 	@Select("select * from craig_category")
 	List<Map<String, String>> craigCategoryList();
@@ -78,10 +78,16 @@ public interface CraigDao {
 	//wish
 	int selectCraigWish(Map<String, Object> param);
 
-	@Delete("delete from craig_wish where no = #{no} and member_id = #{memberId}")
+	@Delete("delete from craig_wish where craig_no = #{no} and member_id = #{memberId}")
 	int DeleteCraigWish(Map<String, Object> param);
 
 	@Insert("insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, #{no},  #{memberId}, default)")
 	int InsertCraigWish(Map<String, Object> param);
+
+	@Select("select count(*) from craig_wish where craig_no = #{no}")
+	int selectCraigWishOne(int no);
+
+	//리스트에쓸거 wish
+	List<Integer> selectCraigWishCnt(List<String> dongList);
 
 }

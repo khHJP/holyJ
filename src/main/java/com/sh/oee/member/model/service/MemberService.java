@@ -44,6 +44,8 @@ String selectDongNearFar(int dongNo);
 //내동네
 String selectMydongName(int dongNo);
 
+List<Dong> selectMydongGuName(int dongNo);
+
 
 
 

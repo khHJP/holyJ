@@ -76,6 +76,7 @@
 
 <%-- 해야되는거 - read카운트 처리  --%>
 <br><br><br>
+	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
 	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
 			<button type="button" style="width:160px; height:36px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,7 +90,7 @@
 		</div>
 		
 		<span id="memberInfo" ></span>
-		
+		<%--  검색 --%>
 	    <div class="searchdiv">
 	    	<input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
 	    	<button type="submit" class="searchButton">
@@ -135,7 +136,8 @@
 							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
+								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+
 								</div>
 							</div>
 						</td>
@@ -146,7 +148,7 @@
 			</tbody>
 		</table><br><br><br><br><br>
 
-		<%-- paging --%>
+		<%-- 페이징 --%>
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<!--  pre   --> 
@@ -155,17 +157,17 @@
 	             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 			    </c:when>
 	            <c:otherwise>	
-	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${craigPage.prevPage}">Previous</a></li>
+	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>
 	 			</c:otherwise>
 	        </c:choose>
 	 		<!--  now --> 
 	        <c:forEach var="cpage"  begin="${craigPage.min}" end="${craigPage.max}">       
 	          <c:choose>
 				<c:when test="${cpage == craigPage.currentPage}">
-			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${cpage}">${cpage}</a></li>
+			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 			    </c:when>			    
 			    <c:otherwise>
-			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=+${cpage}">${cpage}</a></li>
+			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 			    </c:otherwise>
 			 </c:choose>  
 			</c:forEach>
@@ -180,8 +182,6 @@
 	        </c:choose>    
 			</ul>
 		</nav>
-
-
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
@@ -213,6 +213,7 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 </script>
 
 <script>
+//상세페이지
 document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 	td.addEventListener('click', (e) => {
 		console.log(e.target);
@@ -231,7 +232,6 @@ document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 <script>
 //내동네
 window.addEventListener('load', () => {
-	
 	const memberInfo = document.querySelector("#memberInfo");
 	
 	$.ajax({
@@ -244,9 +244,13 @@ window.addEventListener('load', () => {
 		},
 		error : console.log
 	});
-	
 });
 
+//검색
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	console.log( e.target );
+	//가방 ->  -> craig테이블의 title+content의 해당키워드찾기  -> 비동기가 편할까? 페이징처리를 어떻게..?
+});
 </script>
 
 <br><br><br><br><br><br>

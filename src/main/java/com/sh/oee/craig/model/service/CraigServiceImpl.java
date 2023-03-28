@@ -26,8 +26,8 @@ public class CraigServiceImpl implements CraigService {
 	private CraigDao craigDao;
 
 	@Override
-	public List<Craig> craigList(RowBounds rowBounds, List<String> dongList ) {
-		return craigDao.craigList(rowBounds, dongList);
+	public List<Craig> craigList( List<String> dongList , RowBounds rowBounds) {
+		return craigDao.craigList(dongList,  rowBounds);
 	}
 
 	//카테고리 목록조회 
@@ -180,6 +180,32 @@ public class CraigServiceImpl implements CraigService {
 	public int InsertCraigWish(Map<String, Object> param) {
 		return craigDao.InsertCraigWish(param);
 	}
+
+	//게시물 wish
+	@Override
+	public int selectCraigWishOne(int no) {
+		return  craigDao.selectCraigWishOne(no);
+	}
+
+	//리스트에쓸 wish 
+	@Override
+	public List<Integer> selectCraigWishCnt(List<String> dongList) {
+		return craigDao.selectCraigWishCnt(dongList);
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 🐹 ------- 효정 start ---------- 🐹	
 	@Override
@@ -187,6 +213,7 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.findCraigByCraigNo(craigNo);
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 }
 
