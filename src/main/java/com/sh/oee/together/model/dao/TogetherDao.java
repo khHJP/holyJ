@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dto.Together;
@@ -21,7 +23,7 @@ public interface TogetherDao {
 	@Select("select * from together_category")
 	List<Map<String,String>> selectTogetherCategory();
 
-	List<Together> selectTogetherListByDongName(List<String> myDongList);
+	List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds);
 
 	Together selectTogetherByNo(int no);
 
@@ -33,5 +35,10 @@ public interface TogetherDao {
 	int togetherDelete(int no);
 
 	int togetherUpdate(TogetherEntity together);
+
+	@Update("update together set status = 'N' where no = #{no}")
+	int togetherStatusUpdate(int no);
+
+	int getTogetherTotalCount(List<String> myDongList);
 
 }

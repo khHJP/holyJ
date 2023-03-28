@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,8 @@ public class TogetherServiceImpl implements TogetherService {
 	}
 
 	@Override
-	public List<Together> selectTogetherListByDongName(List<String> myDongList) {
-		return togetherDao.selectTogetherListByDongName(myDongList);
+	public List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds) {
+		return togetherDao.selectTogetherListByDongName(myDongList, rowBounds);
 	}
 
 	@Override
@@ -66,6 +67,16 @@ public class TogetherServiceImpl implements TogetherService {
 	@Override
 	public int togetherUpdate(TogetherEntity together) {
 		return togetherDao.togetherUpdate(together);
+	}
+
+	@Override
+	public int togetherStatusUpdate(int no) {
+		return togetherDao.togetherStatusUpdate(no);
+	}
+
+	@Override
+	public int getTogetherTotalCount(List<String> myDongList) {
+		return togetherDao.getTogetherTotalCount(myDongList);
 	}
 	
 	
