@@ -162,6 +162,24 @@ public class CraigServiceImpl implements CraigService {
 	public int getContentCnt(List<String> dongList ) {
 		return craigDao.getContentCnt(dongList);
 	}
+
+	//wish
+	@Override
+	public int selectCraigWish(Map<String, Object> param) {
+		return craigDao.selectCraigWish(param);
+	}
+
+	//wish del
+	@Override
+	public int DeleteCraigWish(Map<String, Object> param) {
+		return craigDao.DeleteCraigWish(param);
+	}
+
+	//wish insert
+	@Override
+	public int InsertCraigWish(Map<String, Object> param) {
+		return craigDao.InsertCraigWish(param);
+	}
 	
 
 }

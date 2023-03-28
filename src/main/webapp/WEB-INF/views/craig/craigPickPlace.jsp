@@ -15,62 +15,65 @@
 <title>${param.pageTitle}</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
 <style>
-body {
-
-	font-family: 'Noto Sans KR', sans-serif;
-}
-#ment{
-	font-weight: bold;
-}
-
-.inputbuttons{
-	width:80px;
-	height:35px;
-	color: white;
-	border: none;
-}
-
-#placeCancel{
-	background-color: gray;
-}
-
-#placeEnroll{
-	background-color: #00d736;
-}
-
-.inputbuttons:hover{
-	border: 2px solid gray;
-}
-
-#mapP{
-	text-align: left;
-	margin-bottom: 10px
-}
-.formtext{
-	margin-bottom:15px;
-	width:500px; 
-	height: 30px;
-	vertical-align: center;
-	border: 1px solid #c0c0c0;
-	float: left
-}
+	body {
+	
+		font-family: 'Noto Sans KR', sans-serif;
+	}
+	#ment{
+		font-weight: bold;
+	}
+	
+	.inputbuttons{
+		width:80px;
+		height:35px;
+		color: white;
+		border: none;
+	}
+	
+	#placeCancel{
+		background-color: gray;
+	}
+	
+	#placeEnroll{
+		background-color: #00d736;
+	}
+	
+	.inputbuttons:hover{
+		border: 2px solid gray;
+	}
+	
+	#mapP{
+		text-align: left;
+		margin-bottom: 10px
+	}
+	.formtext{
+		margin-bottom:15px;
+		width:500px; 
+		height: 30px;
+		vertical-align: center;
+		border: 1px solid #c0c0c0;
+		float: left
+	}
 </style>
 
 </head>
+
 <body>
 	<h3 style="margin-top: 20px; margin-bottom: 5px"> 이웃과 만나서<br> 거래하고 싶은 장소를 선택해 주세요 🥒</h3>
 	<p style="margin: 0">만나서 거래할 때는 누구나 찾기 쉬운 공공장소가 좋아요.</p>
 	
 	<hr>
 	<form:form name="placeEnroll" method="post" action="opener.location.href">
-	<div id="map" style="width:500px;height:300px; border: 1px solid green; margin: auto"></div> 				
+		<div id="map" style="width:500px;height:300px; border: 1px solid green; margin: auto"></div> 				
 		<hr>
 		<p style="margin-bottom: 8px; margin-left: 10px">선택한 곳의 장소명을 입력해주세요 </p>
 		<input type="text" style="margin-left: 10px" class="formtext" name="placeDetail" id="placeDetail" placeholder="예 ) 강남역 1번 출구, 오이빌딩 앞"  required /><br>
 		<input type="hidden"  name="latitude" id="platitude" value="" />
 		<input type="hidden"  name="longitude" id="longitude" value=""  />
 		<br><br>	
+		
 		<div id="clickLatlng" style="font-size: 13px; visibility:hidden;  margin : -20px 0 10px 20px; width:400px">
 		</div>
 
@@ -78,9 +81,9 @@ body {
 		<input  style="margin-left : 30px" class ="inputbuttons"  type="button"  id="placeEnroll"  value="등록" onclick="setTimeout( ()=> { setParentText()}, 500)" />
 	</form:form>
 	
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
-	<script>
-	//geo
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
+<script>
+//geo
 	let curlatitude;
 	let curlongitude;
     var latitudevalue ="";
@@ -91,7 +94,7 @@ body {
 		
      });
      
-	//success
+//success
     function success({ coords, timestamp }) {
          curlatitude = coords.latitude;   // 지금 위도
          curlongitude = coords.longitude; // 지금 경도
@@ -152,24 +155,12 @@ body {
 	        navigator.geolocation.getCurrentPosition(success);
 
       	}
-	</script>
+</script>
 	
 	
-	<script> 
+<script> 
     function setParentText(){ //to parent
 
-    <%--
-    	//유효성검사
-    	const detail = document.querySelector("#placeDetail");
-    	console.log ( detail );
-	
-    	if(!/^.|\n+$/.test(detail.value)){
-    		alert("❗정확한 장소명을 등록해주세요");
-    		detail.select();
-    		return false;
-    	}
-    --%>	
-    	
       	opener.document.getElementById("placeDetail").value = document.getElementById("placeDetail").value
       	opener.document.getElementById("latitude").value = document.getElementById("platitude").value
       	opener.document.getElementById("longitude").value = document.getElementById("longitude").value
@@ -177,13 +168,7 @@ body {
    
       	window.close();
     };
-    
-	</script>
-	<script>
-	
-	
-	</script>
-	
-	<!--  혜진 pullreque 하기전 -->
+</script>
+
 </body>
 </html>

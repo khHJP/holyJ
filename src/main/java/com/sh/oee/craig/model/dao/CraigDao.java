@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -68,5 +69,14 @@ public interface CraigDao {
 	
 	//페이지
 	int getContentCnt(List<String> dongList);
+
+	//wish
+	int selectCraigWish(Map<String, Object> param);
+
+	@Delete("delete from craig_wish where no = #{no} and member_id = #{memberId}")
+	int DeleteCraigWish(Map<String, Object> param);
+
+	@Insert("insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, #{no},  #{memberId}, default)")
+	int InsertCraigWish(Map<String, Object> param);
 
 }

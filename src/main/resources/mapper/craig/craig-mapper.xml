@@ -200,4 +200,11 @@ where
 		</foreach>
     </where>	
 </select>
+
+<select id="selectCraigWish" resultType="_int" >
+	select count(*) 
+	from  craig_wish 
+	where craig_no = #{no} and member_id = #{memberId}
+</select>
+
 </mapper>

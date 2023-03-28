@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +29,6 @@ import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.dto.CraigPage;
 import com.sh.oee.craig.model.service.CraigService;
-import com.sh.oee.member.model.dto.DongRange;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
 
@@ -236,15 +233,29 @@ public class CraigController {
  
 	 // ■ select one craigboard - 원래
 	 @GetMapping("/craigDetail.do")
-	 public void craigDetail(@RequestParam int no, Model model) {
+	 public void craigDetail(@RequestParam int no, Model model, Authentication authentication) {
 		 boolean hasRead = true;
+		 
+		 Member member = ((Member)authentication.getPrincipal());
+
+		 Map<String, Object> param = new HashMap<>();
+		 param.put("memberId", member.getMemberId());
+		 param.put("no", no);
+		 
 		 Craig craigboard = craigService.selectcraigOne(no, hasRead);
 		 
 		 craigboard.setContent(OeeUtils.convertLineFeedToBr(
 					OeeUtils.escapeHtml(craigboard.getContent())));
 		 
+		 
+		 int findCraigWish = craigService.selectCraigWish(param);
+		 
+		 log.debug("■ member : " +  member);
 		 log.debug("■ craigboard : " + craigboard);	
+		 log.debug("■ findCraigWish : " + findCraigWish);	
+		 
 		 model.addAttribute("craigboard", craigboard);
+		 model.addAttribute("findCraigWish", findCraigWish);
 	 }
 
 	  
@@ -465,9 +476,7 @@ public class CraigController {
 
 	 }
 	 
-	 
-	 
-
+	 //delete
 	 @PostMapping("/craigBoardDelete.do")
 	 public String craigBoardDelte(@RequestParam int no,  RedirectAttributes redirectAttr) {
 		
@@ -481,7 +490,30 @@ public class CraigController {
 		 return "redirect:/craig/craigList.do";
 	 }
 
-	
+	 //wish
+    @ResponseBody
+    @PostMapping("/insertOrDeleteCraigWish.do")
+	public Map<String, Object>   InsertOrDeleteCraigWish(  @RequestParam int wish,  @RequestParam int no,  @RequestParam String memberId  ) {
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("wish", wish);
+		 map.put("no", no);
+		 
+    	log.debug( "■ wish : " + wish );
+    	log.debug( "■ no : " + no );
+    	log.debug( "■ memberId : " + memberId );
+		/*
+		 * Map<String, Object> param = new HashMap<>(); param.put("no", no);
+		 * param.put("memberId", memberId);
+		 * 
+		 * int result = 0; if( wish == 1 ) { //이미 있는데 클릭했어요 -> delete result =
+		 * craigService.DeleteCraigWish(param); }else { result =
+		 * craigService.InsertCraigWish(param); }
+		 * 
+		 * //insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, 63, 'tigerhj',
+		 * sysdate); log.debug( "■ wish_result : " + result );
+		 */    	
+		return map;
+	}
 	 
 	 
 	 
