@@ -51,12 +51,12 @@
 		</div>
 </body>
 <script>
-    document.deleteKeyword.DeleteFrm.addEventListener('submit', (e) => {
+     document.deleteKeyword.DeleteFrm.addEventListener('submit', (e) => {
     	e.preventDefault();
     	$.ajax({
     		url : `${pageContext.request.contextPath}/notice/deleteKeyword.do`,
-    		data : {no : e.target.no.value},
     		method : 'POST',
+    		data :{ keywordNo : '${keyword.no}'},
     		success(data){
     			console.log(data); 
     		},

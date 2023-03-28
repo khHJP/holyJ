@@ -26,12 +26,21 @@
 		<hr />
 <section id="board-container" class="container">
 	<table id="tbl-board" class="table table-hover">
-		<c:forEach items="${myLocalComment}" var="localCo">
-				 <tr data-no="${localCo.localNo}" id="tr-table">
-					<td class="span1" id="loContent">${localCo.content}</td>
-					<td class="span1" id="loTitle">'${localCo.title}'</td>
-				</tr>
-		</c:forEach>
+		<c:choose>
+			<c:when test="${not empty myLocalComment}">
+				<c:forEach items="${myLocalComment}" var="localCo">
+						 <tr data-no="${localCo.localNo}" id="tr-table">
+							<td class="span1" id="loContent">${localCo.content}</td>
+							<td class="span1" id="loTitle">'${localCo.title}'</td>
+						</tr>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<div id="empty">
+					<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
+				옹잉?? 작성하신 댓글이 없어용!!</div>
+			</c:otherwise>
+		</c:choose>
 	</table>
 </section> 	
 	</div>
@@ -42,7 +51,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		const no = tr.dataset.no;
 		console.log(no);
 	
-	//	location.href = '${pageContext.request.contextPath}/local/localDetail.do?no=' + no;
+		location.href = '${pageContext.request.contextPath}/local/localDetail.do?no=' + no;
 	});
 });		
 		
