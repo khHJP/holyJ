@@ -88,8 +88,8 @@ window.addEventListener('load', (e) => {
 				</div>
 			</div>
 			<div class="choose-box">
-			<c:if test="${together.writer eq loginMember.memberId}">
-				<button class="btn">모임종료</button>
+			<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
+				<button class="btn to_close">모임종료</button>
 			</c:if>
 			<c:if test="${together.writer ne loginMember.memberId}">
 				<button class="btn">신고하기</button>				
@@ -131,9 +131,11 @@ window.addEventListener('load', (e) => {
 				<p>${together.place}</p>
 			</div>
 			<div class="modify-box">
+				<c:if test="${together.status eq 'Y'}">
 				<!-- 😺 채팅 참여하기 - join으로 이벤트 걸으면 될것같요! 😺 -->
 				<button class="join btn">참가하기</button>
 				<!-- 😺 채팅 참여하기 😺 -->
+				</c:if>
 				<c:if test="${together.writer eq loginMember.memberId}">
 						<button class="btn modify">수정</button>
 						<button class="btn delete">삭제</button>
@@ -151,9 +153,13 @@ window.addEventListener('load', (e) => {
 		</div>
 	</div>
 </div>
-<!-- 삭제하기 히든폼 -->
 <c:if test="${together.writer eq loginMember.memberId}">
+<!-- 삭제하기 히든폼 -->
 <form:form name="togetherDeleteFrm" action="${pageContext.request.contextPath}/together/togetherDelete.do" method="post">
+	<input type="hidden" value="${together.no}" name="no">
+</form:form>
+<!-- 모임종료 히든폼 -->
+<form:form name="togetherStatusUpdateFrm" action="${pageContext.request.contextPath}/together/togetherStatusUpdate.do" method="post">
 	<input type="hidden" value="${together.no}" name="no">
 </form:form>
 </c:if>
@@ -172,8 +178,14 @@ document.querySelector(".delete").addEventListener('click', (e) => {
 	}
 });
 
+/* 모임 종료하기 */
+document.querySelector(".to_close").addEventListener('click', (e) => {
+	if(confirm('모임을 종료하시겠습니까?')){
+		document.togetherStatusUpdateFrm.submit();
+	}	
+});
 </script>
-<!-- 👻 정은 끝 👻 -->
+<!-- 정은 끝 👻 -->
 
 <script>
 /* 클릭 잘되는지 한번 만들어봤어욤! 지우고 다시하셔도 됩니다! */

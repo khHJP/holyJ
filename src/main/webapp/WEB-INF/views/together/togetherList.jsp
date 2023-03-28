@@ -9,6 +9,12 @@
 	<jsp:param value="같이해요" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together/together.css" />
+<script type="text/javascript">
+$(document).ready(function() {
+  // 페이지네이션 생성
+  generatePagination(totalPages, currentPage);
+});
+</script>
 <div class="together-list-container">
 	<div class="together-list-wrap">
 		<div class="category-nav">
@@ -108,6 +114,9 @@
 			</tbody>
 		</table>
 	</div>
+	<nav aria-label="Page navigation example" class="pagebar-box">
+  		<ul class="pagination justify-content-center"></ul>
+	</nav>
 </div>
 <script>
 /* 같이해요 상세페이지 이동 */
@@ -124,5 +133,41 @@ document.querySelectorAll(".together-view").forEach((together) => {
 document.querySelector(".enroll").addEventListener('click', (e) => {
 	location.href = '${pageContext.request.contextPath}/together/togetherEnroll.do';
 });
+
+/* 페이지 처리 */
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+console.log(currentPage);
+
+// 페이지네이션 버튼을 생성하는 함수
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+      pagination.append("<li class='page-item'><a class='page-link' href='${pageContext.request.contextPath}/together/togetherList.do?currentPage=" + (currentPage - 1) +"' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+            pagination.append("<li class='page-item'><a class='page-link' href='${pageContext.request.contextPath}/together/togetherList.do?currentPage=" + i +"' data-page='" + i + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼을 추가
+    if (currentPage != totalPages) {
+        pagination.append("<li class='page-item'><a class='page-link' href='${pageContext.request.contextPath}/together/togetherList.do?currentPage=" + (currentPage + 1) +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+    
+}
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
