@@ -23,6 +23,7 @@ import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.service.ChatService;
 import com.sh.oee.craig.model.dto.Craig;
+import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
@@ -126,7 +127,8 @@ public class ChatController {
 		 // 채팅방 첫 입장시 
 		if(chatroomId == null) { 
 		// 1. chatroomId 생성 chatroomId =
-		 generateCraigChatroomId(); log.debug("채팅방번호 = {}", chatroomId);
+		 chatroomId = generateCraigChatroomId(); 
+		 log.debug("채팅방번호 = {}", chatroomId);
 		  
 		 // 2. craig_chat 테이블에 2행 insert (로그인한 사용자memberId, 게시글 작성자 sellerId)
 		 List<CraigChat> chatMembers = Arrays.asList( new CraigChat(chatroomId,
@@ -196,6 +198,10 @@ public class ChatController {
 		// 4. 해당게시글 찾기 
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
 
+		// 5. 게시글 첨부파일 찾기
+		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
+		model.addAttribute("craigImg", craigImg);
+		
 		log.debug("craig = {}", craig);
 		model.addAttribute("craig", craig);
 		model.addAttribute("chatroomId", chatroomId);
