@@ -51,6 +51,7 @@ a{
 }
 a:hover{
 	color : grey;
+	text-decoration:none;
 }
 #menu{
 	font-size : 25px;
