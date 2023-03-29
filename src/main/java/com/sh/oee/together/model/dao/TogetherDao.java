@@ -23,7 +23,7 @@ public interface TogetherDao {
 	@Select("select * from together_category")
 	List<Map<String,String>> selectTogetherCategory();
 
-	List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds);
+	List<Together> selectTogetherListByDongName(Map<String, Object> param, RowBounds rowBounds);
 
 	Together selectTogetherByNo(int no);
 
@@ -39,6 +39,6 @@ public interface TogetherDao {
 	@Update("update together set status = 'N' where no = #{no}")
 	int togetherStatusUpdate(int no);
 
-	int getTogetherTotalCount(List<String> myDongList);
+	int getTogetherTotalCount(Map<String, Object> param);
 
 }
