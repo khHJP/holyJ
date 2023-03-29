@@ -2,6 +2,8 @@ package com.sh.oee.together.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,18 +68,34 @@ public class TogetherController {
 	 * @param model
 	 */
 	@GetMapping("/togetherList.do")
-	public void togetherList(@RequestParam(defaultValue = "1") int currentPage, HttpSession session, Model model) {
-		log.debug("currentPage = {}", currentPage);
+	public void togetherList(@RequestParam(defaultValue = "1") int currentPage, 
+							 @RequestParam(required = false) String categoryNo,
+							 @RequestParam(required = false) String status,
+							 HttpSession session, 
+							 Model model) {
+		log.debug("categoryNo = {}", categoryNo);
+		log.debug("status = {}", status);
+		
+		Integer no = null;
+		try {
+			no = Integer.parseInt(categoryNo);
+		} catch (NumberFormatException e) {}
 		
 		// 나의 동네범위 꺼내기
 		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
 		log.debug("myDongList ={}", myDongList);
 
+		// map 
+		Map<String, Object> param = new HashMap<>();
+		param.put("myDongList", myDongList);
+		param.put("categoryNo", no);
+		param.put("status", status);
+
 		// 페이지처리
 		int limit = 4;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		int totalCount = togetherService.getTogetherTotalCount(myDongList);
+		int totalCount = togetherService.getTogetherTotalCount(param);
 		log.debug("totalCount = {}", totalCount);
 		
 		// 전체 페이지 수 계산
@@ -85,7 +103,7 @@ public class TogetherController {
 		
 		// 업무로직
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
-		List<Together> togetherList = togetherService.selectTogetherListByDongName(myDongList, rowBounds);
+		List<Together> togetherList = togetherService.selectTogetherListByDongName(param, rowBounds);
 		log.debug("togetherList = {}", togetherList);
 		
 		// view 전달

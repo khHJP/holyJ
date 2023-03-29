@@ -32,8 +32,8 @@ public class TogetherServiceImpl implements TogetherService {
 	}
 
 	@Override
-	public List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds) {
-		return togetherDao.selectTogetherListByDongName(myDongList, rowBounds);
+	public List<Together> selectTogetherListByDongName(Map<String, Object> param, RowBounds rowBounds) {
+		return togetherDao.selectTogetherListByDongName(param, rowBounds);
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class TogetherServiceImpl implements TogetherService {
 	}
 
 	@Override
-	public int getTogetherTotalCount(List<String> myDongList) {
-		return togetherDao.getTogetherTotalCount(myDongList);
+	public int getTogetherTotalCount(Map<String, Object> param) {
+		return togetherDao.getTogetherTotalCount(param);
 	}
 	
 	
