@@ -15,7 +15,8 @@ public interface TogetherService {
 
 	List<Map<String,String>> selectTogetherCategory();
 
-	List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds);
+//	List<Together> selectTogetherListByDongName(List<String> myDongList, RowBounds rowBounds);
+	List<Together> selectTogetherListByDongName(Map<String, Object> param, RowBounds rowBounds);
 
 	Together selectTogetherByNo(int no);
 
@@ -27,6 +28,6 @@ public interface TogetherService {
 
 	int togetherStatusUpdate(int no);
 
-	int getTogetherTotalCount(List<String> myDongList);
+	int getTogetherTotalCount(Map<String, Object> param);
 
 }

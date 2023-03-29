@@ -38,13 +38,25 @@ window.addEventListener('load', (e) => {
 				<div class="temperature">
 					<span>${together.member.manner}</span>
 					<c:if test="${together.member.manner lt 30}">
-						<i class="bi bi-thermometer-low"></i>
+						<span style="color:#3AB0FF" >°C</span>
+						<span style="position:relative; top:5px;" >😰</span>
+						<div class="progress" style="width:80px; height: 10px;">
+					  		<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 30%; display: absolute;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
 					</c:if>
 					<c:if test="${together.member.manner ge 35 && together.member.manner lt 50}">
-						<i class="bi bi-thermometer-half"></i>
+						<span style="color: #56C271">°C</span>
+						<span style="position:relative; top:5px;" >☺️</span>
+						<div class="progress" style="width:80px; height: 10px;">
+							<div class="progress-bar" role="progressbar" style="width: 65%; background-color: rgb(86, 194, 113); float: right; margin-right: 0" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
 					</c:if>
 					<c:if test="${together.member.manner ge 50}">
-						<i class="bi bi-thermometer-high"></i>
+						<span style="color: red">°C</span>
+						<span style="position:relative; top:5px;" >😍</span>
+						<div class="progress" style="width:80px; height: 10px;">
+							<div class="progress-bar bg-danger" role="progressbar" style="width: 90%; margin-right: 0;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="80"></div>
+						</div>
 					</c:if>
 				</div>
 				<p>매너온도</p>
@@ -92,7 +104,7 @@ window.addEventListener('load', (e) => {
 				<button class="btn to_close">모임종료</button>
 			</c:if>
 			<c:if test="${together.writer ne loginMember.memberId}">
-				<button class="btn">신고하기</button>				
+				<button class="btn report">신고하기</button>
 			</c:if>
 			</div>
 		</div><!-- end header-box -->
@@ -162,7 +174,6 @@ window.addEventListener('load', (e) => {
 <form:form name="togetherStatusUpdateFrm" action="${pageContext.request.contextPath}/together/togetherStatusUpdate.do" method="post">
 	<input type="hidden" value="${together.no}" name="no">
 </form:form>
-</c:if>
 <!-- 👻 정은 시작 👻 -->
 <script>
 /* 같이해요 수정 */
@@ -185,6 +196,21 @@ document.querySelector(".to_close").addEventListener('click', (e) => {
 	}	
 });
 </script>
+</c:if>
+<c:if test="${together.writer ne loginMember.memberId}">
+<script>
+/* 신고하기 */
+document.querySelector(".report").addEventListener('click', (e) => {
+	const reportType = 'TO';
+	const boardNo = '${together.no}';
+	const writer = '${together.writer}';
+	console.log(reportType, boardNo, writer);
+	
+	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&writer=' + writer;
+	
+});
+</script>
+</c:if>
 <!-- 정은 끝 👻 -->
 
 <script>
