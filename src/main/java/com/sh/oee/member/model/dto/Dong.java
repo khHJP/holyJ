@@ -15,4 +15,19 @@ public class Dong {
 	private double latitude;
 	private double longitude;
 	
+	//혜진추가0329
+	private Gu gu;
+
+	public Dong(int dongNo, int guNo, String dongName, double latitude, double longitude) {
+		super();
+		this.dongNo = dongNo;
+		this.guNo = guNo;
+		this.dongName = dongName;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
+
+	
+	
 }
