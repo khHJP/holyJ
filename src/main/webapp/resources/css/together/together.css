@@ -159,6 +159,7 @@ p {
 .profile-box img {
     width: 70px;
     height: auto;
+    border-radius: 3rem;
 }
 .manner-box p {
 	margin: 0;
@@ -288,4 +289,18 @@ p {
 .page-item.active .page-link {
     background: #56C271;
     border-color: #56C271;
+}
+.bi-three-dots-vertical {
+	font-size: 2rem;
+}
+.report-wrap {
+	width: 7rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 5px;
+    left: 33px;
+}
+.report-wrap button {
+    margin-bottom: 5px;
 }

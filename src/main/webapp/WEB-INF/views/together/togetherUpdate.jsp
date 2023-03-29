@@ -65,7 +65,55 @@ window.addEventListener('load', (e) => {
         option.innerText = days[i];
         date.append(option);
     }
-
+   
+    // 현재 약속 시간 selected 해놓기
+    const dateTime = '${together.dateTime}';
+    const currDateTime = new Date(dateTime);
+    const currMonth = currDateTime.getMonth() + 1; 
+    const currDate = currDateTime.getDate();
+    const currHour = currDateTime.getHours();
+    const currentMinutes = currDateTime.getMinutes();
+	console.log(dateTime);
+    
+    // 월
+    const month_ = document.querySelectorAll(".month option");
+    month_.forEach((month) => {
+    	if(month.value == currMonth){
+    		month.selected = true;
+    	}
+    });
+    // 일
+    const date_ = document.querySelectorAll(".date option");
+    date_.forEach((date) => {
+    	if(date.value == currDate){
+    		date.selected = true;
+    	}
+    });
+    // 오전 오후
+    const meridiem_ = document.querySelectorAll("[name=meridiem]");
+    const meridi = (currHour - 12 > 0 ? 'pm' : 'am');
+    meridiem_.forEach((meridiem) => {
+    	if(meridiem.value == meridi){
+    		meridiem.checked = true;
+    	}
+    });
+    // 시
+    const hours = document.querySelectorAll(".hour option");
+    const hour_ = (currHour - 12 > 0 ? currHour - 12 : currHour);
+    hours.forEach((hour) => {
+    	if(hour.value == hour_){
+    		hour.selected = true;
+    	}
+    });
+    // 분
+    const minute_ = document.querySelectorAll(".minute option");
+    minute_.forEach((minute) => {
+    	if(minute.value == currentMinutes){
+    		minute.selected = true;
+    	}
+    });
+    
+ 
 });
 </script>
 <div class="enroll-container">
@@ -163,7 +211,7 @@ window.addEventListener('load', (e) => {
 								</div>
 								<div class="time-wrap">					
 									<div class="time-radio data-box">
-										<input type="radio" name="meridiem" value="am" id="am" checked/>
+										<input type="radio" name="meridiem" value="am" id="am"/>
 										<label for="am">오전</label>
 										<input type="radio" name="meridiem" value="pm" id="pm"/>
 										<label for="pm">오후</label>
