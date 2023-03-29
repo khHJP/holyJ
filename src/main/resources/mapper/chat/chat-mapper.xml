@@ -9,7 +9,7 @@
 		from (
 			    select
 			        cm.*,
-			        row_number() over(order by sent_time) rnum
+			        row_number() over(order by sent_time desc) rnum
 			    from
 			        craig_msg cm
 			    where
