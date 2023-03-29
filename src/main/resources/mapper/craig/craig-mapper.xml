@@ -96,6 +96,7 @@ from craig c  left  join  craig_attachment ca
 		<result column="re_filename" property="reFilename" /> 
 		<result column="reg_date" property="regDate" /> 
 	</collection>
+	
 </resultMap>
 
 <!-- ■ insert  -->
@@ -236,4 +237,42 @@ where
 		</foreach>
     </where>	
 </select>
+
+<select id="selectCraigWish" resultType="_int" >
+	select count(*) 
+	from  craig_wish 
+	where craig_no = #{no} and member_id = #{memberId}
+</select>
+
+<resultMap type="CraigWish" id="craigWishMap">
+</resultMap>
+
+<!-- 관심수 select -0328  -->
+<select id="selectCraigWishCnt" resultType="_int">
+
+select (select count(*) from craig_wish where craig_no  = cr.no )wish
+        
+from ( 
+             select  ca.*       
+            from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+            where rnum= 1 ) c  
+
+             right join craig cr 
+                    on c.craig_no = cr.no
+              left   join  member m
+                    on cr.writer = m.member_id 
+              left join dong d
+                    on m.dong_no = d.dong_no
+              left join dong_range dr
+                    on d.dong_no = dr.dong_no
+
+<where>
+	d.dong_name in
+	<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+		#{dongName}
+	</foreach>
+</where>
+order by  cr.no desc	
+</select>
+
 </mapper>
