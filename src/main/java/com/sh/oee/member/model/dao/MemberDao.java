@@ -89,6 +89,8 @@ public interface MemberDao {
 	String selectDongNearFar(int dongNo);
 
 	String selectMydongName(int dongNo);
+
+	 List<Dong> selectMydongGuName(int dongNo);
 	
 }
 /**혜진도전 0320 -- 끝 80번쨰줄 **/
