@@ -1,12 +1,28 @@
 @charset "UTF-8";
 
-.buy-container{
+.craig-container{
 	width: 1000px;
     margin: 0 auto;
 }
 .sub_title{
 	text-align : left;
 	font-size: 30px;
+}
+.craig-ul{
+	list-style: none;
+	display: flex;
+    justify-content: space-around;
+}
+#craig-li{
+	text-decoration:none;
+	color : black;
+	font-size: 20px;
+}
+#craig-li:hover{
+    color : grey;
+}
+.bold{
+	font-weight :bold;
 }
 #img{
 	width: 130px;
@@ -39,7 +55,7 @@
 
 #buyCom{
 	margin:5px;
-	background-color : gray;
+	background-color : forestgreen;;
 	color: white;
     border-radius: 6px;
     width: 75px;
@@ -61,14 +77,22 @@
     font-size: 18px;
     font-weight: bold;
 }
-#hogi a{	
-    color: black;
-}
-#hogi a:hover{	
-    text-decoration : none;
-}
 #hogi-hr{
 	margin : 5px;
+}
+#f-button{
+	list-style: none;
+	display: flex;
+    justify-content: space-around;
+    margin: 0;
+}
+#f-li{
+	border: 0px;
+    background: white;
+    font-size: 17px;
+}
+#f-li:hover{
+	cursor : pointer;
 }
 #empty{
 	display: inline-block;
