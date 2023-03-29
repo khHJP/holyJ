@@ -18,7 +18,7 @@ public interface ChatService {
 
 	List<String> findCraigChatList(Map<String, Object> craigChatMap);
 
-	String findLastChatByChatroomId(String chatroomId);
+	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 
 	int insertCraigMsg(CraigMsg craigMsg);
 

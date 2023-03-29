@@ -480,14 +480,19 @@ document.querySelector("#chatBtn").addEventListener('click', (e) => {
 			const {memberId, chatroomId} = data;
 			
 			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-			const name = "chatroom";
-			const spec = "width=500px, height=790px, scrollbars=yes";
-			open(url, name, spec);
+			const name = "craigChatroom";
+			openPopup(url, name);
 		},
 		error : console.log
 		});		
 
 });
+
+function openPopup(url, name){
+	let win;
+	win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
+	win.opener.self;
+}
 </script>	
 </c:if>
 
