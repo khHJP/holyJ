@@ -90,4 +90,7 @@ public interface CraigDao {
 	//리스트에쓸거 wish
 	List<Integer> selectCraigWishCnt(List<String> dongList);
 
+	//검색
+	List<Craig>  searchCraigitems(Map<String, Object> param, RowBounds rowBounds);
+
 }

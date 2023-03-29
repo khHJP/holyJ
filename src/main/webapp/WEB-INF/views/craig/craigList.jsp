@@ -88,16 +88,19 @@
 		   	  </c:forEach>
 			</ul>
 		</div>
-		
+
 		<span id="memberInfo" ></span>
-		<%--  검색 --%>
+		<%--  검색 --%>		
 	    <div class="searchdiv">
-	    	<input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
+	    	<form  id="keywordFrm" name="keywordFrm">
+	    	<input type="text"  name="searchKeyword" id="searchKeyword" placeholder=" 검색어를 입력해주세요 ">
 	    	<button type="submit" class="searchButton">
 	        	<i class="fa fa-search"></i>
 	     	</button>
+	     	</form>
        	 	<button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
 	    </div>
+
 	</div>
 	
 <!-- whole List  -->
@@ -154,7 +157,7 @@
 				<!--  pre   --> 
 	        <c:choose>
 	           <c:when test="${craigPage.prevPage <= 0 }">
-	             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+	             <li class="page-item disabled"><a class="page-link" href="#"> 이전 </a></li>
 			    </c:when>
 	            <c:otherwise>	
 	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>
@@ -174,7 +177,7 @@
 			 <!-- next -->
 		    <c:choose>
 	          <c:when test="${craigPage.max >= craigPage.pageCnt }">
-			    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+			    <li class="page-item disabled"><a class="page-link" href="#"> 다음 </a></li>
 			  </c:when>	          
 	          <c:otherwise>
 			     <li class="page-item"><a class="page-link" href="#">Next</a></li>
@@ -247,9 +250,26 @@ window.addEventListener('load', () => {
 });
 
 //검색
-document.querySelector(".searchButton").addEventListener('click', (e) => {
-	console.log( e.target );
-	//가방 ->  -> craig테이블의 title+content의 해당키워드찾기  -> 비동기가 편할까? 페이징처리를 어떻게..?
+document.keywordFrm.addEventListener('submit', (e) => {
+	e.preventDefault();
+	
+	const searchKeyword = e.target.searchKeyword.value;
+	console.log( searchKeyword );
+
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/craig/searchCraigitems.do`,
+		method : 'get',
+		data : {searchKeyword : searchKeyword},
+		dataType : "text",
+		success(data){
+			console.log( data );
+			const  craigWholeListTbl = document.querySelector("#craigWholeListTbl");
+			craigWholeListTbl.innerHTML = "";
+			
+		},
+		error : console.log
+	});		
 });
 </script>
 

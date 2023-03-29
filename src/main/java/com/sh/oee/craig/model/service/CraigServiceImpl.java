@@ -193,6 +193,11 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.selectCraigWishCnt(dongList);
 	}
 
+	//검색
+	@Override
+	public List<Craig> searchCraigitems(Map<String, Object> param, RowBounds rowBounds) {
+		return craigDao.searchCraigitems(param, rowBounds);
+	}
 
 	
 	
@@ -213,6 +218,7 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.findCraigByCraigNo(craigNo);
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 
 }

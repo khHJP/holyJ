@@ -180,7 +180,7 @@ where
 </update>
 
 
-<!--  페이지 구하기  -->
+<!--  ■ 페이지 구하기  ■ -->
 <select  id="getContentCnt" resultType="_int">
 	select count(*)
 	from ( 
@@ -202,6 +202,7 @@ where
     </where>	
 </select>
 
+<!--  ■  총 관심수  -0328  ■-->
 <select id="selectCraigWish" resultType="_int" >
 	select count(*) 
 	from  craig_wish 
@@ -211,7 +212,7 @@ where
 <resultMap type="CraigWish" id="craigWishMap">
 </resultMap>
 
-<!-- 관심수 select -0328  -->
+<!--  ■ 관심수 select -0328  ■-->
 <select id="selectCraigWishCnt" resultType="_int">
 
 select (select count(*) from craig_wish where craig_no  = cr.no )wish
@@ -237,6 +238,34 @@ from (
 	</foreach>
 </where>
 order by  cr.no desc	
+</select>
+
+<!-- ■ 검색  ■  -->
+<select id="searchCraigitems" resultMap="craigMap">
+	select cr.*,
+            d.dong_name,
+            c.attach_no,
+            c.original_filename,
+            c.re_filename
+	from ( 
+             select  ca.*  
+             from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+             where rnum= 1 ) c  right join craig cr 
+                    on c.craig_no = cr.no
+              left   join  member m
+                    on cr.writer = m.member_id 
+              left join dong d
+                    on m.dong_no = d.dong_no
+              left join dong_range dr
+                    on d.dong_no = dr.dong_no
+	<where>
+		d.dong_name in
+		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+    </where>	
+    and ( title like  '%' || #{searchKeyword}|| '%' or  content like  '%' || #{searchKeyword}|| '%' )
+	order by  cr.no desc
 </select>
 
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -434,14 +435,62 @@ public class CraigController {
     // ■ wish한게시물의 wish가져오기
     @ResponseBody
     @GetMapping("/selectCraigWishOne.do")
-    public int selectCraigWishOne(@RequestParam int no) {    	
+    public int selectCraigWishOne(@RequestParam int no) {  
+    	log.debug("■ 비동기 no 값넘어오는지 확인 = {} ", no);
     	int result = craigService.selectCraigWishOne(no);
     	return result;
     }
 	 
     
     // ■ 검색
-	 
+    @ResponseBody
+    @GetMapping("/searchCraigitems.do")
+    public  Map<String, Object>  searchCraigitems( @RequestParam String searchKeyword,
+    		@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication ) {    	
+    			
+    			// member  
+    			Member member = ((Member)authentication.getPrincipal());
+    			log.debug("■ 찍히냐 member = {} ", member);
+    					
+    			// dong range  
+    			int dongNo = member.getDongNo();
+    			String NF = member.getDongRange().toString();	
+
+    			String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
+    				   searchDong += memberService.selectDongNearOnly(dongNo );
+    			
+    			if(NF.equals("F")) {
+    				searchDong += "," + memberService.selectDongNearFar(dongNo );
+    				log.debug( "■ searchDong = {}", searchDong);
+    			}
+    			
+    			List<String> dongList = Arrays.asList(searchDong.split(","));
+    			log.debug( "■ dongList = {}", dongList);
+    			
+    			List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
+    			
+    			// paging
+    			int limit = 12; //한페이지당 조회할 게시글 수 
+    			int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
+    		
+    			RowBounds rowBounds = new RowBounds(offset, limit);
+ 
+				///////////// donglist, 키워드, rowbounds
+		    	Map<String, Object> param = new HashMap<>();    	
+		    	param.put("dongList", dongList);
+		    	param.put("searchKeyword", searchKeyword);
+		    	
+		    	
+    	
+    			List<Craig> searchCraigs = craigService.searchCraigitems(param, rowBounds);
+				log.debug( "■■■■ searchCraigs : " + searchCraigs ); 
+    	
+				///될지^^
+				Map<String, Object>  map = new HashMap<>();
+				map.put("searchCraigs", searchCraigs);
+
+				return map;
+    } 
 	 
 	 
 	 
@@ -580,4 +629,7 @@ public class CraigController {
 	 /*
 	  * 하나끝
 	  */
+	 
+	 
+	 
 }
