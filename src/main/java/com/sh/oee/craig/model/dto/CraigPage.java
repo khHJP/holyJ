@@ -6,7 +6,7 @@ public class CraigPage {
 	private int min;
 	//최대 페이지 번호 
 	private int max;
-	//이전 버톤의 페이지 번호
+	//이전 버튼의 페이지 번호
 	private int prevPage;
     //다음 버튼의 페이지 번호 
 	private int nextPage;

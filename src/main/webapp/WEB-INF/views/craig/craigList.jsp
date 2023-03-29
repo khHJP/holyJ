@@ -9,7 +9,7 @@
 	<jsp:param value="중고거래" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig.css" >
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig/craig.css" >
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <style>
 	dl, ol, ul { text-align: center; margin-top: 5px; margin-bottom: 0;}
@@ -17,7 +17,6 @@
 	a:hover { text-decoration:none !important }
 	.notice-wrap, .non-login {margin-top: 5px;}
 	button, input, optgroup, select, textarea { margin: 0; font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 600; }
-	
 	
 	.dropdown-toggle:hover{ color: black; background-color: white; -webkit-appearance:none; }
 	
@@ -28,6 +27,7 @@
 		border-color: lightgray; 
 		top:-1px; position: relative; left:10px;  
 	}
+	
 	#writeCraigbtn:hover { border-color:  #28a745; }
 	
 	#memberInfo{
@@ -38,14 +38,12 @@
 		padding-bottom : 12px;
 		vertical-align :middle;
 		border-radius: 5px 5px 5px 5px;
-		
 	}
 	
 	#craigWholeListTbl{
 		margin: auto;
 		margin-top : 50px;
 		padding: 40px;
-/** border: 1px solid black; **/
 		border: none;
 		width : 700px;	
 	}
@@ -74,10 +72,11 @@
     display: flex; align-items: center;
     justify-content: flex-end;  margin-top: -5px ;
 }
-
 </style>
+
 <%-- 해야되는거 - read카운트 처리  --%>
 <br><br><br>
+	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
 	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
 			<button type="button" style="width:160px; height:36px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,67 +86,69 @@
 			  <c:forEach items="${craigCategory}" var="category">
 			    <li data-no="${category.no}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
 		   	  </c:forEach>
-			 </ul>
+			</ul>
 		</div>
 		
 		<span id="memberInfo" ></span>
-		
+		<%--  검색 --%>
 	    <div class="searchdiv">
-	      <input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
-	      <button type="submit" class="searchButton">
-	        <i class="fa fa-search"></i>
-	     </button>
-       	 <button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
+	    	<input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
+	    	<button type="submit" class="searchButton">
+	        	<i class="fa fa-search"></i>
+	     	</button>
+       	 	<button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
 	    </div>
 	</div>
 	
-		<!-- whole List  -->
+<!-- whole List  -->
 		<h3 style="margin-top: 30px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
 		
 		<table id="craigWholeListTbl">
-		<tbody>
-		<c:forEach items="${craigList}" var="craig" varStatus="vs">
-			<c:if test="${vs.index%4==0}">
-				<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
-			</c:if>
-				  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
-					<div class="explains">
-						<div>
-						<%-- 예약중 / 판매완료만꺼내기	<p id="crtitle">${craig.state}</p> --%>
-						<c:if test="${craig.attachments[0].reFilename != null}">
-						    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
-								    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
-						</c:if>
-						<c:if test="${craig.attachments[0].reFilename==null}">
-						    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
-								    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
-						</c:if>
-							<p id="crtitle" class="crpp">${craig.title}</p>
-						<c:if test="${craig.price > 0}">
-							<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
-						</c:if>
-	
-						<c:if test="${craig.state == 'CR1'}">
-							<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
-						</c:if>
-						<c:if test="${craig.state == 'CR3'}">
-							<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
-						</c:if>
-	
-						<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
-							<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
-						</c:if>
-							<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish"></span>  <span id="crchat" class="crwishchat"> | 채팅</span><span id="crchat"></span> 
+			<tbody>
+			<c:forEach items="${craigList}" var="craig" varStatus="vs">
+				<c:if test="${vs.index%4==0}">
+					<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
+				</c:if>
+					  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
+						<div class="explains">
+							<div>
+							<%-- img --%>
+							<c:if test="${craig.attachments[0].reFilename != null}">
+							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+									    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
+							</c:if>
+							<c:if test="${craig.attachments[0].reFilename==null}">
+							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+							</c:if>
+								<p id="crtitle" class="crpp">${craig.title}</p>
+							<c:if test="${craig.price > 0}">
+								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							</c:if>
+							<%-- CR1 || CR3--%>
+							<c:if test="${craig.state == 'CR1'}">
+								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+							</c:if>
+							<c:if test="${craig.state == 'CR3'}">
+								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							</c:if>
+		
+							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
+								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+							</c:if>
+								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+
+								</div>
 							</div>
-						</div>
-					</td>
-		<c:if test="${vs.index %4==3}">
-			</tr>
-		</c:if>
-		</c:forEach>
-		</tbody>
+						</td>
+					<c:if test="${vs.index %4==3}">
+						</tr>
+					</c:if>
+				</c:forEach>
+			</tbody>
 		</table><br><br><br><br><br>
 
+		<%-- 페이징 --%>
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<!--  pre   --> 
@@ -156,17 +157,17 @@
 	             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 			    </c:when>
 	            <c:otherwise>	
-	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${craigPage.prevPage}">Previous</a></li>
+	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>
 	 			</c:otherwise>
 	        </c:choose>
 	 		<!--  now --> 
 	        <c:forEach var="cpage"  begin="${craigPage.min}" end="${craigPage.max}">       
 	          <c:choose>
 				<c:when test="${cpage == craigPage.currentPage}">
-			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=${cpage}">${cpage}</a></li>
+			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 			    </c:when>			    
 			    <c:otherwise>
-			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?page=+${cpage}">${cpage}</a></li>
+			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 			    </c:otherwise>
 			 </c:choose>  
 			</c:forEach>
@@ -181,8 +182,6 @@
 	        </c:choose>    
 			</ul>
 		</nav>
-
-
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
@@ -214,6 +213,7 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 </script>
 
 <script>
+//상세페이지
 document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 	td.addEventListener('click', (e) => {
 		console.log(e.target);
@@ -230,8 +230,8 @@ document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 
 
 <script>
+//내동네
 window.addEventListener('load', () => {
-	
 	const memberInfo = document.querySelector("#memberInfo");
 	
 	$.ajax({
@@ -244,9 +244,13 @@ window.addEventListener('load', () => {
 		},
 		error : console.log
 	});
-	
 });
 
+//검색
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	console.log( e.target );
+	//가방 ->  -> craig테이블의 title+content의 해당키워드찾기  -> 비동기가 편할까? 페이징처리를 어떻게..?
+});
 </script>
 
 <br><br><br><br><br><br>
