@@ -15,6 +15,7 @@ body {
     justify-content: center;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
 }
 
 footer{
@@ -171,17 +172,13 @@ footer{
 
 /* 채팅방 하단 메시지입력바  */
 .message-input {
-	position: absolute;
-	bottom: -36px;
+	position: relative;
 	width: 100%;
 	z-index: 99;	
 	background: white;
 }
-.message-input .wrap {
-	position: relative;
-}
 
-.message-input .wrap input {
+.message-input input{
 	padding: 16px 32px 16px 23px;
 	font-family: 'Noto Sans KR', sans-serif;
     float: left;
@@ -195,7 +192,7 @@ input, button, select, textarea{
 	line-height: inherit;
 }
 
-.message-input .wrap button { 
+.message-input button { 
 	float: right;
 	border: none;
 	width: 50px;
@@ -205,11 +202,11 @@ input, button, select, textarea{
 	outline: none;
 	font-size: 0.8rem;
 }
-.message-input .wrap button svg{
+.message-input button svg{
 	margin: 18px 10px 10px 10px;
 	
 }
-.message-input .wrap .attachment{
+.message-input .attachment{
 	margin: 20px 10px 10px 10px;
 	right: 65px;
 	z-index: 4;

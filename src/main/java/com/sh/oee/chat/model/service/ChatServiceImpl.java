@@ -78,8 +78,8 @@ public class ChatServiceImpl implements ChatService {
 	 * - CRAIG_MSG에서 chatroomId에 해당하는 마지막 채팅 가져오기
 	 */
 	@Override
-	public String findLastChatByChatroomId(String chatroomId) {
-		return chatDao.findLastChatByChatroomId(chatroomId);
+	public CraigMsg findLastCraigMsgByChatroomId(String chatroomId) {
+		return chatDao.findLastCraigMsgByChatroomId(chatroomId);
 	}
 
 	/**
