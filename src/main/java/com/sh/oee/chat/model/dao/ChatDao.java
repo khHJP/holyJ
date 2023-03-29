@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.sh.oee.chat.model.dto.CraigChat;
@@ -32,8 +31,7 @@ public interface ChatDao {
 	@Insert("insert into craig_msg values (seq_craig_msg_no.nextval, #{chatroomId}, #{writer}, #{content}, #{sentTime}, #{type})")
 	int insertCraigMsg(CraigMsg craigMsg);
 
-	@Select("select first_value(content) over (order by sent_time) from craig_msg where chatroom_id = #{chatroomId}")
-	String findLastChatByChatroomId(String chatroomId);
+	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 
 
 

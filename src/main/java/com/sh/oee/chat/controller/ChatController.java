@@ -42,12 +42,16 @@ public class ChatController {
 	@Autowired
 	private MemberService memberService;
 	
+	@GetMapping("/chatList.do")
+	public void chatList() {
+		
+	}
 	
 	/**
 	 * 중고거래 게시글 작성자가 본인 게시글에서 대화중인 채팅방 선택시
 	 */
 	@GetMapping("/craigChatList.do")
-	public void craigChatList(@PathVariable int craigNo, Authentication authentication, Model model) {
+	public void craigChatList(@RequestParam int craigNo, Authentication authentication, Model model) {
 		// 1. 로그인한 사용자 id 꺼내기 (판매자)
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
 		log.debug("판매자 = {}", memberId);
@@ -61,41 +65,19 @@ public class ChatController {
 		List<String> craigChatList = chatService.findCraigChatList(craigChatMap);
 		log.debug("채팅방id = {}", craigChatList);
 		
-		// 대화상대 list
-		List<Member> chatMembers = new ArrayList<>();
-		
 		// 받은 메시지 list
-		List<CraigMsg> craigMsg = new ArrayList<>();
+		List<CraigMsg> craigMsgs = new ArrayList<>(); 
 		
-		// member + 마지막채팅 map 
-		Map<String, Object> chatMap = new HashMap<>();
-		
-		// 1. 멤버객체, 걔의마지막채팅 / 2. 멤버객체, 걔의 마지막채팅... 
-		
-		
-		// 4. chatroomId 순회 -> msg내역 조회
 		for(String chatroomId : craigChatList) {
-			craigMsg = chatService.findCraigMsgBychatroomId(chatroomId);
-			
-			String lastChat = chatService.findLastChatByChatroomId(chatroomId);
-			
-			// 4-1 . msg가 존재한다면?
+			CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chatroomId);
 			if(lastChat != null) {
-				Map<String, Object> map = new HashMap<>();
-					map.put("memberId", memberId);
-					map.put("chatroomId", chatroomId);
-				// 대화상대 id를 찾아옴
-				String chatMember = chatService.findOtherFromCraigChat(map);
-				// id로 member객체 찾아 chatMembers 리스트에 추가
-				
-				chatMap.put("member", memberService.selectOneMember(chatMember));
-
-				
-				chatMembers.add(memberService.selectOneMember(chatMember));
+				craigMsgs.add(lastChat);
 			}
 		}
+		log.debug("craigMsgs = {}", craigMsgs);
+
 		// 5. model에 대화중인 member객체를 담은 chatMembers 리스트 넣기
-		model.addAttribute("chatMembers", "chatMembers");		
+		model.addAttribute("craigMsgs", craigMsgs);		
 	}
 	
 	/**
