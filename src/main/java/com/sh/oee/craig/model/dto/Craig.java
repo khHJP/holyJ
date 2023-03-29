@@ -24,7 +24,7 @@ public class Craig extends CraigEntity {
 	private Member  member; // 작성자관련한 정보 가져올거야
 	private DongRange dongrange; // 동찾을거야,,
 	private Dong dong; //동테이블
-	
+	private int wish;
 	
 	
 	
@@ -71,6 +71,26 @@ public class Craig extends CraigEntity {
 		this.dong = dong;
 	}
 
+	
+	//+wish 
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, int attachCount, List<CraigAttachment> attachments, Member member,
+			DongRange dongrange, Dong dong, int wish) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate);
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+	}
+
+	
+
+
+	
 	
 	
 

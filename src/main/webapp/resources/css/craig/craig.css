@@ -92,6 +92,14 @@ body {
 	
 }
 
+#crwish{
+	font-size: 14px;
+	color : gray;
+	font-weight: 400
+	
+}
+
+
 #crContent{
 	font-size: 18px;
 	color : black;
@@ -100,46 +108,7 @@ body {
 	
 }
 
-/* 글쓰기 
-#writeCraigbtn {
-
-	position: relative;
-	top:-14px;  
-	left:20px;
-}
-
-#writeCraigbtn:hover {
- background-color: gray;
-}
-
-
-#tblcate{
-	margin-left: 250px;
-	margin-top: -30px;
-}
-
-#btct:hover{
- 	background-color:#5EC476;
- 	border-color: green;
-}
-
-
-#tbl-craig-enroll-board{
-   border: 1px solid black;
-   width : 600px;
-   height : 600px;
-   margin: 0 auto;   
-}
-
-#tbl-craig-enroll-board th, td{
-   border: 1px solid black;
-}
-
-#craigEnrollFrm{
-   width : 600px;
-   height : 600px;
-   margin: 0 auto;  
-}
+/* 
 ---------- detail --------
 */
 #proimg{
@@ -154,9 +123,7 @@ body {
 	margin-bottom: 30px;
 }
 
-#nickNdong{
 
-}
 
 #crboProfiletbl td{
 	padding-bottom: 5px;
@@ -200,4 +167,82 @@ body {
 	font-weight : 700;	
 	width:600px; 
 	font-size: 18px;	
+}
+
+/* 매너온도 */
+.temperature span, .temperature i {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+/* 삼지창 */
+#menu{
+  display: none;
+  list-style: none;
+  position: relative;
+  float: right;
+  left:-55px;
+  top:10px;
+  margin-left: -150px;
+  padding: 10px;
+  height: 100px;
+  padding-left: 0;
+}
+
+#menu li{
+	padding: 10px;
+	height: 40px;
+}
+
+
+/*Change toggle size by adjusting width & height*/
+.tb-menu-toggle {
+  border: 0;
+  position: relative;
+  left : 1000px;
+  top: 30px;
+  background: transparent;
+  cursor: pointer;
+  width : 50px;
+}
+
+/*Change toggle color here*/
+.tb-menu-toggle i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  -webkit-transition:all .2s;
+   -moz-transition:all .2s;
+     -o-transition:all .2s;
+        transition:all .2s;
+}
+.tb-menu-toggle i:nth-child(2) {
+  top: 40%;
+}
+.tb-menu-toggle i:nth-child(3) {
+  top: 80%;
+}
+
+/* Style the active toggle here */
+.tb-menu-toggle.tb-active-toggle i {  }
+
+/*Animation of the toggle*/
+.tb-menu-toggle.tb-animate-toggle i:first-child,
+.tb-menu-toggle.tb-animate-toggle i:nth-child(2){ 
+  top: 40%;
+  -webkit-transform:rotate(45deg);
+   -moz-transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+     -o-transform:rotate(45deg);
+        transform:rotate(45deg);
+} 
+.tb-menu-toggle.tb-animate-toggle i:nth-child(3){ 
+  top: 40%;
+  -webkit-transform:rotate(-45deg);
+   -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+     -o-transform:rotate(-45deg);
+        transform:rotate(-45deg);
 }

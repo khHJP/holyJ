@@ -15,7 +15,7 @@ import com.sh.oee.craig.model.dto.CraigPage;
 public interface CraigService {
 
 	// 전체목록조회 
-	List<Craig> craigList(RowBounds rowBounds,  List<String> dongList );
+	List<Craig> craigList(List<String> dongList, RowBounds rowBounds );
 
 	// 카테고리 목록 조회 
 	List<Map<String, String>> craigCategoryList();
@@ -59,8 +59,30 @@ public interface CraigService {
 	//페이지 나오게 
 	int getContentCnt(List<String> dongList );
 
+
+	//wish 조회 
+	int selectCraigWish(Map<String, Object> param);
+
+	
+	//wish delete 
+	int DeleteCraigWish(Map<String, Object> param);
+
+	//wish insert 
+	int InsertCraigWish(Map<String, Object> param);
+
+
+	// 게시물 wish
+	int selectCraigWishOne(int no);
+
+	//리스트에 쓸 wishCnt
+	List<Integer> selectCraigWishCnt(List<String> dongList);
+	
+	
+	
 	// 🐹 ------- 효정 start ---------- 🐹	
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
+
 
 }

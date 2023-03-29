@@ -36,7 +36,7 @@ button, input, optgroup, select, textarea {
 
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig2.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig/craig2.css" />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fa0f4a31c85566db414a70bc9044491b"></script>
@@ -46,36 +46,36 @@ button, input, optgroup, select, textarea {
 <div id="craigBoardContainer">
 	
 	<form:form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
-	 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >
-	<sec:authentication property="principal" var="loginMember"/>
-		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
-		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
-		<!-- ●  첨부파일 ● -->	
-		<tr>
-		<th style="max-width : 100px; min-width: 100px;" colspan="2">
-		<div style="display: flex; margin:20px 0px 10px 0px;">
-			<div id="col_img"  style="margin-top : 0px" >
-				<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
-			</div>
-			<div id="col_img"  style="margin-top : 0px" >
-				<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
-			</div>	
-			<div id="col_img"  style="margin-top : 0px" >
-				<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
-			</div>		
-		</div>
-		<div class="input-group mb-3" style="padding:0px;">
-		  <div class="custom-file" >
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple >
-		    <label class="custom-file-label" for="upFile1" >파일을 선택하세요(최대3개까지 가능)</label>
-		    <br><p style="margin-top: 150px; margin-left: -200px; font-weight: 300; font-size: 14px;">※ 여러장을 올리고 싶으시면 shift+이미지를 선택해보세요!</p>
-		  </div>
-		</div><br><br><br>
-		</th>
-		</tr>
+		 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >
 		
-	
-<!-- 		<table id="crentb" style="border: 1.5px solid lightgray;border-top:2px solid lightgray; border-bottom:2px solid lightgray;padding: 10px; margin-bottom: 20px"  >-->			
+		<sec:authentication property="principal" var="loginMember"/>
+			<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
+			
+			<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
+			<!-- ●  첨부파일 ● -->	
+				<tr>
+					<th style="max-width : 100px; min-width: 100px;" colspan="2">
+						<div style="display: flex; margin:20px 0px 10px 0px;">
+							<div id="col_img"  style="margin-top : 0px" >
+								<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
+							</div>
+							<div id="col_img"  style="margin-top : 0px" >
+								<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
+							</div>	
+							<div id="col_img"  style="margin-top : 0px" >
+								<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
+							</div>		
+						</div>
+						<div class="input-group mb-3" style="padding:0px;">
+						  <div class="custom-file" >
+						    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple >
+						    <label class="custom-file-label" for="upFile1" >파일을 선택하세요(최대3개까지 가능)</label>
+						    <br><p style="margin-top: 150px; margin-left: -200px; font-weight: 300; font-size: 14px;">※ 여러장을 올리고 싶으시면 shift+이미지를 선택해보세요!</p>
+						  </div>
+						</div><br><br><br>
+					</th>
+				</tr>
+		
 			<tr>
 				<th><label for="title"> 글 제목  </label></th>
 				<td style="max-width:650px;"><input type="text" class="formtext" placeholder=" 제목을 입력해주세요 " name="title" id="title" required></td>
@@ -125,13 +125,13 @@ button, input, optgroup, select, textarea {
 					<input class="formtext"  type="hidden" name="longitude" id="longitude" readonly="readonly" />
 				</th>
 			</tr>
+			
 			<tr>
 			<th colspan="2" style="border: none;" >
 		    	<div id="map" style="width:600px; height:300px; border: none; margin-left: 50px"></div> 	
 			</th>	    	
-			</tr>
+			</tr>			
 	    </table>
-	    
 		<input class="btn btn-cancel" type="button" value="취소" onclick="history.go(-1)" >
 		<input type="submit" class="btn btn-outline-success" value="완료" >
 		<hr style="border : 1px solid lightgray; margin-top: 20px; width: 700px" />
@@ -206,8 +206,7 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 		alert("내용을 작성해주세요!");
 		content.select();
 		return false;
-	}
-	
+	}	
 	<%-- 음 쓰면오류^^
 	//장소 없는경우
 	if(!/^.|\n+$/.test(placeDetail.value)){
@@ -216,7 +215,6 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 		return false;
 	}
 	--%>
-	
 }
 </script>
 
@@ -262,7 +260,6 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.readAsDataURL(img.files[0]); 
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer").src = e.target.result; 
-//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};
 	}
 	if(img.files[1]){
@@ -270,7 +267,6 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.readAsDataURL(img.files[1]); 
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer2").src = e.target.result; 
-//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};
 	}	
 	if(img.files[2]){
@@ -279,7 +275,6 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.readAsDataURL(img.files[2]); 
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer3").src = e.target.result; 
-//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 		};	
 	}	
 
