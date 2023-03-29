@@ -587,28 +587,26 @@ public class CraigController {
 	 @GetMapping("/mySalCraig.do")
 		public void mySalCraig(Authentication authentication, Model model) {
 			// member  
-			Member member = ((Member)authentication.getPrincipal());
-			log.debug("member = {} ", member);
-			/*
-			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+			log.debug("memberId = {} ", memberId);
 			
+			List<Craig> mySalCraig = craigService.mySalCraig(memberId);
+				
 			log.debug("mySalCraig = {}",mySalCraig);
-			
+				
 			model.addAttribute("mySalCraig",mySalCraig);
-			*/
 		}
 	 @GetMapping("/mySalFCraig.do")
 	 public void mySalFCraig(Authentication authentication, Model model) {
 		 // member  
-		 Member member = ((Member)authentication.getPrincipal());
-		 log.debug("member = {} ", member);
-		 /*
-			List<Craig> mySalCraig = craigService.mySalCraig(member);
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("memberId = {} ", memberId);
 			
-			log.debug("mySalCraig = {}",mySalCraig);
-			
-			model.addAttribute("mySalCraig",mySalCraig);
-		  */
+		 List<Craig> mySalFCraig = craigService.mySalFCraig(memberId);
+				
+		 log.debug("mySalFCraig = {}",mySalFCraig);
+				
+		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
 	 @GetMapping("/myBuyCraig.do")
 	 public void myBuyCraig(Authentication authentication, Model model) {
@@ -621,6 +619,19 @@ public class CraigController {
 		log.debug("myBuyCraig = {}",myBuyCraig);
 			
 		model.addAttribute("myBuyCraig",myBuyCraig);
+		 
+	 }
+	 @GetMapping("/myWishCraig.do")
+	 public void myWishCraig(Authentication authentication, Model model) {
+		 // member  
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("member = {} ", memberId);
+		 
+		 List<Craig> myWishCraig = craigService.myWishCraig(memberId);
+		 
+		 log.debug("myWishCraig = {}",myWishCraig);
+		 
+		 model.addAttribute("myWishCraig",myWishCraig);
 		 
 	 }
 	 /*

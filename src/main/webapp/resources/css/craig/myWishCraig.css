@@ -27,6 +27,12 @@
 	list-style: none;
 	font-size: 17px;
 	margin-top: 13px;
+	width: 800px;
+}
+#heart{
+	width :30px;
+	heigth:30px;
+	float : right;
 }
 #buyPlace{
 	padding: 5px;
@@ -53,19 +59,6 @@
 }
 #buyPrice{
 	padding: 4px 8px;
-    font-size: 18px;
-}
-#hogi{
-	text-align: center;
-    display: block;
-    font-size: 18px;
-    font-weight: bold;
-}
-#hogi a{	
-    color: black;
-}
-#hogi a:hover{	
-    text-decoration : none;
 }
 #hogi-hr{
 	margin : 5px;

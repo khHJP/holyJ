@@ -46,6 +46,9 @@ public interface CraigService {
 
 	//---------------------하나 시작------------------------
 	List<Craig> myBuyCraig(String memberId);
+	List<Craig> mySalCraig(String memberId);
+	List<Craig> mySalFCraig(String memberId);
+	List<Craig> myWishCraig(String memberId);
 	//---------------------하나 끝-------------------------
 	
 	//게시글 + 첨부파일 삭제 - ok
@@ -62,5 +65,8 @@ public interface CraigService {
 	// 🐹 ------- 효정 start ---------- 🐹	
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
+
+
 
 }
