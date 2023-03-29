@@ -12,9 +12,9 @@
 </head>
 <body>
 <!-- 내동네 가져오기 -->
-	<c:forEach items="${dongList}" var="dong">
-	<span id="mydong">${dong.dongName}</span>
-	</c:forEach>
+	
+	<span id="mydong">${localList.dongName}</span>
+
 		<div class="search">
 			<span class="mydong">도곡2동</span> <!-- 임시(dujun74 기준) -->
 			<input type="text" class="localsearch" placeholder="내 동네 근처에서 검색">
