@@ -562,6 +562,13 @@ public class CraigController {
 				
 		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
+	 /*
+	 @PostMapping("/craigBook.do")
+	 public int craigBook(int no) {
+		 
+	 }
+	 */
+	 
 	 @GetMapping("/myBuyCraig.do")
 	 public void myBuyCraig(Authentication authentication, Model model) {
 		 // member  

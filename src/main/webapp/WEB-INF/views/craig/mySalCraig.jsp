@@ -54,8 +54,8 @@
 							</ul>
 							<hr id="hogi-hr"/>
 							<ul id="f-button">
-								<li><button id="f-li">예약중</button></li>
-								<li><button id="f-li">판매완료</button></li>
+								<li><button class="book"id="f-li">예약중</button></li>
+								<li><button class="finish" id="f-li">판매완료</button></li>
 							</ul>
 							<hr id="hogi-hr"/>
 				</c:forEach>
@@ -70,6 +70,25 @@
 	</section> 
 	</div>
 <script>
+document.querySelector(".book").addEventListener("submit", (e) => {
+	e.preventDefault(); // 폼제출 방지
+		
+	// 등록 POST 
+	$.ajax({
+		url : "${pageContext.request.contextPath}/craig/craigBook.do",
+		method : "POST",
+		data : {no : '${craigboard.no}'},
+		dataType : "json",
+		success(data){
+			console.log(data);
+			alert(data.result);
+		},
+		error : console.log,
+		complete(){
+			e.target.reset();
+		}
+	});
+});
 document.querySelectorAll("#ul-table").forEach((ul) => {
 	ul.addEventListener('click', (e) => {
 		// console.log(e.target, tr);
