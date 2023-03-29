@@ -48,7 +48,7 @@
 					<a href="${pageContext.request.contextPath}/craig/myBuyCraig.do">구매내역</a>
 				<li id="submenu">
 					<img src="${pageContext.request.contextPath}/resources/images/heart.png" alt="" id="mypageimg"/>
-					<a href="">관심목록</a>
+					<a href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록</a>
 				</li>
 				</li>
 				<hr />

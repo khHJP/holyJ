@@ -54,6 +54,7 @@ td{
 }
 #sala a{
     color : black;
+    text-decoration:none;
 }
 #sala a:hover{
     color : grey;

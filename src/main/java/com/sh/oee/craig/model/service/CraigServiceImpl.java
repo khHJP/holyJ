@@ -134,6 +134,22 @@ public class CraigServiceImpl implements CraigService {
 		// TODO Auto-generated method stub
 		return craigDao.myBuyCraig(memberId);
 	}
+	@Override
+	public List<Craig> mySalCraig(String memberId) {
+		// TODO Auto-generated method stub
+		return craigDao.mySalCraig(memberId);
+	}
+	
+	@Override
+	public List<Craig> mySalFCraig(String memberId) {
+		// TODO Auto-generated method stub
+		return craigDao.mySalFCraig(memberId);
+	}
+	@Override
+	public List<Craig> myWishCraig(String memberId) {
+		// TODO Auto-generated method stub
+		return craigDao.myWishCraig(memberId);
+	}
 //-------------------------- 하나 끝 --------------------------------------
 
 	//게시글삭제 
@@ -218,8 +234,6 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.findCraigByCraigNo(craigNo);
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
-
-
 
 }
 

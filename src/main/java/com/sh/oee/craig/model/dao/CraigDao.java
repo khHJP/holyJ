@@ -53,8 +53,10 @@ public interface CraigDao {
 
 
 	//-----------------------하나시작------------------------
-	
 	List<Craig> myBuyCraig(String memberId);
+	List<Craig> mySalCraig(String memberId);
+	List<Craig> mySalFCraig(String memberId);
+	List<Craig> myWishCraig(String memberId);
 	//-----------------------하나시작------------------------
 
 	@Delete("delete from craig where no = #{no}")
@@ -74,6 +76,7 @@ public interface CraigDao {
 	@Select("select * from craig where no = #{craigNo}")
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 	//wish
 	int selectCraigWish(Map<String, Object> param);

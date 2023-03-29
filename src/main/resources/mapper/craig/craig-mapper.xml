@@ -162,7 +162,43 @@ from
 	craig c join craig_attachment ca
 	on c.no = ca.craig_no
 where
-	buyer = #{memberId}
+	c.buyer = #{memberId}
+	
+</select>
+<select id="mySalCraig" resultMap="craigMap">
+select
+	c.*,
+	ca.*
+from
+	craig c join craig_attachment ca
+	on c.no = ca.craig_no
+where
+	c.writer = #{memberId} and c.state = 'CR2'
+	
+</select>
+<select id="mySalFCraig" resultMap="craigMap">
+select
+	c.*,
+	ca.*
+from
+	craig c join craig_attachment ca
+	on c.no = ca.craig_no
+where
+	c.writer = #{memberId} and c.state = 'CR3'
+	
+</select>
+<select id="myWishCraig" resultMap="craigMap">
+select
+	c.*,
+	ca.*,
+	cw.*
+from
+	craig c join craig_attachment ca
+	on c.no = ca.craig_no
+	join craig_wish cw
+	on c.no = cw.craig_no
+where
+	cw.member_id = #{memberId} and cw.reg_date is not null
 	
 </select>
 <!--******************************** 하나 끝 *********************************-->
