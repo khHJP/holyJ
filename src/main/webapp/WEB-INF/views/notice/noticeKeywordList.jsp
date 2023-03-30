@@ -32,18 +32,16 @@
 			</form:form> --%>
 		</div>
 		<br /><br />
-		<span id="upkword">등록한 키워드 2/3</span>
+		<span id="upkword">등록한 키워드</span>
 		<br />
 		<br />
 			<table id="tbl-board" class="table">
 					<c:forEach items="${noticeKeyword}" var="keyword">
 						 <tr data-no="${keyword.no}" name="no" id="tr-table">
 						 	<div class="showkword" id="noKeyword">${keyword.keyword}
-							<form:form id="deleteKeywordFrm" name="deleteKeywordFrm">
 								<button id="cancel-btn">
 									<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
 								</button>
-							</form:form>
 							</div>
 						</tr>								
 					</c:forEach>
@@ -51,12 +49,16 @@
 		</div>
 </body>
 <script>
-     document.deleteKeyword.DeleteFrm.addEventListener('submit', (e) => {
-    	e.preventDefault();
+     document.querySelector("#cancel-btn").addEventListener('click', (e) => {
+    	 const csrfHeader = "${_csrf.headerName}";
+         const csrfToken = "${_csrf.token}";
+         const headers = {};
+         headers[csrfHeader] = csrfToken;
     	$.ajax({
     		url : `${pageContext.request.contextPath}/notice/deleteKeyword.do`,
     		method : 'POST',
-    		data :{ keywordNo : '${keyword.no}'},
+    		headers,
+    		data :{ no : '${keyword.no}'},
     		success(data){
     			console.log(data); 
     		},
