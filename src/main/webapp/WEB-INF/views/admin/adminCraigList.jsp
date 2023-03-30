@@ -13,7 +13,7 @@
 	rel="stylesheet">
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="회원관리" name="title" />
+	<jsp:param value="중고거래관리" name="title" />
 </jsp:include>
 
 <section id="admin-container">
@@ -33,12 +33,12 @@
 		<ul class="sidebar-nav">
 			<h3>회원</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 회원 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminMemberList.do" style="text-decoration: none; color: black;"> 회원 관리 </a></li>
 		</ul>
 		<ul class="sidebar-nav">
 			<h3>게시글</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminCraigList.do" style="text-decoration: none; color: black;"> 중고거래 관리 </a></li>
+			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 중고거래 관리 </a></li>
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminLocalList.do" style="text-decoration: none; color: black;"> 동네생활 관리 </a></li>
 			<li class="sidebar-nav-list">
@@ -56,47 +56,44 @@
 	</div>
 	<div id="admin-content">
 		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
-		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">회원 관리</h1>
+		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">중고거래 관리</h1>
 		<table>
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>아이디</th>
-					<th>권한</th>
-					<th>닉네임</th>
-					<th>휴대폰</th>
-					<th>매너온도</th>
-					<th>동</th>
-					<th>동 범위</th>
-					<th>신고 횟수</th>
-					<th>가입일</th>
+					<th>카테고리</th>
+					<th>작성자</th>
+					<th>제목</th>
+					<th>상태</th>
+					<th>등록일</th>
+					<th>완료일</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${not empty adminMemberList}">
-					<c:forEach items="${adminMemberList}" var="adminMember" varStatus="vs">
+				<c:if test="${not empty adminCraigList}">
+					<c:forEach items="${adminCraigList}" var="adminCraig" varStatus="vs">
 						<tr id="table-content">
 							<td>${vs.count}</td>
-							<td>${adminMember.memberId}</td>
-							<td>${adminMember.auth.auth}</td>
-							<td>${adminMember.nickname}</td>
-							<td>${adminMember.phone}</td>
-							<td>${adminMember.manner}</td>
-							<td>${adminMember.dongNo}</td>
-							<td>${adminMember.dongRange}</td>
-							<td>${adminMember.reportCnt}</td>
+							<td>${adminCraig.categoryNo}</td>
+							<td>${adminCraig.writer}</td>
+							<td>${adminCraig.title}</td>
+							<td>${adminCraig.state}</td>
 							<td>
-								<fmt:parseDate value="${adminMember.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
-								<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd HH:mm" />
+								<fmt:parseDate value="${adminCraig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
+							</td>
+							<td>
+								<fmt:parseDate value="${adminCraig.completeDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="completeDate" /> 
+								<fmt:formatDate value='${completeDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td></td>
 						</tr>
 					</c:forEach>
 				</c:if>
-				<c:if test="${empty adminMemberList}">
+				<c:if test="${empty adminCraigList}">
 					<tr>
-						<td colspan="11">조회된 데이터가 없습니다.</td>
+						<td colspan="8">조회된 데이터가 없습니다.</td>
 					</tr>
 				</c:if>
 			</tbody>
