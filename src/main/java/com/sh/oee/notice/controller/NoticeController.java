@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -73,10 +74,10 @@ public class NoticeController {
 	    }
 	    
 	    @PostMapping("/deleteKeyword.do")
-	    public int deleteKeyword(int keywordNo, RedirectAttributes redirectAttr){
+	    public int deleteKeyword(@RequestParam int keywordNo){
 			log.debug("keywordNo = {}", keywordNo);
 			
-			redirectAttr.addFlashAttribute("msg", "키워드를 삭제했습니다.");
+			//redirectAttr.addFlashAttribute("msg", "키워드를 삭제했습니다.");
 			return noticeService.deleteKeyword(keywordNo);
 	    }
 	//-------------------------------하나 끝---------------------

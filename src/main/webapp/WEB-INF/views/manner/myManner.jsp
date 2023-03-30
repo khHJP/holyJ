@@ -27,8 +27,8 @@
 						<c:if test="${manner.prefer eq 'MA2'}">
 								<div class="span1" id="like">좋아요
 									<div id="count">
-										<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-										<span>2</span>
+										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+										<span id="writer">${manner.writer}</span>
 									</div>
 										<hr />
 								</div>
@@ -36,8 +36,8 @@
 						<c:if test="${manner.prefer eq 'MA3'}">
 								<div class="span1" id="like">최고에요
 									<div id="count">
-										<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-										<span>1</span>
+										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+										<span id="writer">${manner.writer}</span>
 									</div>
 										<hr />
 								</div>
@@ -47,8 +47,8 @@
 							<c:when test="${manner.compliment eq 'COM1'}">
 									<div class="span1" id="like">제가 있는 곳까지 와서 거래했어요.
 										<div id="count">
-											<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-											<span>1</span>
+											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+											<span id="writer">${manner.writer}</span>
 										</div>
 											<hr />
 									</div>
@@ -56,8 +56,8 @@
 							<c:when test="${manner.compliment eq 'COM2'}">
 									<div class="span1" id="like">응답이 빨라요
 										<div id="count">
-											<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-											<span>1</span>
+											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+											<span id="writer">${manner.writer}</span>
 										</div>
 											<hr />
 									</div>
@@ -65,8 +65,8 @@
 							<c:when test="${manner.compliment eq 'COM3'}">
 									<div class="span1" id="like">친절하고 매너가 좋아요.
 										<div id="count">
-											<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-											<span>2</span>
+											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+											<span id="writer">${manner.writer}</span>
 										</div>
 											<hr />
 									</div>
@@ -74,8 +74,8 @@
 							<c:otherwise>
 									<div class="span1" id="like">시간 약속을 잘 지켜요.
 										<div id="count">
-											<img src="${pageContext.request.contextPath}/resources/images/mannerhu.png" alt="" id="mannerhu"/>
-											<span>2</span>
+											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
+											<span id="writer">${manner.writer}</span>
 										</div>
 											<hr />
 									</div>
