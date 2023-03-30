@@ -24,6 +24,7 @@ window.addEventListener('load', (e) => {
 <sec:authentication property="principal" var="loginMember"/>
 <div class="together-container">
 	<div class="together-wrap">
+		<!-- 글쓴이 프로필 -->
 		<div class="writer-info-box">
 			<div class="writer-box">
 				<div class="profile-box">
@@ -101,7 +102,7 @@ window.addEventListener('load', (e) => {
 			</div>
 			<div class="choose-box">
 			<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
-				<button class="btn to_close">모임종료</button>
+				<button class="btn" data-toggle="modal" data-target="#exampleModal">모임종료</button>
 			</c:if>
 			<c:if test="${together.writer ne loginMember.memberId}">
 				<button class="btn report">신고하기</button>
@@ -148,9 +149,9 @@ window.addEventListener('load', (e) => {
 				<button class="join btn">참가하기</button>
 				<!-- 😺 채팅 참여하기 😺 -->
 				</c:if>
-				<c:if test="${together.writer eq loginMember.memberId}">
-						<button class="btn modify">수정</button>
-						<button class="btn delete">삭제</button>
+				<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
+					<button class="btn modify">수정</button>
+					<button class="btn delete">삭제</button>
 				</c:if>
 			</div>
 		</div>
@@ -162,6 +163,28 @@ window.addEventListener('load', (e) => {
 		<div class="join-member-box">
 			<h4>참여중인 이웃<span></span></h4>
 			<div></div>
+		</div>
+	</div>
+</div>
+<!-- 모임종료 경고모달 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">※ 모임 종료 ※</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				모임을 종료하면 이웃이 더 이상 일정에 참여할 수 없고, 
+				<br/>
+				게시글을 수정할 수 없어요. 종료하시겠어요?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal">취소</button>
+				<button type="button" class="btn to_close">종료</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -191,9 +214,7 @@ document.querySelector(".delete").addEventListener('click', (e) => {
 
 /* 모임 종료하기 */
 document.querySelector(".to_close").addEventListener('click', (e) => {
-	if(confirm('모임을 종료하시겠습니까?')){
-		document.togetherStatusUpdateFrm.submit();
-	}	
+	document.togetherStatusUpdateFrm.submit();
 });
 </script>
 </c:if>
@@ -203,10 +224,10 @@ document.querySelector(".to_close").addEventListener('click', (e) => {
 document.querySelector(".report").addEventListener('click', (e) => {
 	const reportType = 'TO';
 	const boardNo = '${together.no}';
-	const writer = '${together.writer}';
-	console.log(reportType, boardNo, writer);
+	const reportedId = '${together.writer}';
+	console.log(reportType, boardNo, reportedId);
 	
-	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&writer=' + writer;
+	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
 	
 });
 </script>
