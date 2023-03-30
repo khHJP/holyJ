@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ReportReason {
 
 	@NonNull

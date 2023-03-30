@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.oee.report.model.dao.ReportDao">
+
+	<!-- 👻 정은 시작 👻 -->
+	<!-- 신고 폼 조회 -->
+	<select id="getReportReason" resultMap="reportReasonMap">
+		select
+			*
+		from
+			report_reason
+		where
+			report_type in (#{reportType}, 'US')
+	</select>
+	<resultMap type="reportReason" id="reportReasonMap"></resultMap>
+	
+	<!-- 게시판 신고 등록 -->
+	<insert id="boardReportEnroll">
+		insert into
+			board_report
+		values(
+			SEQ_BOARD_REPORT_NO.nextval,
+			#{writer},
+			#{reportType},
+			#{reportPostNo},
+			#{reasonNo},
+			default,
+			default
+		)
+	</insert>
+	
+	<!-- 사용자 신고 등록 -->
+	<insert id="userReportEnroll">
+		insert into 
+			user_report
+		values (
+			SEQ_USER_REPORT_NO.nextval,
+			#{writer},
+			#{reasonNo},
+			#{reportedMember},
+			default,
+			default		
+		)
+	</insert>
+	
+	
+	<!-- 👻 정은 끝 👻 -->
+
+</mapper>
