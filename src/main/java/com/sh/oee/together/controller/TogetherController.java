@@ -92,7 +92,7 @@ public class TogetherController {
 		param.put("status", status);
 
 		// 페이지처리
-		int limit = 4;
+		int limit = 6;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		int totalCount = togetherService.getTogetherTotalCount(param);
@@ -120,7 +120,7 @@ public class TogetherController {
 	 * @param model
 	 */
 	@GetMapping("/togetherDetail.do")
-	public void togetherDetail(@RequestParam(defaultValue = "") String category, @RequestParam int no, Model model) {
+	public void togetherDetail(@RequestParam(required = false) String category, @RequestParam int no, Model model) {
 		log.debug("no = {}", no);
 		
 		// 업무로직

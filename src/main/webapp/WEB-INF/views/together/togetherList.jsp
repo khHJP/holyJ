@@ -10,15 +10,46 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together/together.css" />
 <script type="text/javascript">
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+const categoryNo = '${param.categoryNo}';
+const status = '${param.status}';
+console.log(totalPages);
+console.log(categoryNo);
+console.log(status);
+
 $(document).ready(function() {
-  // 페이지네이션 생성
-  generatePagination(totalPages, currentPage);
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+	
+	// 카테고리 선택시 해당 카테고리에 스타일 입히기
+	if(categoryNo){
+		const selectedCategory = document.querySelectorAll(".category-nav");
+		selectedCategory.forEach((cate_gory) => {
+			const num = cate_gory.dataset.categoryNum;
+			if(categoryNo == num){
+				cate_gory.firstElementChild.classList.add('light');
+				cate_gory.lastElementChild.style.color='#56C271';
+			}			
+		});
+	}
+	else {
+		const main = document.querySelector(".main");
+		main.classList.add('light');
+		main.nextElementSibling.style.color='#56C271';
+	}
+	
+	// 모임 중인 글만 볼때 스타일 입히기
+	if(status){
+		const text = document.querySelector("[for=checked-box]");
+		text.style.color = '#56C271';
+	}
 });
 </script>
 <div class="together-list-container">
 	<div class="together-list-wrap">
 		<div class="category-nav" data-category-num>
-			<div class="category-img">
+			<div class="category-img main">
 			</div>
 			<div class="category-name">
 				<p>전체</p>
@@ -121,7 +152,7 @@ $(document).ready(function() {
 		</c:if>
 	</div>
 	<nav aria-label="Page navigation example" class="pagebar-box">
-	 		<ul class="pagination justify-content-center"></ul>
+ 		<ul class="pagination justify-content-center"></ul>
 	</nav>
 </div>
 <script>
@@ -139,15 +170,6 @@ document.querySelectorAll(".together-view").forEach((together) => {
 document.querySelector(".enroll").addEventListener('click', (e) => {
 	location.href = '${pageContext.request.contextPath}/together/togetherEnroll.do';
 });
-
-
-/* 페이지 처리 */
-const totalPages = '${totalPages}';
-const currentPage = '${currentPage}';
-const categoryNo = '${param.categoryNo}';
-const status = '${param.status}';
-console.log(categoryNo);
-console.log(status);
 
 /* 모집중인 글만 보기 */
 document.querySelector(".ing-board").addEventListener("change", (e) => {
@@ -175,6 +197,7 @@ document.querySelectorAll(".category-nav").forEach((category) => {
 	});
 });
 
+/* 페이지 처리 */
 /* 페이지네이션 버튼을 생성하는 함수 */
 const generatePagination = (totalPages, currentPage) => {
     let pagination = $(".pagination");

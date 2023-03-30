@@ -15,14 +15,11 @@ import lombok.ToString;
 public class UserReport extends ReportEntity{
 
 	@NonNull
-	private int reasonNo;
-	@NonNull
 	private String reportedMember;
 	
-	public UserReport(@NonNull int reportNo, @NonNull String writer, LocalDateTime regDate, Status status,
-			@NonNull int reasonNo, @NonNull String reportedMember) {
-		super(reportNo, writer, regDate, status);
-		this.reasonNo = reasonNo;
+	public UserReport(int reportNo, @NonNull String writer, int reasonNo, LocalDateTime regDate, 
+			Status status, @NonNull String reportedMember) {
+		super(reportNo, writer, reasonNo, regDate, status);
 		this.reportedMember = reportedMember;
 	}
 	
