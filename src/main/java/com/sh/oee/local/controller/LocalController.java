@@ -145,9 +145,20 @@ public class LocalController {
 		model.addAttribute("category", category);
 	}
 	
+	// 글 수정하기 폼 이동
+	@GetMapping("/localUpdate.do")
+	public void localUpdate(@RequestParam int no,Model model,Local local) {
+		
+		Local localdetail = localService.selectLocalOne(no);
+		List<Map<String,String>> localCategory = localService.localCategoryList();
+		
+		model.addAttribute("localdetail",localdetail);
+		model.addAttribute("localCategory", localCategory);
+		
+	}
 	
-	
-	
+	// 글 수정하기
+
 	
 	
 	
