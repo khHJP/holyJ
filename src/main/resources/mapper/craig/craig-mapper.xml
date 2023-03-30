@@ -24,9 +24,18 @@
                     on d.dong_no = dr.dong_no
 	<where>
 		d.dong_name in
-		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+		<foreach collection="dongName" item="dongName" open="(" close=")" separator=",">
 			#{dongName}
 		</foreach>
+		
+		<if test="categoryNo != null and categoryNo !=0 and searchKeyword == null ">
+			and category_no = #{categoryNo}
+		</if>
+		
+		<if test="categoryNo == 0 and searchKeyword != null ">
+		    and ( title like  '%' || #{searchKeyword}|| '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
+		
     </where>	
 	order by  cr.no desc
 
@@ -216,7 +225,7 @@ where
 </update>
 
 
-<!--  페이지 구하기  -->
+<!--  ■ 총컨텐츠수 구하기  ■ -->
 <select  id="getContentCnt" resultType="_int">
 	select count(*)
 	from ( 
@@ -232,12 +241,23 @@ where
                     on d.dong_no = dr.dong_no
 	<where>
 		d.dong_name in
-		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+		<foreach collection="dongName" item="dongName" open="(" close=")" separator=",">
 			#{dongName}
 		</foreach>
+		
+			
+		<if test="categoryNo != null and categoryNo !=0 and searchKeyword == null ">
+			and category_no = #{categoryNo}
+		</if>
+		
+		<if test="categoryNo == 0 and searchKeyword != null ">
+		    and ( title like  '%' || #{searchKeyword}|| '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
+		
     </where>	
 </select>
 
+<!--  ■ 한게시물의 총 관심수  -0328  ■-->
 <select id="selectCraigWish" resultType="_int" >
 	select count(*) 
 	from  craig_wish 
@@ -247,7 +267,7 @@ where
 <resultMap type="CraigWish" id="craigWishMap">
 </resultMap>
 
-<!-- 관심수 select -0328  -->
+<!--  ■ 관심수 select - 0330 - 메소드 통합(리스트/검색/카테고리)  ■-->
 <select id="selectCraigWishCnt" resultType="_int">
 
 select (select count(*) from craig_wish where craig_no  = cr.no )wish
@@ -266,13 +286,23 @@ from (
               left join dong_range dr
                     on d.dong_no = dr.dong_no
 
-<where>
-	d.dong_name in
-	<foreach collection="list" item="dongName" open="(" close=")" separator=",">
-		#{dongName}
-	</foreach>
-</where>
+	<where>
+		d.dong_name in
+		<foreach collection="dongName" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+			
+		<if test="categoryNo != null and categoryNo !=0 and searchKeyword == null ">
+			and category_no = #{categoryNo}
+		</if>
+		
+		<if test="categoryNo == 0 and searchKeyword != null ">
+		    and ( title like  '%' || #{searchKeyword}|| '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
+		
+    </where>
 order by  cr.no desc	
 </select>
+
 
 </mapper>

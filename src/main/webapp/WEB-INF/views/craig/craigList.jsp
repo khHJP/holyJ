@@ -84,25 +84,37 @@
 			</button>
 		  	<ul class="dropdown-menu">
 			  <c:forEach items="${craigCategory}" var="category">
-			    <li data-no="${category.no}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
+			    <li data-no="${category.CATEGORY_NO}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
 		   	  </c:forEach>
 			</ul>
 		</div>
-		
+
 		<span id="memberInfo" ></span>
-		<%--  검색 --%>
-	    <div class="searchdiv">
-	    	<input type="text" class="searchTerm" placeholder=" 검색어를 입력해주세요 ">
-	    	<button type="submit" class="searchButton">
-	        	<i class="fa fa-search"></i>
-	     	</button>
+		<%--  검색 --%>		
+	    <div class="searchdiv" style=""> <%-- 동일핸들러로 보내보자 --%>
+	    	<form:form action=""
+	    		 id="keywordFrm" name="keywordFrm" enctype ="multipart/form-data"  style="display:inline" method="get">
+		    	<input type="text"  name="searchKeyword" id="searchKeyword" placeholder=" 검색어를 입력해주세요 ">
+		    	<button type="submit" class="searchButton"> <i class="fa fa-search"></i> </button>
+	     	</form:form>
        	 	<button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
 	    </div>
 	</div>
-	
+<section id="craigWhole" >	
 <!-- whole List  -->
-		<h3 style="margin-top: 30px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
+	<c:if test="${searchCraigs == null}">
+		<h3 style="margin-top: 50px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
+	</c:if>
 		
+	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
+		<h3 style="margin: auto; margin-top: 50px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과</h3>
+	</c:if>
+	<c:if test="${searchCraigs[0] == null && searchKeyword != null  }">
+		<h3 style="margin: auto; margin-top: 50px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과가 없습니다!</h3>
+		<img  style="width:700px; height: 600px; margin:70px 0 0 280px " src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="First slide" >
+	</c:if>
+	
+
 		<table id="craigWholeListTbl">
 			<tbody>
 			<c:forEach items="${craigList}" var="craig" varStatus="vs">
@@ -145,36 +157,100 @@
 						</tr>
 					</c:if>
 				</c:forEach>
+			
+			
+		<%--  ★★★★★ 검색 결과 ★★★★★--%>
+		<c:if test="${searchCraigs != null}">
+			<c:forEach items="${searchCraigs}" var="searchcraig" varStatus="searchvs">
+				<c:if test="${searchvs.index%4==0}">
+					<tr data-no="${searchcraig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
+				</c:if>
+					  <td class="crnotd" data-crno="${searchcraig.no}" style="width:200px; height: 380px; padding: 10px">
+						<div class="explains">
+							<div>
+							<%-- img --%>
+							<c:if test="${searchcraig.attachments[0].reFilename != null}">
+							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+									    src="${pageContext.request.contextPath}/resources/upload/craig/${searchcraig.attachments[0].reFilename}"/></a><br/>
+							</c:if>
+							<c:if test="${searchcraig.attachments[0].reFilename==null}">
+							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+							</c:if>
+								<p id="crtitle" class="crpp">${searchcraig.title}</p>
+							<c:if test="${searchcraig.price > 0}">
+								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
+							</c:if>
+							<%-- CR1 || CR3--%>
+							<c:if test="${searchcraig.state == 'CR1'}">
+								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+							</c:if>
+							<c:if test="${searchcraig.state == 'CR3'}">
+								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							</c:if>
+		
+							<c:if test="${searchcraig.price == 0 && searchcraig.categoryNo != 7 }">
+								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+							</c:if>
+								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+
+								</div>
+							</div>
+						</td>
+					<c:if test="${searchvs.index %4==3}">
+						</tr>
+					</c:if>
+				</c:forEach>
+			</c:if>
+		<%-- ★★★★★★★★★★--%>
 			</tbody>
 		</table><br><br><br><br><br>
+</section>
 
-		<%-- 페이징 --%>
+		<%-- ◆◆◆ 페이징 ◆◆◆--%>
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<!--  pre   --> 
 	        <c:choose>
 	           <c:when test="${craigPage.prevPage <= 0 }">
-	             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+	             <li class="page-item disabled"><a class="page-link" href="#"> 이전 </a></li>
 			    </c:when>
 	            <c:otherwise>	
-	             <li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>
+		            <c:if test="${searchCraigs == null}">
+	             		<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>					
+					</c:if>
+					<c:if test="${searchCraigs != null}">
+	 					<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${craigPage.prevPage}">Previous</a></li>	
+	 				</c:if>
 	 			</c:otherwise>
 	        </c:choose>
 	 		<!--  now --> 
 	        <c:forEach var="cpage"  begin="${craigPage.min}" end="${craigPage.max}">       
 	          <c:choose>
 				<c:when test="${cpage == craigPage.currentPage}">
-			      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
-			    </c:when>			    
+					<c:if test="${searchCraigs == null}">
+				      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
+					</c:if>	
+					
+				    <c:if test="${searchCraigs != null}">
+				      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
+					</c:if>
+			    </c:when>	
+			    		    
 			    <c:otherwise>
-			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
-			    </c:otherwise>
+			    	<c:if test="${searchCraigs == null}">
+	    			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
+			    	</c:if>
+   			    	<c:if test="${searchCraigs != null}">
+	    			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
+			    	</c:if>
+		 		</c:otherwise>
 			 </c:choose>  
 			</c:forEach>
 			 <!-- next -->
 		    <c:choose>
 	          <c:when test="${craigPage.max >= craigPage.pageCnt }">
-			    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+			    <li class="page-item disabled"><a class="page-link" href="#"> 다음 </a></li>
 			  </c:when>	          
 	          <c:otherwise>
 			     <li class="page-item"><a class="page-link" href="#">Next</a></li>
@@ -182,19 +258,9 @@
 	        </c:choose>    
 			</ul>
 		</nav>
+			
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
-	tr.addEventListener('click', (e) => {
-		console.log(e.target);
-		console.log( tr );
-		
-		const no = tr.dataset.no;
-		console.log( no );
-	})
-})
-
-//category
-document.querySelectorAll("tr[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
 		console.log(e.target);
 		console.log( tr );
@@ -209,11 +275,10 @@ document.querySelector("#writeCraigbtn").addEventListener('click', (e) => {
 			location.href = `${pageContext.request.contextPath}/craig/craigEnroll.do`;
 
 });
-
 </script>
 
 <script>
-//상세페이지
+//■ 상세페이지
 document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 	td.addEventListener('click', (e) => {
 		console.log(e.target);
@@ -228,9 +293,8 @@ document.querySelectorAll("td[data-crno]").forEach( (td)=>{
 
 </script>
 
-
 <script>
-//내동네
+//■ 내동네
 window.addEventListener('load', () => {
 	const memberInfo = document.querySelector("#memberInfo");
 	
@@ -245,12 +309,142 @@ window.addEventListener('load', () => {
 		error : console.log
 	});
 });
+</script>
 
-//검색
-document.querySelector(".searchButton").addEventListener('click', (e) => {
-	console.log( e.target );
-	//가방 ->  -> craig테이블의 title+content의 해당키워드찾기  -> 비동기가 편할까? 페이징처리를 어떻게..?
+<script>
+// ■ 검색
+document.querySelector(".searchButton").addEventListener('click', (e)=>{
+	const sfrm = document.keywordFrm;	
+	const searchKeyword =  document.querySelector("#searchKeyword").value;
+	console.log(e.target);
+	console.log(searchKeyword);
+	
+	if(searchKeyword == null || searchKeyword ==""){
+		alert("검색어를 입력해주세요!");
+		e.preventDefault();
+		return;
+	}
+
+	const blank_pattern = /^\s+|\s+$/g;
+	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
+		alert("검색어를 입력해주세요!");
+		document.querySelector("#searchKeyword").select();
+		e.preventDefault();
+		return false;
+	}
+	
+	
+	else if(searchKeyword != null && searchKeyword !="" ){
+		location.href = "${pageContext.request.contextPath}/craig/craigList.do";
+	}	
 });
+
+
+// ■ 카테고리 - 비동기를 하나는 해야될거같은디 -- 음 해본다 ^^,, 0330
+document.querySelectorAll("li[data-no]").forEach( (cateli)=>{
+
+	let nav  = document.querySelector("nav");
+	let tbody  = document.querySelector("#craigWholeListTbl tbody");
+	
+	
+	cateli.addEventListener('click', (e) => {
+		
+		const cateno = cateli.dataset.no;
+		console.log( cateno );	
+		
+	//	location.href = "${pageContext.request.contextPath}/craig/craigList.do?categoryNo=${cateno}";
+
+	$.ajax({
+		url : `${pageContext.request.contextPath}/craig/selectCategorySearch.do`,
+		method : 'get',
+		dataType : 'json',
+		data : { categoryNo : cateno },
+		success(data){
+			console.log( data );
+			
+			nav.innerHTML = "";
+			tbody.innerHTML = "";
+			
+			const tr1 =  document.createElement("tr");
+			tbody.append( tr1 );
+			
+			const cateCraigs = data.searchCrategory;
+			const imgone = "";
+			//엄청난 비동기의 시작 일단 다비운다			
+			for( let i=0; i<cateCraigs.length; i++ ){
+
+				
+				if( parseInt(i/4) == 0){
+
+					tr1.innerHTML += 
+				      `<td class="crnotd" data-crno="${cateCraigs.no}" style="width:200px; height: 380px; padding: 10px">
+						<div class="explains">
+							<div>`;
+							
+					tr1.innerHTML += imgone;
+					
+					
+							
+						if(${cateCraigs.attachments[0].reFilename != null}){
+							 imgone = `<a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+								    src="${pageContext.request.contextPath}/resources/upload/craig/${cateCraigs.attachments[0].reFilename}"/></a><br/>`;
+							}
+							
+							
+							<%--
+								<a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+									    src="${pageContext.request.contextPath}/resources/upload/craig/${cateCraigs.attachments[0].reFilename}"/></a><br/>
+							</c:if>
+							<c:if test="${cateCraigs.attachments[0].reFilename==null}">
+							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+							</c:if>
+								<p id="crtitle" class="crpp">${searchcraig.title}</p>
+							<c:if test="${cateCraigs.price > 0}">
+								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
+							</c:if>
+							<%-- CR1 || CR3
+							<c:if test="${cateCraigs.state == 'CR1'}">
+								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+							</c:if>
+							<c:if test="${cateCraigs.state == 'CR3'}">
+								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							</c:if>
+		
+							<c:if test="${cateCraigs.price == 0 && cateCraigs.categoryNo != 7 }">
+								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+							</c:if>
+								<p id="crdong" class="crpp">${cateCraigs.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+						
+								</div>
+							</div>
+					  </td>`
+					  --%>				
+				}				
+				
+				
+				
+				
+				
+			}
+
+			
+			
+			
+			
+			
+			
+			
+		},
+		error : console.log
+	});//end-ajax
+		
+		
+	})
+})
+
+
+
 </script>
 
 <br><br><br><br><br><br>

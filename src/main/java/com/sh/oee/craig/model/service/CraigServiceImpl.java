@@ -25,9 +25,10 @@ public class CraigServiceImpl implements CraigService {
 	@Autowired
 	private CraigDao craigDao;
 
+	//새로운 list뽑기 메서드 - no검색버전 - 잘되면이걸로쓰기 
 	@Override
-	public List<Craig> craigList( List<String> dongList , RowBounds rowBounds) {
-		return craigDao.craigList(dongList,  rowBounds);
+	public List<Craig> craigList(Map<String, Object> param, RowBounds rowBounds) {
+		return craigDao.craigList(param, rowBounds);
 	}
 
 	//카테고리 목록조회 
@@ -173,10 +174,10 @@ public class CraigServiceImpl implements CraigService {
 	}
 
 	
-	//페이지
+	//컨텐츠 총수
 	@Override
-	public int getContentCnt(List<String> dongList ) {
-		return craigDao.getContentCnt(dongList);
+	public int getContentCnt(Map<String, Object> param ) {
+		return craigDao.getContentCnt(param);
 	}
 
 	//wish
@@ -203,32 +204,25 @@ public class CraigServiceImpl implements CraigService {
 		return  craigDao.selectCraigWishOne(no);
 	}
 
-	//리스트에쓸 wish 
-	@Override
-	public List<Integer> selectCraigWishCnt(List<String> dongList) {
-		return craigDao.selectCraigWishCnt(dongList);
-	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 🐹 ------- 효정 start ---------- 🐹	
 	@Override
 	public Craig findCraigByCraigNo(int craigNo) {
 		return craigDao.findCraigByCraigNo(craigNo);
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
+
+	
+
+	
+	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	@Override
+	public List<Integer> selectCraigWishCnt(Map<String, Object> param) {
+		return craigDao.selectCraigWishCnt(param);
+	}
+
+
+
 
 }
 
