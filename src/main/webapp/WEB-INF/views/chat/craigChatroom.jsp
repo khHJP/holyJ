@@ -49,8 +49,8 @@
 					<!-- 메뉴버튼 토글시  -->
 					<div class="action_menu">
 						<ul>
-							<li>신고하기</li>
-							<li>채팅방 나가기</li>
+							<li id="craigReport">신고하기</li>
+							<li id="craigExit">채팅방 나가기</li>
 						</ul>
 					</div>
 				</div>
@@ -96,12 +96,10 @@
 					<ul class="list-unstyled">
 						<c:forEach items="${craigMsgs}" var="craigMsg">
 							<!-- java.util.Date 빈등록  -->
-							<jsp:useBean id="sentTime" class="java.util.Date">
-								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
-							</jsp:useBean>
+							<jsp:useBean id="sentTime" class="java.util.Date"/>
 							<!-- 내가 보낸 메시지일때 -->
 							<c:if test="${memberId == craigMsg.writer}">
-	
+								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
 								<li class="replies">
 									<p>${craigMsg.content}</p>	
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
@@ -109,6 +107,7 @@
 							</c:if>
 							<!-- 다른사람이 보낸 메시지일때 -->
 							<c:if test="${memberId != craigMsg.writer}">
+								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
 								<li class="sent">
 									<img src="/oee/resources/upload/profile/${otherUser.profileImg}" alt="">
 									<p>${craigMsg.content}</p>	
@@ -116,32 +115,6 @@
 								</li>
 							</c:if>
 						</c:forEach>
-
-						<li class="sent">
-							<img src="/oee/resources/upload/profile/oee.png" alt="">
-							<p>우하하하하ㅏ하</p>	
-							<span class="msg_time">06:23 오후</span>
-						</li>
-						<li class="sent">
-							<img src="/oee/resources/upload/profile/oee.png" alt="">
-							<p>우하하하하ㅏ하</p>	
-							<span class="msg_time">06:23 오후</span>
-						</li>
-						<li class="sent">
-							<img src="/oee/resources/upload/profile/oee.png" alt="">
-							<p>우하하하하ㅏ하</p>	
-							<span class="msg_time">06:23 오후</span>
-						</li>
-						<li class="sent">
-							<img src="/oee/resources/upload/profile/oee.png" alt="">
-							<p>우하하하하ㅏ하</p>	
-							<span class="msg_time">06:23 오후</span>
-						</li>
-						<li class="sent">
-							<img src="/oee/resources/upload/profile/oee.png" alt="">
-							<p>우하하하하ㅏ하</p>	
-							<span class="msg_time">06:23 오후</span>
-						</li>
 					</ul>
 				</div>
 				<!-- 채팅방 메시지내용 end  -->
@@ -157,6 +130,10 @@
 						</button>
 				</div>
 			</div>
+<%-- 			<form name="chatExitFrm" method="post" action="">
+				<input type="hidden" name="delMemberId" value="${memberId}"/>
+				<input type="hidden" name="delChatroomId" value="${chatroomId}"/>
+			</form> --%>
 		</div>
 
 <sec:authorize access="isAuthenticated()">
@@ -187,16 +164,40 @@ $(document).ready(function(){
 	const hei = $(document).outerHeight() + 60;
 	console.log(hei);
 	window.resizeTo(wid, hei);
-
 });
 
-
+/************************ 메시지관련 시작 *************************/
 const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
 const stompClient = Stomp.over(ws);
 
 // 채팅방아이디 
 const chatroomId = '${chatroomId}';
 const memberId = '${memberId}';
+
+
+/* 채팅방 나가기 */
+document.querySelector("#craigExit").addEventListener("click", (e) => {
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/updateDel.do?memberId=\${memberId}&chatroomId=\${chatroomId}`,
+		method : 'POST',
+		headers,
+		success(data){
+			
+		},
+		error : console.log,
+		complete(){
+			window.close();
+		}
+	});
+
+
+});
+
 
 /* 메시지 전송하기 */
 document.querySelector("#sendBtn").addEventListener("click", (e) => {
