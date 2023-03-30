@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
@@ -32,6 +33,18 @@ public interface ChatDao {
 	int insertCraigMsg(CraigMsg craigMsg);
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
+
+	@Select("select * from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
+	CraigChat findCraigChat(Map<String, Object> craigChatMap);
+
+	@Select("select * from craig_msg where chatroom_id = #{chatroomId} and sent_time > #{regDate}")
+	List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> regDelMap);
+
+	@Update("update craig_chat set del_date = #{delDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
+	int updateDel(Map<String, Object> delMap);
+
+	@Update("update craig_chat set del_date = null, reg_date = sysdate where chatroom_id = #{chatroomId} and member_id = #{memberId}")
+	int updateRegDel(Map<String, Object> regDelMap);
 
 
 
