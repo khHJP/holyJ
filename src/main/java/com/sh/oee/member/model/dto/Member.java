@@ -40,6 +40,9 @@ public class Member implements UserDetails {
 	private LocalDateTime deleteDate;
 	private boolean enabled;
 	
+	// 0329 예지 추가
+	private Authority auth;
+	
 	// 권한 목록
 	List<SimpleGrantedAuthority> authorities;
 	

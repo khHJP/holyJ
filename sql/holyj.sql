@@ -580,7 +580,7 @@ create table authority(
 );
 insert into authority values ('admin', 'ROLE_USER'); -- 한명씩 권한 추가 (admin은 기본유저권한도 갖고있음)
 insert into authority values ('admin', 'ROLE_ADMIN'); -- 한명씩 권한 추가
-insert into authority values ('ROLE_WARN')
+insert into authority values ('ROLE_WARN');
 
 --==========================================
 -- remember-me 관련테이블 persistent_logins
