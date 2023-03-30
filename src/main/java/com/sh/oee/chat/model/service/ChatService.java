@@ -22,4 +22,12 @@ public interface ChatService {
 
 	int insertCraigMsg(CraigMsg craigMsg);
 
+	CraigChat findCraigChat(Map<String, Object> craigChatMap);
+
+	List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> delMap);
+
+	int updateDel(Map<String, Object> delMap);
+
+	int updateRegDel(Map<String, Object> regDelMap);
+
 }
