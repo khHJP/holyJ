@@ -4,20 +4,95 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.admin.model.dao.AdminDao">
 
-	<select id="selectAdminMemberList" resultMap="adminMemberMap">
+	<!-- select -->
+	<select id="selectAdminMemberList" resultMap="adminMap">
 		select
-			*
+			m.*,
+			auth
 		from
-			member
+			member m join authority a
+			on m.member_id = a.member_id
 		where
 			delete_date is null
 		order by
 			enroll_date desc
 	</select>
 	
-	<resultMap type="member" id="adminMemberMap"></resultMap>
+	<resultMap type="member" id="adminMap">
+		<id column="member_id" property="memberId"/>
+		<result column="member_id" property="memberId"></result>
+		<result column="password" property="password"></result>
+		<result column="nickname" property="nickname"></result>
+		<result column="phone" property="phone"></result>
+		<result column="manner" property="manner"></result>
+		<result column="profile_img" property="profileImg"></result>
+		<result column="dong_no" property="dongNo"></result>
+		<result column="dong_range" property="dongRange"></result>
+		<result column="report_cnt" property="reportCnt"></result>
+		<result column="enroll_date" property="enrollDate"></result>
+		<result column="delete_date" property="deleteDate"></result>
+		<association property="auth" javaType="authority">
+			<id column="member_id" property="memberId"/>
+			<result column="member_id" property="memberId"/>
+			<result column="auth" property="auth"/>
+		</association>
+	</resultMap>
 	
-	<select id="selectAdminBoardReport" resultMap="adminBoardReportMap">
+	<select id="selectAdminCraigList" resultMap="craigMap">
+		select
+			*
+		from
+			craig
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="craig" id="craigMap">
+		<id column="no"  property="no"/>
+		<result column="category_no" property="categoryNo"/>
+		<result column="writer" property="writer"/>
+		<result column="title" property="title"/>
+		<result column="state" property="state"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="complete_date" property="completeDate"/>
+	</resultMap>
+	
+	<select id="selectAdminLocalList" resultMap="localMap">
+		select
+			*
+		from
+			local
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="local" id="localMap">
+		<id column="no" property="no"></id>
+		<result column="category_no" property="categoryNo" />
+		<result column="writer" property="writer" />
+		<result column="title" property="title" />
+		<result column="reg_date" property="regDate" />
+	</resultMap>
+	
+	<select id="selectAdminTogetherList" resultMap="togetherMap">
+		select
+			*
+		from
+			together
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="together" id="togetherMap">
+		<id column="no" property="no"/>
+		<result column="category_no" property="categoryNo"/>
+		<result column="writer" property="writer"/>
+		<result column="title" property="title"/>
+		<result column="status" property="status"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+	
+	<select id="selectAdminBoardReport" resultMap="adminMap">
 		select
 			*
 		from
@@ -25,10 +100,9 @@
 		order by
 			reg_date desc
 	</select>
+
 	
-	<resultMap type="boardReport" id="adminBoardReportMap"></resultMap>
-	
-	<select id="selectAdminUserReport" resultMap="adminUserReportMap">
+	<select id="selectAdminUserReport" resultMap="adminMap">
 		select
 			*
 		from
@@ -36,7 +110,5 @@
 		order by
 			reg_date desc
 	</select>
-	
-	<resultMap type="userReport" id="adminUserReportMap"></resultMap>
 
 </mapper>
