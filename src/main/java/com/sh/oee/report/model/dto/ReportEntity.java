@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReportEntity {
 
-	@NonNull
 	private int reportNo;
 	@NonNull
 	private String writer;
+	private int reasonNo;
 	private LocalDateTime regDate;
 	private Status status;
 }
