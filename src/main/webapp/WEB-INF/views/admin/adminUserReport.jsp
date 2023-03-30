@@ -27,7 +27,7 @@
 		<ul class="sidebar-nav">
 			<h3>공지</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" "href="#" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminNoticeList.do" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
 			</li>
 		</ul>
 		<ul class="sidebar-nav">
@@ -36,12 +36,21 @@
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminMemberList.do" style="text-decoration: none; color: black;"> 회원 관리 </a></li>
 		</ul>
 		<ul class="sidebar-nav">
+			<h3>게시글</h3>
+			<li class="sidebar-nav-list">
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminCraigList.do" style="text-decoration: none; color: black;"> 중고거래 관리 </a></li>
+			<li class="sidebar-nav-list">
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminLocalList.do" style="text-decoration: none; color: black;"> 동네생활 관리 </a></li>
+			<li class="sidebar-nav-list">
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminTogetherList.do" style="text-decoration: none; color: black;"> 같이해요 관리 </a></li>
+		</ul>
+		<ul class="sidebar-nav">
 			<h3>신고</h3>
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminBoardReport.do" style="text-decoration: none; color: black;">
 					게시글 신고 관리 </a></li>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminUserReport.do" style="text-decoration: none; color: black;">
+			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;">
 					사용자 신고 관리 </a></li>
 		</ul>
 	</div>
@@ -52,11 +61,11 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>WRITER</th>
-					<th>REASON</th>
-					<th>REPORTED MEMBER</th>
-					<th>REG DATE</th>
-					<th>STATUS</th>
+					<th>작성자</th>
+					<th>신고 사유</th>
+					<th>신고한 회원</th>
+					<th>등록일</th>
+					<th>처리 상태</th>
 				</tr>
 			</thead>
 			<tbody>
