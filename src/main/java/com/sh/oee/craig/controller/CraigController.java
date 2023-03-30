@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,7 +53,8 @@ public class CraigController {
 
 	// ■ select all boardList
 	@GetMapping("/craigList.do")
-	public void craigList(@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication){
+	public void craigList( @RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication,
+						   @RequestParam(required = false) String searchKeyword ){
 
 		// member  
 		Member member = ((Member)authentication.getPrincipal());
@@ -77,32 +79,70 @@ public class CraigController {
 		
 		// paging
 		int limit = 12; //한페이지당 조회할 게시글 수 
-		int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
-	
+		int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 	
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		Object parameter = null;
 
-		//select all list  
-		List<Craig> craigList = craigService.craigList(dongList, rowBounds);
-		List<Integer> wishCnt = craigService.selectCraigWishCnt(dongList);
-		log.debug( "■■■ craigList 게시물[rowbounds안되는거같음]= {}", craigList);	
-		
-		log.debug( "♥wishCnt = {}", wishCnt);	
-		
-		// 토탈게시물수 
-		int totals = craigService.getContentCnt(dongList );
-		// 토탈페이지
-		int totalPage = (int) Math.ceil((double) totals/limit);		
-		log.debug( "■■■ total 페이지 수 = {}", totalPage);	
-		
 
+
+		List<Craig> craigList = null;
+		List<Integer> wishCnt = null;
+		int totals = 0; // 토탈게시물수 
+		int totalPage =0; // 토탈페이지
+		List<Craig> searchCraigs = null; //검색용
+		int categoryNo = 0;
+		
+		// ■ 검색아님 - 일반일때 - select all list  
+		if(searchKeyword == null) {
+			
+	    	Map<String, Object> param = new HashMap<>();    	
+	    	param.put("dongName", dongList); //ㅁㅁ
+	    	param.put("categoryNo", categoryNo);
+	    	param.put("searchKeyword", searchKeyword);
+
+	    	craigList = craigService.craigList(param, rowBounds); // 새로메서드 0330
+			wishCnt = craigService.selectCraigWishCnt(param);
+					
+			log.debug( "■■■ craigList 게시물[rowbounds됨^^]= {}", craigList);	
+			log.debug( " ♥wishCnt = {}", wishCnt);	
+
+			totals = craigService.getContentCnt(param );		
+			totalPage = (int) Math.ceil((double) totals/limit);	
+			log.debug( "■■■ total 페이지 수 = {}", totalPage);	
+			
+		}
+
+		else if(searchKeyword != null) {
+			
+			/// donglist, 키워드, rowbounds
+	    	Map<String, Object> param = new HashMap<>();    	
+	    	param.put("dongName", dongList);
+	    	param.put("searchKeyword", searchKeyword);
+	    	param.put("categoryNo", categoryNo);
+	    	
+	    	log.debug( "■■■■ searparamchCraigs : " + param ); 
+	    		
+			searchCraigs = craigService.craigList(param, rowBounds);
+			log.debug( "■■■■ searchCraigs : " + searchCraigs ); 
+			
+			wishCnt = craigService.selectCraigWishCnt(param);
+			log.debug( "♥wishCnt = {}", wishCnt);	
+			
+			totals = craigService.getContentCnt(param );	
+			totalPage = (int) Math.ceil((double) totals/limit);	
+			log.debug( "■■■ total 페이지 수 = {}", totalPage);	
+
+		}
+		
+		
 		model.addAttribute("totalPage", totalPage);
-		model.addAttribute("page", cpage);
-		
+		model.addAttribute("page", cpage);		
 		model.addAttribute("craigList", craigList);
 		model.addAttribute("craigCategory", craigCategory);
 		model.addAttribute("member", member);
 		model.addAttribute("wishCnt", wishCnt);
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("searchCraigs", searchCraigs);
+		
 		
 		// 페이징
 		CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
@@ -283,9 +323,7 @@ public class CraigController {
 	 @ResponseBody
 	 @GetMapping("/getMyCraigCategory.do")
 	 public Map<String,Object>  getMyCraigCategory(@RequestParam int categoryNo) {
-		 
-
-		 
+	 
 		 String categoryName = craigService.selectMyCraigCategory(categoryNo);
 		 log.debug( "■ categoryName : " + categoryName );
 		 
@@ -434,15 +472,81 @@ public class CraigController {
     // ■ wish한게시물의 wish가져오기
     @ResponseBody
     @GetMapping("/selectCraigWishOne.do")
-    public int selectCraigWishOne(@RequestParam int no) {    	
+    public int selectCraigWishOne(@RequestParam int no) {  
+    	log.debug("■ 비동기 no 값넘어오는지 확인 = {} ", no);
     	int result = craigService.selectCraigWishOne(no);
     	return result;
     }
 	 
     
-    // ■ 검색
-	 
-	 
+    // ■ 비동기 카테고리 검색
+    @ResponseBody
+    @GetMapping("/selectCategorySearch.do")
+    public Map<String, Object>  selectCategorySearch( @RequestParam int categoryNo,
+    		@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication ) {    	
+    			
+    	log.debug( "■■■■ searparamchCraigs : " + categoryNo ); 
+    			
+    			// member  
+    			Member member = ((Member)authentication.getPrincipal());
+			
+    			// dong range  
+    			int dongNo = member.getDongNo();
+    			String NF = member.getDongRange().toString();	
+
+    			String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
+    				   searchDong += memberService.selectDongNearOnly(dongNo );
+    			
+    			if(NF.equals("F")) {
+    				searchDong += "," + memberService.selectDongNearFar(dongNo );
+    				log.debug( "■ searchDong = {}", searchDong);
+    			}
+    			
+    			List<String> dongList = Arrays.asList(searchDong.split(","));
+    			log.debug( "■ dongList = {}", dongList);
+    			
+    			// paging
+    			int limit = 12; //한페이지당 조회할 게시글 수 
+    			int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
+    		
+    			RowBounds rowBounds = new RowBounds(offset, limit);
+ 
+				///////////// donglist, 키워드, rowbounds
+    			String searchKeyword = null;
+		    	Map<String, Object> param = new HashMap<>();    	
+		    	param.put("dongName", dongList); //ㅁㅁ
+		    	param.put("categoryNo", categoryNo);
+		    	param.put("searchKeyword", searchKeyword);
+		    	log.debug( "■■■■ categoryparam : " + param ); 
+		    	
+		    	
+    			List<Craig> searchCrategory = craigService.craigList(param, rowBounds);
+				log.debug( "■■■■ searchCraigs : " + searchCrategory ); 
+    	
+				List<Integer> wishCnt = craigService.selectCraigWishCnt(param);
+				log.debug( "■■■■ wishCnt(List) = {}", wishCnt);	
+				
+				int totals = craigService.getContentCnt(param );	
+				int totalPage = (int) Math.ceil((double) totals/limit);	
+				
+				CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
+				model.addAttribute("craigPage", craigPage);
+				
+				//model담기 - 쓸수있나?
+				model.addAttribute("searchCrategory", searchCrategory);
+				model.addAttribute("wishCnt", wishCnt);
+				model.addAttribute("totalPage", totalPage);
+				model.addAttribute("page", cpage);		
+
+				Map<String, Object> categoryMap = new HashMap<>();  
+				categoryMap.put("searchCrategory", searchCrategory);
+				categoryMap.put("wishCnt", wishCnt);
+				categoryMap.put("totalPage", totalPage);
+				categoryMap.put("page", cpage);
+				
+				return categoryMap;
+    } 
+
 	 
 	 
 	 
@@ -541,29 +645,34 @@ public class CraigController {
 	 @GetMapping("/mySalCraig.do")
 		public void mySalCraig(Authentication authentication, Model model) {
 			// member  
-			Member member = ((Member)authentication.getPrincipal());
-			log.debug("member = {} ", member);
-			/*
-			List<Craig> mySalCraig = craigService.mySalCraig(member);
+			String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+			log.debug("memberId = {} ", memberId);
 			
+			List<Craig> mySalCraig = craigService.mySalCraig(memberId);
+				
 			log.debug("mySalCraig = {}",mySalCraig);
-			
+				
 			model.addAttribute("mySalCraig",mySalCraig);
-			*/
 		}
 	 @GetMapping("/mySalFCraig.do")
 	 public void mySalFCraig(Authentication authentication, Model model) {
 		 // member  
-		 Member member = ((Member)authentication.getPrincipal());
-		 log.debug("member = {} ", member);
-		 /*
-			List<Craig> mySalCraig = craigService.mySalCraig(member);
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("memberId = {} ", memberId);
 			
-			log.debug("mySalCraig = {}",mySalCraig);
-			
-			model.addAttribute("mySalCraig",mySalCraig);
-		  */
+		 List<Craig> mySalFCraig = craigService.mySalFCraig(memberId);
+				
+		 log.debug("mySalFCraig = {}",mySalFCraig);
+				
+		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
+	 /*
+	 @PostMapping("/craigBook.do")
+	 public int craigBook(int no) {
+		 
+	 }
+	 */
+	 
 	 @GetMapping("/myBuyCraig.do")
 	 public void myBuyCraig(Authentication authentication, Model model) {
 		 // member  
@@ -577,7 +686,25 @@ public class CraigController {
 		model.addAttribute("myBuyCraig",myBuyCraig);
 		 
 	 }
+	 
+	 
+	 @GetMapping("/myWishCraig.do")
+	 public void myWishCraig(Authentication authentication, Model model) {
+		 // member  
+		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		 log.debug("member = {} ", memberId);
+		 
+		 List<Craig> myWishCraig = craigService.myWishCraig(memberId);
+		 
+		 log.debug("myWishCraig = {}",myWishCraig);
+		 
+		 model.addAttribute("myWishCraig",myWishCraig);
+		 
+	 }
 	 /*
 	  * 하나끝
 	  */
+	 
+	 
+	 
 }

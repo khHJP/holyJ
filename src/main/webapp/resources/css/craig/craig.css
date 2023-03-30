@@ -21,7 +21,7 @@ body {
    	*/
 }
 
-.searchTerm {
+#searchKeyword {
   width: 600px;
   border: 3px solid black;
   border-right: none;
@@ -245,4 +245,8 @@ body {
     -ms-transform:rotate(-45deg);
      -o-transform:rotate(-45deg);
         transform:rotate(-45deg);
+}
+
+.hearts:hover {
+	cursor: pointer;
 }
