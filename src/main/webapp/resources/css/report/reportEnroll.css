@@ -1,0 +1,74 @@
+@charset "UTF-8";
+p, h2, label {
+	margin-bottom: 0;
+}
+.report-container {
+    width: 1050px;
+    min-height: 1150px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.report-wrap {
+    width: 50rem;
+    padding: 30px;
+    border: 1px solid;
+    border-radius: 8px;
+}
+.title-box {
+    margin-bottom: 1rem;
+    padding: 15px 4px;
+    border-radius: 6px;
+    background-color: #F2F3F6;
+}
+.title-box h2 {
+    font-size: 35px;
+    font-weight: 700;
+}
+.title-box span {
+	color: #868B94;
+}
+/* .frm-container {
+	background-color: #F2F3F6;
+    border-radius: 6px;
+    padding: 1px 12px;
+} */
+.report-box {
+    margin: 30px 0;
+}
+.report-type {
+	border-top: 2px solid #4D5159;
+    border-bottom: 2px solid #4D5159;
+    margin-bottom: 20px;
+}
+.report-type p {
+    color: #4D5159;
+    padding: 9px 0px;
+    font-size: 19px;
+    font-weight: 400;
+}
+.form-check {
+    margin: 25px 0;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px gray;
+    transition-duration: 0.4s;
+}
+.form-check:hover {
+	background-color: #F2F3F6;
+	transition-duration: 0.4s;	
+}
+.form-check-input {
+    margin: 1rem 0.2rem;
+}
+.form-check-label {
+	width: 100%;
+	margin: 0.6rem 1.7rem;	
+	cursor: pointer;
+}
+.btn-box {
+	
+}

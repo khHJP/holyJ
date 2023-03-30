@@ -99,7 +99,7 @@ window.addEventListener('load', (e) => {
 				</div>
 				<div class="profile-wrap">
 					<sec:authentication property="principal" var="loginMember"/>					
-					<img src="${pageContext.request.contextPath}/resources/images/${loginMember.profileImg}" alt="임시이미지">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${loginMember.profileImg}" alt="임시이미지">
 					<div class="my-select-box">
 						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/member/myPage.do';" class="subtitle">나의 오이</button></span>
 						

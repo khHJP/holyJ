@@ -107,6 +107,7 @@ min-height: 83px;
 }
 .profile-wrap img {
 	width: 50px;
+	border-radius: 3rem;
 }
 .my-select-box {
     width: 101px;
@@ -230,7 +231,7 @@ footer {
     align-items: center;
 }
 .login-check {
-    margin: 0.8rem 0 0 1.5rem;
+    margin: 0.8rem 0 0.5rem 1.5rem;
 }
 
 /* index */
