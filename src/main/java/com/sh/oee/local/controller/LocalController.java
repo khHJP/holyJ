@@ -94,7 +94,7 @@ public class LocalController {
 			@RequestParam("upFile") List<MultipartFile> upFiles,
 			RedirectAttributes redirectAttr) {
 		
-		String saveDirectory = application.getRealPath("/reaources/upload/local");
+		String saveDirectory = application.getRealPath("/resources/upload/local");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
 	//첨부파일 저장 및 Attachment 객체 만들기
@@ -134,7 +134,7 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(@RequestParam int no, Model model) {
+	public void localDetail(@RequestParam(defaultValue="")String category,@RequestParam int no, Model model) {
 		Local localdetail = localService.selectLocalOne(no);
 		
 		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
@@ -142,11 +142,23 @@ public class LocalController {
 		log.debug("localdetail : {}", localdetail);
 		
 		model.addAttribute("localdetail",localdetail);
+		model.addAttribute("category", category);
 	}
 	
+	// 글 수정하기 폼 이동
+	@GetMapping("/localUpdate.do")
+	public void localUpdate(@RequestParam int no,Model model,Local local) {
+		
+		Local localdetail = localService.selectLocalOne(no);
+		List<Map<String,String>> localCategory = localService.localCategoryList();
+		
+		model.addAttribute("localdetail",localdetail);
+		model.addAttribute("localCategory", localCategory);
+		
+	}
 	
-	
-	
+	// 글 수정하기
+
 	
 	
 	

@@ -41,12 +41,14 @@
 		la.attach_no,
 		la.original_filename,
 		la.re_filename,
-		(select
-			count(*)
-		 from local_attachment 
-		 where local_no = l.no
-		) attach_count,
-		m.*
+        (select nickname from member where member_id = l.writer) nickname,
+        (select profile_img from member where member_id = l.writer) profile_img,
+        (select
+                dong_name
+            from
+                member m right join dong d
+                    on m.dong_no = d.dong_no
+                where member_id = l.writer) dong_name
 	from
 		local l left join local_attachment la
 			on l.no = la.local_no

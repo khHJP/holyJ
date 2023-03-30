@@ -12,9 +12,6 @@
 </head>
 <body>
 <!-- 내동네 가져오기 -->
-	<c:forEach items="${dongList}" var="dong">
-	<span id="mydong">${dong.dongName}</span>
-	</c:forEach>
 		<div class="search">
 			<span class="mydong">도곡2동</span> <!-- 임시(dujun74 기준) -->
 			<input type="text" class="localsearch" placeholder="내 동네 근처에서 검색">
@@ -59,6 +56,7 @@
 						    <a><img id="localimg"  style="display : inline-block; height : 40px; width:40px; " 
 								    src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/></a><br/>
 						</c:if>
+						
 			</div>
 			</td>
 			<c:if test="${vs.index %1== 1}">
@@ -94,10 +92,11 @@ document.querySelectorAll("td[data-no]").forEach( (td) => {
 		console.log( td );
 		
 		const no = td.dataset.no;
-		console.log(no);
-		location.href="${pageContext.request.contextPath}/local/localDetail.do?no="+no;
-	})
-})
+		const category = td.dataset.category;
+		console.log(no, category);
+		location.href='${pageContext.request.contextPath}/local/localDetail.do?category=' + category + "&no=" + no;
+	});
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
