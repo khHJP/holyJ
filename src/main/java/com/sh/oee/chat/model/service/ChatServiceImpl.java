@@ -90,5 +90,33 @@ public class ChatServiceImpl implements ChatService {
 	public int insertCraigMsg(CraigMsg craigMsg) {
 		return chatDao.insertCraigMsg(craigMsg);
 	}
+
+	@Override
+	public CraigChat findCraigChat(Map<String, Object> craigChatMap) {
+		return chatDao.findCraigChat(craigChatMap);
+	}
+
+	/**
+	 * SELECT
+	 * - chatroomId, delDate 받아와 delDate 이후의 메시지만 가져옴
+	 */
+	@Override
+	public List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> delMap) {
+		return chatDao.findCraigMsgAfterDel(delMap);
+	}
+
+	/**
+	 * UPDATE
+	 * - del_date를 현재 날짜로 변경
+	 */
+	@Override
+	public int updateDel(Map<String, Object> delMap) {
+		return chatDao.updateDel(delMap);
+	}
+
+	@Override
+	public int updateRegDel(Map<String, Object> regDelMap) {
+		return chatDao.updateRegDel(regDelMap);
+	}
 	
 }

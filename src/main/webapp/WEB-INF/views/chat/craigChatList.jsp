@@ -66,7 +66,7 @@
 			<div id="chatList" class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
 				<div class="list-group list-group-flush border-bottom scrollarea">
 					<c:forEach items="${chatModel}" var="chatMember">
-						<a id="toChatroom" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+						<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
 							<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
 							<div id="chatList-wrap">
         	 					<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
@@ -89,18 +89,6 @@
 	</div>
 
 <script>	
-document.querySelector("#toChatroom").addEventListener('click', (e) => {
-const craigNo = ${craig.no};
-const memberId = `${craig.writer}`;
-const chatroomId = document.querySelector("#toChatroom input").value;
-
-const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-const name = "craigChatroom";
-openPopup(url, name); 
-
-});
-	
-
 
 function openPopup(url, name){
 	let win;
@@ -108,7 +96,15 @@ function openPopup(url, name){
 	win.opener.self;
 }
 
-
+function openChat(e){
+	const craigNo = ${craig.no};
+	const memberId = `${craig.writer}`;
+	const chatroomId = $(e).children("input").val();
+	
+	const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
+	const name = "craigChatroom";
+	openPopup(url, name); 
+}
 </script>
 </body>
 </html>
