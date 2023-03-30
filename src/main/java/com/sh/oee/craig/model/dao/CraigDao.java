@@ -17,8 +17,9 @@ import com.sh.oee.craig.model.dto.CraigPage;
 @Mapper
 public interface CraigDao {
 
-	//전체목록조회
-	List<Craig> craigList( List<String> dongList,  RowBounds rowBounds );
+
+	//카테고리로 검색 
+	List<Craig> craigList(Map<String, Object> param, RowBounds rowBounds);
 
 	@Select("select * from craig_category")
 	List<Map<String, String>> craigCategoryList();
@@ -69,8 +70,8 @@ public interface CraigDao {
 	int craigReadCount(int no);
 
 	
-	//페이지
-	int getContentCnt(List<String> dongList);
+	// content총수 구하기
+	int getContentCnt(Map<String, Object> param);
 	
 	// 🐹 ------- 효정 start ---------- 🐹
 	@Select("select * from craig where no = #{craigNo}")
@@ -90,10 +91,8 @@ public interface CraigDao {
 	@Select("select count(*) from craig_wish where craig_no = #{no}")
 	int selectCraigWishOne(int no);
 
-	//리스트에쓸거 wish
-	List<Integer> selectCraigWishCnt(List<String> dongList);
-
-	//검색
-	List<Craig>  searchCraigitems(Map<String, Object> param, RowBounds rowBounds);
+	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	List<Integer> selectCraigWishCnt(Map<String, Object> param);
+	
 
 }
