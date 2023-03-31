@@ -61,27 +61,30 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>신고 번호</th>
 					<th>작성자</th>
 					<th>신고 유형</th>
 					<th>게시글</th>
 					<th>신고 사유</th>
 					<th>등록일</th>
 					<th>상태</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty adminBoardReport}">
 					<c:forEach items="${adminBoardReport}" var="adminBoardReport" varStatus="vs">
-						<tr class="table-content">
+						<tr id="table-content">
 							<td>${vs.count}</td>
-							<td>${adminBoardReport.reportNo}</td>
 							<td>${adminBoardReport.writer}</td>
 							<td>${adminBoardReport.reportType}</td>
 							<td>${adminBoardReport.reportPostNo}</td>
-							<td>${adminBoardReport.reasonNo}</td>
-							<td>${adminBoardReport.regDate}</td>
+							<td>${adminBoardReport.reportReason.reasonName}</td>
+							<td>
+								<fmt:parseDate value="${adminBoardReport.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
+							</td>
 							<td>${adminBoardReport.status}</td>
+							<td></td>
 						</tr>
 					</c:forEach>
 				</c:if>

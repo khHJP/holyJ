@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -73,12 +74,19 @@
 					<c:forEach items="${adminLocalList}" var="adminLocal" varStatus="vs">
 						<tr id="table-content">
 							<td>${vs.count}</td>
-							<td>${adminLocal.categoryNo}</td>
+							<td>
+								<select class="local-category" data-no="${adminLocal.no}">
+									<option value=1 <c:if test="${adminLocal.categoryNo eq 1}"> selected="selected"</c:if>>동네질문</option>
+									<option value=2 <c:if test="${adminLocal.categoryNo eq 2}"> selected="selected"</c:if>>동네소식</option>
+									<option value=3 <c:if test="${adminLocal.categoryNo eq 3}"> selected="selected"</c:if>>분실/실종센터</option>
+									<option value=4 <c:if test="${adminLocal.categoryNo eq 4}"> selected="selected"</c:if>>해주세요</option>
+								</select>
+							</td>
 							<td>${adminLocal.writer}</td>
 							<td>${adminLocal.title}</td>
 							<td>
 								<fmt:parseDate value="${adminLocal.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
-								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td></td>
 						</tr>
@@ -94,6 +102,32 @@
 	</div>
 
 </section>
-<script></script>
+<!-- 카테고리 수정 폼 -->
+<form:form name="adminLocalCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminLcoalCategoryUpdate.do" method="post">
+	<input type="hidden" value="${adminLocal.no}" name="no">
+	<input type="hidden" value="${adminLocal.categoryNo}" name="categoryNo">
+</form:form>
+<script>
+/* 카테고리 수정 */
+document.querySelectorAll(".local-category").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		console.log(e.target.value);
+		console.log(e.target.dataset.no);
+		const no = e.target.dataset.no;
+		const categoryNo = e.target.value;
+		
+		if(confirm(`[\${no}}]게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
+			const frm = document.adminLocalCategoryUpdateFrm;
+			frm.no.value = no;
+			frm.categoryNo.value = categoryNo;
+			frm.submit();
+		}
+		else {
+			e.target.querySelector("option[selected]").selected = true;
+		}
+		
+	});
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
