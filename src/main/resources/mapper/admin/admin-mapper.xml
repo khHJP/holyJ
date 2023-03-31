@@ -132,7 +132,7 @@
 		set
     		auth = #{auth}
 		where
-		    member_id = #{member_id}
+		    member_id = #{memberId}
 	</update>
 	
 	<update id="updateAdminCraigCategory">
