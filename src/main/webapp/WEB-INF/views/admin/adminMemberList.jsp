@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -66,11 +67,9 @@
 					<th>닉네임</th>
 					<th>휴대폰</th>
 					<th>매너온도</th>
-					<th>동</th>
-					<th>동 범위</th>
 					<th>신고 횟수</th>
 					<th>가입일</th>
-					<th></th>
+					<th><button>삭제</button></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -79,18 +78,37 @@
 						<tr id="table-content">
 							<td>${vs.count}</td>
 							<td>${adminMember.memberId}</td>
-							<td>${adminMember.auth.auth}</td>
+							<td>
+								<select class="member-role" data-member-id="${adminMember.memberId}">
+									<option value="ROLE_USER" <c:if test="${adminMember.auth.auth eq 'ROLE_USER'}"> selected="selected"</c:if>> ROLE_USER</option>
+									<option value="ROLE_ADMIN" <c:if test="${adminMember.auth.auth eq 'ROLE_ADMIN'}"> selected="selected"</c:if>>ROLE_ADMIN</option>
+									<option value="ROLE_WARN" <c:if test="${adminMember.auth.auth eq 'ROLE_WARN'}"> selected="selected"</c:if>>ROLE_WARN</option>
+								</select>
+							</td>
 							<td>${adminMember.nickname}</td>
-							<td>${adminMember.phone}</td>
-							<td>${adminMember.manner}</td>
-							<td>${adminMember.dongNo}</td>
-							<td>${adminMember.dongRange}</td>
+							<td>
+								<fmt:formatNumber var="phone" value="${adminMember.phone}" pattern="000,0000,0000"/>
+								<c:out value="${fn:replace(phone, ',', '-')}" />
+							</td>
+							<c:if test="${adminMember.manner lt 30}">
+								<td style="color:#3AB0FF">${adminMember.manner}</td>
+							</c:if>
+							<c:if test="${adminMember.manner ge 35 && adminMember.manner lt 50}">
+								<td style="color:#56C271">${adminMember.manner}</td>
+							</c:if>
+							<c:if test="${adminMember.manner ge 50}">
+								<td style="color:red">${adminMember.manner}</td>
+							</c:if>
 							<td>${adminMember.reportCnt}</td>
 							<td>
 								<fmt:parseDate value="${adminMember.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
-								<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd HH:mm" />
+								<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd" />
 							</td>
-							<td></td>
+							<form:form class="delete" action="${pageContext.request.contextPath}/admin/adminMemberDelete.do" name="adminMemberDeleteFrm" method="POST">
+							<td>
+								<button type="button" name ="memberId" value="${adminMember.memberId}">삭제</button>
+							</td>
+							</form:form>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -104,6 +122,40 @@
 	</div>
 
 </section>
-<script></script>
+<!-- 회원 권한 수정 폼 -->
+<form:form name="adminMemberRoleUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberRoleUpdate.do" method="post">
+	<input type="hidden" name="memberId" id="memberId">
+	<input type="hidden" name="auth">
+</form:form>
+<script>
+/* 회원 권한 수정 */
+document.querySelectorAll(".member-role").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		console.log(e.target.value);
+		console.log(e.target.dataset.memberId);
+		const memberId = e.target.dataset.memberId;
+		const auth = e.target.value;
+		const frm = document.adminMemberRoleUpdateFrm;
+		
+		if(confirm(`[\${memberId}]회원의 권한을 \${auth}로 변경하시겠습니까?`)){			
+			console.log(frm);
+			frm.memberId.value = e.target.dataset.memberId;
+			frm.auth.value = auth;
+			frm.submit();
+		}
+		else {
+			e.target.querySelector("option[selected]").selected = true;
+		}
+		
+	});
+});
+
+/* 회원 삭제 */
+document.querySelector(".delete").addEventListener('click', (e) => {
+	if(confirm('해당 회원을 삭제하시겠습니까?')){
+		document.adminMemberDeleteFrm.submit();
+	}
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

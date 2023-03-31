@@ -1,6 +1,7 @@
 package com.sh.oee.admin.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,5 +26,15 @@ public interface AdminDao {
 	List<BoardReport> selectAdminBoardReport();
 
 	List<UserReport> selectAdminUserReport();
+	
+	int updateAdminMemberRole(Map<String, Object> adminMemberRoleUpdateMap);
+
+	int updateAdminCraigCategory(String no, String categoryNo);
+
+	int updateAdminLocalCategory(String no, String categoryNo);
+
+	int updateAdminTogetherCategory(Map<String, Object> adminTogetherCategoryMap);
+
+	int deleteAdminMember(String memberId);
 
 }
