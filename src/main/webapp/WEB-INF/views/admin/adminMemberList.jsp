@@ -123,7 +123,7 @@
 
 </section>
 <!-- 회원 권한 수정 폼 -->
-<form:form name="adminMemberRoleUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberRoleUpdate.do" method="post">
+<form:form name="adminMemberRoleUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberRoleUpdate.do?" method="post">
 	<input type="hidden" name="memberId" id="memberId">
 	<input type="hidden" name="auth">
 </form:form>
@@ -137,7 +137,7 @@ document.querySelectorAll(".member-role").forEach((select) => {
 		const auth = e.target.value;
 		const frm = document.adminMemberRoleUpdateFrm;
 		
-		if(confirm(`[\${memberId}]회원의 권한을 \${auth}로 변경하시겠습니까?`)){			
+		if(confirm(`[\${memberId}]회원의 권한을 \${auth}로 변경하시겠습니까?`)){
 			console.log(frm);
 			frm.memberId.value = e.target.dataset.memberId;
 			frm.auth.value = auth;

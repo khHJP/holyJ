@@ -73,6 +73,7 @@ public class NoticeController {
 	        
 	    }
 	    
+	    @ResponseBody
 	    @PostMapping("/deleteKeyword.do")
 	    public int deleteKeyword(@RequestParam int keywordNo){
 			log.debug("keywordNo = {}", keywordNo);

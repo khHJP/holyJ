@@ -103,7 +103,7 @@
 <section id="craigWhole" >	
 <!-- whole List  -->
 	<c:if test="${searchCraigs == null}">
-		<h3 style="margin-top: 50px; text-align: center; margin-bottom: 30px">중고거래 인기매물</h3>
+		<h3 style="margin: 50px 0 30px 0; text-align: center;">중고거래 인기매물</h3>
 	</c:if>
 		
 	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
@@ -123,7 +123,6 @@
 				</c:if>
 					  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
 						<div class="explains">
-							<div>
 							<%-- img --%>
 							<c:if test="${craig.attachments[0].reFilename != null}">
 							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
@@ -149,8 +148,6 @@
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
 								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
-
-								</div>
 							</div>
 						</td>
 					<c:if test="${vs.index %4==3}">
@@ -167,7 +164,6 @@
 				</c:if>
 					  <td class="crnotd" data-crno="${searchcraig.no}" style="width:200px; height: 380px; padding: 10px">
 						<div class="explains">
-							<div>
 							<%-- img --%>
 							<c:if test="${searchcraig.attachments[0].reFilename != null}">
 							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
@@ -193,8 +189,6 @@
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
 								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
-
-								</div>
 							</div>
 						</td>
 					<c:if test="${searchvs.index %4==3}">
@@ -258,7 +252,12 @@
 	        </c:choose>    
 			</ul>
 		</nav>
-			
+
+<%-- 비동기 더보기 버튼 --%>
+<div id='btn-more-container' style="visibility: hidden;">
+	<button id="btn-more" value="" > 더보기  (<span id="searchPage">1</span>)</button>
+</div>
+
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
@@ -346,106 +345,160 @@ document.querySelectorAll("li[data-no]").forEach( (cateli)=>{
 	let nav  = document.querySelector("nav");
 	let tbody  = document.querySelector("#craigWholeListTbl tbody");
 	
+	let searchPage =	document.querySelector("#searchPage").innerHTML;
+	let btnmorecontainer =	document.querySelector("#btn-more-container");
 	
 	cateli.addEventListener('click', (e) => {
+
+		const selectedValue = e.target.innerHTML; //값셋팅
+		document.querySelector(".dropdown-toggle").innerHTML = selectedValue;
 		
 		const cateno = cateli.dataset.no;
-		console.log( cateno );	
 		
-	//	location.href = "${pageContext.request.contextPath}/craig/craigList.do?categoryNo=${cateno}";
-
+	//비동기시작
 	$.ajax({
 		url : `${pageContext.request.contextPath}/craig/selectCategorySearch.do`,
 		method : 'get',
 		dataType : 'json',
-		data : { categoryNo : cateno },
+		data : { categoryNo : cateno,
+				 cpage : searchPage },
 		success(data){
-			console.log( data );
 			
 			nav.innerHTML = "";
 			tbody.innerHTML = "";
 			
 			const tr1 =  document.createElement("tr");
-			tbody.append( tr1 );
-			
-			const cateCraigs = data.searchCrategory;
-			const imgone = "";
-			//엄청난 비동기의 시작 일단 다비운다			
-			for( let i=0; i<cateCraigs.length; i++ ){
+			  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
 
+ 			const tr2 =  document.createElement("tr");
+			  	tr2.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+
+			const tr3 =  document.createElement("tr");
+			  	tr3.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+
+			if(data == null || data[0] == null){
+				tbody.innerHTML = "아직 해당 카테고리의 게시물이 없습니다 !";
+			};
+
+			//엄청난 비동기의 시작 .... 일단 다비운다			
+			for( let i=0; i<data.searchCrategory.length; i++ ){
+				tbody.innerHTML = "";
+				let img_html = ``; //◆◆◆이미지
 				
+				if( data.searchCrategory[i].attachments[0].reFilename != null  ){
+					img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+					    		src="${pageContext.request.contextPath}/resources/upload/craig/\${data.searchCrategory[i].attachments[0].reFilename}" /></a><br/>`
+				   }
+				else if( data.searchCrategory[i].attachments[0].reFilename == null  ){
+					img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 200px; width:200px;" 
+					    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
+			    }
+					
+				let price_html = ``; //◆◆◆ 가격
+				if( data.searchCrategory[i].price > 0  ){
+					let p = data.searchCrategory[i].price;
+					let price = p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+					price_html = `<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;">\${price}원</p>`
+				}
+				else if( data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
+					price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>`
+			    }else{
+					price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;"> data.searchCrategory[i].price원</p>`
+			    }
+				
+				
+				let state_html = ``; //◆◆◆ 상태
+				if( data.searchCrategory[i].state == 'CR1' ){
+					 state_html = `<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>`
+				}
+							
+				else if( data.searchCrategory[i].state == 'CR3' ){
+					state_html = `<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>`
+				}
+				
+				<%-- 0 4 12 시작 --%>
 				if( parseInt(i/4) == 0){
+					let	    chtml = img_html
+							chtml += `<p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
+							chtml += price_html
+							chtml += state_html
+							chtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
+									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
 
-					tr1.innerHTML += 
-				      `<td class="crnotd" data-crno="${cateCraigs.no}" style="width:200px; height: 380px; padding: 10px">
-						<div class="explains">
-							<div>`;
-							
-					tr1.innerHTML += imgone;
-					
-					
-							
-						if(${cateCraigs.attachments[0].reFilename != null}){
-							 imgone = `<a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
-								    src="${pageContext.request.contextPath}/resources/upload/craig/${cateCraigs.attachments[0].reFilename}"/></a><br/>`;
-							}
-							
-							
-							<%--
-								<a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
-									    src="${pageContext.request.contextPath}/resources/upload/craig/${cateCraigs.attachments[0].reFilename}"/></a><br/>
-							</c:if>
-							<c:if test="${cateCraigs.attachments[0].reFilename==null}">
-							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
-									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
-							</c:if>
-								<p id="crtitle" class="crpp">${searchcraig.title}</p>
-							<c:if test="${cateCraigs.price > 0}">
-								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
-							</c:if>
-							<%-- CR1 || CR3
-							<c:if test="${cateCraigs.state == 'CR1'}">
-								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
-							</c:if>
-							<c:if test="${cateCraigs.state == 'CR3'}">
-								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
-							</c:if>
-		
-							<c:if test="${cateCraigs.price == 0 && cateCraigs.categoryNo != 7 }">
-								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
-							</c:if>
-								<p id="crdong" class="crpp">${cateCraigs.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
-						
-								</div>
-							</div>
-					  </td>`
-					  --%>				
-				}				
+					const td = document.createElement('td');
+						  td.dataset.crno = data.searchCrategory[i].no;
+						  $(td).attr('class','crnotd');
+						  td.style.cssText = "width:200px; height: 380px; padding: 10px"
+						  td.innerHTML = chtml;					
+					 tr1.append( td );
+					}
+				else if( parseInt(i/4) == 1){
+					let	cchtml = img_html
+							cchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
+							cchtml += price_html
+							cchtml += state_html
+							cchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
+									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
+
+					const td2 = document.createElement('td');
+						  td2.dataset.crno = data.searchCrategory[i].no;
+						  $(td2).attr('class','crnotd');
+						  td2.style.cssText = "width:200px; height: 380px; padding: 10px"
+						  td2.innerHTML = cchtml;					
+					 tr2.append( td2 );
+					}
+				else if( parseInt(i/4) == 2){
+					let 	ccchtml = img_html
+							ccchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
+							ccchtml += price_html
+							ccchtml += state_html
+							ccchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
+									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
+
+					const td3 = document.createElement('td');
+						  td3.dataset.crno = data.searchCrategory[i].no;
+						  $(td3).attr('class','crnotd');
+						  td3.style.cssText = "width:200px; height: 380px; padding: 10px"
+						  td3.innerHTML = ccchtml;					
+					 tr3.append( td3 );
+					}
 				
-				
-				
-				
-				
+			}//end-for문	
+					 
+			tbody.append( tr1, tr2, tr3 );
+			
+			//페이징
+			
+			console.log( data );
+	/* 		if(data.totalPage==2){
+				$("#btn-more-container").style.visibility = "visible";
 			}
+			 */
 
-			
-			
-			
-			
-			
-			
-			
+
 		},
-		error : console.log
+		error : console.log,
+		complete(){
+<%--
+			if( data. length > 12 ){
+				//마지막 페이지인 경우 더보기 버튼 비활성화 처리 ★
+				document.querySelector("#searchPage").innerHTML += 1;
+			
+				if( page === ${cpage}){
+					const button = document.querySelector("#btn-more");
+					button.disabled = true; // 리턴값이 boolean 값 
+					button.style.cursor = "not-allowed";
+				}	
+			}
+			--%>
+		}
 	});//end-ajax
 		
 		
 	})
-})
-
-
-
+});
 </script>
+
 
 <br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
