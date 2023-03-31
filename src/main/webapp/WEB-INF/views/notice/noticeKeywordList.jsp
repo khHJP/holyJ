@@ -18,12 +18,17 @@
 		<h1 class="sub_title">알림 키워드 설정</h1>
 		<br />
 		<div class="search-container">
+			<c:if test="${fn:length(noticeKeyword) < 3}">
 			<form:form action="${pageContext.request.contextPath}/notice/insertKeyword.do?${_csrf.parameterName}=${_csrf.token}" method="post">
                         <input type="text" class="keyword" id="search" name="keyword" placeholder="키워드를 입력해주세요.(예:자전거)" required/>
                     <button id="search-btn" type="submit">
                         <img src="${pageContext.request.contextPath}/resources/images/search.png" alt="" id="searchimg"/>
                     </button>
             </form:form>
+            </c:if>
+			<c:if test="${fn:length(noticeKeyword) >= 3}">
+				<div style="font-size:18px;">키워드는 3개까지 등록가능합니다.</div>
+            </c:if>
 			<%-- <form:form action="${pageContext.request.contextPath}/notice/insertKeyword.do" method="post">
 						<input type="text" class="keyword" id="search" name="noticeKeyword" placeholder="키워드를 입력해주세요.(예:자전거)" required/>
 					<button id="search-btn" type="submit">
@@ -40,10 +45,10 @@
 					 <div>
 						 <tr name="no"  id="tr-table">
 	 					 	<c:forEach items="${noticeKeyword}" var="keyword">
-						 		<td >
+						 		<td style="width: 80px;">
 						 		  <button  class="cancel-btn">
-						 			<li data-no="${keyword.no}"> ${keyword.keyword}
-									<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
+						 			<li data-no="${keyword.no}"> ${keyword.keyword}&nbsp;&nbsp;&nbsp;X
+									<%-- <img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/> --%>
 									</li>	
 							 	 </button>
 						 		</td>
@@ -60,6 +65,12 @@
      document.querySelectorAll(".cancel-btn").forEach((buttons) =>{
     	 
     	 buttons.addEventListener('click', (b) => {
+    		 if(confirm("정말 삭제하시겠습니까 ?") == true){
+    		        /* alert("삭제되었습니다"); */
+    		    }
+    		    else{
+    		        return ;
+    		    }
     		  console.log(   b.target  );
     		  
     		  const no =  b.target.dataset.no;

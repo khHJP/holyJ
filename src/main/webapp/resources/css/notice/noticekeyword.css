@@ -40,24 +40,19 @@
     border-style:none;
     margin-bottom: 4px;
 }
-#cancel-btn{
-	background: lightgreen;;
-    cursor: pointer;
-    border-style: none;
+#tr-table{
+	list-style : none;
 }
-
-.showkword{
-	display: inline-block;
-    width: 90px;
-    text-align: center;
-    border: 1px solid;
-    border-radius: 10px;
-    margin-left: 10px;
+.cancel-btn{
+	border: 0px;
     background: lightgreen;
+    border-radius: 10px;
+    width: 85px;
 }
+.cancel-btn:hover{
+	cursor :pointer;
+
+	}
 #command{
 	display: flex;
-}
-#deleteKeywordFrm{
-	float : right;
 }

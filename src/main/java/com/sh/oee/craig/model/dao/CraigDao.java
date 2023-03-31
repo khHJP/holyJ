@@ -58,7 +58,13 @@ public interface CraigDao {
 	List<Craig> mySalCraig(String memberId);
 	List<Craig> mySalFCraig(String memberId);
 	List<Craig> myWishCraig(String memberId);
-	//-----------------------하나시작------------------------
+	@Update("update craig set state = 'CR3', complete_date = sysdate where no = #{no}")
+	int salFCraig(int no);
+	@Update("update craig set state = 'CR1' where no = #{no}")
+	int bookCraig(int no);
+	@Update("update craig set state = 'CR2' where no = #{no}")
+	int salCraig(int no);
+	//-----------------------하나끝------------------------
 
 	@Delete("delete from craig where no = #{no}")
 	int deleteCraigBoard(int no);
@@ -93,6 +99,9 @@ public interface CraigDao {
 
 	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
 	List<Integer> selectCraigWishCnt(Map<String, Object> param);
+
+
+
 	
 
 }

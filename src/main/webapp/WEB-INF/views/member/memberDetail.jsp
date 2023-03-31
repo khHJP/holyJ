@@ -76,6 +76,7 @@
 		const nickname = document.querySelector("#nickname");
 		const password = document.querySelector("#password");
 		const phone = document.querySelector("#phone");
+		const profileImg = document.querySelector("#profileImg");
 		
 		// 닉네임 - 한글 2~8자 이상
 		if(!/^[가-힣]{2,8}$/.test(nickname.value)){
@@ -101,14 +102,14 @@
 	
 	
 	
-	/* 
+	
 	function readURL(input) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
-	            $('#imagePreview').opacity(0);
-	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-	            $('#imagePreview').fadeIn(650);
+	            $('#imagePreview').hide();
+	            $('#imgupload').show();
+	            $('#imgupload').css('background-image', 'url('+e.target.result +')');
 	        }
 	        reader.readAsDataURL(input.files[0]);
 	    }
@@ -116,8 +117,8 @@
 	$("#imageUpload").change(function() {
 	    readURL(this);
 	});
-	 */
-	 document.profileUpdateFrm.addEventListener("submit", (e) => {
+	 
+	/*  document.profileUpdateFrm.addEventListener("submit", (e) => {
 			e.preventDefault(); // 폼제출 방지
 			
 			// FormData객체 생성
@@ -140,7 +141,7 @@
 					e.target.reset();
 				}
 			});
-		});
+		}); */
 	</script>
 	
 </body>

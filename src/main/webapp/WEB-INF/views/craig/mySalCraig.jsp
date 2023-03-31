@@ -28,7 +28,9 @@
 		<c:choose>
 			<c:when test="${not empty mySalCraig}">
 				<c:forEach items="${mySalCraig}" var="sal">
-						 <ul data-no="${sal.no}" id="ul-table">
+					<form:form name="salFCriagFrm" action="${pageContext.request.contextPath}/craig/salFCraig.do" method="POST">
+								<input type="hidden" name="no" value="${sal.no}"/>
+						 <ul data-no="${sal.no}" name="no" id="ul-table">
 					 		<li id="li-img">
 								<c:if test="${sal.attachments[0].reFilename != null}">
 								   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${sal.attachments[0].reFilename}"/>
@@ -41,7 +43,12 @@
 								<li class="span1" id="buyTitle">${sal.title}</li>
 								<li class="span1" id="buyPlace">${sal.placeDetail}</li>
 								<ul id="ul-price">
-									<li class="span1" id="buyCom">판매중</li>	
+									<c:if test="${sal.state eq 'CR2'}">
+										<li class="span1" id="buyCom">판매중</li>	
+									</c:if>
+									<c:if test="${sal.state eq 'CR1'}">
+										<li class="span1" id="buyCom">예약중</li>	
+									</c:if>
 									<c:if test="${sal.price ne '0'}">														
 										<li class="span1" id="buyPrice">
 										<fmt:formatNumber value="${sal.price}" pattern="#,###" />원</li>
@@ -54,10 +61,17 @@
 							</ul>
 							<hr id="hogi-hr"/>
 							<ul id="f-button">
-								<li><button class="book"id="f-li">예약중</button></li>
-								<li><button class="finish" id="f-li">판매완료</button></li>
+							<c:if test="${sal.state eq 'CR2'}">
+								<input type="button" data-no="${sal.no}" class="book" id="f-li" value="예약중"></input>
+								<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+							</c:if>
+							<c:if test="${sal.state eq 'CR1'}">
+								<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>
+								<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+							</c:if>
 							</ul>
 							<hr id="hogi-hr"/>
+						</form:form>
 				</c:forEach>
 			</c:when>
 				<c:otherwise>
@@ -69,25 +83,53 @@
 		</table>
 	</section> 
 	</div>
+
 <script>
-document.querySelector(".book").addEventListener("submit", (e) => {
-	e.preventDefault(); // 폼제출 방지
+document.querySelector(".book").addEventListener("click", (e) => {
 		
+	const no =  e.target.dataset.no;
+	console.log(  no  );
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
 	// 등록 POST 
 	$.ajax({
-		url : "${pageContext.request.contextPath}/craig/craigBook.do",
-		method : "POST",
-		data : {no : '${craigboard.no}'},
-		dataType : "json",
+		url : `${pageContext.request.contextPath}/craig/bookCraig.do`,
+		method : 'POST',
+		headers,
+		data : {no : e.target.dataset.no},
 		success(data){
 			console.log(data);
-			alert(data.result);
+			if(data=1){//data =1 -> 성공했다 delete 했다 그래서 리턴값이 1이다 
+ 				$(e.target).remove(); //태그 자체를 없애주세요 
+ 			}
 		},
-		error : console.log,
-		complete(){
-			e.target.reset();
-		}
-	});
+		error : console.log
+	}); 
+});
+document.querySelector(".sal").addEventListener("click", (e) => {
+		
+	const no =  e.target.dataset.no;
+	console.log(  no  );
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	// 등록 POST 
+	$.ajax({
+		url : `${pageContext.request.contextPath}/craig/salCraig.do`,
+		method : 'POST',
+		headers,
+		data : {no : e.target.dataset.no},
+		success(data){
+			console.log(data);
+			if(data=1){//data =1 -> 성공했다 delete 했다 그래서 리턴값이 1이다 
+ 				$(e.target).remove(); //태그 자체를 없애주세요 
+ 			}
+		},
+		error : console.log
+	}); 
 });
 document.querySelectorAll("#ul-table").forEach((ul) => {
 	ul.addEventListener('click', (e) => {
