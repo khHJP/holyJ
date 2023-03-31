@@ -1,6 +1,7 @@
 package com.sh.oee.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminDao adminDao;
 
+	/*
+	 * select
+	 */
+	
 	@Override
 	public List<Member> selectAdminMemberList() {
 		return adminDao.selectAdminMemberList();
@@ -50,5 +55,41 @@ public class AdminServiceImpl implements AdminService {
 	public List<UserReport> selectAdminUserReport() {
 		return adminDao.selectAdminUserReport();
 	}
+	
+	/*
+	 * update
+	 */
+	
+	@Override
+	public int updateAdminMemberRole(Map<String, Object> adminMemberRoleUpdateMap) {
+		return adminDao.updateAdminMemberRole(adminMemberRoleUpdateMap);
+	}
+	
+	@Override
+	public int updateAdminCraigCategory(String no, String categoryNo) {
+		return adminDao.updateAdminCraigCategory(no, categoryNo);
+	}
+	
+	@Override
+	public int updateAdminLocalCategory(String no, String categoryNo) {
+		return adminDao.updateAdminLocalCategory(no, categoryNo);
+	}
+
+	@Override
+	public int updateAdminTogetherCategory(Map<String, Object> adminTogetherCategoryMap) {
+		return adminDao.updateAdminTogetherCategory(adminTogetherCategoryMap);
+	}
+	
+	/*
+	 * delete
+	 */
+
+	@Override
+	public int deleteAdminMember(String memberId) {
+		return adminDao.deleteAdminMember(memberId);
+	}
+
+
+
 
 }
