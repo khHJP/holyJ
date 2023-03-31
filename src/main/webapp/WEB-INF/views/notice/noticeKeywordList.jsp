@@ -36,34 +36,54 @@
 		<br />
 		<br />
 			<table id="tbl-board" class="table">
-					<c:forEach items="${noticeKeyword}" var="keyword">
-						 <tr data-no="${keyword.no}" name="no" id="tr-table">
-						 	<div class="showkword" id="noKeyword">${keyword.keyword}
-								<button id="cancel-btn">
+					<c:if test="${noticeKeyword[0] != null}">
+					 <div>
+						 <tr name="no"  id="tr-table">
+	 					 	<c:forEach items="${noticeKeyword}" var="keyword">
+						 		<td >
+						 		  <button  class="cancel-btn">
+						 			<li data-no="${keyword.no}"> ${keyword.keyword}
 									<img src="${pageContext.request.contextPath}/resources/images/cancel.png" alt="" id="cancelimg"/>
-								</button>
-							</div>
-						</tr>								
-					</c:forEach>
+									</li>	
+							 	 </button>
+						 		</td>
+							</c:forEach>
+						</tr>
+					 </div>													
+					</c:if>
 			</table>			
 		</div>
 </body>
-<script>
-     document.querySelector("#cancel-btn").addEventListener('click', (e) => {
-    	 const csrfHeader = "${_csrf.headerName}";
-         const csrfToken = "${_csrf.token}";
-         const headers = {};
-         headers[csrfHeader] = csrfToken;
-    	$.ajax({
-    		url : `${pageContext.request.contextPath}/notice/deleteKeyword.do`,
-    		method : 'POST',
-    		headers,
-    		data :{ no : '${keyword.no}'},
-    		success(data){
-    			console.log(data); 
-    		},
-    		error : console.log
-    	})
-    });
+
+<c:if test="${noticeKeyword[0] != null}">
+	<script>
+     document.querySelectorAll(".cancel-btn").forEach((buttons) =>{
+    	 
+    	 buttons.addEventListener('click', (b) => {
+    		  console.log(   b.target  );
+    		  
+    		  const no =  b.target.dataset.no;
+    		  console.log(   no  );
+    		  const csrfHeader = "${_csrf.headerName}";
+              const csrfToken = "${_csrf.token}";
+              const headers = {};
+              headers[csrfHeader] = csrfToken;
+         	$.ajax({
+         		url : `${pageContext.request.contextPath}/notice/deleteKeyword.do`,
+         		method : 'POST',
+         		headers,
+         		data :{ keywordNo : no},
+         		success(data){
+         			console.log(data); 
+         			if(data=1){//data =1 -> 성공했다 delete 했다 그래서 리턴값이 1이다 
+         				$(b.target).remove(); //태그 자체를 없애주세요 
+         			}
+         		},
+         		error : console.log
+         	});//ajax
+    	 }); 
+     });// 
+    	 
     </script>
+</c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
