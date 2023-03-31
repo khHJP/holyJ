@@ -53,7 +53,7 @@
 							</ul>
 							</ul>
 							<hr id="hogi-hr"/>
-							<li id="hogi"><a href="${pageContext.request.contextPath}/manner/myManner.do">보낸 후기 보기</a></li>
+							<li id="hogi"><a href="${pageContext.request.contextPath}/manner/myManner.do">후기 보기</a></li>
 							<hr id="hogi-hr"/>
 				</c:forEach>
 			</c:when>

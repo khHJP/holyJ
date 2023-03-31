@@ -230,11 +230,12 @@ public class MemberController {
 	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr, SessionStatus status) {
 		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
 		 log.debug("memberId = {}", memberId);
+		 
 		 // 1. db변경
 		 int result = memberService.memberDelete(memberId);
 		 
 		 if(!status.isComplete()) {
-		status.setComplete();}
+			 status.setComplete();}
 		 
 		 redirectAttr.addFlashAttribute("msg", "탈퇴되었습니다.");
 		 return "redirect:/";

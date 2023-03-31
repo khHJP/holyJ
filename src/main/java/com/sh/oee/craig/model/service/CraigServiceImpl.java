@@ -151,6 +151,21 @@ public class CraigServiceImpl implements CraigService {
 		// TODO Auto-generated method stub
 		return craigDao.myWishCraig(memberId);
 	}
+	@Override
+	public int salFCraig(int no) {
+		// TODO Auto-generated method stub
+		return craigDao.salFCraig(no);
+	}
+	@Override
+	public int bookCraig(int no) {
+		// TODO Auto-generated method stub
+		return craigDao.bookCraig(no);
+	}
+	@Override
+	public int salCraig(int no) {
+		// TODO Auto-generated method stub
+		return craigDao.salCraig(no);
+	}
 //-------------------------- 하나 끝 --------------------------------------
 
 	//게시글삭제 
@@ -220,6 +235,9 @@ public class CraigServiceImpl implements CraigService {
 	public List<Integer> selectCraigWishCnt(Map<String, Object> param) {
 		return craigDao.selectCraigWishCnt(param);
 	}
+
+
+
 
 
 
