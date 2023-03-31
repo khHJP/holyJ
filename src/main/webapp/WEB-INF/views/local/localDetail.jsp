@@ -30,15 +30,15 @@
 				<div class="update-delete">
 				<button id="togglebtn"><i class="bi-three-dots-vertical"></i></button>
 				<c:if test="${localdetail.writer eq loginMember.memberId  }">
-					<div id="divToggle" style="display: none;">
+					<div id="divToggle" style="display: none; position:absolute; right:20px; top:60px;">
 						<ul class="updeltb">
 							<li><button class="btn" id="update">수정하기</button></li>
-							<li><button class="btn delete">삭제하기</button></li>
-						<ul>
+							<li><button class="btn" id="deletee">삭제하기</button></li>
+						</ul>
 					</div>
 				</c:if>
 				<c:if test="${localdetail.writer != loginMember.memberId  }">
-				<div id="divToggle" style="display: none;">
+				<div id="divToggle" style="display: none; position:absolute; right:20px; top:60px;">
 				<ul class="updeltb">
 					<li><button class="btn report">신고하기</button>
 				</ul>
@@ -60,10 +60,18 @@
 						</c:if>
 			</div>
 			<div class="reheco">
-				<span>조회</span>
-				<div class="heart">
-					<span><i class="bi-heart"></i></span>
-				</div>
+				<span>조회${localdetail.hits}</span>
+				<!-- 좋아요 -->
+				<c:choose>
+					<!-- likecheck가 0이면 빈하트 -->
+					<c:when test="${likecheck eq '0' or empty likecheck}">
+						<img class="btnlike" src="${pageContext.request.contextPath}/resources/images/heart_empty.png">
+					</c:when>
+					<!-- likecheck가 1이면 채운하트 -->
+					<c:otherwise>
+						<img class="btnlike" src="${pageContext.request.contextPath}/resources/images/heart_red.png">
+					</c:otherwise>
+				</c:choose>
 					<span class="comment-btn">댓글쓰기</span>
 			</div>
 		<div class="div-comment">
@@ -73,6 +81,42 @@
 		</div>
 	</div>
 </div>
+<c:if test="${localdetail.writer eq loginMember.memberId}">
+<form:form name="localDeleteFrm"  enctype ="multipart/form-data"  method="post"
+	 action="${pageContext.request.contextPath}/local/localDelete.do?${_csrf.parameterName}=${_csrf.token}" >
+	 <input type="hidden" name="no" value="${localdetail.no}" >
+</form:form>
+
+<script>
+//수정하기
+document.querySelector("#update").addEventListener('click', (e) => {
+	const no ='${localdetail.no}'
+		location.href = '${pageContext.request.contextPath}/local/localUpdate.do?no=' + no;
+});
+
+//삭제하기
+document.querySelector("#deletee").addEventListener('click', (e) => {
+	if(confirm('게시글을 삭제하시겠습니까?')){
+		document.localDeleteFrm.submit();
+	}
+});
+</script>
+</c:if>
+
+<c:if test="${localdetail.writer != loginMember.memberId}">
+<script>
+/* 신고하기 */
+document.querySelector(".report").addEventListener('click', (e) => {
+	const reportType = 'LO';
+	const boardNo = '${localdetail.no}';
+	const reportedId = '${localdetail.writer}';
+	console.log(reportType, boardNo, reportedId);
+	
+	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
+	
+});
+</script>
+</c:if>
 
 <script>
 $(function (){
@@ -81,26 +125,36 @@ $(function (){
   });
 });
 </script>
+
+
 <script>
-//수정하기
-document.querySelector("#update").addEventListner('click', (e) => {
-	location.href=`${pageContext.request.contextPath}/local/localUpdate.do?`;
-});
+// 하트 누르기
+<script>
+	document.querySelector(".btnlike").addEventListener('click', (e) => {
+		const img = e.target;
+		const csrfHeader = "${_csrf.headerName}";
+		const csrfToken = "${_csrf.token}";
+		const headers = {};
+		console.log( img );
+		headers[csrfHeader] = csrfToken;
+		
+		$.ajax({
+		    method : 'POST',
+		    url : `${pageContext.request.contextPath}/local/clickLike.do`,
+		    headers,
+		    dataType : 'json',
+		    data : { no : '${localdetail.no}',
+		             memberId : '<sec:authentication property="principal.username" />'},
+	           success(data){
+		    	if(data == 1){
+		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_red.png`;
+		    	}
+		    	else{
+		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_empty.png`;
+		    	}
+		    }
+		   
+		})
+	});
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -56,6 +56,15 @@
 			on l.writer = m.member_id
 	where l.no = #{no}
 </select>
+  
+<select id="likecheck" resultType="_int">
+	select
+		likecheck
+	from 
+		local_like
+	where like_no = #{likeNo} and member_id = #{memberId}
+</select>
+
 
 <resultMap type="local" id="localDetailMap">
 	<id column="NO" property="no"></id>
@@ -75,6 +84,14 @@
 		<id column="DONG_NO" property="dongNo"/>
 		<result column="DONG_NAME" property="dongName"/>
 	</association>
+	<!--   
+	<association property="locallike" javaType="localLike">
+		<id column="LIKE_NO" property="likeNo"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="LOCAL_NO" property="localNo"/>
+		<result column="LIKECHECK" property="likecheck"/>
+	</association>
+	--> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
@@ -84,7 +101,32 @@
 	</collection>
 </resultMap>
 
+<update id="updateLocalBoard">
+	update local set 
+		category_no = #{categoryNo},
+		title = #{title},
+		content = #{content}
+	where
+		no = #{no}
+</update>
 
+<update id="hits">
+	update local set
+		hits = hits + 1
+	where
+		no = #{no}
+</update>
+
+<select id="selectLocalAttachments" resultMap="localAttachMap">
+	select
+		*
+	from
+		local_attachment
+	where
+		local_no = #{no}
+</select>
+
+<resultMap type="LocalAttachment" id="localAttachMap"></resultMap>
 
 <!-- insertLocal -->
 <insert id="insertLocalBoard">
