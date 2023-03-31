@@ -14,9 +14,6 @@ const totalPages = '${totalPages}';
 const currentPage = '${currentPage}';
 const categoryNo = '${param.categoryNo}';
 const status = '${param.status}';
-console.log(totalPages);
-console.log(categoryNo);
-console.log(status);
 
 $(document).ready(function() {
 	// 페이지네이션 생성
@@ -50,6 +47,7 @@ $(document).ready(function() {
 	<div class="together-list-wrap">
 		<div class="category-nav" data-category-num>
 			<div class="category-img main">
+				<i class="fa-solid fa-house"></i>
 			</div>
 			<div class="category-name">
 				<p>전체</p>
@@ -58,7 +56,24 @@ $(document).ready(function() {
 		<c:forEach items="${categorys}" var="category">
 			<div class="category-nav" data-category-num="${category.CATEGORY_NO}">
 				<div class="category-img">
-					<%-- <img src="${pageContext.request.contextPath}/resources/images/tocate${category.CATEGORY_NO}.png"> --%>
+					<c:if test="${category.CATEGORY_NO eq 1}">
+						<i class="fa-solid fa-utensils"></i>
+					</c:if>
+					<c:if test="${category.CATEGORY_NO eq 2}">
+						<i class="fa-solid fa-shoe-prints"></i>
+					</c:if>
+					<c:if test="${category.CATEGORY_NO eq 3}">
+						<i class="fa-solid fa-book"></i>
+					</c:if>
+					<c:if test="${category.CATEGORY_NO eq 4}">
+						<i class="fa-solid fa-palette"></i>
+					</c:if>
+					<c:if test="${category.CATEGORY_NO eq 5}">
+						<i class="fa-solid fa-paw"></i>
+					</c:if>
+					<c:if test="${category.CATEGORY_NO eq 6}">
+						<i class="fa-solid fa-bars"></i>
+					</c:if>
 				</div>
 				<div class="category-name">
 					<p>${category.CATEGORY_NAME}</p>
