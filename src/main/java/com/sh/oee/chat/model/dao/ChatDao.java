@@ -34,16 +34,16 @@ public interface ChatDao {
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 
-	@Select("select * from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
+	@Select("select * from craig_chat where member_id = #{memberId} and craig_no = #{craigNo} and chatroom_id = #{chatroomId}")
 	CraigChat findCraigChat(Map<String, Object> craigChatMap);
 
-	@Select("select * from craig_msg where chatroom_id = #{chatroomId} and sent_time > #{regDate}")
-	List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> regDelMap);
+	@Select("select * from craig_msg where chatroom_id = #{chatroomId} and sent_time > #{regDate} order by msg_no")
+	List<CraigMsg> findCraigMsgAfterReg(Map<String, Object> regDelMap);
 
 	@Update("update craig_chat set del_date = #{delDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
 	int updateDel(Map<String, Object> delMap);
 
-	@Update("update craig_chat set del_date = null, reg_date = sysdate where chatroom_id = #{chatroomId} and member_id = #{memberId}")
+	@Update("update craig_chat set del_date = null, reg_date = #{regDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
 	int updateRegDel(Map<String, Object> regDelMap);
 
 
