@@ -150,29 +150,20 @@ public class ChatController {
 
 		// 1. 로그인한 사용자 id 꺼내기
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
-//		log.debug("구매자 = {}", memberId);
 
 		// 2. 게시글 번호로 게시글객체 -> 판매자정보 꺼내기
 		// 게시글정보만 가져오는 메소드 새로 추가함!
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
-
 		String sellerId = craig.getWriter();
-//		log.debug("판매자 = {}", sellerId);
 
-		
 		// 3. memberId, craigNo로 chatroom_id 조회
-		// parameter는 1개만 가능하므로 Map에 담는다
+
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("craigNo", craigNo);
 
 		String chatroomId = chatService.findCraigChatroomId(craigChatMap);
 
-		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
-		log.debug("나오나보자 = {}", craigChat);
-		craigChat.getChatroomId();
-		craigChat.getDelDate();
-		
 		// 채팅방 첫 입장시
 		if (chatroomId == null) {
 			// 1. chatroomId 생성 chatroomId =
@@ -224,43 +215,48 @@ public class ChatController {
 	 * 중고거래 채팅방 팝업 열기
 	 */
 	@GetMapping("/craigChat.do")
-	public String craigChatPop(@RequestParam String chatroomId, @RequestParam String memberId,
-			@RequestParam int craigNo, Model model) {
-		// 1. chatroomId, memberId로 DEL_DATE 조회
+	public String craigChatPop(@RequestParam String chatroomId, @RequestParam String memberId, @RequestParam int craigNo, Model model) {
+		// 1. chatroomId, memberId, craigNo로 craigChat객체 가져오기
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("craigNo", craigNo);
+		craigChatMap.put("chatroomId", chatroomId);
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
 		
-		// 2. DEL_DATE = null : 안나갔음
+		// 2. DEL_DATE 조회 후 분기 
+		// 2-1. DEL_DATE = null : 안나갔음
 		if(craigChat.getDelDate() == null) {
-			// 2-1. 대화내역 찾기
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgBychatroomId(chatroomId);
+			// 대화내역 찾기 (after reg_date)
+			Map<String, Object> regMap = new HashMap<>();
+			Timestamp reg = Timestamp.valueOf(craigChat.getRegDate());
+			regMap.put("regDate", reg.getTime());
+			regMap.put("chatroomId", chatroomId);
+			
+			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			
 			model.addAttribute("craigMsgs", craigMsgs);			
-			
-
 		}
 		
+		// 2-2. DEL_DATE != null : 나갔던 채팅방임
 		else {
-		// 3. DEL_DATE != null : 나갔음 
-			// 3-1. craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
-			Map<String, Object> regDelMap = new HashMap<>();
-			regDelMap.put("memberId", memberId);
+			// ** craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
+			Map<String, Object> regMap = new HashMap<>();
+			regMap.put("memberId", memberId);
 
+			regMap.put("regDate",LocalDateTime.now());
+			regMap.put("chatroomId", chatroomId);
+			chatService.updateRegDel(regMap);
+			
 			// del_date는 LocalDateTime 형식! sent_time과 비교를 위해 Timestamp로 변환해준다
-			Timestamp regDate = Timestamp.valueOf(LocalDateTime.now());
-			regDelMap.put("regDate", regDate.getTime());
-			regDelMap.put("chatroomId", chatroomId);
-			
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterDel(regDelMap);
-			
-			
-			chatService.updateRegDel(regDelMap);
-			
+			Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+			regMap.put("regDate", now.getTime());
+			// 대화내역 찾기 (after reg_date)
+			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+			model.addAttribute("craigMsgs", craigMsgs);
 		}
-		// 2-2. 대화상대 Member객체 
+		
+		// 3. 대화상대 Member객체 담기
 		// 채팅방 아이디로 채팅방을 조회하고, 나온 멤버중 본인을 제외한 멤버 가져옴
 		Map<String, Object> startUser = new HashMap<>();
 		startUser.put("memberId", memberId);
@@ -273,6 +269,7 @@ public class ChatController {
 		
 		// 4. 사용자 아이디 담기
 		model.addAttribute("memberId", memberId);
+		model.addAttribute("chatUser", memberService.selectOneMember(memberId));
 		
 		// 5. 게시글 정보 담기
 		Craig craig = craigService.findCraigByCraigNo(craigNo);

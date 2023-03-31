@@ -24,7 +24,7 @@ public interface ChatService {
 
 	CraigChat findCraigChat(Map<String, Object> craigChatMap);
 
-	List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> delMap);
+	List<CraigMsg> findCraigMsgAfterReg(Map<String, Object> delMap);
 
 	int updateDel(Map<String, Object> delMap);
 
