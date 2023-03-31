@@ -3,6 +3,7 @@ package com.sh.oee.local.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,6 +11,7 @@ import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -37,6 +39,22 @@ public interface LocalDao {
 
 	//게시글 한건 조회
 	Local selectLocalOne(int no);
+
+	//게시글 삭제
+	@Delete("delete from local where no = #{no}")
+	int deleteLocal(int no);
+	
+	//게시글 수정 첨부파일
+	List<LocalAttachment> selectLocalAttachments(int no);
+	
+	//게시글 수정
+	int updateLocalBoard(Local local);
+
+	//조회수 증가
+	int hits(int no);
+
+	//좋아요
+	List<Map<String, Object>> likecheck();
 
 
 

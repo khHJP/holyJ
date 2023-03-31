@@ -76,7 +76,7 @@ document.querySelectorAll("input[data-no]").forEach( (input)=>{
 });
 
 //유효성검사 
-document.craigEnrollFrm.onsubmit = (e) =>{
+document.localEnrollFrm.onsubmit = (e) =>{
 	console.log ( e );
 
 	const title = e.target.title; 
