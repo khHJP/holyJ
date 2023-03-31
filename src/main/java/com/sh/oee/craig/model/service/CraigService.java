@@ -53,6 +53,9 @@ public interface CraigService {
 	List<Craig> mySalCraig(String memberId);
 	List<Craig> mySalFCraig(String memberId);
 	List<Craig> myWishCraig(String memberId);
+	int salFCraig(int no);
+	int bookCraig(int no);
+	int salCraig(int no);
 	//---------------------하나 끝-------------------------
 	
 	//게시글 + 첨부파일 삭제 - ok
@@ -91,6 +94,9 @@ public interface CraigService {
 
 	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
 	List<Integer> selectCraigWishCnt(Map<String, Object> param);
+
+
+
 
 
 

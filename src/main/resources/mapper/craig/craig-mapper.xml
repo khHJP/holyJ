@@ -183,7 +183,7 @@ from
 	craig c join craig_attachment ca
 	on c.no = ca.craig_no
 where
-	c.writer = #{memberId} and c.state = 'CR2'
+	c.writer = #{memberId} and (c.state = 'CR2' OR c.state = 'CR1')
 	
 </select>
 <select id="mySalFCraig" resultMap="craigMap">
