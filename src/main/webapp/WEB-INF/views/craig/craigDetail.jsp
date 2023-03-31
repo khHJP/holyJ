@@ -272,12 +272,13 @@
 	<div style="margin-bottom: 10px; height: 90px; ">
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> | 조회 </span> <span id="spancrReadCount"></span>
-		
-		<button type="button" class="btn btn-danger" style="display: inline-block; margin-top: -10px;">신고하기</button>
+
+		<sec:authentication property="principal" var="loginMember" />
+		<c:if test="${craigboard.member.memberId != loginMember.memberId}">		
+		<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
 
 		<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  -->
-		<sec:authentication property="principal" var="loginMember" />
-		<c:if test="${craigboard.member.memberId != loginMember.memberId}">
+
 			<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
 		<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★  -->
 		</c:if>	
@@ -296,13 +297,6 @@
 <div id="craigPlace">
 	<p style="text-align: left">거래 희망 장소</p>
 	<div id="map" style="width: 600px; height: 300px; border: none;"></div>
-<%-- 문제없으면 지우기 
-	<sec:authentication property="principal" var="loginMember" />
-	<c:if test="${craigboard.member.memberId == loginMember.memberId  }">
-		<button id="btnUpdate" type="button" class="btn btn-warning" style="float: right; margin-top: 20px;">수정하기</button>
-		<button type="button" id="btnDelete" class="btn btn-dark" style="margin-left: 30px; margin-right: -1px; margin-top: 20px; float: right">삭제하기</button>
-	</c:if>
---%>	
 </div>
 
 <%-- del --%>
@@ -310,7 +304,6 @@
 	 action="${pageContext.request.contextPath}/craig/craigBoardDelete.do?${_csrf.parameterName}=${_csrf.token}"  >
 	 <input type="hidden" name="no" id="delno" value="${craigboard.no}" >
 </form:form>
-
 
 
 <script>
@@ -493,6 +486,29 @@ function openPopup(url, name){
 	win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
 	win.opener.self;
 }
+
+
+
+
+
+
+
+
+//신고
+document.querySelector("#reportBtn").addEventListener('click', (e)=>{
+
+	const reportedId = '${craigboard.writer}'; //게시글쓴사람
+	const reportType = 'CR';
+	const boardNo = '${craigboard.no}';
+
+	console.log(reportType, boardNo, reportedId);
+	
+	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
+
+	
+})
+
+
 </script>	
 </c:if>
 
@@ -568,7 +584,7 @@ function openPopup(url, name){
 	  
 	});
 	
-	
+
 	
 	$('#menu-toggle').threeBarToggle({color: 'green', width: 30, height: 25});
 	$('#menu').accordionMenu();
@@ -576,6 +592,7 @@ function openPopup(url, name){
 </script>
 <script>
 	document.querySelector(".hearts").addEventListener('click', (e) => {
+
 		const img = e.target;
 		console.log( img );
 	
@@ -609,6 +626,15 @@ function openPopup(url, name){
 		})//end-ajax   
 	});//end of pushheart 
 </script>
+<%--
 
+	<div class="alert alert-warning alert-dismissible fade show" role="alert" style="width: 450px; margin-left: 70px;" >
+	  <span> 관심 목록에 추가되었어요!  
+	  <a style="margin-left: 60px; font-size: 15px;" href="${pageContext.request.contextPath}/mypage/mycraig">관심목록보기</a></span> 
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	 --%>
 <br><br><br><br><br><br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

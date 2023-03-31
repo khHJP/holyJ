@@ -132,7 +132,8 @@ set category_no = #{categoryNo},
 	longitude = #{longitude},
 	place_detail = #{placeDetail},
 	price = #{price},
-	state = #{state}
+	state = #{state},
+	complete_date = sysdate
 where no = #{no}	
 </update>
 
@@ -304,5 +305,6 @@ from (
 order by  cr.no desc	
 </select>
 
+<!-- 	complete_date = to_date( #{completeDate},'yyyy-mm-dd' )  -->
 
 </mapper>

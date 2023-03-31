@@ -137,7 +137,7 @@ document.querySelectorAll(".member-role").forEach((select) => {
 		const auth = e.target.value;
 		const frm = document.adminMemberRoleUpdateFrm;
 		
-		if(confirm(`[\${memberId}]회원의 권한을 \${auth}로 변경하시겠습니까?`)){			
+		if(confirm(`[\${memberId}]회원의 권한을 \${auth}로 변경하시겠습니까?`)){
 			console.log(frm);
 			frm.memberId.value = e.target.dataset.memberId;
 			frm.auth.value = auth;
