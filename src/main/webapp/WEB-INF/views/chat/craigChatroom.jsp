@@ -100,16 +100,26 @@
 							<!-- 내가 보낸 메시지일때 -->
 							<c:if test="${memberId == craigMsg.writer}">
 								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
-								<li class="replies">
-									<p>${craigMsg.content}</p>	
-									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
-								</li>
+								<c:if test="${craigMsg.type == 'CHAT'}">
+									<li class="replies">
+										<p>${craigMsg.content}</p>	
+										<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									</li>
+								</c:if>
+								<c:if test="${craigMsg.type == 'FILE'}">
+									<li class="replies">
+										<div class="attachFile">
+											<img class="attachImg" src="${pageContext.request.contextPath}/resources/upload/chat/craig/${craigMsg.content}" alt="" />
+										</div>
+										<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									</li>
+								</c:if>
 							</c:if>
 							<!-- 다른사람이 보낸 메시지일때 -->
 							<c:if test="${memberId != craigMsg.writer}">
 								<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
 								<li class="sent">
-									<img src="/oee/resources/upload/profile/${otherUser.profileImg}" alt="">
+									<img class="profImg" src="${pageContext.request.contextPath}/resources/upload/profile/${otherUser.profileImg}" alt="">
 									<p>${craigMsg.content}</p>	
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
 								</li>
@@ -173,7 +183,7 @@ const stompClient = Stomp.over(ws);
 // 채팅방아이디 
 const chatroomId = '${chatroomId}';
 const memberId = '${memberId}';
-
+const profImg = '${chatUser.profileImg}';
 
 /* 채팅방 나가기 */
 document.querySelector("#craigExit").addEventListener("click", (e) => {
@@ -204,15 +214,18 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	// 1. input에 작성한 메세지내용 가져오기
 	const msg = document.querySelector("#msg");
 	console.log(msg.value);
-	if(!msg.value) return; // 메시지 없을시 return 
 	
+
+	if(!msg.value) return; // 메시지 없을시 return 
+
 	// 2. payload : CraigMsg와 규격 맞춤
 	const payload = {
 		chatroomId,
 		writer : '<sec:authentication property="principal.username"/>',
 		content : msg.value,
 		sentTime : Date.now(),
-		type : 'CHAT'
+		type : 'CHAT',
+		prof : '${chatUser.profileImg}'
 	};
 	
 	// 3. 전송
@@ -227,20 +240,66 @@ stompClient.connect({}, (frame) => {
 		console.log(`/app/craigChat/${chatroomId} : `, message);
 		
 		// 받아온 json 구조분해할당
-		const {writer, content, sentTime, type} = JSON.parse(message.body);
-		const now = convertTime(new Date(sentTime)); // jquery Date으로 변경 + 12시간 변환함수
+		const {writer, content, sentTime, type, prof} = JSON.parse(message.body);
+		const time = convertTime(new Date(sentTime)); // jquery Date으로 변경 + 12시간 변환함수
 		
 		// 채팅내용 화면에 뿌리기
 		const ul = document.querySelector("#message-container ul");
 		
-		/* 채팅 보낸사람이 로그인한 사용자인지 상대방인지 분기  */
-		if(memberId == writer)
-		ul.innerHTML += `
-			<li class="replies">
-			<p>\${content}</p>	
-			<span class="msg_time">\${now}</span>
-		</li>
-		`;
+		/* 메시지 보낸사람이 로그인한 사용자인지 상대방인지 분기  */
+		/* 내 메시지 */
+		/* 메시지 유형이 chat */
+		if(memberId == writer){
+			console.log(type);
+			
+			if( type == 'CHAT'){
+				ul.innerHTML += `
+				<li class="replies">
+					<p>\${content}</p>	
+					<span class="msg_time">\${time}</span>
+				</li>
+				`;
+			} 
+			if (type == 'FILE'){
+				const li = document.createElement("li");
+					li.classList.add("replies");
+
+				const div = document.createElement("div");
+					div.classList.add("attach");
+				const img = document.createElement("img");
+					img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+				div.append(img);
+				
+				const p = document.createElement("p");
+					p.innerHTML = `\${content}`;
+				const span = document.createElement("span");
+					span.classList.add("msg_time");
+					span.innerHTML = `\${time}`;
+				li.append(div, p, span);
+				ul.append(li);
+			}
+		}
+		// 메시지 Type이 file일때
+		
+		
+		
+		/* 상대방이 보낸 메시지 */
+		if(memberId != writer){
+			const li = document.createElement("li");
+			li.classList.add("sent");
+			const img = document.createElement("img");
+			img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${prof}`;
+			const p = document.createElement("p");
+			p.innerHTML = `\${content}`;
+			const span = document.createElement("span");
+			span.classList.add("msg_time");
+			span.innerHTML = `\${time}`;
+			
+			li.append(img, p, span);
+			ul.append(li);			
+		}	
+
+		$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
 	});
 });
 
