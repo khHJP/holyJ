@@ -132,14 +132,14 @@
 		set
     		auth = #{auth}
 		where
-		    member_id = #{member_id}
+		    member_id = #{memberId}
 	</update>
 	
 	<update id="updateAdminCraigCategory">
 		update
 			craig
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
@@ -148,7 +148,7 @@
 		update
 			local
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
@@ -157,7 +157,7 @@
 		update
 			together
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
@@ -167,7 +167,7 @@
 		delete from
 			member
 		where
-			member_id = #{member_id}
+			member_id = #{memberId}
 	</delete>
 
 </mapper>

@@ -124,7 +124,7 @@
 </section>
 <!-- 회원 권한 수정 폼 -->
 <form:form name="adminMemberRoleUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberRoleUpdate.do" method="post">
-	<input type="hidden" name="memberId" id="memberId">
+	<input type="hidden" name="memberId">
 	<input type="hidden" name="auth">
 </form:form>
 <script>

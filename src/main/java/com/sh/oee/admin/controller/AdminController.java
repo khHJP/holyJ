@@ -89,6 +89,7 @@ public class AdminController {
 	@PostMapping("/adminMemberRoleUpdate.do")
 	public String adminMemberRoleUpdate (@RequestParam String memberId, String auth) {
 		log.debug("memberId = {}", memberId);
+		log.debug("auth = {}", auth);
 		
 		Map<String, Object> adminMemberRoleUpdateMap = new HashMap<>();
 		adminMemberRoleUpdateMap.put("memberId", memberId);
@@ -102,42 +103,21 @@ public class AdminController {
 	}
 	
 	@PostMapping("/adminCraigCategoryUpdate.do")
-	public String adminCraigCategoryUpdate (
-			@Param("no") String no, 
-			@Param("categoryNo") String categoryNo, 
-			Model model) {
-		
-		log.debug("no = {}", no);
-		log.debug("categoryNo = {}", categoryNo);
-		
-		int result = adminService.updateAdminCraigCategory(no, categoryNo);
-		log.debug("result = {}", result);			
-		
-		model.addAttribute("no", no);
-		model.addAttribute("categoryNo", categoryNo);
+	public String adminCraigCategoryUpdate (@RequestParam int no, int categoryNo) {
 		
 		return "redirect:/admin/adminCraigList.do";
 	}
 	
 	@PostMapping("/adminLocalCategoryUpdate.do")
-	public String adminLocalCategoryUpdate (
-			@Param("no") String no, 
-			@Param("categoryNo") String categoryNo, 
-			Model model) {
-		log.debug("no = {}", no);
-		log.debug("categoryNo = {}", categoryNo);
-		
-		int result = adminService.updateAdminLocalCategory(no, categoryNo);
-		log.debug("result = {}", result);			
-		
-		model.addAttribute("no", no);
-		model.addAttribute("categoryNo", categoryNo);
+	public String adminLocalCategoryUpdate (@RequestParam int no, int categoryNo) {
 		
 		return "redirect:/admin/adminLocalList.do";
 	}
 	
 	@PostMapping("/adminTogetherCategoryUpdate.do")
-	public String adminTogetherCategoryUpdate (@RequestParam int no, @RequestParam int categoryNo) {
+	public String adminTogetherCategoryUpdate (@RequestParam int no, int categoryNo) {
+		log.debug("no = {}", no);
+		log.debug("categoryNo", no);
 		
 		Map<String, Object> adminTogetherCategoryMap = new HashMap<>();
 		adminTogetherCategoryMap.put("no", no);
