@@ -60,7 +60,7 @@
 		</div>
 </body>
 
-<%-- <c:if test="${noticeKeyword[0] != null}"> --%>
+<c:if test="${noticeKeyword[0] != null}">
 	<script>
      document.querySelectorAll(".cancel-btn").forEach((buttons) =>{
     	 
@@ -96,5 +96,5 @@
      });// 
     	 
     </script>
-<%-- </c:if> --%>
+</c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
