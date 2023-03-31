@@ -12,6 +12,7 @@ import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -79,7 +80,45 @@ public class LocalServiceImpl implements LocalService {
 	public Local selectLocalOne(int no) {
 		return localDao.selectLocalOne(no);
 	}
+	
+	//게시글 수정
+	@Override
+	public int updateLocalBoard(Local local) {
+		
+		int result = localDao.updateLocalBoard(local);
+		log.debug("local no = {}" , local.getNo());
+		
+		return result;
+	}
+	
+	//게시글 수정 첨부파일
+	@Override
+	public List<LocalAttachment> selectLocalAttachments(int no){
+		return localDao.selectLocalAttachments(no);
+	}
 
-
-
+	//게시글 삭제
+	@Override
+	public int deleteLocal(int no) {
+		
+		int result = 0;
+		result = localDao.deleteLocal(no);
+		log.debug("local no = {} " , no);
+		
+		return result;
+	}
+	
+	//조회수 증가
+	@Override
+	public int hits(int no) {
+		int result = localDao.hits(no);
+		return result;
+	}
+	
+	//좋아요
+	@Override
+	public List<Map<String, Object>> likecheck() {
+		return localDao.likecheck();
+	} 
+	
 }

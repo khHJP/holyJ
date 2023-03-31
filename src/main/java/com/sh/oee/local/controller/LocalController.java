@@ -1,5 +1,6 @@
 package com.sh.oee.local.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import com.sh.oee.local.model.dto.Local;
 import com.sh.oee.local.model.dto.LocalAttachment;
 
 import com.sh.oee.local.model.dto.LocalComment;
-
+import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.service.LocalService;
 import com.sh.oee.member.model.dto.Member;
 
@@ -141,16 +142,30 @@ public class LocalController {
 		
 		log.debug("localdetail : {}", localdetail);
 		
+		//조회수 증가
+		int readCnt = localService.hits(no);
+		
+		//좋아요 누르기 확인 -- 됐으면
+		List<Map<String,Object>> likecheckMap = localService.likecheck();
+		if(likecheckMap == null) {
+			//사용자가 좋아요 누른 적 없으면 null 반환
+			model.addAttribute("likecheck",0);
+		} else {
+			model.addAttribute("likecheck",likecheckMap);
+		}
+		
 		model.addAttribute("localdetail",localdetail);
 		model.addAttribute("category", category);
 	}
 	
 	// 글 수정하기 폼 이동
 	@GetMapping("/localUpdate.do")
-	public void localUpdate(@RequestParam int no,Model model,Local local) {
+	public void localUpdate(@RequestParam int no,Model model) {
+		log.debug("no={}",no);
 		
 		Local localdetail = localService.selectLocalOne(no);
 		List<Map<String,String>> localCategory = localService.localCategoryList();
+		log.debug("localdetail ={}",localdetail);
 		
 		model.addAttribute("localdetail",localdetail);
 		model.addAttribute("localCategory", localCategory);
@@ -158,8 +173,28 @@ public class LocalController {
 	}
 	
 	// 글 수정하기
+	@PostMapping("/localUpdate.do")
+	public String localUpdate(Local local,
+			RedirectAttributes redirectAttr) {
 
+		int result =  localService.updateLocalBoard(local);
+		
+		redirectAttr.addFlashAttribute("msg","게시글이 수정됐습니다.");
+		return "redirect:/local/localDetail.do?no=" + local.getNo();
+	}
 	
+	
+	// 글 삭제하기
+	@PostMapping("/localDelete.do")
+	public String localDelete(@RequestParam int no, RedirectAttributes redirectAttr) {
+		log.debug("no={}", no);
+		
+		int result = localService.deleteLocal(no);
+		
+		redirectAttr.addFlashAttribute("msg","게시글을 삭제했습니다.");
+		
+		return "redirect:/local/localList.do";
+	}
 	
 	
 	
