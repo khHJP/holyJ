@@ -423,7 +423,7 @@ public class CraigController {
 					}//end if
 			}// end multi 
 
-			Date completeDate =  Date.valueOf( craig.getCompleteDate() );
+			//  Date.valueOf( craig.getCompleteDate() );
 			
 			int result = craigService.updateCraigBoard(craig);
 			log.debug( "■ real_update_result : " + result );

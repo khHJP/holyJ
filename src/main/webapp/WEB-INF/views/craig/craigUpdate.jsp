@@ -43,7 +43,7 @@
 	<sec:authentication property="principal" var="loginMember"/>
 		<input type="hidden" class="form-control" name="no" id="no" value="${craigboard.no}" required>
 		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
-		<input type="date" class="form-control" name="completeDate" id="completeDate" readonly="readonly">	
+		<input type="date" class="form-control" style="padding-left:30px" name="completeDate" id="completeDate" readonly="readonly">	
 
 		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
 		

@@ -32,11 +32,29 @@ public class Craig extends CraigEntity {
 	
 	
 	
-
-	
 	public void addAttachment(CraigAttachment attach) {
 		this.attachments.add(attach);		
 	}
+
+
+
+
+
+
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			Date completeDate, int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange,
+			Dong dong, int wish) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate);
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+	}
+
 
 
 
@@ -49,6 +67,7 @@ public class Craig extends CraigEntity {
 				buyer, completeDate);
 		this.attachCount = attachCount;
 	}
+
 
 
 
@@ -71,33 +90,27 @@ public class Craig extends CraigEntity {
 
 
 
-	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
-			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
-			Date completeDate, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong) {
-		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
-				buyer, completeDate);
-		this.attachments = attachments;
-		this.member = member;
-		this.dongrange = dongrange;
-		this.dong = dong;
-	}
 
-	
-	
-	
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
-			Date completeDate, int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange,
-			Dong dong, int wish) {
+			Date completeDate, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong,
+			int wish) {
 		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
 				buyer, completeDate);
-		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;
 		this.dongrange = dongrange;
 		this.dong = dong;
 		this.wish = wish;
 	}
+
+	
+	
+
+
+	
+	
+	
 
 
 
