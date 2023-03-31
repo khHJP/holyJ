@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -74,13 +75,22 @@
 					<c:forEach items="${adminTogetherList}" var="adminTogether" varStatus="vs">
 						<tr id="table-content">
 							<td>${vs.count}</td>
-							<td>${adminTogether.categoryNo}</td>
+							<td>
+								<select class="together-category" data-no="${adminTogether.no}">
+									<option value=1 <c:if test="${adminTogether.categoryNo eq 1}"> selected="selected"</c:if>>밥/카페</option>
+									<option value=2 <c:if test="${adminTogether.categoryNo eq 2}"> selected="selected"</c:if>>운동</option>
+									<option value=3 <c:if test="${adminTogether.categoryNo eq 3}"> selected="selected"</c:if>>스터디</option>
+									<option value=4 <c:if test="${adminTogether.categoryNo eq 4}"> selected="selected"</c:if>>취미</option>
+									<option value=5 <c:if test="${adminTogether.categoryNo eq 5}"> selected="selected"</c:if>>반려동물</option>
+									<option value=6 <c:if test="${adminTogether.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+								</select>
+							</td>
 							<td>${adminTogether.writer}</td>
 							<td>${adminTogether.title}</td>
 							<td>${adminTogether.status}</td>
 							<td>
 								<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
-								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td></td>
 						</tr>
@@ -96,6 +106,32 @@
 	</div>
 
 </section>
-<script></script>
+<!-- 카테고리 수정 폼 -->
+<form:form name="adminTogetherCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminTogetherCategoryUpdate.do" method="post">
+	<input type="hidden" value="${adminTogether.no}" name="no">
+	<input type="hidden" value="${adminTogether.categoryNo}" name="categoryNo">
+</form:form>
+<script>
+/* 카테고리 수정 */
+document.querySelectorAll(".together-category").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		console.log(e.target.value);
+		console.log(e.target.dataset.no);
+		const no = e.target.dataset.no;
+		const categoryNo = e.target.value;
+		
+		if(confirm(`게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
+			const frm = document.adminTogetherCategoryUpdateFrm;
+			frm.no.value = no;
+			frm.categoryNo.value = categoryNo;			
+			frm.submit();
+		}
+		else {
+			e.target.querySelector("option[selected]").selected = true;
+		}
+		
+	});
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
