@@ -2,8 +2,11 @@ package com.sh.oee.craig.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +15,12 @@ import javax.servlet.ServletContext;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -419,7 +422,9 @@ public class CraigController {
 							craig.addAttachment(attach);
 					}//end if
 			}// end multi 
-					 
+
+			Date completeDate =  Date.valueOf( craig.getCompleteDate() );
+			
 			int result = craigService.updateCraigBoard(craig);
 			log.debug( "■ real_update_result : " + result );
 
@@ -531,6 +536,10 @@ public class CraigController {
 				
 				CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
 				model.addAttribute("craigPage", craigPage);
+				log.debug( "■■■■ totals = {}", totals);
+				log.debug( "■■■■ cpage = {}", cpage);	
+				log.debug( "■■■■ limit = {}", limit);	
+
 				
 				//model담기 - 쓸수있나?
 				model.addAttribute("searchCrategory", searchCrategory);

@@ -58,12 +58,16 @@ button, input, optgroup, select, textarea {
 						<div style="display: flex; margin:20px 0px 10px 0px;">
 							<div id="col_img"  style="margin-top : 0px" >
 								<img id="col_img_viewer"  style="width : 210px; height : 170px; padding-right: 20px">
+							 	<span class="glyphicon glyphicon-camera" id="span1" style="display: inline-block;" aria-hidden="true"></span>							
 							</div>
 							<div id="col_img"  style="margin-top : 0px" >
 								<img id="col_img_viewer2"  style="width : 210px; height : 170px; padding-right: 20px">
+							 	<span class="glyphicon glyphicon-camera" id="span2" style="display: inline-block;" aria-hidden="true"></span>							
 							</div>	
 							<div id="col_img"  style="margin-top : 0px" >
 								<img id="col_img_viewer3"  style="width : 210px; height : 170px;">
+							 	<span class="glyphicon glyphicon-camera" id="span3" style="display: inline-block;" aria-hidden="true"></span>							
+								
 							</div>		
 						</div>
 						<div class="input-group mb-3" style="padding:0px;">
@@ -254,19 +258,25 @@ marker.setMap(map);
 <script>
 document.querySelector("#upFile1").addEventListener('change', (e) => {
 	const img = e.target;
-	
+	const span1 = document.querySelector("#span1");
+	const span2 = document.querySelector("#span2");
+	const span3 = document.querySelector("#span3");
+
+
 	if(img.files[0]){
 		const fr = new FileReader(); 
 		fr.readAsDataURL(img.files[0]); 
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer").src = e.target.result; 
+			span1.innerHTML = img.files[0].name;
 		};
 	}
 	if(img.files[1]){
 		const fr = new FileReader(); 
 		fr.readAsDataURL(img.files[1]); 
 		fr.onload = (e) => {
-			document.querySelector("#col_img_viewer2").src = e.target.result; 
+			document.querySelector("#col_img_viewer2").src = e.target.result;
+			span2.innerHTML = img.files[1].name;
 		};
 	}	
 	if(img.files[2]){
@@ -275,6 +285,7 @@ document.querySelector("#upFile1").addEventListener('change', (e) => {
 		fr.readAsDataURL(img.files[2]); 
 		fr.onload = (e) => {
 			document.querySelector("#col_img_viewer3").src = e.target.result; 
+			span3.innerHTML = img.files[2].name;
 		};	
 	}	
 

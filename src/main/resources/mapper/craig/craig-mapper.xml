@@ -132,7 +132,8 @@ set category_no = #{categoryNo},
 	longitude = #{longitude},
 	place_detail = #{placeDetail},
 	price = #{price},
-	state = #{state}
+	state = #{state},
+	complete_date = to_date( #{completeDate},'yyyy-mm-dd' )
 where no = #{no}	
 </update>
 
