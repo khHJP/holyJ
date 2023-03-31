@@ -101,8 +101,8 @@ public class ChatServiceImpl implements ChatService {
 	 * - chatroomId, delDate 받아와 delDate 이후의 메시지만 가져옴
 	 */
 	@Override
-	public List<CraigMsg> findCraigMsgAfterDel(Map<String, Object> delMap) {
-		return chatDao.findCraigMsgAfterDel(delMap);
+	public List<CraigMsg> findCraigMsgAfterReg(Map<String, Object> delMap) {
+		return chatDao.findCraigMsgAfterReg(delMap);
 	}
 
 	/**
