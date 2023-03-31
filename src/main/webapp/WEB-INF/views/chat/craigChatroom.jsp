@@ -109,7 +109,7 @@
 								<c:if test="${craigMsg.type == 'FILE'}">
 									<li class="replies">
 										<div class="attachFile">
-											<img src="${pageContext.request.contextPath}/resources/upload/chat/craig/${craigMsg.content}" alt="" />
+											<img class="attachImg" src="${pageContext.request.contextPath}/resources/upload/chat/craig/${craigMsg.content}" alt="" />
 										</div>
 										<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
 									</li>

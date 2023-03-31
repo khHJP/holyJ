@@ -245,11 +245,33 @@ input, button, select, textarea{
     position: relative;
 }
 
+/* 보낸 메시지  */
+.messages ul li.replies img {
+	float: right;
+	margin: 0 0 0 8px;
+}
+.messages ul li.replies p {
+	background: #7FB77E;
+	float: right;
+	color: white;
+}
+.messages ul li.replies .msg_time{
+    position: relative;
+    float: right;
+   	top: 10px;
+    margin-right: 10px;
+    color: #868B94;
+    font-size: 12px;
+}
 
-
+.messages ul li.replies .attachFile img{
+	width: 150px;
+	height: 150px;
+	border-radius: 10%;
+}
 
 /* 프로필이미지 */
-.card .messages ul li .profImg {
+.card .messages ul li.sent img {
 	width: 40px;
 	border-radius:50%;
 	float: left;
@@ -281,27 +303,4 @@ input, button, select, textarea{
 }
 
 
-/* 보낸 메시지  */
-.messages ul li.replies img {
-	float: right;
-	margin: 0 0 0 8px;
-}
-.messages ul li.replies p {
-	background: #7FB77E;
-	float: right;
-	color: white;
-}
-.messages ul li.replies .msg_time{
-    position: relative;
-    float: right;
-   	top: 10px;
-    margin-right: 10px;
-    color: #868B94;
-    font-size: 12px;
-}
-
-.messages ul li.replies .attachFile img{
-	width: 200px;
-	height: 200px;
-}
 
