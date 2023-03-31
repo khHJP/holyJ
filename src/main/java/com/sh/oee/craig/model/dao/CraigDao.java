@@ -58,7 +58,7 @@ public interface CraigDao {
 	List<Craig> mySalCraig(String memberId);
 	List<Craig> mySalFCraig(String memberId);
 	List<Craig> myWishCraig(String memberId);
-	@Update("update craig set state = 'CR3' where no = #{no}")
+	@Update("update craig set state = 'CR3', complete_date = sysdate where no = #{no}")
 	int salFCraig(int no);
 	@Update("update craig set state = 'CR1' where no = #{no}")
 	int bookCraig(int no);
