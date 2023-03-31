@@ -66,14 +66,23 @@
 					<th>신고한 회원</th>
 					<th>등록일</th>
 					<th>처리 상태</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty adminUserReport}">
-					<c:forEach items="${adminUserReport}" var="adminBoardReport">
-						<tr class="table-content">
-							<td>${adminUserReport.reportNo}</td>
-							
+					<c:forEach items="${adminUserReport}" var="adminUserReport" varStatus="vs">
+						<tr id="table-content">
+							<td>${vs.count}</td>
+							<td>${adminUserReport.writer}</td>
+							<td>${adminUserReport.reportReason.reasonName}</td>
+							<td>${adminUserReport.reportedMember}</td>
+							<td>
+								<fmt:parseDate value="${adminUserReport.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
+							</td>
+							<td>${adminUserReport.status}</td>
+							<td></td>							
 						</tr>
 					</c:forEach>
 				</c:if>
