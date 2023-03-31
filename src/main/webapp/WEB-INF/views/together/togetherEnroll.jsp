@@ -10,11 +10,11 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/together/togetherEnroll.css" />
 <script>
-/* 현재 날짜와 28일 이후 날짜 사이 구하기 */
+/* 현재 날짜와 20일 이후 날짜 사이 구하기 */
 window.addEventListener('load', (e) => {
  	const today = new Date();
     const nextMonth = today.getMonth() + 2; // 다음 달
-    const daysLater = 28; // 28일 후
+    const daysLater = 20; // 20일 후
 
     // 이번 달의 마지막 날짜 객체 생성
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0); 
@@ -22,71 +22,84 @@ window.addEventListener('load', (e) => {
     const futureDate = new Date(today.getTime());
     // 오늘 날짜에 daysLater를 더하여 설정
     futureDate.setDate(today.getDate() + daysLater); 
-
-    const days = [];
+    
     const months = [];
-
     months.push(today.getMonth() + 1);
-    for(let i = today.getDate(); i <= lastDay.getDate(); i++){
-        days.push(i);
+    // 20일 후가 이번달이 아닐 경우
+    if((futureDate.getMonth() + 1) != (today.getMonth() + 1)){
+    	months.push(nextMonth);
     }
     
-    // 다음 달의 마지막 날짜 객체 생성
-    const nextMonthLastDay = new Date(today.getFullYear(), today.getMonth() + 2, 0); 
-    
-    if(futureDate.getMonth() == nextMonth){
-        months.push(nextMonth);
-        for(let i = 1; i < nextMonthLastDay.getDate(); i++){
-            days.push(i);
-        }
-    }
-    else {
-        months.push(futureDate.getMonth() + 1);
-        for(let i = 1; i < futureDate.getDate(); i++){
-            days.push(i);
-        }
-    }
-
+    // 달별 option
     const month = document.querySelector(".month");
-    const date = document.querySelector(".date");
-
-    // 월별 option에 담기
     for(let i = 0; i < months.length; i++){
         const option = document.createElement("option");
         option.value = months[i];
         option.innerText = months[i];
         month.append(option);
     }
-
-    // 일별 option에 담기
-    for(let i = 0; i < days.length; i++){
-        const option = document.createElement("option");
-        option.value = days[i];
-        option.innerText = days[i];
-        date.append(option);
+    
+    // 일별 option 
+    const date = document.querySelector(".date");
+    // 다음달로 넘어가지 않을겨우
+    if(months.length == 1){
+	   	for(let i = today.getDate(); i <= today.getDate() + daysLater; i++){
+	   		const option = document.createElement("option");
+	           option.value = i;
+	           option.innerText = i;
+	           option.classList.add(today.getMonth() + 1);
+	           option.style.display='none';
+	           date.append(option);
+	    }
     }
-
+    
+   	// 다음달로 넘어갈 경우
+    if(months.length > 1){
+    	// 이번달
+    	for(let i = today.getDate(); i <= lastDay.getDate(); i++){
+       		const option = document.createElement("option");
+               option.value = i;
+               option.innerText = i;
+               option.classList.add(today.getMonth() + 1);
+               option.style.display='none';
+               date.append(option);
+        }
+    	// 다음달
+	   	for(let i = 1; i < futureDate.getDate(); i++) {
+	   		const option = document.createElement("option");
+	   	        option.value = i;
+	   	        option.innerText = i;
+	   	        option.classList.add(futureDate.getMonth() + 1);
+	   	     	option.style.display='none';
+	   	        date.append(option);
+   	    }
+   	} 
+    
 });
 </script>
 <div class="enroll-container">
 	<div class="enroll-wrap">
 		<div class="page-title">
 			<h2>무엇을 같이할까요?</h2>
+			<p>이웃과 함께 잊지 못할 추억을 만들어봐요!</p>
 		</div>
 		<form:form name="togetherEnrollFrm">
 			<div class="together-wrap">
-				<div class="content-box">
+				<p class="notice-text">* 모든 내용을 작성해주세요!</p>
+				<div class="content-box flex">
 					<div class="sub-box">
 						<i class="bi bi-blockquote-left"></i>
-						<label class="to-title">제목</label>
+						<label class="to-title">글 제목</label>
 					</div>
-					<input type="text" name="title" class="to-input" id="title" placeholder="제목을 입력해주세요">
-					<p class="error-msg title-error">제목을 입력해주세요.(5글자 이상)</p>
+					<div>
+						<input type="text" name="title" class="to-input" id="title" placeholder="제목을 입력해주세요!">
+						<p class="error-msg title-error">제목을 입력해주세요.(3글자 이상)</p>
+					</div>
 				</div>
-				<div class="content-box">
+				<div class="content-box flex">
 					<div class="sub-box">
 						<i class="bi bi-signpost"></i>
-						<h6 class="to-title">카테고리 선택</h6>
+						<label class="to-title">카테고리</label>
 					</div>
 					<div class="data-box">
 						<c:forEach items="${categorys}" var="category" varStatus="vs">
@@ -100,14 +113,16 @@ window.addEventListener('load', (e) => {
 				</div>
 				<div>
 					<div>
-						<div class="content-box">
-							<i class="bi bi-diagram-2"></i>
-							<label for="joinCnt" class="to-title">인원</label>
+						<div class="content-box flex">
+							<div class="sub-box">
+								<i class="bi bi-diagram-2"></i>
+								<label for="joinCnt" class="to-title">인원</label>
+							</div>
 							<i class="bi bi-dash-circle minus"></i>
 							<input type="number" class="join-cnt" value="3" name="joinCnt" readonly/>
 							<i class="bi bi-plus-circle plus"></i>
 						</div>
-						<div class="content-box">
+						<div class="content-box flex">
 							<div class="sub-box">
 								<i class="bi bi-people-fill"></i>
 								<label for="age_100" class="to-title">나이</label>
@@ -125,7 +140,7 @@ window.addEventListener('load', (e) => {
 								<label for="age_50">50대</label>
 							</div>
 						</div>
-						<div class="content-box">
+						<div class="content-box flex">
 							<div class="sub-box">
 								<i class="bi bi-gender-ambiguous"></i>
 								<label for="gender_A" class="to-title">성별</label>
@@ -141,15 +156,20 @@ window.addEventListener('load', (e) => {
 						</div>
 					</div>
 					<div>
-						<div class="content-box date-container">
+						<div class="date-container">
 							<div class="date-box">
 								<div class="sub-box">
 									<i class="bi bi-calendar4-week"></i>
 									<label class="to-title">날짜</label>
+									<p class="error-msg date-error">날짜를 선택해주세요.</p>
 								</div>
 								<div class="data-box">
-									<select id="date-select" class="month select" name="month" required></select>
-									<select id="date-select" class="date select" name="date" required></select>
+									<select id="date-select" class="month select" name="month" required>
+										<option value="none" selected>월</option>
+									</select>
+									<select id="date-select" class="date select" name="date" required>
+										<option value="none" selected>일</option>
+									</select>
 								</div>
 							</div>
 							<div class="time-box">
@@ -183,17 +203,24 @@ window.addEventListener('load', (e) => {
 							</div><!-- end time-box -->
 						</div><!-- end date-container -->
 					</div>
-					<div class="content-box">
-						<i class="bi bi-geo-alt"></i>
-						<label class="to-title">장소</label>
-						<input type="text" name="place" class="to-input place" style="display: block;" placeholder="장소를 직접 입력해주세요!">
-						<p class="error-msg place-error">장소를 입력해주세요.(5글자 이상)</p>
+					<div class="content-box flex">
+						<div class="sub-box">
+							<i class="bi bi-geo-alt"></i>
+							<label class="to-title">장소</label>
+						</div>
+						<div>
+							<input type="text" name="place" class="to-input place" style="display: block;" placeholder="장소를 직접 입력해주세요!">
+							<p class="error-msg place-error">장소를 입력해주세요.(3글자 이상)</p>
+						</div>
 					</div>
 				</div>
 				<div class="content-box">
-					<i class="bi bi-pencil-square"></i>
-					<label class="to-title">모임 내용</label>
-					<textarea rows="10" cols="65" class="content" name="content" style="resize: none;">내용을 작성해주세요.</textarea>
+					<div class="sub-box">
+						<i class="bi bi-pencil-square"></i>
+						<label class="to-title">모임 내용</label>
+					</div>
+					<textarea rows="10" cols="65" class="content" name="content" style="resize: none;" placeholder="내용을 작성해주세요!"></textarea>
+					<p class="error-msg content-error">내용을 입력해주세요.(5글자 이상)</p>
 				</div>
 			</div>
 			<sec:authentication property="principal" var="loginMember"/>
@@ -207,7 +234,22 @@ window.addEventListener('load', (e) => {
 </div>
 <script>
 /* 월별 일자 제어 */
-
+document.querySelector(".month").addEventListener("change", (e) => {
+	const date = document.querySelector(".date");
+	date.selectedIndex = 0; // 선택된 동 초기화
+	
+	const options = date.getElementsByTagName("option");
+	
+	for (let i = 0; i < options.length; i++) {
+		const option = options[i];
+		// 해당 태그에 타겟과 일치하는 date 분기처리
+		if (option.classList.contains(e.target.value))
+			option.style.display = "block"; 
+		else
+			option.style.display = "none";
+	}
+	
+});
 
 /* 참가인원 제어 */
 const joinCnt = document.querySelector(".join-cnt");
@@ -241,7 +283,7 @@ document.togetherEnrollFrm.addEventListener('submit', (e) => {
 	
 	/* 제목 */
 	const msg1 = document.querySelector(".title-error");
-	if(!/^.{5,}$/.test(title.value)){
+	if(!/^.{3,}$/.test(title.value)){
 		msg1.style.display = "block";
 		title.select();
 		error += 1;
@@ -257,7 +299,6 @@ document.togetherEnrollFrm.addEventListener('submit', (e) => {
 			categoryChecked++;
 		} 
 	});
-
 	const msg2 = document.querySelector(".category-error");
 	if(categoryChecked === 0){
 		msg2.style.display = "block";
@@ -267,9 +308,21 @@ document.togetherEnrollFrm.addEventListener('submit', (e) => {
 		msg2.style.display = "none";
 	}
 	
+	// 날짜
+	const month = document.querySelector(".month").value;
+	const date = document.querySelector(".date").value;
+	const msg5 = document.querySelector(".date-error");
+	if(month == 'none' || date == 'none'){
+		msg5.style.display = "block";
+		error += 1;
+	}
+	else {
+		msg5.style.display = "none";
+	}
+	
 	/* 장소 */
 	const msg3 = document.querySelector(".place-error");
-	if(!/^.{5,}$/.test(place.value)){
+	if(!/^.{3,}$/.test(place.value)){
 		msg3.style.display = "block";
 		place.select();
 		error += 1;
@@ -278,15 +331,24 @@ document.togetherEnrollFrm.addEventListener('submit', (e) => {
 		msg3.style.display = "none";
 	}
 	
-	if(error != 0 ){
+	/* 내용 */
+	const msg4 = document.querySelector(".content-error");
+	if(content.value.length < 4){
+		msg4.style.display = "block";
+		content.select();
+		error += 1;
+	}
+	else {
+		msg4.style.display = "none";
+	}
+	
+	if(error != 0){
 		alert("게시물을 확인해주세요");
 		e.preventDefault();
 		return false;
 	}
 
 	/* 현재 시간보다 이전 시간의 모임 날짜를 제어 */
-	const month = document.querySelector(".month").value;
-	const date = document.querySelector(".date").value;
 	const hour = document.querySelector(".hour").value;
 	const minute = document.querySelector(".minute").value;
 	const meridiem = document.querySelectorAll("[name='meridiem']");

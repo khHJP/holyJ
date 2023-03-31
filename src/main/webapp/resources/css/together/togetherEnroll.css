@@ -8,12 +8,17 @@ label {
 
 /* togetherEnroll */
 .to-input {
-    width: 34rem;
+	width: 36rem;
     height: 2rem;
-    border: 1px solid #868B94;
-    border-radius: 0.4rem;
+    border-style: none;
+    border-bottom: 1px solid;
+    /* border: 1px solid #868B94; */
+    /* border-radius: 0.4rem; */
     padding: 0.35rem;
-    margin-top: 0.4rem;
+    /* margin-top: 0.4rem; */
+}
+.to-input:focus {
+	outline-color: green;
 }
 .data-box {
 	margin-top: 0.25rem;
@@ -33,18 +38,37 @@ label {
     text-align: center;
     margin-bottom: 3rem;
 }
+.page-title h2 {
+    font-weight: 700;
+    color: #4D5159;
+}
+.page-title p {
+    color: #868B94;
+}
+.notice-text {
+	color: #56C271;
+}
 [name="togetherEnrollFrm"], [name="togetherUpdateFrm"] {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 .together-wrap {
-    padding: 2rem 6rem;
-    border: 1px solid #868B94;
-    border-radius: 10px;
+	width: 800px;
+    padding: 20px 40px;
+    border: 2px solid #868B94;
+    border-radius: 5px;
 }
 .content-box {
-	margin: 0 0 1rem;
+	color: #4D5159;
+    margin: 0 0 1rem;
+    padding: 10px;
+    border: 1px solid #868B94;
+    border-radius: 6px;
+    box-shadow: 2px 2px 4px gray;
+}
+.flex {
+	display: flex;
 }
 .to-title {
 	margin: 0 0.4rem;
@@ -60,18 +84,32 @@ label {
 }
 .sub-box {
 	display: flex;
-	    align-items: center;
+    align-items: center;
+    margin-right: 7px;
+    font-size: 18px;
+    color: #4D5159;
 } 
 .date-container {
 	display: flex;
     align-items: flex-end;
+    margin: 0 0 1rem;
+    justify-content: space-between;
 }
 .date-box {
-    margin-right: 9.5rem;
+    border: 1px solid #868B94;
+    border-radius: 6px;
+    padding: 10px;
+    width: 350px;
+    box-shadow: 2px 2px 4px gray;
 }
 .time-box  {
-	display: flex;
-	flex-direction: column;
+    width: 350px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #868B94;
+    border-radius: 6px;
+    box-shadow: 2px 2px 4px gray;
 }
 .time-wrap{
 	display: flex;
@@ -84,9 +122,10 @@ label {
     border-radius: 0.3rem;
 }
 .content {
-	display: block;
-	margin-top: 0.5rem;
-	padding: 0.3rem 0.4rem;
+    width: 100%;
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.4rem;
     border-radius: 0.3rem;
     overflow: scroll;
 }
@@ -117,4 +156,7 @@ label {
     font-size: 14px;
     margin: 0.2rem;
     color: red;
+}
+.modify {
+    color: #56C271;
 }
