@@ -245,13 +245,11 @@ input, button, select, textarea{
     position: relative;
 }
 
-.card .messages ul :last-child { /* 마지막메시지 하단 여백주기 */
-	padding-bottom: 20px;
-}
+
 
 
 /* 프로필이미지 */
-.card .messages ul li img {
+.card .messages ul li .profImg {
 	width: 40px;
 	border-radius:50%;
 	float: left;
@@ -300,5 +298,10 @@ input, button, select, textarea{
     margin-right: 10px;
     color: #868B94;
     font-size: 12px;
+}
+
+.messages ul li.replies .attachFile img{
+	width: 200px;
+	height: 200px;
 }
 
