@@ -666,12 +666,31 @@ public class CraigController {
 				
 		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
-	 /*
-	 @PostMapping("/craigBook.do")
-	 public int craigBook(int no) {
+	 
+	 @ResponseBody
+	 @PostMapping("/bookCraig.do")
+	 public int bookCraig(@RequestParam int no) {
+		 log.debug("no = {}", no);
+		 
+		 return craigService.bookCraig(no);
 		 
 	 }
-	 */
+	 @ResponseBody
+	 @PostMapping("/salCraig.do")
+	 public int salCraig(@RequestParam int no) {
+		 log.debug("no = {}", no);
+		 
+		 return craigService.salCraig(no);
+		 
+	 }
+	
+	 @PostMapping("/salFCraig.do")
+	 public String salFCraig(@RequestParam int no) {
+		 log.debug("no = {}", no);
+		 
+		int result = craigService.salFCraig(no);
+		return "redirect:/craig/mySalFCraig.do";
+	 }
 	 
 	 @GetMapping("/myBuyCraig.do")
 	 public void myBuyCraig(Authentication authentication, Model model) {
