@@ -119,6 +119,7 @@ min-height: 83px;
     flex-direction: column;
     position: absolute;
     opacity: 0;
+    z-index: 999;
 }
 .my-select {
 	display: flex;

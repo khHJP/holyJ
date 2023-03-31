@@ -21,9 +21,12 @@
 }
 .category-nav {
 	text-align: center;
+	transition-duration: 0.3s; 
 }
 .category-nav:hover {
-	cursor: pointer;
+    cursor: pointer;
+    transform: scale(1.1, 1.1);
+    transition-duration: 0.3s; 
 }
 .category-img {
     border-radius: 2rem;
@@ -34,8 +37,8 @@
     background-color: #F2F3F6;
     justify-content: center;
 }
-.category-img img {
-    height: 45px;
+.category-img i {
+    font-size: 20px;
 }
 .category-name p {
 	margin: 0;
@@ -324,4 +327,7 @@ p {
 }
 .modal-footer {
 	background-color: #F2F3F6;
+}
+.date-option {
+	display: none;
 }

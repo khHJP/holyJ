@@ -124,6 +124,7 @@ public class TogetherController {
 		log.debug("no = {}", no);
 		
 		// 업무로직
+		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		Together together = togetherService.selectTogetherByNo(no);
 		log.debug("together = {}", together);
 		
@@ -131,9 +132,8 @@ public class TogetherController {
 		together.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(together.getContent())));
 		
 		// view 전달
+		model.addAttribute("categorys", categorys);
 		model.addAttribute("together", together);
-		model.addAttribute("category", category);
-		
 	}
 	
 	/**

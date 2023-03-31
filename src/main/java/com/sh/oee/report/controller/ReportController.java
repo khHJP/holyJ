@@ -109,7 +109,7 @@ public class ReportController {
 		log.debug("userReport = {}", userReport);
 		
 		// 업무로직
-		//int result = reportService.userReportEnroll(userReport);
+		int result = reportService.userReportEnroll(userReport);
 		
 		// view 전달
 		redirectAttr.addFlashAttribute("msg", "신고가 접수되었습니다.");

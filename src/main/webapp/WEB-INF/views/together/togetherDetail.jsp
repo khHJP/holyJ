@@ -13,12 +13,9 @@
 /* 매너온도에 따른 색변화 */
 window.addEventListener('load', (e) => {
 	const temperature = document.querySelector(".temperature span");
-	console.log(temperature);
-	
 	if(temperature.innerText < 30) temperature.style.color = '#3AB0FF'; 
 	else if(temperature.innerText >= 30 && temperature.innerText < 50) temperature.style.color = '#56C271'; 
 	else if(temperature.innerText >= 50) temperature.style.color = '#F94C66'; 
-	
 });
 </script>
 <sec:authentication property="principal" var="loginMember"/>
@@ -66,24 +63,29 @@ window.addEventListener('load', (e) => {
 		<div class="category-box">
 			<span>
 				<c:if test="${together.categoryNo eq 1}">
-					<i class="bi bi-cup-hot"></i>
+					<i class="fa-solid fa-utensils"></i>
+					${categorys[0].CATEGORY_NAME}
 				</c:if>
 				<c:if test="${together.categoryNo eq 2}">
-					<i class="bi bi-bicycle"></i>
+					<i class="fa-solid fa-shoe-prints"></i>
+					${categorys[1].CATEGORY_NAME}
 				</c:if>
 				<c:if test="${together.categoryNo eq 3}">
-					<i class="bi bi-pencil-square"></i>
+					<i class="fa-solid fa-book"></i>
+					${categorys[2].CATEGORY_NAME}
 				</c:if>
 				<c:if test="${together.categoryNo eq 4}">
-					<i class="bi bi-palette"></i>
+					<i class="fa-solid fa-palette"></i>
+					${categorys[3].CATEGORY_NAME}
 				</c:if>
 				<c:if test="${together.categoryNo eq 5}">
-					
+					<i class="fa-solid fa-paw"></i>
+					${categorys[4].CATEGORY_NAME}
 				</c:if>
 				<c:if test="${together.categoryNo eq 6}">
-					<i class="bi bi-three-dots"></i>
+					<i class="fa-solid fa-bars"></i>
+					${categorys[5].CATEGORY_NAME}
 				</c:if>
-				${category}
 			</span>
 		</div><!-- end category-box -->
 		<div class="header-box">
@@ -151,6 +153,8 @@ window.addEventListener('load', (e) => {
 				</c:if>
 				<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
 					<button class="btn modify">수정</button>
+				</c:if>
+				<c:if test="${together.writer eq loginMember.memberId}">
 					<button class="btn delete">삭제</button>
 				</c:if>
 			</div>
@@ -193,6 +197,8 @@ window.addEventListener('load', (e) => {
 <form:form name="togetherDeleteFrm" action="${pageContext.request.contextPath}/together/togetherDelete.do" method="post">
 	<input type="hidden" value="${together.no}" name="no">
 </form:form>
+</c:if>
+<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
 <!-- 모임종료 히든폼 -->
 <form:form name="togetherStatusUpdateFrm" action="${pageContext.request.contextPath}/together/togetherStatusUpdate.do" method="post">
 	<input type="hidden" value="${together.no}" name="no">
@@ -205,16 +211,19 @@ document.querySelector(".modify").addEventListener('click', (e) => {
 	location.href = '${pageContext.request.contextPath}/together/togetherUpdate.do?no=' + no;	
 });
 
+/* 모임 종료하기 */
+document.querySelector(".to_close").addEventListener('click', (e) => {
+	document.togetherStatusUpdateFrm.submit();
+});
+</script>
+</c:if>
+<c:if test="${together.writer eq loginMember.memberId}">
+<script>
 /* 같이해요 삭제 */
 document.querySelector(".delete").addEventListener('click', (e) => {
 	if(confirm('해당 게시글을 삭제하시겠습니까?')){
 		document.togetherDeleteFrm.submit();
 	}
-});
-
-/* 모임 종료하기 */
-document.querySelector(".to_close").addEventListener('click', (e) => {
-	document.togetherStatusUpdateFrm.submit();
 });
 </script>
 </c:if>
@@ -225,15 +234,13 @@ document.querySelector(".report").addEventListener('click', (e) => {
 	const reportType = 'TO';
 	const boardNo = '${together.no}';
 	const reportedId = '${together.writer}';
-	console.log(reportType, boardNo, reportedId);
-	
 	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
-	
 });
 </script>
 </c:if>
 <!-- 정은 끝 👻 -->
 
+<c:if test="${together.status eq 'Y'}">
 <script>
 /* 클릭 잘되는지 한번 만들어봤어욤! 지우고 다시하셔도 됩니다! */
 document.querySelector(".join").addEventListener('click', (e) => {
@@ -242,4 +249,5 @@ document.querySelector(".join").addEventListener('click', (e) => {
 	/* location.href = */ 
 });
 </script>
+</c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
