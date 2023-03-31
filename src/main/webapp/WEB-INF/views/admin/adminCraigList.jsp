@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -75,13 +76,23 @@
 					<c:forEach items="${adminCraigList}" var="adminCraig" varStatus="vs">
 						<tr id="table-content">
 							<td>${vs.count}</td>
-							<td>${adminCraig.categoryNo}</td>
+							<td>
+								<select class="craig-category" data-no="${adminCraig.no}">
+									<option value=1 <c:if test="${adminCraig.categoryNo eq 1}"> selected="selected"</c:if>>디지털기기</option>
+									<option value=2 <c:if test="${adminCraig.categoryNo eq 2}"> selected="selected"</c:if>>가구</option>
+									<option value=3 <c:if test="${adminCraig.categoryNo eq 3}"> selected="selected"</c:if>>의류</option>
+									<option value=4 <c:if test="${adminCraig.categoryNo eq 4}"> selected="selected"</c:if>>잡화</option>
+									<option value=5 <c:if test="${adminCraig.categoryNo eq 5}"> selected="selected"</c:if>>서적</option>
+									<option value=6 <c:if test="${adminCraig.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+									<option value=7 <c:if test="${adminCraig.categoryNo eq 7}"> selected="selected"</c:if>>삽니다</option>
+								</select>
+							</td>
 							<td>${adminCraig.writer}</td>
 							<td>${adminCraig.title}</td>
 							<td>${adminCraig.state}</td>
 							<td>
 								<fmt:parseDate value="${adminCraig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
-								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
+								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
 								<fmt:parseDate value="${adminCraig.completeDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="completeDate" /> 
@@ -101,6 +112,32 @@
 	</div>
 
 </section>
-<script></script>
+<!-- 카테고리 수정 폼 -->
+<form:form name="adminCraigCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminCraigCategoryUpdate.do" method="post">
+	<input type="hidden" value="${adminCraig.no}" name="no">
+	<input type="hidden" value="${adminCraig.categoryNo}" name="categoryNo">
+</form:form>
+<script>
+/* 카테고리 수정 */
+document.querySelectorAll(".craig-category").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		console.log(e.target.value);
+		console.log(e.target.dataset.no);
+		const no = e.target.dataset.no;
+		const categoryNo = e.target.value;
+		
+		if(confirm(`[\${no}}]게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
+			const frm = document.adminCraigCategoryUpdateFrm;
+			frm.no.value = no;
+			frm.categoryNo.value = categoryNo;
+			frm.submit();
+		}
+		else {
+			e.target.querySelector("option[selected]").selected = true;
+		}
+		
+	});
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

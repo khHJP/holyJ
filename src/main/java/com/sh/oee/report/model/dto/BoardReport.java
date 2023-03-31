@@ -20,6 +20,9 @@ public class BoardReport extends ReportEntity{
 	@NonNull
 	private int reportPostNo;
 	
+	// 0331 예지 추가
+	private ReportReason reportReason;
+	
 	public BoardReport(int reportNo, @NonNull String writer, int reasonNo, LocalDateTime regDate, 
 			Status status, @NonNull ReportType reportType, @NonNull int reportPostNo) {
 		super(reportNo, writer, reasonNo, regDate, status);

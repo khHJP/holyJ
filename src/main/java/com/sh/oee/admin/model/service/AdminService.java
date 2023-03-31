@@ -1,6 +1,7 @@
 package com.sh.oee.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.local.model.dto.Local;
@@ -22,5 +23,15 @@ public interface AdminService {
 	List<BoardReport> selectAdminBoardReport();
 
 	List<UserReport> selectAdminUserReport();
+	
+	int updateAdminMemberRole(Map<String, Object> adminMemberRoleUpdateMap);
+
+	int updateAdminCraigCategory(String no, String categoryNo);
+
+	int updateAdminLocalCategory(String no, String categoryNo);
+
+	int updateAdminTogetherCategory(Map<String, Object> adminTogetherCategoryMap);
+
+	int deleteAdminMember(String memberId);
 
 }
