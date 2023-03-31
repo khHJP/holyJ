@@ -25,9 +25,6 @@
 		<result column="nickname" property="nickname"></result>
 		<result column="phone" property="phone"></result>
 		<result column="manner" property="manner"></result>
-		<result column="profile_img" property="profileImg"></result>
-		<result column="dong_no" property="dongNo"></result>
-		<result column="dong_range" property="dongRange"></result>
 		<result column="report_cnt" property="reportCnt"></result>
 		<result column="enroll_date" property="enrollDate"></result>
 		<result column="delete_date" property="deleteDate"></result>
@@ -47,15 +44,7 @@
 			reg_date desc
 	</select>
 	
-	<resultMap type="craig" id="craigMap">
-		<id column="no"  property="no"/>
-		<result column="category_no" property="categoryNo"/>
-		<result column="writer" property="writer"/>
-		<result column="title" property="title"/>
-		<result column="state" property="state"/>
-		<result column="reg_date" property="regDate"/>
-		<result column="complete_date" property="completeDate"/>
-	</resultMap>
+	<resultMap type="craig" id="craigMap"></resultMap>
 	
 	<select id="selectAdminLocalList" resultMap="localMap">
 		select
@@ -67,11 +56,7 @@
 	</select>
 	
 	<resultMap type="local" id="localMap">
-		<id column="no" property="no"></id>
-		<result column="category_no" property="categoryNo" />
-		<result column="writer" property="writer" />
-		<result column="title" property="title" />
-		<result column="reg_date" property="regDate" />
+
 	</resultMap>
 	
 	<select id="selectAdminTogetherList" resultMap="togetherMap">
@@ -83,32 +68,106 @@
 			reg_date desc
 	</select>
 	
-	<resultMap type="together" id="togetherMap">
-		<id column="no" property="no"/>
-		<result column="category_no" property="categoryNo"/>
+	<resultMap type="together" id="togetherMap"></resultMap>
+	
+	<select id="selectAdminBoardReport" resultMap="boardReportMap">
+		select 
+			b.*, reason_name 
+		from board_report b join report_reason r 
+			on b.reason_no = r.reason_no 
+		order by reg_date desc
+	</select>
+	
+	<resultMap type="boardReport" id="boardReportMap">
+		<id column="report_no" property="reportNo"/>
 		<result column="writer" property="writer"/>
-		<result column="title" property="title"/>
-		<result column="status" property="status"/>
+		<result column="report_type" property="reportType"/>
+		<result column="report_post_no" property="reportPostNo"/>
+		<result column="reason_no" property="reasonNo"/>
 		<result column="reg_date" property="regDate"/>
+		<result column="status" property="status"/>
+		<association property="reportReason" javaType="reportReason">
+			<id column="reason_no" property="reasonNo"/>
+			<result column="reason_no" property="reasonNo" />
+			<result column="report_type" property="reportType" />
+			<result column="reason_name" property="reasonName" />	
+		</association>
 	</resultMap>
 	
-	<select id="selectAdminBoardReport" resultMap="adminMap">
-		select
-			*
-		from
-			board_report
-		order by
+	<select id="selectAdminUserReport" resultMap="userReportMap">
+		select 
+			u.*, reason_name 
+		from 
+			user_report u join report_reason r 
+			on u.reason_no = r.reason_no 
+		order by 
 			reg_date desc
 	</select>
-
 	
-	<select id="selectAdminUserReport" resultMap="adminMap">
-		select
-			*
-		from
-			user_report
-		order by
-			reg_date desc
-	</select>
+	<resultMap type="userReport" id="userReportMap">
+		<id column="report_no" property="reportNo"/>
+		<result column="writer" property="writer"/>
+		<result column="reason_no" property="reasonNo"/>
+		<result column="reported_member" property="reportedMember"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="status" property="status"/>
+		<association property="reportReason" javaType="reportReason">
+			<id column="reason_no" property="reasonNo"/>
+			<result column="reason_no" property="reasonNo" />
+			<result column="report_type" property="reportType" />
+			<result column="reason_name" property="reasonName" />	
+		</association>
+	</resultMap>
+	
+	<!-- update -->
+	<update id="updateAdminMemberRole">
+		update
+			(select
+				m.*,
+				auth
+			from
+				member m join authority a
+				on m.member_id = a.member_id
+	            )
+		set
+    		auth = #{auth}
+		where
+		    member_id = #{memberId}
+	</update>
+	
+	<update id="updateAdminCraigCategory">
+		update
+			craig
+		set
+			category_no = #{category_no}
+		where
+			no = #{no}
+	</update>
+	
+	<update id="updateAdminLocalCategory">
+		update
+			local
+		set
+			category_no = #{category_no}
+		where
+			no = #{no}
+	</update>
+	
+	<update id="updateAdminTogetherCategory">
+		update
+			together
+		set
+			category_no = #{category_no}
+		where
+			no = #{no}
+	</update>
+	
+	<!-- delete -->
+	<delete id="deleteAdminMember">
+		delete from
+			member
+		where
+			member_id = #{member_id}
+	</delete>
 
 </mapper>

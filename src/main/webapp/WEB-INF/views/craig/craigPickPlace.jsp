@@ -160,6 +160,14 @@
 	
 <script> 
     function setParentText(){ //to parent
+    	
+    	const placeDetail = document.getElementById("placeDetail");
+    	//내용 없는경우
+    	if(!/^.|\n+$/.test(placeDetail.value)){
+    		alert("장소를 등록해주세요!");
+    		content.select();
+    		return false;
+    	}
 
       	opener.document.getElementById("placeDetail").value = document.getElementById("placeDetail").value
       	opener.document.getElementById("latitude").value = document.getElementById("platitude").value
