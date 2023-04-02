@@ -21,13 +21,29 @@
 	<table>
 		<th>
 			<td>
-				<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>" alt="임시이미지" id="profile">
+				<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>" alt="임시이미지" id="profile">
 			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
-			<td><span id="tmp"><sec:authentication property="principal.manner"/></span></td>
-		</th>
+			<td>
+			<c:choose>
+				<c:when test="${principal.manner < 30}">
+					<span id="tmp1"><sec:authentication property="principal.manner"/></span>
+				</c:when>
+				<c:when test="${principal.manner > 90}">
+					<span id="tmp3"><sec:authentication property="principal.manner"/></span>
+				</c:when>
+				<c:otherwise>
+					<span id="tmp2"><sec:authentication property="principal.manner"/></span>
+				</c:otherwise>
+			
+			</c:choose>
+				<%-- <c:if test="${loginMember.manner < 30}"><span id="tmp1"><sec:authentication property="principal.manner"/></span></c:if>
+				<c:if test="${loginMember.manner >= 30 && loginMember.manner <= 60}"><span id="tmp2"><sec:authentication property="principal.manner"/></span></c:if>
+				<c:if test="${loginMember.manner > 60}"><span id="tmp3"><sec:authentication property="principal.manner"/></span></c:if> --%>
+			</td>
+			</th>
 
 	</table>
 	<br />

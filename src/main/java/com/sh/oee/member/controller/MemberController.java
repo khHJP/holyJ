@@ -227,29 +227,36 @@ public class MemberController {
 	 }
 	 
 	 @PostMapping("/memberDelete.do")
-	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr, SessionStatus status) {
+	 public String memberDelete(Authentication authentication, RedirectAttributes redirectAttr, SessionStatus sessionStatus) {
 		 String memberId = ((Member)authentication.getPrincipal()).getMemberId();
 		 log.debug("memberId = {}", memberId);
 		 
 		 // 1. db변경
 		 int result = memberService.memberDelete(memberId);
-		 
-		 if(!status.isComplete()) {
-			 status.setComplete();}
-		 
-		 redirectAttr.addFlashAttribute("msg", "탈퇴되었습니다.");
-		 return "redirect:/";
+		
+		 if(result>0) {
+				SecurityContextHolder.clearContext();
+				redirectAttr.addFlashAttribute("msg", "성공적으로 회원정보를 삭제했습니다.");
+			}
+			else 
+				redirectAttr.addFlashAttribute("msg", "회원정보 삭제에 실패했습니다.");
+
+			return "redirect:/";
 	 }
 	 
 	 @PostMapping("/pwCheck.do")
-	 public String pwdoubleCheck(Authentication authentication) {
-		 String password = ((Member) authentication.getPrincipal()).getPassword();
-		 List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) authentication.getAuthorities();
+	 public String pwdoubleCheck(Authentication authentication, @RequestParam String password, RedirectAttributes redirectAttr) {
+		 String pword = ((Member) authentication.getPrincipal()).getPassword();
+		 if(passwordEncoder.matches(password, pword)) {
+			 return "redirect:/member/memberDetail.do";			 
+		 }
+		 else {
+			 redirectAttr.addFlashAttribute("msg", "비밀번호를 다시 확인해 주세요.");
+			 return "redirect:/member/pwCheck.do";
+		 }
 		 
-		 
-		 
-		 return "redirect:/member/memberDetail.do";
 	 }
+	
 	 @GetMapping("/pwCheck.do")
 	 public void pwCheck(Authentication authentication) {
 	 }

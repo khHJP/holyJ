@@ -28,8 +28,8 @@
 				           </label>
 				       </div>
 				       <div class="avatar-preview">
-				       	<div>
-				           	<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+				       	<div id="imageP">
+				           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
 				           </div>
 				       </div>
 				   </div>
@@ -107,9 +107,8 @@
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
-	            $('#imagePreview').hide();
-	            $('#imgupload').show();
-	            $('#imgupload').css('background-image', 'url('+e.target.result +')');
+	            $('#imageP').empty();
+	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
 	        }
 	        reader.readAsDataURL(input.files[0]);
 	    }

@@ -21,7 +21,9 @@
 	<table>
 		<th>
 			<td>
-				<img src="${pageContext.request.contextPath}/resources/images/<sec:authentication property="principal.profileImg"/>" alt="임시이미지" id="profile">
+			<button type="button" class="btn btn-lg" data-bs-toggle="popover" data-bs-title="타이틀이다 이시키야" data-bs-content="안뇽">
+				  <img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+			</button>
 			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
@@ -71,8 +73,15 @@
 				</li>
 			</ul>
 		</div>
-	
-	
+	<script>
+		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+	  $( function () {
+	    $( '[data-toggle="popover"]' ).popover()
+	  } );
+		
+	</script>
 		
 	
 </body>
