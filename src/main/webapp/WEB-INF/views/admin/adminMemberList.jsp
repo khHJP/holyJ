@@ -17,6 +17,16 @@
 	<jsp:param value="회원관리" name="title" />
 </jsp:include>
 
+<script>
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+$(document).ready(function() {
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+});
+</script>
+
 <section id="admin-container">
 	<div id="sidebar">
 		<ul class="sidebar-nav">
@@ -69,7 +79,7 @@
 					<th>매너온도</th>
 					<th>신고 횟수</th>
 					<th>가입일</th>
-					<th><button>삭제</button></th>
+					<th>회원 삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -99,16 +109,20 @@
 							<c:if test="${adminMember.manner ge 50}">
 								<td style="color:red">${adminMember.manner}</td>
 							</c:if>
-							<td>${adminMember.reportCnt}</td>
+							<c:if test="${adminMember.reportCnt lt 3}">
+								<td>${adminMember.reportCnt}</td>
+							</c:if>
+							<c:if test="${adminMember.reportCnt ge 3}">
+								<td style="color: red">${adminMember.reportCnt}</td>
+							</c:if>
 							<td>
 								<fmt:parseDate value="${adminMember.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
 								<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd" />
 							</td>
-							<form:form class="delete" action="${pageContext.request.contextPath}/admin/adminMemberDelete.do" name="adminMemberDeleteFrm" method="POST">
 							<td>
-								<button type="button" name ="memberId" value="${adminMember.memberId}">삭제</button>
+								<input type="hidden" class="member delete" id="memberId${vs.count}" value="${adminMember.memberId}"/>
+								<input type="button" class="member delete" value="삭제"  onclick="adminMemberDelete(memberId${vs.count});" />
 							</td>
-							</form:form>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -119,6 +133,9 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="pagebar-box">
+ 			<ul class="pagination justify-content-center"></ul>
+		</nav>
 	</div>
 
 </section>
@@ -126,6 +143,10 @@
 <form:form name="adminMemberRoleUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberRoleUpdate.do" method="post">
 	<input type="hidden" name="memberId">
 	<input type="hidden" name="auth">
+</form:form>
+<!-- 회원 삭제 폼 -->
+<form:form name="adminMemberUnregisterUpdateFrm" action="${pageContext.request.contextPath}/admin/adminMemberUnregisterUpdate.do" method="post">
+	<input type="hidden" name="memberId">
 </form:form>
 <script>
 /* 회원 권한 수정 */
@@ -151,11 +172,53 @@ document.querySelectorAll(".member-role").forEach((select) => {
 });
 
 /* 회원 삭제 */
-document.querySelector(".delete").addEventListener('click', (e) => {
-	if(confirm('해당 회원을 삭제하시겠습니까?')){
-		document.adminMemberDeleteFrm.submit();
+function adminMemberDelete(e) {
+	const memberId = e.value;
+	console.log(memberId);	
+	const frm = document.adminMemberUnregisterUpdateFrm;
+	console.log(frm);
+	
+	if(confirm('정말 이 회원을 삭제하시겠습니까?')) {
+		frm.memberId.value = memberId;
+		frm.submit();
 	}
-});
+};
+
+/* 페이지 처리 */
+/* 페이지네이션 버튼을 생성하는 함수 */
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+    let beforeUrl;
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+    	beforeUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    let pageUrl
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+        	pageUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼 추가
+    let nextUrl;
+    if (currentPage != totalPages) {
+    	nextUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

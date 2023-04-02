@@ -17,6 +17,16 @@
 	<jsp:param value="중고거래관리" name="title" />
 </jsp:include>
 
+<script>
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+$(document).ready(function() {
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+});
+</script>
+
 <section id="admin-container">
 	<div id="sidebar">
 		<ul class="sidebar-nav">
@@ -68,14 +78,14 @@
 					<th>상태</th>
 					<th>등록일</th>
 					<th>완료일</th>
-					<th></th>
+					<th>중고거래 삭제</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty adminCraigList}">
 					<c:forEach items="${adminCraigList}" var="adminCraig" varStatus="vs">
 						<tr id="table-content">
-							<td>${vs.count}</td>
+							<td class="craig-view" data-crno="${adminCraig.no}">${vs.count}</td>
 							<td>
 								<select class="craig-category" data-no="${adminCraig.no}">
 									<option value=1 <c:if test="${adminCraig.categoryNo eq 1}"> selected="selected"</c:if>>디지털기기</option>
@@ -89,16 +99,26 @@
 							</td>
 							<td>${adminCraig.writer}</td>
 							<td>${adminCraig.title}</td>
-							<td>${adminCraig.state}</td>
+							<c:if test="${adminCraig.state eq 'CR1'}">
+							<td>예약중</td>
+							</c:if>
+							<c:if test="${adminCraig.state eq 'CR2'}">
+							<td>판매중</td>
+							</c:if>
+							<c:if test="${adminCraig.state eq 'CR3'}">
+							<td>판매완료</td>
+							</c:if>
 							<td>
 								<fmt:parseDate value="${adminCraig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
-								<fmt:parseDate value="${adminCraig.completeDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="completeDate" /> 
 								<fmt:formatDate value='${completeDate}' pattern="yyyy.MM.dd" />
 							</td>
-							<td></td>
+							<td>
+								<input type="hidden" class="craig delete" id="craig${vs.count}" value="${adminCraig.no}"/>
+								<input type="button" class="craig delete" value="삭제"  onclick="adminCraigDelete(craig${vs.count});" />
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -109,25 +129,45 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="pagebar-box">
+ 			<ul class="pagination justify-content-center"></ul>
+		</nav>
 	</div>
 
 </section>
-<!-- 카테고리 수정 폼 -->
+<!-- 중고거래 카테고리 수정 폼 -->
 <form:form name="adminCraigCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminCraigCategoryUpdate.do" method="post">
 	<input type="hidden" value="${adminCraig.no}" name="no">
 	<input type="hidden" value="${adminCraig.categoryNo}" name="categoryNo">
 </form:form>
+<!-- 중고거래 카테고리 삭제 폼 -->
+<form:form name="adminCraigDeleteFrm" action="${pageContext.request.contextPath}/admin/adminCraigDelete.do" method="post">
+	<input type="hidden" name="no">
+</form:form>
 <script>
-/* 카테고리 수정 */
+/* 중고거래 상세 페이지 연결 */
+document.querySelectorAll(".craig-view").forEach( (td)=>{
+	td.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log(td);
+		
+		const no = td.dataset.crno;
+		console.log(no);
+		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;
+		
+	});
+});
+
+/* 중고거래 카테고리 수정 */
 document.querySelectorAll(".craig-category").forEach((select) => {
 	select.addEventListener('change', (e) => {
 		console.log(e.target.value);
 		console.log(e.target.dataset.no);
 		const no = e.target.dataset.no;
 		const categoryNo = e.target.value;
+		const frm = document.adminCraigCategoryUpdateFrm;
 		
-		if(confirm(`[\${no}}]게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
-			const frm = document.adminCraigCategoryUpdateFrm;
+		if(confirm(`해당 게시물의 카테고리를 변경하시겠습니까?`)){			
 			frm.no.value = no;
 			frm.categoryNo.value = categoryNo;
 			frm.submit();
@@ -138,6 +178,55 @@ document.querySelectorAll(".craig-category").forEach((select) => {
 		
 	});
 });
+
+/* 중고거래 게시글 삭제 */
+function adminCraigDelete(e) {
+	const no = e.value;
+	console.log(no);	
+	const frm = document.adminCraigDeleteFrm;
+	console.log(frm);
+	
+	if(confirm('정말 이 게시물을 삭제하시겠습니까?')) {
+		frm.no.value = no;
+		frm.submit();
+	}
+};
+
+/* 페이지 처리 */
+/* 페이지네이션 버튼을 생성하는 함수 */
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+    let beforeUrl;
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+    	beforeUrl = '${pageContext.request.contextPath}/admin/adminCraigList.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    let pageUrl
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+        	pageUrl = '${pageContext.request.contextPath}/admin/adminCraigList.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼 추가
+    let nextUrl;
+    if (currentPage != totalPages) {
+    	nextUrl = '${pageContext.request.contextPath}/admin/adminCraigList.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

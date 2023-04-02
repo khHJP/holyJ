@@ -17,6 +17,16 @@
 	<jsp:param value="같이해요관리" name="title" />
 </jsp:include>
 
+<script>
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+$(document).ready(function() {
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+});
+</script>
+
 <section id="admin-container">
 	<div id="sidebar">
 		<ul class="sidebar-nav">
@@ -67,14 +77,14 @@
 					<th>제목</th>
 					<th>상태</th>
 					<th>등록일</th>
-					<th></th>
+					<th>같이해요 삭제</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty adminTogetherList}">
 					<c:forEach items="${adminTogetherList}" var="adminTogether" varStatus="vs">
 						<tr id="table-content">
-							<td>${vs.count}</td>
+							<td class="together-view" data-tono="${adminTogether.no}">${vs.count}</td>
 							<td>
 								<select class="together-category" data-no="${adminTogether.no}">
 									<option value=1 <c:if test="${adminTogether.categoryNo eq 1}"> selected="selected"</c:if>>밥/카페</option>
@@ -92,7 +102,10 @@
 								<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
-							<td></td>
+							<td>
+								<input type="hidden" class="together delete" id="together${vs.count}" value="${adminTogether.no}"/>
+								<input type="button" class="together delete" value="삭제"  onclick="adminTogetherDelete(together${vs.count});" />
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -103,16 +116,36 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="pagebar-box">
+ 			<ul class="pagination justify-content-center"></ul>
+		</nav>
 	</div>
 
 </section>
-<!-- 카테고리 수정 폼 -->
+<!-- 같이해요 카테고리 수정 폼 -->
 <form:form name="adminTogetherCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminTogetherCategoryUpdate.do" method="post">
 	<input type="hidden" value="${adminTogether.no}" name="no">
 	<input type="hidden" value="${adminTogether.categoryNo}" name="categoryNo">
 </form:form>
+<!-- 같이해요 카테고리 삭제 폼 -->
+<form:form name="adminTogetherDeleteFrm" action="${pageContext.request.contextPath}/admin/adminTogetherDelete.do" method="post">
+	<input type="hidden" name="no">
+</form:form>
 <script>
-/* 카테고리 수정 */
+/* 같이해요 상세 페이지 이동 */
+document.querySelectorAll(".together-view").forEach( (td)=>{
+	td.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log(td);
+		
+		const no = td.dataset.tono;
+		console.log(no);
+		location.href = '${pageContext.request.contextPath}/together/togetherDetail.do?&no=' + no;
+		
+	});
+});
+
+/* 같이해요 카테고리 수정 */
 document.querySelectorAll(".together-category").forEach((select) => {
 	select.addEventListener('change', (e) => {
 		console.log(e.target.value);
@@ -120,7 +153,7 @@ document.querySelectorAll(".together-category").forEach((select) => {
 		const no = e.target.dataset.no;
 		const categoryNo = e.target.value;
 		
-		if(confirm(`게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
+		if(confirm(`해당 게시물의 카테고리를 변경하시겠습니까?`)){			
 			const frm = document.adminTogetherCategoryUpdateFrm;
 			frm.no.value = no;
 			frm.categoryNo.value = categoryNo;			
@@ -132,6 +165,55 @@ document.querySelectorAll(".together-category").forEach((select) => {
 		
 	});
 });
+
+/* 같이해요 게시글 삭제 */
+function adminTogetherDelete(e) {
+	const no = e.value;
+	console.log(no);	
+	const frm = document.adminTogetherDeleteFrm;
+	console.log(frm);
+	
+	if(confirm('정말 이 게시물을 삭제하시겠습니까?')) {
+		frm.no.value = no;
+		frm.submit();
+	}
+};
+
+/* 페이지 처리 */
+/* 페이지네이션 버튼을 생성하는 함수 */
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+    let beforeUrl;
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+    	beforeUrl = '${pageContext.request.contextPath}/admin/adminTogetherList.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    let pageUrl
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+        	pageUrl = '${pageContext.request.contextPath}/admin/adminTogetherList.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼 추가
+    let nextUrl;
+    if (currentPage != totalPages) {
+    	nextUrl = '${pageContext.request.contextPath}/admin/adminTogetherList.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

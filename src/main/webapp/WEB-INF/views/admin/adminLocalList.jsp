@@ -17,6 +17,16 @@
 	<jsp:param value="동네생활관리" name="title" />
 </jsp:include>
 
+<script>
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+$(document).ready(function() {
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+});
+</script>
+
 <section id="admin-container">
 	<div id="sidebar">
 		<ul class="sidebar-nav">
@@ -66,14 +76,15 @@
 					<th>작성자</th>
 					<th>제목</th>
 					<th>등록일</th>
-					<th></th>
+					<th>동네생활 삭제</th>
 				</tr>
 			</thead>
+			<c:set var="category" value="${localCategory}" scope="page"/>
 			<tbody>
 				<c:if test="${not empty adminLocalList}">
 					<c:forEach items="${adminLocalList}" var="adminLocal" varStatus="vs">
 						<tr id="table-content">
-							<td>${vs.count}</td>
+							<td class="local-view" data-lono="${adminLocal.no}">${vs.count}</td>
 							<td>
 								<select class="local-category" data-no="${adminLocal.no}">
 									<option value=1 <c:if test="${adminLocal.categoryNo eq 1}"> selected="selected"</c:if>>동네질문</option>
@@ -88,7 +99,10 @@
 								<fmt:parseDate value="${adminLocal.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
-							<td></td>
+							<td>
+								<input type="hidden" class="local delete" id="local${vs.count}" value="${adminLocal.no}"/>
+								<input type="button" class="local delete" value="삭제"  onclick="adminLocalDelete(local${vs.count});" />
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -99,15 +113,34 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="pagebar-box">
+ 			<ul class="pagination justify-content-center"></ul>
+		</nav>
 	</div>
 
 </section>
-<!-- 카테고리 수정 폼 -->
-<form:form name="adminLocalCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminLcoalCategoryUpdate.do" method="post">
+<!-- 동네생활 카테고리 수정 폼 -->
+<form:form name="adminLocalCategoryUpdateFrm" action="${pageContext.request.contextPath}/admin/adminLocalCategoryUpdate.do" method="post">
 	<input type="hidden" value="${adminLocal.no}" name="no">
 	<input type="hidden" value="${adminLocal.categoryNo}" name="categoryNo">
 </form:form>
+<!-- 동네생활 카테고리 삭제 폼 -->
+<form:form name="adminLocalDeleteFrm" action="${pageContext.request.contextPath}/admin/adminLocalDelete.do" method="post">
+	<input type="hidden" name="no">
+</form:form>
 <script>
+/* 동네생활 상세 페이지 이동 */
+document.querySelectorAll(".local-view").forEach( (td) => {
+	td.addEventListener('click', (e) => {
+		console.log(e.target);
+		console.log(td);
+		
+		const no = td.dataset.lono;
+		console.log(no);
+		location.href='${pageContext.request.contextPath}/local/localDetail.do?&no=' + no;
+	});
+});
+
 /* 카테고리 수정 */
 document.querySelectorAll(".local-category").forEach((select) => {
 	select.addEventListener('change', (e) => {
@@ -115,9 +148,9 @@ document.querySelectorAll(".local-category").forEach((select) => {
 		console.log(e.target.dataset.no);
 		const no = e.target.dataset.no;
 		const categoryNo = e.target.value;
+		const frm = document.adminLocalCategoryUpdateFrm;
 		
-		if(confirm(`[\${no}}]게시물의 카테고리를 \${categoryNo}로 변경하시겠습니까?`)){			
-			const frm = document.adminLocalCategoryUpdateFrm;
+		if(confirm(`해당 게시물의 카테고리를 변경하시겠습니까?`)){			
 			frm.no.value = no;
 			frm.categoryNo.value = categoryNo;
 			frm.submit();
@@ -128,6 +161,55 @@ document.querySelectorAll(".local-category").forEach((select) => {
 		
 	});
 });
+
+/* 동네생활 게시글 삭제 */
+function adminLocalDelete(e) {
+	const no = e.value;
+	console.log(no);	
+	const frm = document.adminLocalDeleteFrm;
+	console.log(frm);
+	
+	if(confirm('정말 이 게시물을 삭제하시겠습니까?')) {
+		frm.no.value = no;
+		frm.submit();
+	}
+};
+
+/* 페이지 처리 */
+/* 페이지네이션 버튼을 생성하는 함수 */
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+    let beforeUrl;
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+    	beforeUrl = '${pageContext.request.contextPath}/admin/adminLocalList.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    let pageUrl
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+        	pageUrl = '${pageContext.request.contextPath}/admin/adminLocalList.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼 추가
+    let nextUrl;
+    if (currentPage != totalPages) {
+    	nextUrl = '${pageContext.request.contextPath}/admin/adminLocalList.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
