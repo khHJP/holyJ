@@ -4,19 +4,24 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalEntity;
+import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
 
 
 @Mapper
 public interface LocalDao {
+	
 
 	//동네생활 전체목록
 	List<Local> selectLocalListByDongName(List<String> myDongList);
@@ -53,9 +58,23 @@ public interface LocalDao {
 	//조회수 증가
 	int hits(int no);
 
+
 	//좋아요
-	List<Map<String, Object>> likecheck();
+	int selectLocalLike(Map<String, Object> param);
+	
+	@Delete("delete from local_like where local_no = #{no} and member_id = #{memberId}")
+	int DeleteLocalLike(Map<String, Object> param);
 
+	@Insert("insert into LOCAL_LIKE values(seq_like_no.nextval, #{memberId},#{no}, default)")
+	int InsertLocalLike(Map<String, Object> param);
 
+	
+	@Delete("delete from local_attachment where local_no = #{no}")
+	int deleteLocalAttachment(int no);
+
+	
+	//첨부파일 삭제
+	@Delete("delete from local_attachment where attach_no = #{attachNo}")
+	int deleteAttachment(int attachNo);
 
 }

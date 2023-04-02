@@ -62,16 +62,20 @@
 			<div class="reheco">
 				<span>조회${localdetail.hits}</span>
 				<!-- 좋아요 -->
-				<c:choose>
-					<!-- likecheck가 0이면 빈하트 -->
-					<c:when test="${likecheck eq '0' or empty likecheck}">
-						<img class="btnlike" src="${pageContext.request.contextPath}/resources/images/heart_empty.png">
-					</c:when>
-					<!-- likecheck가 1이면 채운하트 -->
-					<c:otherwise>
-						<img class="btnlike" src="${pageContext.request.contextPath}/resources/images/heart_red.png">
-					</c:otherwise>
-				</c:choose>
+				<span id="likeimg">
+				<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
+			
+				<c:if test="${findlike == 0 or findlike == null}">
+					<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
+					class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="임시이미지">
+				</c:if>
+				<c:if test="${findlike == 1}">
+					<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
+					class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
+				</c:if>
+				</span> 
+						
+
 					<span class="comment-btn">댓글쓰기</span>
 			</div>
 		<div class="div-comment">
@@ -128,33 +132,36 @@ $(function (){
 
 
 <script>
-// 하트 누르기
-<script>
-	document.querySelector(".btnlike").addEventListener('click', (e) => {
+	document.querySelector(".hearts").addEventListener('click', (e) => {
+
 		const img = e.target;
+		console.log( img );
+	
 		const csrfHeader = "${_csrf.headerName}";
 		const csrfToken = "${_csrf.token}";
 		const headers = {};
-		console.log( img );
 		headers[csrfHeader] = csrfToken;
 		
 		$.ajax({
-		    method : 'POST',
-		    url : `${pageContext.request.contextPath}/local/clickLike.do`,
+		    url : `${pageContext.request.contextPath}/local/localLike.do`,
+		    method : 'post',
 		    headers,
-		    dataType : 'json',
 		    data : { no : '${localdetail.no}',
-		             memberId : '<sec:authentication property="principal.username" />'},
+		             memberId : '<sec:authentication property="principal.username" />'},  //1 또는 0을 받아야 insert or delete를 한다
+		    dataType : 'json',
 	           success(data){
 		    	if(data == 1){
 		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_red.png`;
 		    	}
 		    	else{
 		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_empty.png`;
+	
 		    	}
-		    }
-		   
+		    },
+		    error(jqxhr, textStatus, err ){
+		        console.log(jqxhr, textStatus, err);
+		    }   
 		})
-	});
+	}); 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

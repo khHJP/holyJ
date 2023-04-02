@@ -13,6 +13,7 @@ import com.sh.oee.local.model.dto.Local;
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalEntity;
+import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -115,10 +116,23 @@ public class LocalServiceImpl implements LocalService {
 		return result;
 	}
 	
-	//좋아요
 	@Override
-	public List<Map<String, Object>> likecheck() {
-		return localDao.likecheck();
-	} 
+	public int selectLocalLike(Map<String,Object> param) {
+		return localDao.selectLocalLike(param);
+	}
 	
+	@Override
+	public int DeleteLocalLike(Map<String, Object> param) {
+		return localDao.DeleteLocalLike(param);
+	}
+	
+	@Override
+	public int deleteAttachment(int attachNo) {
+		return localDao.deleteAttachment( attachNo);
+	}
+	
+	@Override
+	public int InsertLocalLike(Map<String, Object> param) {
+		return localDao.InsertLocalLike(param);
+	}
 }
