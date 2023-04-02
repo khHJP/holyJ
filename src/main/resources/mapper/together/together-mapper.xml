@@ -143,6 +143,56 @@
 		</association>
 	</resultMap>
 	
+	<!-- 같이해요 참가자 목록 -->
+	<select id="joinMemberListByBoardNo" resultMap="togetherChatMap" parameterType="java.util.Map">
+	  select
+	    c.*,
+	    nickname,
+	    profile_img
+	  from
+	    together_chat c left join member m
+	        on c.member_id = m.member_id
+	  where
+	    together_no in
+	    <foreach collection="boardNoList" item="boardNo" open="(" close=")" separator=",">
+	        #{boardNo}
+	    </foreach>
+	  order by
+    	reg_date asc
+	</select>
+	
+	<resultMap type="joinMember" id="togetherChatMap">
+		<id column="chatroom_no" property="chatroomNo"/>
+		<result column="together_no" property="togetherNo"/>
+		<result column="member_id" property="memberId"/>
+		<result column="role" property="role"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="last_check" property="lastCheck"/>
+		<association property="member" javaType="member">
+			<id column="MEMBER_ID" property="memberId"/>
+			<result column="NICKNAME" property="nickname"/>
+			<result column="PROFILE_IMG" property="profileImg"/>
+		</association>
+	</resultMap>
+	
+	<!-- 같이해요 참가자 수 목록 -->
+	<select id="getJoinMemberCnt" resultMap="joinMemberCntMap" parameterType="java.util.Map">
+		select
+		    together_no,
+		    count(*)  join_cnt
+		from
+		    together_chat
+		where
+		    together_no in
+		    <foreach collection="boardNoList" item="boardNo" open="(" close=")" separator=",">
+	        	#{boardNo}
+	    	</foreach>
+	    group by
+   			together_no
+	</select>
+	
+	<resultMap type="joinMember" id="joinMemberCntMap"></resultMap>
+	
 	<!-- 게시글 등록 -->
 	<insert id="insertTogether">
 		insert into 

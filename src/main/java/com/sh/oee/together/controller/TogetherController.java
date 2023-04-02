@@ -3,6 +3,7 @@ package com.sh.oee.together.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.oee.common.OeeUtils;
 import com.sh.oee.member.model.dto.Member;
+import com.sh.oee.together.model.dto.JoinMember;
 import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.dto.TogetherEntity;
 import com.sh.oee.together.model.service.TogetherService;
@@ -42,6 +44,7 @@ public class TogetherController {
 	private ResourceLoader resourceLoader;
 	
 	/** 🐱 하나 시작 🐱 */
+	
 	@GetMapping("/myTogether.do")
 	public void together(Authentication authentication, Model model) {
 		// member  
@@ -96,22 +99,34 @@ public class TogetherController {
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		int totalCount = togetherService.getTogetherTotalCount(param);
-		log.debug("totalCount = {}", totalCount);
 		
 		// 전체 페이지 수 계산
 		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
 		
 		// 업무로직
-		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
-		List<Together> togetherList = togetherService.selectTogetherListByDongName(param, rowBounds);
-		log.debug("togetherList = {}", togetherList);
+		List<Map<String,String>> categorys = togetherService.selectTogetherCategory(); // 카테고리 목록
+		List<Together> togetherList = togetherService.selectTogetherListByDongName(param, rowBounds); // 페이징처리된 게시물목록
+		
+		// 위에서 가져온 같이해요 목록의 번호 추출
+		List<Integer> boardNoList = new ArrayList<>();
+		for(int i = 0; i < togetherList.size(); i++) {
+			boardNoList.add(togetherList.get(i).getNo());
+		}
+		Map<String, Object> params = new HashMap<>(); // 왜 때문에 list는 안되고 map만 매개변수에 담길까,,?
+		params.put("boardNoList", boardNoList);
+	
+		if(boardNoList.size() > 0) {
+			List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
+			List<Map<String, Object>> joinCntList = togetherService.getJoinMemberCnt(params);
+			model.addAttribute("joinMemberList", joinMemberList);
+			model.addAttribute("joinCntList", joinCntList);
+		}
 		
 		// view 전달
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("togetherList", togetherList);
-		
 	}
 	
 	/**
@@ -123,10 +138,16 @@ public class TogetherController {
 	public void togetherDetail(@RequestParam(required = false) String category, @RequestParam int no, Model model) {
 		log.debug("no = {}", no);
 		
+		List<Integer> boardNoList = new ArrayList<>();
+		boardNoList.add(no);
+		Map<String, Object> params = new HashMap<>(); // 왜 때문에 list는 안되고 map만 매개변수에 담길까,,?
+		params.put("boardNoList", boardNoList);
+		
 		// 업무로직
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		Together together = togetherService.selectTogetherByNo(no);
-		log.debug("together = {}", together);
+		List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
+		List<Map<String, Object>> joinCnt = togetherService.getJoinMemberCnt(params);
 		
 		// 개행, 자바스크립트 코드 방어
 		together.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(together.getContent())));
@@ -134,6 +155,8 @@ public class TogetherController {
 		// view 전달
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("together", together);
+		model.addAttribute("joinMemberList", joinMemberList);
+		model.addAttribute("joinCnt", joinCnt);
 	}
 	
 	/**
@@ -147,6 +170,7 @@ public class TogetherController {
 		
 		// view 전달
 		model.addAttribute("categorys", categorys);
+		model.addAttribute("today", new Date());
 	}
 	
 	/**
@@ -220,6 +244,7 @@ public class TogetherController {
 		// view 전달
 		model.addAttribute("together", together);
 		model.addAttribute("categorys", categorys);
+		model.addAttribute("today", new Date());
 		
 	}
 	
@@ -274,7 +299,7 @@ public class TogetherController {
 		int result = togetherService.togetherDelete(no);
 		
 		// view 전달
-		redirectAttr.addFlashAttribute("msg", "게시글을 삭제했습니다😊");
+		redirectAttr.addFlashAttribute("msg", "게시글을 삭제되었습니다!");
 		
 		return "redirect:/together/togetherList.do";
 	}
