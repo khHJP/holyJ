@@ -1,9 +1,7 @@
 package com.sh.oee.craig.model.dto;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +27,7 @@ public class CraigEntity {
 	private int hits; //조회수
 	private State state; // default - 'CR2' |  예약중/판매중/판매완료
 	private String buyer;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date completeDate;
+	private LocalDateTime completeDate;
 	
 }
 

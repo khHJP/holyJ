@@ -43,9 +43,10 @@
 	<sec:authentication property="principal" var="loginMember"/>
 		<input type="hidden" class="form-control" name="no" id="no" value="${craigboard.no}" required>
 		<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
-		<input type="date" class="form-control" style="padding-left:30px" name="completeDate" id="completeDate" readonly="readonly">	
-
+<!-- 		<input type="date" class="form-control" style="padding-left:30px" name="completeDate" id="completeDate" readonly="readonly">	-->
 		<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
+		<div id="todayClock" class="form-control" style="background-color: #E9ECEF; height:45px; vertical-align: middle; padding-top: 10px" ></div>
+		
 		
 		<!-- ●  첨부파일 ● -->	
 			<tr>
@@ -286,7 +287,6 @@
 			fr.readAsDataURL(img.files[0]); 
 			fr.onload = (e) => {
 				document.querySelector("#col_img_viewer").src = e.target.result; 
-	//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 				const span1 = document.querySelector("#span1");
 				const inputAttachNoone = document.querySelector("#attachNo1");
 				
@@ -300,7 +300,6 @@
 			fr.readAsDataURL(img.files[1]); 
 			fr.onload = (e) => {
 				document.querySelector("#col_img_viewer2").src = e.target.result;
-	
 				const span2 = document.querySelector("#span2");
 				const inputAttachNo = document.querySelector("#attachNo2");
 				
@@ -315,7 +314,6 @@
 			fr.readAsDataURL(img.files[2]); 
 			fr.onload = (e) => {
 				document.querySelector("#col_img_viewer3").src = e.target.result; 
-	//			document.querySelector("#upload-name1").value = document.querySelector("#upFile1").value;
 				const span3 = document.querySelector("#span3");
 				const inputAttachThree = document.querySelector("#attachNo3");
 			
@@ -335,7 +333,13 @@
 
 <script>
 	window.addEventListener('load', () => {
-		document.getElementById('completeDate').value = new Date().toISOString().substring(0, 10);
+		let today = new Date();
+
+		let year = today.getFullYear(); 
+		let month = today.getMonth() + 1
+		let date = today.getDate(); // 일
+
+		document.getElementById('todayClock').innerHTML = year+"년 "+ month+"월 "+date +"일 "; 
 		
 		const latitude = '${craigboard.latitude}';
 		const longitude = '${craigboard.longitude}';
@@ -343,8 +347,8 @@
 		document.querySelector("#latitude").value  = latitude;
 		document.querySelector("#longitude").value  = longitude;
 		document.querySelector("#placeDetail").value  = placeDetail;
-	//	const state = "${craigboard.state}";
-	
+
+		
 		const orgcate  = "${craigboard.categoryNo}";	
 		document.querySelectorAll("input[data-no]").forEach( (input)=>{
 	
@@ -401,7 +405,6 @@
 		}
 		
 		if(filet != null && filet != "" && filet.length>2  ){
-	//		console.log( "두번째 널인데요?");
 			document.querySelector("#col_img_viewer2").src = `${pageContext.request.contextPath}/resources/upload/craig/\${filet}`;
 			
 		}else if( filet == null || filet=="" ||  filet.length<2   ){
@@ -433,8 +436,7 @@
 	    	 
 	    	  console.log( p.children('img')[0] );
 	      	  $(p).children('img').removeAttr('src');
-	      	  
-	      	  
+
 	    	  $(p).children('span').remove();
 	    	  $(p).children('a').remove();
 	    	  $(p).children('input').remove();

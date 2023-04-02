@@ -7,6 +7,7 @@ body {
 	min-height: 1000px;
 }
 
+<!--- craigList 랑 detail css 파일  --->
 
 <!-- 검색바 -->
 .searchdiv {
@@ -23,10 +24,10 @@ body {
 
 #searchKeyword {
   width: 600px;
-  border: 3px solid black;
+  border: 1px solid lightgray;
   border-right: none;
   padding: 5px;
-  height:36px;
+  height:39px;
   border-radius: 5px 0 0 5px;
   color: black;
 }
@@ -37,8 +38,8 @@ body {
 
 .searchButton {
   width: 40px;
-  height: 36px;
-  border: 3px solid black;
+  height: 38px;
+  border: 1.5px solid lightgray;
   background: #ffffff;
   text-align: center;
   color: black;
@@ -92,7 +93,7 @@ body {
 	
 }
 
-#crwish{
+#crwish, #crchat{
 	font-size: 14px;
 	color : gray;
 	font-weight: 400
@@ -112,7 +113,7 @@ body {
 ---------- detail --------
 */
 #proimg{
-	width: 50px; height: 50px
+	width: 50px; height: 50px; border-radius: 50px
 }
 
 #crboProfiletbl{
@@ -249,4 +250,40 @@ body {
 
 .hearts:hover {
 	cursor: pointer;
+}
+
+
+#btn-more-container{
+	width: 120px;
+	height: 40px;
+	margin: auto;
+	border: none;
+	text-align: center;	
+}
+
+.btnca{
+	 text-align: center;
+}
+
+#searchPage{
+	color: white;
+	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	
+}
+
+#btn-more:hover>#searchPage{
+	color: #efefef;
+	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+#othercraigDiv{
+	width : 610px;
+	height : 400px;
+	margin: auto;
+	text-align: left;
+}
+
+h5{
+	color: black;
 }
