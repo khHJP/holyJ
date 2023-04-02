@@ -178,7 +178,7 @@ footer{
 	background: white;
 }
 
-.message-input input{
+.message-input input#msg {
 	padding: 16px 32px 16px 23px;
 	font-family: 'Noto Sans KR', sans-serif;
     float: left;
@@ -206,6 +206,7 @@ input, button, select, textarea{
 	margin: 18px 10px 10px 10px;
 	
 }
+/* 파일첨부 */
 .message-input .attachment{
 	margin: 20px 10px 10px 10px;
 	right: 65px;
@@ -213,7 +214,6 @@ input, button, select, textarea{
 	color: #435f7a;
 	cursor: pointer;
 }
-
 
 /* 메시지영역  */
 #message-container {
