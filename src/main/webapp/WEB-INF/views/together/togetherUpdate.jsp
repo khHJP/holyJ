@@ -31,16 +31,16 @@ window.addEventListener('load', (e) => {
     }
     
     // 달별 option
-    const month = document.querySelector(".month");
+    const monthTag = document.querySelector(".month");
     for(let i = 0; i < months.length; i++){
         const option = document.createElement("option");
         option.value = months[i];
         option.innerText = months[i];
-        month.append(option);
+        monthTag.append(option);
     }
     
     // 일별 option 
-    const date = document.querySelector(".date");
+    const dateTag = document.querySelector(".date");
     // 다음달로 넘어가지 않을겨우
     if(months.length == 1){
 	   	for(let i = today.getDate(); i <= today.getDate() + daysLater; i++){
@@ -49,7 +49,7 @@ window.addEventListener('load', (e) => {
 	           option.innerText = i;
 	           option.classList.add(today.getMonth() + 1);
 	           option.style.display='none';
-	           date.append(option);
+	           dateTag.append(option);
 	    }
     }
     
@@ -62,7 +62,7 @@ window.addEventListener('load', (e) => {
                option.innerText = i;
                option.classList.add(today.getMonth() + 1);
                option.style.display='none';
-               date.append(option);
+               dateTag.append(option);
         }
     	// 다음달
 	   	for(let i = 1; i < futureDate.getDate(); i++) {
@@ -71,7 +71,7 @@ window.addEventListener('load', (e) => {
 	   	        option.innerText = i;
 	   	        option.classList.add(futureDate.getMonth() + 1);
 	   	     	option.style.display='none';
-	   	        date.append(option);
+	   	     	dateTag.append(option);
    	    }
    	} 
    
@@ -128,6 +128,9 @@ window.addEventListener('load', (e) => {
 		<div class="page-title">
 			<h2><span class="modify">[수정]</span>&nbsp;무엇을 같이할까요?</h2>
 			<p>이웃과 함께 잊지 못할 추억을 만들어봐요!</p>
+		</div>
+		<div class="today">
+			<fmt:formatDate value="${today}" pattern="yyyy-MM-dd E요일"/>
 		</div>
 		<form:form name="togetherUpdateFrm">
 			<div class="together-wrap">
@@ -213,8 +216,12 @@ window.addEventListener('load', (e) => {
 									<label class="to-title">날짜</label>
 								</div>
 								<div class="data-box">
-									<select id="date-select" class="month select" name="month" required></select>
-									<select id="date-select" class="date select" name="date" required></select>
+									<select id="date-select" class="month select" name="month" required>
+										<option value="none" selected>월</option>
+									</select>
+									<select id="date-select" class="date select" name="date" required>
+										<option value="none" selected>일</option>
+									</select>
 								</div>
 							</div>
 							<div class="time-box">
@@ -391,8 +398,6 @@ document.togetherUpdateFrm.addEventListener('submit', (e) => {
 	}
 
 	/* 현재 시간보다 이전 시간의 모임 날짜를 제어 */
-	const month = document.querySelector(".month").value;
-	const date = document.querySelector(".date").value;
 	const hour = document.querySelector(".hour").value;
 	const minute = document.querySelector(".minute").value;
 	const meridiem = document.querySelectorAll("[name='meridiem']");

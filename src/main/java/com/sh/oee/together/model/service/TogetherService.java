@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.sh.oee.member.model.dto.Member;
+import com.sh.oee.together.model.dto.JoinMember;
 import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.dto.TogetherEntity;
 
@@ -29,5 +30,9 @@ public interface TogetherService {
 	int togetherStatusUpdate(int no);
 
 	int getTogetherTotalCount(Map<String, Object> param);
+
+	List<JoinMember> joinMemberListByBoardNo(Map<String, Object> params);
+
+	List<Map<String, Object>> getJoinMemberCnt(Map<String, Object> param);
 
 }

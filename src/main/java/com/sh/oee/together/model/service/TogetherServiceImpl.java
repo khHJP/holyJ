@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.together.model.dao.TogetherDao;
+import com.sh.oee.together.model.dto.JoinMember;
 import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.dto.TogetherEntity;
 
@@ -78,7 +79,15 @@ public class TogetherServiceImpl implements TogetherService {
 	public int getTogetherTotalCount(Map<String, Object> param) {
 		return togetherDao.getTogetherTotalCount(param);
 	}
-	
-	
+
+	@Override
+	public List<JoinMember> joinMemberListByBoardNo(Map<String, Object> params) {
+		return togetherDao.joinMemberListByBoardNo(params);
+	}
+
+	@Override
+	public List<Map<String, Object>> getJoinMemberCnt(Map<String, Object> param) {
+		return togetherDao.getJoinMemberCnt(param);
+	}
 	
 }
