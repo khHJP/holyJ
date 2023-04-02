@@ -83,6 +83,9 @@ window.addEventListener('load', (e) => {
 			<h2>무엇을 같이할까요?</h2>
 			<p>이웃과 함께 잊지 못할 추억을 만들어봐요!</p>
 		</div>
+		<div class="today">
+			<fmt:formatDate value="${today}" pattern="yyyy-MM-dd E요일"/>
+		</div>
 		<form:form name="togetherEnrollFrm">
 			<div class="together-wrap">
 				<p class="notice-text">* 모든 내용을 작성해주세요!</p>

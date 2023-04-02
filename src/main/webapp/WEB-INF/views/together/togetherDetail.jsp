@@ -104,7 +104,7 @@ window.addEventListener('load', (e) => {
 			</div>
 			<div class="choose-box">
 			<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
-				<button class="btn" data-toggle="modal" data-target="#exampleModal">모임종료</button>
+				<button class="btn" data-toggle="modal" data-target="#close-modal">모임종료</button>
 			</c:if>
 			<c:if test="${together.writer ne loginMember.memberId}">
 				<button class="btn report">신고하기</button>
@@ -155,7 +155,7 @@ window.addEventListener('load', (e) => {
 					<button class="btn modify">수정</button>
 				</c:if>
 				<c:if test="${together.writer eq loginMember.memberId}">
-					<button class="btn delete">삭제</button>
+					<button class="btn delete" data-toggle="modal" data-target="#delete-modal">삭제</button>
 				</c:if>
 			</div>
 		</div>
@@ -165,17 +165,41 @@ window.addEventListener('load', (e) => {
 			<p>${together.content}</p>
 		</div>
 		<div class="join-member-box">
-			<h4>참여중인 이웃<span></span></h4>
-			<div></div>
+			<div class="join-member-title">
+				<h4>참여중인 이웃</h4>
+				<div>
+					<span>[&nbsp;</span>
+					<span class="title-cnt">${joinCnt[0].joinCnt}</span>
+					<span>&#47;</span>
+					<span class="title-cnt2">${together.joinCnt}</span>
+					<span>&nbsp;]</span>
+				</div>
+			</div>
+			<div class="current-join-memberList">
+				<c:forEach items="${joinMemberList}" var="joinMember">
+				<div class="member-info">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${joinMember.member.profileImg}" alt="참여이웃프로필">
+					<div class="info-txt">
+						<c:if test="${joinMember.role eq 'A'}">
+							<span class="badge badge-success">모임장</span>
+						</c:if>
+						<c:if test="${joinMember.role eq 'M'}">
+							<span class="badge badge-secondary">참여자</span>
+						</c:if>
+						<span>${joinMember.member.nickname}</span>
+					</div>
+				</div>				
+				</c:forEach>
+			</div>
 		</div>
 	</div>
 </div>
 <!-- 모임종료 경고모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="close-modal" tabindex="-1" role="dialog" aria-labelledby="closModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">※ 모임 종료 ※</h5>
+				<h5 class="modal-title" id="closModalLabel">※ 모임 종료 ※</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 				</button>
@@ -186,8 +210,30 @@ window.addEventListener('load', (e) => {
 				게시글을 수정할 수 없어요. 종료하시겠어요?
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal">취소</button>
 				<button type="button" class="btn to_close">종료</button>
+				<button type="button" class="btn" data-dismiss="modal">취소</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 삭제하기 모달 -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">※ 게시글 삭제 ※</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				게시글을 삭제하면 대화방 또한 사라져요.
+				<br/>
+				정말 게시글을 삭제하시겠습니까?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn to_delete">삭제</button>
+				<button type="button" class="btn" data-dismiss="modal">취소</button>
 			</div>
 		</div>
 	</div>
@@ -220,10 +266,8 @@ document.querySelector(".to_close").addEventListener('click', (e) => {
 <c:if test="${together.writer eq loginMember.memberId}">
 <script>
 /* 같이해요 삭제 */
-document.querySelector(".delete").addEventListener('click', (e) => {
-	if(confirm('해당 게시글을 삭제하시겠습니까?')){
-		document.togetherDeleteFrm.submit();
-	}
+document.querySelector(".to_delete").addEventListener('click', (e) => {
+	document.togetherDeleteFrm.submit();
 });
 </script>
 </c:if>

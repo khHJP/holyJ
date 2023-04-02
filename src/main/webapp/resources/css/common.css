@@ -7,6 +7,9 @@
 a {
 	text-decoration: none;
 }
+.input, progress {
+  accent-color: #B1D7B4;
+}
 ::selection {
 	background-color: #56C271;
 	color: white;
@@ -190,7 +193,6 @@ footer {
 /* login */
 .modal-content {
     width: 28rem;
-    /* height: 23.2rem; */
 }
 .login-header {
 	display: flex;
