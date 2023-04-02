@@ -62,19 +62,6 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.insertCraigAttachment(attach);
 	}
 
-	
-	//select one 게시글 
-	@Override
-	public Craig selectcraigOne(int no, boolean hasRead) {
-	//	boolean hasRead = (boolean) param.get("hasRead");
-	//	int no = (int) param.get("no");
-		
-		if(!hasRead) craigReadCount(no);
-		log.debug("■ selectcraigOne - impl - no = {}", no);
-		
-		return craigDao.selectcraigOne( no );
-	}
-
 	//select one 카테고리
 	@Override
 	public String selectMyCraigCategory(int categoryNo) {
@@ -82,7 +69,7 @@ public class CraigServiceImpl implements CraigService {
 	}
 
 	
-	//update 
+	//update - ok
 	@Override
 	public int updateCraigBoard(Craig craig) {
 		//글만등록 
@@ -107,18 +94,13 @@ public class CraigServiceImpl implements CraigService {
 
 
 	
-	
-	private int upinsertCraigAttachment(CraigAttachment attach) {
+	//씀-게시글 업뎃할때 
+	private int upinsertCraigAttachment(CraigAttachment attach) { 
 		// TODO Auto-generated method stub
 		return  craigDao.upinsertCraigAttachment(attach);
 	}
 
-	//update - attachment 
-	private int updateCraigAttachment(CraigAttachment attach) {
-		return craigDao.updateCraigAttachment(attach);
-	}
 
-	
 	//delete - attachment 
 	@Override
 	public int deleteCraigAttachment(int orifileattno) {
@@ -129,6 +111,114 @@ public class CraigServiceImpl implements CraigService {
 	public List<CraigAttachment> selectcraigAttachments(int no) {
 		return craigDao.selectcraigAttachments(no);
 	}
+	
+	//게시글삭제 
+	@Override
+	public int deleteCraigBoard(int no) {
+		//글만 삭제 
+		int result = 0;
+		result = craigDao.deleteCraigBoard(no);
+		log.debug("■ craig no = {}", no );
+		
+		//첨부파일삭제
+		result +=  craigDao.deleteCraigBoardAttachment(no);
+		return result;
+	}
+
+	
+
+	
+	//컨텐츠 총수
+	@Override
+	public int getContentCnt(Map<String, Object> param ) {
+		return craigDao.getContentCnt(param);
+	}
+
+	//wish
+	@Override
+	public int selectCraigWish(Map<String, Object> param) {
+		return craigDao.selectCraigWish(param);
+	}
+
+	//wish del
+	@Override
+	public int DeleteCraigWish(Map<String, Object> param) {
+		return craigDao.DeleteCraigWish(param);
+	}
+
+	//wish insert
+	@Override
+	public int InsertCraigWish(Map<String, Object> param) {
+		return craigDao.InsertCraigWish(param);
+	}
+
+	//게시물 wish
+	@Override
+	public int selectCraigWishOne(int no) {
+		return  craigDao.selectCraigWishOne(no);
+	}
+	
+	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	@Override
+	public List<Integer> selectCraigWishCnt(Map<String, Object> param, RowBounds rowBounds) {
+		return craigDao.selectCraigWishCnt(param, rowBounds);
+	}
+
+	// 한게시물당 chatroom갯수
+	@Override
+	public int selectCraigChrooms(int no) {
+		// TODO Auto-generated method stub
+		return craigDao.selectCraigChrooms(no);
+	}
+
+	// chatroom cnt - list
+	@Override
+	public List<Integer> selectCraigChatCnt(Map<String, Object> param, RowBounds rowBounds) {
+		// TODO Auto-generated method stub
+		return craigDao.selectCraigChatCnt(param, rowBounds);
+	}
+
+	
+	//조회수 증가 메서드가 있는 selectone
+	@Override
+	public Craig selectcraigOneRe(Map<String, Object> nhparam) {
+		// 읽지않았다면 증가시켜달라 
+		boolean hasRead = (boolean) nhparam.get("hasRead");
+		log.debug( "hasread값 = {}",  hasRead );
+		
+		int no =   (int)nhparam.get("no");
+		
+		if(!hasRead) {//안읽었으면 update readcount 
+			craigReadCount(no);
+		}
+		return craigDao.selectcraigOneRe(nhparam);
+	}
+
+	private int craigReadCount(int no) {
+		return craigDao.craigReadCount(no);
+		
+	}
+	
+
+	//상품+2
+	@Override
+	public List<Craig> selectOtherCraigs(  Map<String, Object> otherParam ) {
+		return craigDao.selectOtherCraigs(otherParam);
+	}
+
+	
+	
+// ================================ 혜진 ================================
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //-------------------------- 하나 시작 --------------------------------------
 	@Override
 	public List<Craig> myBuyCraig(String memberId) {
@@ -166,58 +256,10 @@ public class CraigServiceImpl implements CraigService {
 		// TODO Auto-generated method stub
 		return craigDao.salCraig(no);
 	}
+	
+
 //-------------------------- 하나 끝 --------------------------------------
 
-	//게시글삭제 
-	@Override
-	public int deleteCraigBoard(int no) {
-		//글만 삭제 
-		int result = 0;
-		result = craigDao.deleteCraigBoard(no);
-		log.debug("■ craig no = {}", no );
-		
-		//첨부파일삭제
-		result +=  craigDao.deleteCraigBoardAttachment(no);
-		return result;
-	}
-
-	
-	//조회수증가
-	@Override
-	public int craigReadCount(int no) {
-		return craigDao.craigReadCount(no);
-	}
-
-	
-	//컨텐츠 총수
-	@Override
-	public int getContentCnt(Map<String, Object> param ) {
-		return craigDao.getContentCnt(param);
-	}
-
-	//wish
-	@Override
-	public int selectCraigWish(Map<String, Object> param) {
-		return craigDao.selectCraigWish(param);
-	}
-
-	//wish del
-	@Override
-	public int DeleteCraigWish(Map<String, Object> param) {
-		return craigDao.DeleteCraigWish(param);
-	}
-
-	//wish insert
-	@Override
-	public int InsertCraigWish(Map<String, Object> param) {
-		return craigDao.InsertCraigWish(param);
-	}
-
-	//게시물 wish
-	@Override
-	public int selectCraigWishOne(int no) {
-		return  craigDao.selectCraigWishOne(no);
-	}
 
 
 	// 🐹 ------- 효정 start ---------- 🐹	
@@ -227,14 +269,11 @@ public class CraigServiceImpl implements CraigService {
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
 
-	
 
 	
-	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
-	@Override
-	public List<Integer> selectCraigWishCnt(Map<String, Object> param) {
-		return craigDao.selectCraigWishCnt(param);
-	}
+
+
+	
 
 
 
