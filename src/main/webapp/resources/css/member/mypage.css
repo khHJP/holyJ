@@ -12,9 +12,10 @@ hr{
 td{
 	padding-left: 35px;
 }
-#profile{
-	height: 70px; 
-    width: 70px; 
+#imagePreview{
+	border-radius: 50px;
+	height: 100px; 
+    width: 100px; 
     /* margin: 50px 0 0 50px; */
 }
 #nickname{
@@ -67,4 +68,13 @@ a:hover{
 }
 hr{
     margin-top: 10px;
+}
+/*-------------------------------------------------------*/
+.custom-popover {
+  --bs-popover-max-width: 200px;
+  --bs-popover-border-color: var(--bs-primary);
+  --bs-popover-header-bg: var(--bs-primary);
+  --bs-popover-header-color: var(--bs-white);
+  --bs-popover-body-padding-x: 1rem;
+  --bs-popover-body-padding-y: .5rem;
 }

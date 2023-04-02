@@ -14,6 +14,7 @@ td{
 	padding-left: 35px;
 }
 #profile{
+	border-radius: 50px;
 	height: 100px; 
     width: 100px; 
     /* margin: 50px 0 0 50px; */
@@ -22,10 +23,24 @@ td{
 	font-size: 25px;
     font-weight: 600;
 }
-#tmp{
+#tmp1{
 	font-size: 17px;
-    border-radius: 10px;
+    border-radius: 15px;
+    background-color: yellow;
+    color: black;
+    padding: 3px
+}
+#tmp2{
+	font-size: 17px;
+    border-radius: 15px;
     background-color: green;
+    color: white;
+    padding: 3px
+}
+#tmp3{
+	font-size: 17px;
+    border-radius: 15px;
+    background-color: red;
     color: white;
     padding: 3px
 }

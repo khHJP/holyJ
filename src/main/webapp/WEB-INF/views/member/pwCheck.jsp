@@ -49,14 +49,6 @@ window.addEventListener('load', () => {
 					action="${pageContext.request.contextPath}/member/pwCheck.do"
 					method="post">
 					<div class="modal-body">
-						<c:if test="${password != password}">
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-							  <span class="text-danger">비밀번호가 일치하지 않습니다.</span>
-							  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							  </button>
-							</div>
-						</c:if>
 						<input
 							type="password" class="form-control" name="password"
 							placeholder="비밀번호" required>
@@ -74,3 +66,9 @@ window.addEventListener('load', () => {
 	<!-- Modal 끝-->
 </body>
 </html>
+<script>
+    var msg = '${msg}';
+    if(msg === '비밀번호를 다시 확인해 주세요.') {
+        alert("비밀번호를 다시 확인해 주세요.");
+    }
+</script>
