@@ -30,10 +30,6 @@ public interface CraigService {
 	//첨부파일등록
 	int insertCraigAttachment(CraigAttachment attach);
 
-	//게시글+첨부파일 함께 조회 
-	Craig selectcraigOne(int no, boolean hasRead);
-
-	
 	//내카테
 	String selectMyCraigCategory(int categoryNo);
 
@@ -60,19 +56,13 @@ public interface CraigService {
 	
 	//게시글 + 첨부파일 삭제 - ok
 	int deleteCraigBoard(int no);
-
 	
-	//조회수증가 - 보류 0325
-	int craigReadCount(int no);
 
-	
 	//컨텐츠총수 나오게 
 	int getContentCnt(Map<String, Object> param  );
 
-
 	//wish 조회 
 	int selectCraigWish(Map<String, Object> param);
-
 	
 	//wish delete 
 	int DeleteCraigWish(Map<String, Object> param);
@@ -80,10 +70,29 @@ public interface CraigService {
 	//wish insert 
 	int InsertCraigWish(Map<String, Object> param);
 
-
 	// 게시물 wish
 	int selectCraigWishOne(int no);
 
+	// 한게시물당 chatroom갯수
+	int selectCraigChrooms(int no);	
+
+	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	List<Integer> selectCraigWishCnt(Map<String, Object> param, RowBounds rowBounds);
+
+	// craigChatcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	List<Integer> selectCraigChatCnt(Map<String, Object> param, RowBounds rowBounds);
+
+
+	//select one 조회수 넣어서 구하기 다시 0402
+	Craig selectcraigOneRe(Map<String, Object> nhparam);
+
+	//상품+2
+	List<Craig> selectOtherCraigs( Map<String, Object> otherParam);
+
+	
+	
+	
+	
 	
 	
 	
@@ -92,8 +101,12 @@ public interface CraigService {
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
 
-	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
-	List<Integer> selectCraigWishCnt(Map<String, Object> param);
+
+
+
+
+
+
 
 
 
