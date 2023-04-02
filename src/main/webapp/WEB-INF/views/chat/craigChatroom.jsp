@@ -129,8 +129,13 @@
 				</div>
 				<!-- 채팅방 메시지내용 end  -->
 				<div class="message-input">
-						<input type="text" id="msg" placeholder="메시지 보내기"> <i
-							class="fa fa-paperclip attachment" aria-hidden="true"></i>
+	
+					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
+		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
+		    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
+
+						<input type="text" id="msg" placeholder="메시지 보내기">
+						<i class="fa fa-paperclip attachment" aria-hidden="true"></i>					
 						<button id="sendBtn" type="button">
 							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
 								width="20" height="20" fill="currentColor"
@@ -140,10 +145,6 @@
 						</button>
 				</div>
 			</div>
-<%-- 			<form name="chatExitFrm" method="post" action="">
-				<input type="hidden" name="delMemberId" value="${memberId}"/>
-				<input type="hidden" name="delChatroomId" value="${chatroomId}"/>
-			</form> --%>
 		</div>
 
 <sec:authorize access="isAuthenticated()">
@@ -204,20 +205,76 @@ document.querySelector("#craigExit").addEventListener("click", (e) => {
 			window.close();
 		}
 	});
-
-
 });
 
 
+/* 첨부파일 선택 버튼 */
+document.querySelector("i").addEventListener("click", (e) => {
+	const div = document.querySelector(".custom-file")
+	if(div.style.display == "none"){
+		div.style.display = "block";	
+	} else {
+		div.style.display = "none";
+	}
+});
+
+
+document.querySelector("#upFile").addEventListener("change", (e) => {
+	const file = e.target.files[0];
+	const label = e.target.nextElementSibling;
+	
+	if(file) // 업로드된 파일이 있다면
+		label.innerHTML = file.name; // label에 file이름 작성
+		
+	else
+		label.innerHTML = '파일을 선택하세요'	;
+});
+
+
+
+document.querySelector("#upFileBtn").addEventListener('click', (e) => {
+
+	const formData = new FormData();
+	const file = document.querySelector("#upFile").files[0];
+	console.log(file);	
+	formData.append("file", file);
+	
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	// 2. 첨부파일 가져오기
+	$.ajax({
+		headers,
+		url : '${pageContext.request.contextPath}/chat/craigChatAttach',
+		processData : false,
+		contentType : false, 
+		data : formData,
+		type : "POST",
+		success(data){
+			
+		}
+	,
+	
+	});
+	
+	
+});
+
 /* 메시지 전송하기 */
 document.querySelector("#sendBtn").addEventListener("click", (e) => {
+	e.preventDefault();
+	
 	// 1. input에 작성한 메세지내용 가져오기
 	const msg = document.querySelector("#msg");
-	console.log(msg.value);
 	
+	// 2. 첨부파일 가져오기
+	const file = document.querySelector("#upFile").files[0];
 
-	if(!msg.value) return; // 메시지 없을시 return 
+	if(!msg.value && !file) return; // 메시지 없거나, 첨부파일 없을시 return 
 
+	// 메시지일때 
+	if(msg.value){
 	// 2. payload : CraigMsg와 규격 맞춤
 	const payload = {
 		chatroomId,
@@ -227,11 +284,12 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 		type : 'CHAT',
 		prof : '${chatUser.profileImg}'
 	};
-	
-	// 3. 전송
 	stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
 	msg.value = '';
 	msg.focus();
+	}
+	// 3. 전송
+
 }); 
 	
 stompClient.connect({}, (frame) => {
