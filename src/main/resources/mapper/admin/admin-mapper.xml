@@ -5,6 +5,7 @@
 <mapper namespace="com.sh.oee.admin.model.dao.AdminDao">
 
 	<!-- select -->
+	
 	<select id="selectAdminMemberList" resultMap="adminMap">
 		select
 			m.*,
@@ -75,7 +76,10 @@
 			b.*, reason_name 
 		from board_report b join report_reason r 
 			on b.reason_no = r.reason_no 
-		order by reg_date desc
+		where
+			status = 'N'
+		order by 
+			reg_date desc
 	</select>
 	
 	<resultMap type="boardReport" id="boardReportMap">
@@ -100,6 +104,8 @@
 		from 
 			user_report u join report_reason r 
 			on u.reason_no = r.reason_no 
+		where
+			status = 'N'
 		order by 
 			reg_date desc
 	</select>
@@ -119,7 +125,67 @@
 		</association>
 	</resultMap>
 	
+	<select id="selectAdminMemberTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			member m join authority a
+			on m.member_id = a.member_id
+		where
+			delete_date is null
+		order by
+			enroll_date desc
+	</select>
+	
+	<select id="selectAdminCraigTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			craig
+		order by
+			reg_date desc
+	</select>
+	
+	<select id="selectAdminLocalTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			local
+		order by
+			reg_date desc
+	</select>
+	
+	<select id="selectAdminTogetherTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			together
+		order by
+			reg_date desc
+	</select>
+	
+	<select id="selectAdminBoardReportTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			board_report
+		order by
+			reg_date desc
+	</select>
+	
+	<select id="selectAdminUserReportTotalCount" resultMap="adminTotalCountMap">
+		select
+			count(*)
+		from
+			user_report
+		order by
+			reg_date desc
+	</select>
+	
+	<resultMap type="java.lang.Integer" id="adminTotalCountMap"></resultMap>
+	
 	<!-- update -->
+	
 	<update id="updateAdminMemberRole">
 		update
 			(select
@@ -139,7 +205,7 @@
 		update
 			craig
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
@@ -148,7 +214,7 @@
 		update
 			local
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
@@ -157,17 +223,41 @@
 		update
 			together
 		set
-			category_no = #{category_no}
+			category_no = #{categoryNo}
 		where
 			no = #{no}
 	</update>
 	
-	<!-- delete -->
-	<delete id="deleteAdminMember">
-		delete from
+	<update id="updateAdminMemberUnregister">
+		update
 			member
+		set
+			delete_date = sysdate
 		where
-			member_id = #{member_id}
+			member_id = #{memberId}
+	</update>
+	
+	<!-- delete -->
+	
+	<delete id="deleteAdminCraig">
+		delete from
+			craig
+		where
+			no = #{no}		
+	</delete>
+	
+		<delete id="deleteAdminLocal">
+		delete from
+			local
+		where
+			no = #{no}		
+	</delete>
+	
+		<delete id="deleteAdminTogether">
+		delete from
+			together
+		where
+			no = #{no}		
 	</delete>
 
 </mapper>

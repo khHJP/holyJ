@@ -20,6 +20,7 @@
 #sidebar {
 	float: left;
 	width: 200px;
+	height: 900px;
 }
 
 .sidebar-nav {
@@ -43,6 +44,7 @@
 table {
     text-align: center;
     border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
 th, td {
@@ -58,3 +60,19 @@ tr:first-child {
 	cursor: pointer;
 	background-color: #F2F3F6;
 }
+
+input {
+	width: 50px;
+	cursor: pointer;
+	border: 2px solid #56C271;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0);
+}
+
+input.delete:hover {
+	box-shadow: 5px 5px 12px #868B94;
+	transition-duration: 0.6s;
+}
+
+/* pagination */
+

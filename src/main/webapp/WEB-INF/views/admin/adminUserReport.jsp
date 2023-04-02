@@ -16,6 +16,16 @@
 	<jsp:param value="사용자신고관리" name="title" />
 </jsp:include>
 
+<script>
+const totalPages = '${totalPages}';
+const currentPage = '${currentPage}';
+
+$(document).ready(function() {
+	// 페이지네이션 생성
+ 	generatePagination(totalPages, currentPage);
+});
+</script>
+
 <section id="admin-container">
 	<div id="sidebar">
 		<ul class="sidebar-nav">
@@ -93,9 +103,48 @@
 				</c:if>
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example" class="pagebar-box">
+ 			<ul class="pagination justify-content-center"></ul>
+		</nav>
 	</div>
 
 </section>
-<script></script>
+<script>
+/* 페이지 처리 */
+/* 페이지네이션 버튼을 생성하는 함수 */
+const generatePagination = (totalPages, currentPage) => {
+    let pagination = $(".pagination");
+    pagination.empty(); // 이전에 생성된 페이지네이션 버튼 초기화
+    
+    let beforeUrl;
+	 // 이전 버튼 추가
+    if (currentPage != 1) {
+    	beforeUrl = '${pageContext.request.contextPath}/admin/adminUserReport.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    } else {
+      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+    }
+
+    // 페이지 버튼 추가
+    let pageUrl
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+        } else {
+        	pageUrl = '${pageContext.request.contextPath}/admin/adminUserReport.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        }
+    }
+
+    // 다음 버튼 추가
+    let nextUrl;
+    if (currentPage != totalPages) {
+    	nextUrl = '${pageContext.request.contextPath}/admin/adminUserReport.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    } else {
+        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+    }
+}
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
