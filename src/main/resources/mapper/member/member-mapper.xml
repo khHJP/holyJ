@@ -4,6 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.member.model.dao.MemberDao">
 
+	<!-- 🐱 하나 시작 🐱 -->
+	
 	<select id="selectOneMember" resultMap="memberMap">
 		select
 			*
@@ -23,9 +25,13 @@
 			member_id = #{ memberId } 
 		</update>
 		
-	<resultMap type="member" id="memberMap"></resultMap>	
+	<resultMap type="member" id="memberMap"></resultMap>
+	
+	<!-- 🐱 하나 끝 🐱 -->	
 
-	<!-- 정은 시작 -->
+
+	<!-- 👻 정은 시작 👻 -->
+	
 	<insert id="insertMember">
 		insert into
 			member
@@ -54,59 +60,49 @@
 		)
 	</insert>
 
-	<!-- 정은 끝 -->
+	<!-- 👻 정은 끝 👻 -->
 
 
+	<!-- 🐰 혜진도전영역입니다.. 0320 와 arraysort어쩌고 오류뭐지 ? 배열 오류같은데 이거 왜 안돼 ? 🐰 -->
 
-
-
-
-
-
-
-
-
-<!-- 혜진도전영역입니다.. 0320 와 arraysort어쩌고 오류뭐지 ? 배열 오류같은데 이거 왜 안돼 ? -->
-
-<select id="selectMydongName" resultType="string">
-	select dong_name from dong where dong_no = #{dongNo}
-</select>
-
-<select id="selectDongNearOnly"  resultType="string">
-	select dong_near from dong_range where dong_no = #{dongNo}
-</select>
-
-<select id="selectDongNearFar" resultType="string" >
-	select dong_far from dong_range where dong_no = #{dongNo}
-</select>
-
-<!-- 혜진추가 0329 -->
-<select id="selectMydongGuName" resultMap="dongguMap">
-	select gu_name,dong_name
-	from dong d join gu g
-		on d.gu_no = g.gu_no 
-	where dong_no = #{dongNo}
-</select>
-
-<resultMap type="dong" id="dongguMap">
-	<id column="dong_no" property="dongNo"  />
-	<result column="gu_no" property="guNo" /> 
-	<result column="dong_name" property="dongName" />
+	<select id="selectMydongName" resultType="string">
+		select dong_name from dong where dong_no = #{dongNo}
+	</select>
 	
-	<association property="gu" javaType="gu" >
-		<id column="gu_no" property="guNo" />
-		<result column="gu_name" property="guName" />
-	</association>
+	<select id="selectDongNearOnly"  resultType="string">
+		select dong_near from dong_range where dong_no = #{dongNo}
+	</select>
+	
+	<select id="selectDongNearFar" resultType="string" >
+		select dong_far from dong_range where dong_no = #{dongNo}
+	</select>
+	
+	<!-- 혜진추가 0329 -->
+	<select id="selectMydongGuName" resultMap="dongguMap">
+		select gu_name,dong_name
+		from dong d join gu g
+			on d.gu_no = g.gu_no 
+		where dong_no = #{dongNo}
+	</select>
+	
+	<resultMap type="dong" id="dongguMap">
+		<id column="dong_no" property="dongNo"  />
+		<result column="gu_no" property="guNo" /> 
+		<result column="dong_name" property="dongName" />
+		
+		<association property="gu" javaType="gu" >
+			<id column="gu_no" property="guNo" />
+			<result column="gu_name" property="guName" />
+		</association>
+	
+	</resultMap>
 
-</resultMap>
-
-
-
-<resultMap type="dongRange" id="dongRangeMap">
-	<id column="dong_no" property="dongNo"  />
-	<result column="dong_near" property="dongNear" /> 
-	<result column="dong_far" property="dongFar" />
-</resultMap>
-
+	<resultMap type="dongRange" id="dongRangeMap">
+		<id column="dong_no" property="dongNo"  />
+		<result column="dong_near" property="dongNear" /> 
+		<result column="dong_far" property="dongFar" />
+	</resultMap>
+	
+	<!-- 🐰 혜진 끝 🐰 -->
 
 </mapper>

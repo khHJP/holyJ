@@ -12,6 +12,16 @@ p, h2, label {
     flex-direction: column;
     font-family: 'Noto Sans KR', sans-serif;
 }
+.today {
+    width: 800px;
+    margin: 0 auto;
+    padding: 5px 28px;
+    border: 2px solid #868B94;
+    border-radius: 4px;
+    background-color: RGB(233, 236, 239);
+    color: #4D5159;
+    font-weight: 500;
+}
 .report-wrap {
     width: 50rem;
     padding: 30px;

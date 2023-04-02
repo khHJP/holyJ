@@ -41,6 +41,8 @@ $(document).ready(function() {
 		const text = document.querySelector("[for=checked-box]");
 		text.style.color = '#56C271';
 	}
+	
+	// 
 });
 </script>
 <div class="together-list-container">
@@ -144,11 +146,21 @@ $(document).ready(function() {
 											<fmt:formatDate value="${dateTime}" pattern="MM월 dd일 E요일 HH시 mm분"/>
 										</p>
 									</div>
-									<!-- 채팅 후 다시 작성 -->
 									<div class="to-cnt">
-										<i class="bi bi-person-circle"></i>
-										<i class="bi bi-person-circle"></i>
-										<span>2/4명</span>
+											<c:forEach items="${joinMemberList}" var="joinMember">
+												<c:if test="${joinMember.togetherNo eq together.no}">
+													<span class="member-img"><img src="${pageContext.request.contextPath}/resources/upload/profile/${joinMember.member.profileImg}" alt="참여이웃프로필"></span>
+												</c:if>										
+											</c:forEach>
+										<div class="check-cnt">
+											<c:forEach items="${joinCntList}" var="cnt">
+												<c:if test="${cnt.togetherNo eq together.no}">
+													<span class="current-join-cnt">${cnt.joinCnt}</span>
+												</c:if>
+											</c:forEach>
+											<span>&#47;</span>
+											<span>${together.joinCnt}명</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -221,7 +233,7 @@ const generatePagination = (totalPages, currentPage) => {
     
     let beforeUrl;
 	 // 이전 버튼 추가
-    if (currentPage != 1) {
+    if (currentPage != 1 && totalPages != 0) {
     	beforeUrl = '${pageContext.request.contextPath}/together/togetherList.do?currentPage=' + (currentPage - 1);
     	if(categoryNo) {
     		beforeUrl += '&categoryNo=' + categoryNo;
@@ -255,7 +267,7 @@ const generatePagination = (totalPages, currentPage) => {
 
     // 다음 버튼을 추가
     let nextUrl;
-    if (currentPage != totalPages) {
+    if (currentPage != totalPages && totalPages != 0) {
     	nextUrl = '${pageContext.request.contextPath}/together/togetherList.do?currentPage=' + totalPages;
     	if(categoryNo) {
     		nextUrl += '&categoryNo=' + categoryNo;
