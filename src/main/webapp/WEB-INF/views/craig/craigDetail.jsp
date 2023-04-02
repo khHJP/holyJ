@@ -173,18 +173,21 @@
 <table id="crboProfiletbl">
 	<thead>
 		<tr>
+		<%-- ■ 프사 --%>
 			<td style="width: 60px">
 				<c:if test="${craigboard.member.profileImg == null }">
 					<img id="proimg" src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 				</c:if>
+				<c:if test="${craigboard.member.profileImg != null }">
+					<img id="proimg" src="${pageContext.request.contextPath}/resources/upload/profile/${craigboard.member.profileImg}";" alt="임시이미지">
+				</c:if>
 			</td>
-			
-			<!--  프사있으면 나올 거 난중에 추가하기  -->
+
 			<td id="nickNdong"  colspan="5">${craigboard.member.nickname}<br>
 				<span id="memberInfo"></span>
 			</td>
-			
-			<!--  매너온도 - 정은 코드 변경  -->
+						
+			<%-- ■ 매너온도 --%>
 			<td style="font-size: 16px; text-align: right; padding-right: 10px; width:320px;">
 				<div class="manner-box" style="padding-top: 25px">
 					<div class="temperature" style="text-align: right;">
@@ -236,10 +239,33 @@
 	
 	<p id="titletd">${craigboard.title}</p>
 
-	<!-- like 테이블에서 지금 로그인한 멤버가 이 게시물을 좋아요 한 이력이 없다면 .. 걍여기다가 img끼워넣음될듯 ajax -->
-	<span id="craigWishimg">
-	<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
+<%-- sec 안써도됨 --%>
+	<c:if test="${loginMember.memberId != craigboard.writer}">	
+	<div> <%-- alert --%>
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:695px; width: 400px; display: none;" >
+		  <span> 관심 목록에 추가되었어요!  
+		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+	</div>
+	</c:if>
+	<c:if test="${loginMember.memberId == craigboard.writer}">	
+	<div> <%-- alert --%>
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:695px; width: 400px; display: none;" >
+		  <span> 관심 목록에 추가되었어요!  
+		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+	</div>
+	</c:if>
 
+
+	<%--  like 테이블에서 지금 로그인한 멤버가 이 게시물을 좋아요 한 이력이 없다면 .. 걍여기다가 img끼워넣음될듯 ajax --%
+	<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
 	<c:if test="${findCraigWish == 0 or findCraigWish == null}">
 		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
 		class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="임시이미지">
@@ -248,7 +274,7 @@
 		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
 		class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
 	</c:if>
-	</span> 
+
 	
 	<span id="crcate" class="spcateNdate"></span> 
 	<span class="spcateNdate" style="margin-left: 10px; margin-right: 10px">|</span>
@@ -271,15 +297,14 @@
 
 	<div style="margin-bottom: 10px; height: 90px; ">
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
-		<span id="spancrChat"></span> <span> | 조회 </span> <span id="spancrReadCount"></span>
+		<span id="spancrChat"></span> <span> · 조회 </span> <span id="spancrReadCount">${craigboard.hits}</span>
 
 		<sec:authentication property="principal" var="loginMember" />
 		<c:if test="${craigboard.member.memberId != loginMember.memberId}">		
 		<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
 
 		<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  -->
-
-			<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
+		<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
 		<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★  -->
 		</c:if>	
 		
@@ -306,9 +331,12 @@
 </form:form>
 
 
+
+
+
 <script>
 window.addEventListener('load', () => {
-
+	//load될때 가져와야될정보
 	const memberInfo = document.querySelector("#memberInfo");
 	
 	$.ajax({
@@ -354,6 +382,19 @@ window.addEventListener('load', () => {
 			console.log(data);
 			const spancrWish = document.querySelector("#spancrWish");
 			spancrWish.innerHTML = parseInt(data); 
+		},
+		error : console.log
+	})	
+	//채팅수
+		$.ajax({
+		url : `${pageContext.request.contextPath}/craig/selectCraigChrooms.do`,
+		method : 'get',
+		data : {no : '${craigboard.no}'},
+		dataType : 'json',
+		success(data){
+			console.log(data);
+			const spancrChat = document.querySelector("#spancrChat");
+			spancrChat.innerHTML = parseInt(data); 
 		},
 		error : console.log
 	})
@@ -489,11 +530,6 @@ function openPopup(url, name){
 
 
 
-
-
-
-
-
 //신고
 document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 
@@ -507,8 +543,6 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 
 	
 })
-
-
 </script>	
 </c:if>
 
@@ -583,19 +617,19 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 	  
 	  
 	});
-	
-
-	
+		
 	$('#menu-toggle').threeBarToggle({color: 'green', width: 30, height: 25});
 	$('#menu').accordionMenu();
 
 </script>
+
 <script>
+// ■ 관심 
 	document.querySelector(".hearts").addEventListener('click', (e) => {
 
 		const img = e.target;
 		console.log( img );
-	
+
 		const spancrWish = document.querySelector("#spancrWish")
 		const csrfHeader = "${_csrf.headerName}";
 		const csrfToken = "${_csrf.token}";
@@ -613,10 +647,13 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 		    	if(data == 1){
 		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_red.png`;
 		    		spancrWish.innerHTML =  parseInt(spancrWish.innerHTML)+ parseInt(1);
+		    		document.querySelector("#likement").style.display="inline";
+
 		    	}
 		    	else{
 		    		img.src = `${pageContext.request.contextPath}/resources/images/heart_empty.png`;
 		    		spancrWish.innerHTML =  parseInt(spancrWish.innerHTML) - parseInt(1);
+		    		document.querySelector("#likement").style.display="none";
 	
 		    	}
 		    },
@@ -626,15 +663,52 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 		})//end-ajax   
 	});//end of pushheart 
 </script>
-<%--
 
-	<div class="alert alert-warning alert-dismissible fade show" role="alert" style="width: 450px; margin-left: 70px;" >
-	  <span> 관심 목록에 추가되었어요!  
-	  <a style="margin-left: 60px; font-size: 15px;" href="${pageContext.request.contextPath}/mypage/mycraig">관심목록보기</a></span> 
-	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	    <span aria-hidden="true">&times;</span>
-	  </button>
-	</div>
-	 --%>
-<br><br><br><br><br><br><br><br><br>
+<%-------------------- 다른 판매 상품 -------------------------%>
+<hr style="width: 610px; margin: 0 auto; margin-top: 60px; margin-bottom: 40px; border: 1px solid lightgray" />
+<div id="othercraigDiv">
+<h5 style="font-size: 18px;"> <span style="color:#28A745" >${craigboard.member.nickname}</span> 님의 다른 판매 상품</h5>
+<span> ❗다른 판매 상품은 최대 2개까지 노출됩니다 </span>
+	<table id="craigWholeListTbl" style="text-align: center; margin-left: -30px; margin-top: 20px">
+		<tbody>
+			<tr style="padding-bottom : 30px; margin-bottom : 30px; ">		
+			  <c:forEach items="${othercraigs}" var="craig" varStatus="vs" begin="0" end="1">
+			  	<td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 30px">
+				<div class="explains" >
+					<%-- img --%>
+					<c:if test="${craig.attachments[0].reFilename != null}">
+					    <a><img style="display : inline-block; height : 200px; width:200px; border-radius: 10px" 
+							    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
+					</c:if>
+					<c:if test="${craig.attachments[0].reFilename==null}">
+					    <a><img id="eachimg"  style="display : inline-block; height : 180px; width:200px;" 
+							    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+					</c:if>
+						<p id="crtitle" class="crpp" style="text-align: left; margin: 20px 0 10px 0;">${craig.title}</p>
+					<c:if test="${craig.price > 0}">
+						<p id="crprice" class="crpp" style="text-align: left; margin: 0px 0 10px 0; font-size:17px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+					</c:if>
+
+					<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
+						<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+					</c:if>
+					</div>
+				</td>
+			</c:forEach>
+			</tr>
+		</tbody>
+	</table>	
+</div>
+<br><br><br><br>
+<script>
+//■ 상세페이지
+document.querySelectorAll("td[data-crno]").forEach( (td)=>{
+	td.addEventListener('click', (e) => {
+
+		const no = td.dataset.crno;
+		console.log( no );
+		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;		
+	})
+})
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

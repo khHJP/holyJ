@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.oee.craig.model.dao.CraigDao">
 
-<!-- ■ select all -->
+<!-- ■ select all ■ jin -->
 <select id="craigList" resultMap="craigMap">
 	select cr.*,
             d.dong_name,
@@ -41,24 +41,22 @@
 
 </select>
 
-
-<select id="selectcraigOne" resultMap="craigMap">
-select c.*, 
-            ca.attach_no,
-            ca.original_filename,
-            ca.re_filename,
-             (  select count(*) from craig_attachment  where craig_no =  c.no ) attach_count,
-            m.*
-from craig c  left  join  craig_attachment ca
-	 on c.no = ca.craig_no
-	    	 left join member m 
-	    on c.writer = m.member_id 
- where c.no =  #{no}
+<!--  ■ 조회수 증가가 포함된 게시글 상세보기 -  jin  -->
+<select id="selectcraigOneRe" resultMap="craigMap">
+	select c.*, 
+	            ca.attach_no,
+	            ca.original_filename,
+	            ca.re_filename,
+	             (  select count(*) from craig_attachment  where craig_no =  c.no ) attach_count,
+	            m.*
+	from craig c  left  join  craig_attachment ca
+		 on c.no = ca.craig_no
+		    	 left join member m 
+		    on c.writer = m.member_id 
+	 where c.no =  #{no}
 </select>
 
-
-
-
+<!-- ■ craigMap ■ jin -->
 <resultMap type="Craig" id="craigMap">
 	<id column="no"  property="no"/>
 	<result column="category_no" property="categoryNo"/>
@@ -82,7 +80,7 @@ from craig c  left  join  craig_attachment ca
 		<result column="dong_range" property="dongRange" />
 		<result column="manner" property="manner" /> 
 		<result column="nickname" property="nickname" />  
-		<result column="profile" property="profile" />  
+		<result column="profile_img" property="profileImg" />  
 	</association>
 	
 	<!-- dong -->
@@ -108,7 +106,7 @@ from craig c  left  join  craig_attachment ca
 	
 </resultMap>
 
-<!-- ■ insert  -->
+<!-- ■ insert ■ jin  -->
 <insert id="insertCraigBoard">
 
 	insert into craig (no, category_no, writer, title, content, latitude, longitude, place_detail, price)
@@ -123,20 +121,22 @@ from craig c  left  join  craig_attachment ca
 	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, default)
 </insert>
 
+<!-- ■  update - added completedate on0331 ■  jin  -->
 <update id="updateCraigBoard">
-update craig
-set category_no = #{categoryNo},
-	title = #{title},
-	content = #{content},
-	latitude = #{latitude},
-	longitude = #{longitude},
-	place_detail = #{placeDetail},
-	price = #{price},
-	state = #{state},
-	complete_date = sysdate
-where no = #{no}	
+	update craig
+	set category_no = #{categoryNo},
+		title = #{title},
+		content = #{content},
+		latitude = #{latitude},
+		longitude = #{longitude},
+		place_detail = #{placeDetail},
+		price = #{price},
+		state = #{state},
+		complete_date = sysdate
+	where no = #{no}	
 </update>
 
+<!-- ■  update - CraigAttachment  ■  jin-->
 <update id="updateCraigAttachment">
 	update craig_attachment
 	set re_filename = #{reFilename}
@@ -149,14 +149,15 @@ where no = #{no}
 	values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename} , #{reFilename}, default)
 </insert>
 
-
+<!-- ■  select all - CraigAttachment  ■  jin  -->
 <select id="selectcraigAttachments" resultMap="craigAttachMap">
 	select *
 	from craig_attachment
 	where craig_no = #{no}
 </select>
 
-
+<resultMap type="CraigAttachment" id="craigAttachMap">
+</resultMap>
 
 
 
@@ -215,10 +216,7 @@ where
 
 
 
-<resultMap type="CraigAttachment" id="craigAttachMap">
-</resultMap>
-
-
+<!-- ■ 조회수 증가시키기 - jin -->
 <update id="craigReadCount">
 	update craig 
 	set hits = hits +1 
@@ -226,7 +224,7 @@ where
 </update>
 
 
-<!--  ■ 총컨텐츠수 구하기  ■ -->
+<!--  ■ 총컨텐츠수 구하기  ■ jin -->
 <select  id="getContentCnt" resultType="_int">
 	select count(*)
 	from ( 
@@ -258,7 +256,7 @@ where
     </where>	
 </select>
 
-<!--  ■ 한게시물의 총 관심수  -0328  ■-->
+<!--  ■ 한게시물의 총 관심수  - 0328  ■ jin  -->
 <select id="selectCraigWish" resultType="_int" >
 	select count(*) 
 	from  craig_wish 
@@ -268,7 +266,7 @@ where
 <resultMap type="CraigWish" id="craigWishMap">
 </resultMap>
 
-<!--  ■ 관심수 select - 0330 - 메소드 통합(리스트/검색/카테고리)  ■-->
+<!--  ■ 관심수 select - 0330 - 메소드 통합(리스트/검색/카테고리)  ■ jin  -->
 <select id="selectCraigWishCnt" resultType="_int">
 
 select (select count(*) from craig_wish where craig_no  = cr.no )wish
@@ -305,6 +303,58 @@ from (
 order by  cr.no desc	
 </select>
 
-<!-- 	complete_date = to_date( #{completeDate},'yyyy-mm-dd' )  -->
+<!--  ■ 채팅수 select list - 0401 - 메소드 통합(리스트/검색/카테고리)  ■ jin  -->
+<select id="selectCraigChatCnt" resultType="_int">
+
+select (select count(*)/2 from craig_chat where craig_no  = cr.no )chat
+        
+from ( 
+             select  ca.*       
+            from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+            where rnum= 1 ) c  
+
+             right join craig cr 
+                    on c.craig_no = cr.no
+              left   join  member m
+                    on cr.writer = m.member_id 
+              left join dong d
+                    on m.dong_no = d.dong_no
+              left join dong_range dr
+                    on d.dong_no = dr.dong_no
+
+	<where>
+		d.dong_name in
+		<foreach collection="dongName" item="dongName" open="(" close=")" separator=",">
+			#{dongName}
+		</foreach>
+			
+		<if test="categoryNo != null and categoryNo !=0 and searchKeyword == null ">
+			and category_no = #{categoryNo}
+		</if>
+		
+		<if test="categoryNo == 0 and searchKeyword != null ">
+		    and ( title like  '%' || #{searchKeyword}|| '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
+		
+    </where>
+order by  cr.no desc	
+
+</select>
+
+<select id="selectOtherCraigs" resultMap="craigMap">
+	select cr.*,
+	       c.attach_no,
+	       c.original_filename,
+	       c.re_filename
+	from ( 
+	             select  ca.*  
+	             from ( select c.*, row_number() over(partition by craig_no order by craig_no desc )rnum from craig_attachment c)ca  
+	             where rnum= 1 ) c  right join craig cr 
+	                    on c.craig_no = cr.no
+	              left   join  member m
+	                    on cr.writer = m.member_id 
+	where not cr.no = #{no} and cr.writer = #{memberId} and cr.state = 'CR2' 
+	order by  cr.no desc     
+</select>
 
 </mapper>
