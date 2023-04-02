@@ -18,7 +18,7 @@ import com.sh.oee.craig.model.dto.CraigPage;
 public interface CraigDao {
 
 
-	//카테고리로 검색 
+	//■ 카테고리로 검색 
 	List<Craig> craigList(Map<String, Object> param, RowBounds rowBounds);
 
 	@Select("select * from craig_category")
@@ -30,29 +30,68 @@ public interface CraigDao {
 	//craig attachment등록
 	int insertCraigAttachment(CraigAttachment attach);
 
-	//craig 조인
-	Craig selectcraigOne(int no);
-
 	@Select("select CATEGORY_NAME from craig_category where category_no = #{categoryNo}")
 	String selectMyCraigCategory(int categoryNo);
 
-	
 	//update
 	int updateCraigBoard(Craig craig);
 
-	int updateCraigAttachment(CraigAttachment attach);
-
+	//delete
 	@Delete("delete from craig_attachment where attach_no = #{orifileattno}")
 	int deleteCraigAttachment(int orifileattno);
 
 	//in up
 	int upinsertCraigAttachment(CraigAttachment attach);
 
-	
 	//select all
 	List<CraigAttachment> selectcraigAttachments(int no);
 
+	@Delete("delete from craig where no = #{no}")
+	int deleteCraigBoard(int no);
 
+	@Delete("delete from craig_attachment where craig_no = #{no}")
+	int deleteCraigBoardAttachment(int no);
+
+	// 조회수 증가시키기 
+	int craigReadCount(int no);
+	
+	// content총수 구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	int getContentCnt(Map<String, Object> param);
+	
+	// 새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
+	List<Integer> selectCraigWishCnt(Map<String, Object> param, RowBounds rowBounds);
+
+	// wish 한게시물
+	int selectCraigWish(Map<String, Object> param);
+	
+	@Delete("delete from craig_wish where craig_no = #{no} and member_id = #{memberId}")
+	int DeleteCraigWish(Map<String, Object> param);
+
+	@Insert("insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, #{no},  #{memberId}, default)")
+	int InsertCraigWish(Map<String, Object> param);
+
+	@Select("select count(*) from craig_wish where craig_no = #{no}")
+	int selectCraigWishOne(int no);
+
+	@Select("select count(*) from craig_chat where craig_no = #{no}")
+	int selectCraigChrooms(int no);
+
+	//게시물 리스트 - chatroomcount
+	List<Integer> selectCraigChatCnt(Map<String, Object> param, RowBounds rowBounds);
+
+	//조회수 증가시키기가 추가된 게시글 상세보기 
+	Craig selectcraigOneRe(Map<String, Object> nhparam);
+
+	//상품+2
+	List<Craig> selectOtherCraigs(Map<String, Object> otherParam);
+
+
+	
+// ================================ 혜진 ================================
+	
+	
+	
+	
 	//-----------------------하나시작------------------------
 	List<Craig> myBuyCraig(String memberId);
 	List<Craig> mySalCraig(String memberId);
@@ -66,18 +105,7 @@ public interface CraigDao {
 	int salCraig(int no);
 	//-----------------------하나끝------------------------
 
-	@Delete("delete from craig where no = #{no}")
-	int deleteCraigBoard(int no);
-
-	@Delete("delete from craig_attachment where craig_no = #{no}")
-	int deleteCraigBoardAttachment(int no);
-
-	//
-	int craigReadCount(int no);
-
 	
-	// content총수 구하기
-	int getContentCnt(Map<String, Object> param);
 	
 	// 🐹 ------- 효정 start ---------- 🐹
 	@Select("select * from craig where no = #{craigNo}")
@@ -85,20 +113,6 @@ public interface CraigDao {
 	// 🐹 --------- 효정 end ---------- 🐹	
 
 
-	//wish
-	int selectCraigWish(Map<String, Object> param);
-
-	@Delete("delete from craig_wish where craig_no = #{no} and member_id = #{memberId}")
-	int DeleteCraigWish(Map<String, Object> param);
-
-	@Insert("insert into CRAIG_WISH values(seq_CRAIG_WISH_no.nextval, #{no},  #{memberId}, default)")
-	int InsertCraigWish(Map<String, Object> param);
-
-	@Select("select count(*) from craig_wish where craig_no = #{no}")
-	int selectCraigWishOne(int no);
-
-	//새로 wishcount 총수구하기 (걍 조회 + 카테고리 조회 +검색조회 )
-	List<Integer> selectCraigWishCnt(Map<String, Object> param);
 
 
 
