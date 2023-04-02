@@ -1,5 +1,7 @@
 package com.sh.oee.chat.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
+import com.sh.oee.chat.model.dto.MsgAttach;
 import com.sh.oee.chat.model.service.ChatService;
+import com.sh.oee.common.OeeUtils;
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
@@ -44,12 +50,41 @@ public class ChatController {
 	private CraigService craigService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ServletContext application;
 
 	@GetMapping("/chatList.do")
 	public void chatList() {
 
 	}
 
+	/**
+	 * 중고거래 채팅방 첨부파일 저장 처리
+	 */
+	@PostMapping("/craigChatAttach")
+	@ResponseBody
+	public void craigChatAttach(MultipartFile file, HttpSession session) {
+		
+		
+		String saveDirectory = application.getRealPath("/resources/upload/chat/craig");
+		
+		if(file.getSize() > 0) {
+			// 1. 파일 저장하기
+			String renamedFilename = OeeUtils.renameMultipartFile(file);
+			String originalFilename = file.getOriginalFilename();
+			File destFile = new File(saveDirectory, renamedFilename);
+			try {
+				file.transferTo(destFile);
+			} catch (IllegalStateException | IOException e) {
+				log.error(e.getMessage(), e);
+			}
+			
+			// 2. MsgAttach객체 생성 
+			MsgAttach attach = new MsgAttach();
+			attach.setReFilename(renamedFilename);
+			attach.setOriginalFilename(originalFilename);
+		}
+	}
 	/**
 	 * 중고거래 채팅방 나가기 처리 
 	 */
