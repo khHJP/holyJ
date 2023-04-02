@@ -2,7 +2,6 @@ package com.sh.oee.craig.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.oee.common.OeeUtils;
@@ -37,7 +40,6 @@ import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
-
 
 @Slf4j
 @RequestMapping("/craig")
@@ -89,6 +91,7 @@ public class CraigController {
 
 		List<Craig> craigList = null;
 		List<Integer> wishCnt = null;
+		List<Integer> craigChatCnt = null;
 		int totals = 0; // 토탈게시물수 
 		int totalPage =0; // 토탈페이지
 		List<Craig> searchCraigs = null; //검색용
@@ -103,7 +106,8 @@ public class CraigController {
 	    	param.put("searchKeyword", searchKeyword);
 
 	    	craigList = craigService.craigList(param, rowBounds); // 새로메서드 0330
-			wishCnt = craigService.selectCraigWishCnt(param);
+			wishCnt = craigService.selectCraigWishCnt(param,  rowBounds);  // 각 게시물의 관심수 list
+			craigChatCnt = craigService.selectCraigChatCnt(param,  rowBounds);  // // 각 게시물의 채팅수 list 
 					
 			log.debug( "■■■ craigList 게시물[rowbounds됨^^]= {}", craigList);	
 			log.debug( " ♥wishCnt = {}", wishCnt);	
@@ -127,8 +131,9 @@ public class CraigController {
 			searchCraigs = craigService.craigList(param, rowBounds);
 			log.debug( "■■■■ searchCraigs : " + searchCraigs ); 
 			
-			wishCnt = craigService.selectCraigWishCnt(param);
-			log.debug( "♥wishCnt = {}", wishCnt);	
+			wishCnt = craigService.selectCraigWishCnt(param, rowBounds);
+			craigChatCnt = craigService.selectCraigChatCnt(param , rowBounds);  // // 각 게시물의 채팅수 list 
+			log.debug( "♥wishCnt = {}, ♥craigChatCnt = {}", wishCnt, craigChatCnt);	
 			
 			totals = craigService.getContentCnt(param );	
 			totalPage = (int) Math.ceil((double) totals/limit);	
@@ -143,6 +148,7 @@ public class CraigController {
 		model.addAttribute("craigCategory", craigCategory);
 		model.addAttribute("member", member);
 		model.addAttribute("wishCnt", wishCnt);
+		model.addAttribute("craigChatCnt", craigChatCnt);
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("searchCraigs", searchCraigs);
 		
@@ -208,7 +214,7 @@ public class CraigController {
 		
 		//저장
 		int result = craigService.insertCraigBoard(craig);
-		log.debug( "result : " + result );
+				log.debug( "result : " + result );
 
 		redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 등록했습니다😊");
 		
@@ -223,92 +229,88 @@ public class CraigController {
 	  
 	  }
  
-	 // ■ select one craigboard - 비동기로 해야될까?
-/**	 
+	 // ■ select one craigboard - 0402
 	 @GetMapping("/craigDetail.do")
-	 public void craigDetail(@RequestParam int no, Model model, 
-			 				Authentication authentication, HttpServletRequest request,
-			 				 HttpServletResponse response) {
+	 public ModelAndView craigDetail(@RequestParam int no, ModelAndView mav, Authentication authentication, 
+	 							HttpServletRequest request, HttpServletResponse response) {
 		 
 		 Member member = ((Member)authentication.getPrincipal());
 		 log.debug("■ member : " +  member);
-
 			
-		 // board 쿠키 처리 ( 클라이언트쪽에 board [번호] 저장 
-			String boardCookieVal = "";
-			boolean hasRead = false;
+			String boardCookieVal = "";  
+			boolean hasRead = false; // false = 안읽었다 
 			
 			Cookie[] cookies = request.getCookies();
 	
-			if( cookies != null) {
+			if( cookies != null) {// 무조건해야됨 
 				for( Cookie cookie : cookies) {
 					String name = cookie.getName();
 					String value = cookie.getValue();
 					
-					if("board".equals(name)) {
-						boardCookieVal  = value; // board = "[84][22]" 이런식으로 담김 
+					if("craigboard".equals(name)) {
+						boardCookieVal  = value; // craigboard = "[84][22]" 
 						if(value.contains("[" + no + "]" )){
 							hasRead = true;
-						}
+							request.getSession().setAttribute("boardCookieVal", boardCookieVal);
+						}	
 					}
-				}
-				
-			}
+				}//end-forEach	
+			}//end - if(cookie있을경우)
 			
 			//응답쿠키
-			if(!hasRead) {
-				Cookie cookie = new Cookie("board", boardCookieVal + "[" + no + "]" );
-				cookie.setMaxAge(365*24*60*60);
-				cookie.setPath(request.getContextPath()+"/craig/craigDetail");
-				response.addCookie(cookie);	
+			if(!hasRead) { //읽지않았다
+				Cookie craigcookie = new Cookie("craigboard", boardCookieVal + "[" + no + "]" );
+				craigcookie.setMaxAge(30*24*60*60); // 30days term
+				craigcookie.setPath(request.getContextPath());
+				response.addCookie(craigcookie);	
 			}
 			
-			 log.debug(" ===== 여기까지 찍히니 ?===== ");	
-			 
-			 Craig craigboard = craigService.selectcraigOne(no, hasRead);
-			 
+			 // ● selectcraigOneRe - map- nhparam에 담을 애들 
+			 Map<String, Object> nhparam = new HashMap<>();
+			 nhparam.put("no", no);			
+			 nhparam.put("hasRead", hasRead);	
+			
+			 Craig craigboard = craigService.selectcraigOneRe( nhparam );
+						 
 			 craigboard.setContent(OeeUtils.convertLineFeedToBr(
-						OeeUtils.escapeHtml(craigboard.getContent())));
+										OeeUtils.escapeHtml(craigboard.getContent())));
 
-			 log.debug("■ 찍히는데 왜 모델앤뷰로안넘어갈까 ? craigboard : " + craigboard);
-				
-//			 model.addAttribute("loginmember", member);
-			 model.addAttribute("craigboard", craigboard);
+			 // ● wish 조회 - map- param 에 담을 애들 
+			 Map<String, Object> param = new HashMap<>();
+			 param.put("memberId", member.getMemberId());
+			 param.put("no", no);
 			 
-			 return ;
+			 int findCraigWish = craigService.selectCraigWish(param);
+			 
+			 log.debug("■ member : " +  member);
+			 log.debug("■ craigboard : " + craigboard);	
+			 log.debug("■ findCraigWish : " + findCraigWish);	
+	
 
-	 }
- **/
- 
-	 // ■ select one craigboard - 원래
-	 @GetMapping("/craigDetail.do")
-	 public void craigDetail(@RequestParam int no, Model model, Authentication authentication) {
-		 boolean hasRead = true;
-		 
-		 Member member = ((Member)authentication.getPrincipal());
+			 //
+			 Map<String, Object> otherParam = new HashMap<>();
+			 otherParam.put("memberId", craigboard.getMember().getMemberId());
+			 otherParam.put("no",no);
+			 
+			 
+			 List<Craig> othercraigs = craigService.selectOtherCraigs( otherParam );
+			 mav.addObject("othercraigs", othercraigs);
+			 
+			 mav.addObject("craigboard", craigboard); 
+			 mav.addObject("findCraigWish", findCraigWish);		 
+			 mav.setViewName("craig/craigDetail");
+			 
+//			 model.addAttribute("name", "abc");   --- model은 왜안돼?????????????
+//			 model.addAttribute("craigoneboard", craigoneboard);
+//			 model.addAttribute("findCraigoneWish", findCraigoneWish);
+			 
 
-		 Map<String, Object> param = new HashMap<>();
-		 param.put("memberId", member.getMemberId());
-		 param.put("no", no);
-		 
-		 Craig craigboard = craigService.selectcraigOne(no, hasRead);
-		 
-		 craigboard.setContent(OeeUtils.convertLineFeedToBr(
-					OeeUtils.escapeHtml(craigboard.getContent())));
-		 
-		 
-		 int findCraigWish = craigService.selectCraigWish(param);
-		 
-		 log.debug("■ member : " +  member);
-		 log.debug("■ craigboard : " + craigboard);	
-		 log.debug("■ findCraigWish : " + findCraigWish);	
-		 
-		 model.addAttribute("craigboard", craigboard);
-		 model.addAttribute("findCraigWish", findCraigWish);
+			 
+			 
+			 return mav;
 	 }
 
-	  
-	 
+
 	 @ResponseBody
 	 @GetMapping("/getMyCraigDong.do")
 	 public Map<String, Object> getMyCraigDong(@RequestParam int dongNo) {
@@ -322,7 +324,8 @@ public class CraigController {
 
 		 return map;
 	}
-	 
+	
+	 // 카테고리 
 	 @ResponseBody
 	 @GetMapping("/getMyCraigCategory.do")
 	 public Map<String,Object>  getMyCraigCategory(@RequestParam int categoryNo) {
@@ -341,13 +344,14 @@ public class CraigController {
 	 @GetMapping("/craigUpdate.do")
 	 public void craigUpdate(@RequestParam int no, Model model) {
 		 
-		boolean hasRead = true;
-		/*
-		 * Map<String,Object> param = new HashMap<>(); param.put("no", no);
-		 * param.put("hasRead", hasRead);
-		 */
-		 
-		 Craig craigboard = craigService.selectcraigOne(no, hasRead);
+  		 boolean hasRead = true;
+
+		 Map<String, Object> nhparam = new HashMap<>();
+		 nhparam.put("no", no);			
+		 nhparam.put("hasRead", hasRead);	
+		
+		 Craig craigboard = craigService.selectcraigOneRe( nhparam );
+		
 		 List<Map<String,String>>  craigCategory = craigService.craigCategoryList();
 		 //orifile
 		 List<CraigAttachment> originalCraigFiles  = craigService.selectcraigAttachments(no);
@@ -356,6 +360,7 @@ public class CraigController {
 		 model.addAttribute("craigboard", craigboard);
 		 model.addAttribute("craigCategory", craigCategory);
 		 model.addAttribute("originalCraigFiles", originalCraigFiles);
+		 
 
 	  }
 
@@ -365,9 +370,16 @@ public class CraigController {
 			 @RequestParam("upFile") List<MultipartFile> upFiles,  RedirectAttributes redirectAttr ) {
 	 	
 		 	String saveDirectory = application.getRealPath("/resources/upload/craig");
-		 	boolean hasRead = true;
-		 	Craig craigboard  = craigService.selectcraigOne(no, hasRead);
-		 
+		 	
+	  		 boolean hasRead = true;
+
+			 Map<String, Object> nhparam = new HashMap<>();
+			 nhparam.put("no", no);			
+			 nhparam.put("hasRead", hasRead);	
+			
+			 Craig craigboard = craigService.selectcraigOneRe( nhparam );
+			 log.debug( "■ 바꿀거 선택해온거  " + craigboard ); //90 91 92
+			 
 		 	// attachment db 조회 ex) 90 91 92 
 			List<CraigAttachment> originalCraigFiles  = craigService.selectcraigAttachments(no);
 			List<Integer> orifileno = new ArrayList<>(); // list에 넣기 
@@ -474,13 +486,23 @@ public class CraigController {
 		 return result;
 	}
     
-    // ■ wish한게시물의 wish가져오기
+    // ■ no - wish가져오기 
     @ResponseBody
     @GetMapping("/selectCraigWishOne.do")
     public int selectCraigWishOne(@RequestParam int no) {  
-    	log.debug("■ 비동기 no 값넘어오는지 확인 = {} ", no);
+    	log.debug("■[wish] 비동기 no 값넘어오는지 확인 = {} ", no);
     	int result = craigService.selectCraigWishOne(no);
     	return result;
+    }
+    
+    // ■ no - 채팅방 
+    @ResponseBody
+    @GetMapping("/selectCraigChrooms.do")
+    public int selectCraigChrooms(@RequestParam int no) {  
+    	log.debug("■[chat] 비동기 no 값넘어오는지 확인 = {} ", no);
+    	int result = craigService.selectCraigChrooms(no);
+    	int realResult = (int)result/2;
+    	return realResult;
     }
 	 
     
@@ -528,28 +550,30 @@ public class CraigController {
     			List<Craig> searchCrategory = craigService.craigList(param, rowBounds);
 				log.debug( "■■■■ searchCraigs : " + searchCrategory ); 
     	
-				List<Integer> wishCnt = craigService.selectCraigWishCnt(param);
-				log.debug( "■■■■ wishCnt(List) = {}", wishCnt);	
-				
+				List<Integer> wishCnt = craigService.selectCraigWishCnt(param, rowBounds); //
+				List<Integer> craigChatCnt = craigService.selectCraigChatCnt(param, rowBounds);  //
+				log.debug( "■■■■ wishCnt(List) = {}, craigChatCnt(List) = {}", wishCnt , craigChatCnt );				
+
 				int totals = craigService.getContentCnt(param );	
 				int totalPage = (int) Math.ceil((double) totals/limit);	
 				
 				CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
 				model.addAttribute("craigPage", craigPage);
-				log.debug( "■■■■ totals = {}", totals);
-				log.debug( "■■■■ cpage = {}", cpage);	
-				log.debug( "■■■■ limit = {}", limit);	
-
 				
-				//model담기 - 쓸수있나?
+				// model담기
 				model.addAttribute("searchCrategory", searchCrategory);
 				model.addAttribute("wishCnt", wishCnt);
+				model.addAttribute("craigChatCnt", craigChatCnt);
+				
 				model.addAttribute("totalPage", totalPage);
 				model.addAttribute("page", cpage);		
 
+				// 리턴
 				Map<String, Object> categoryMap = new HashMap<>();  
 				categoryMap.put("searchCrategory", searchCrategory);
 				categoryMap.put("wishCnt", wishCnt);
+				categoryMap.put("craigChatCnt", craigChatCnt);
+				
 				categoryMap.put("totalPage", totalPage);
 				categoryMap.put("page", cpage);
 				

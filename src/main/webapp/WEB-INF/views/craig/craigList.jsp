@@ -38,6 +38,7 @@
 		padding-bottom : 12px;
 		vertical-align :middle;
 		border-radius: 5px 5px 5px 5px;
+		margin-top: 2px;
 	}
 	
 	#craigWholeListTbl{
@@ -79,12 +80,12 @@
 	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
 	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
-			<button type="button" style="width:160px; height:36px; appearance:none; " class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" style="width:160px; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    	중고거래 카테고리
 			</button>
 		  	<ul class="dropdown-menu">
 			  <c:forEach items="${craigCategory}" var="category">
-			    <li data-no="${category.CATEGORY_NO}"><a class="dropdown-item" href="#">${category.CATEGORY_NAME}</a></li>
+			    <li data-no="${category.CATEGORY_NO}"><a class="dropdown-item" data-ano="${category.CATEGORY_NO}"  href="#">${category.CATEGORY_NAME}</a></li>
 		   	  </c:forEach>
 			</ul>
 		</div>
@@ -92,11 +93,11 @@
 		<span id="memberInfo" ></span>
 		<%--  검색 --%>		
 	    <div class="searchdiv" style=""> <%-- 동일핸들러로 보내보자 --%>
-	    	<form:form action=""
-	    		 id="keywordFrm" name="keywordFrm" enctype ="multipart/form-data"  style="display:inline" method="get">
+		    <form:form action=""
+	    		 id="keywordFrm" name="keywordFrm" style="display:inline" method="get">
 		    	<input type="text"  name="searchKeyword" id="searchKeyword" placeholder=" 검색어를 입력해주세요 ">
 		    	<button type="submit" class="searchButton"> <i class="fa fa-search"></i> </button>
-	     	</form:form>
+	      	</form:form>
        	 	<button id="writeCraigbtn"  class="btn btn-success " style=""> 글쓰기</button>
 	    </div>
 	</div>
@@ -108,13 +109,25 @@
 		
 	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
 		<h3 style="margin: auto; margin-top: 50px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과</h3>
+		<script>
+		document.querySelector(".dropdown-toggle").addEventListener('click', e=>{
+			alert("검색과 카테고리를 동시에 사용하실 수 없습니다😣");
+			location.href = "${pageContext.request.contextPath}/craig/craigList.do";
+		})
+		</script>
 	</c:if>
 	<c:if test="${searchCraigs[0] == null && searchKeyword != null  }">
 		<h3 style="margin: auto; margin-top: 50px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과가 없습니다!</h3>
 		<img  style="width:700px; height: 600px; margin:70px 0 0 280px " src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="First slide" >
+		<script>
+		document.querySelector(".dropdown-toggle").addEventListener('click', e=>{
+			alert("검색과 카테고리를 동시에 사용하실 수 없습니다😣");
+			location.href = "${pageContext.request.contextPath}/craig/craigList.do";
+		})
+		</script>
 	</c:if>
 	
-
+<%-- ★★★★★ 걍 결과 ★★★★★--%>
 		<table id="craigWholeListTbl">
 			<tbody>
 			<c:forEach items="${craigList}" var="craig" varStatus="vs">
@@ -147,7 +160,7 @@
 							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"> ${craigChatCnt[vs.index]} </span> 
 							</div>
 						</td>
 					<c:if test="${vs.index %4==3}">
@@ -156,7 +169,7 @@
 				</c:forEach>
 			
 			
-		<%--  ★★★★★ 검색 결과 ★★★★★--%>
+<%--  ★★★★★ 검색 결과 ★★★★★--%>
 		<c:if test="${searchCraigs != null}">
 			<c:forEach items="${searchCraigs}" var="searchcraig" varStatus="searchvs">
 				<c:if test="${searchvs.index%4==0}">
@@ -188,7 +201,7 @@
 							<c:if test="${searchcraig.price == 0 && searchcraig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span> 
+								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">${craigChatCnt[searchvs.index]}</span> 
 							</div>
 						</td>
 					<c:if test="${searchvs.index %4==3}">
@@ -196,7 +209,7 @@
 					</c:if>
 				</c:forEach>
 			</c:if>
-		<%-- ★★★★★★★★★★--%>
+	<%-- ★★★★★★★★★★--%>
 			</tbody>
 		</table><br><br><br><br><br>
 </section>
@@ -223,20 +236,20 @@
 	          <c:choose>
 				<c:when test="${cpage == craigPage.currentPage}">
 					<c:if test="${searchCraigs == null}">
-				      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
+				      <li class="page-item nowpagegreen"><a style="background-color: #008200; color: white;"  class="page-link nowpagegreen" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 					</c:if>	
 					
 				    <c:if test="${searchCraigs != null}">
-				      <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
+				      <li class="page-item"><a class="page-link" style="background-color: #008200; color: white;" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
 					</c:if>
 			    </c:when>	
 			    		    
 			    <c:otherwise>
 			    	<c:if test="${searchCraigs == null}">
-	    			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
+	    			    <li class="page-item"><a class="page-link"  href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${cpage}">${cpage}</a></li>
 			    	</c:if>
    			    	<c:if test="${searchCraigs != null}">
-	    			    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
+	    			    <li class="page-item"><a class="page-link"  href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${cpage}">${cpage}</a></li>
 			    	</c:if>
 		 		</c:otherwise>
 			 </c:choose>  
@@ -254,10 +267,9 @@
 		</nav>
 
 <%-- 비동기 더보기 버튼 --%>
-<div id='btn-more-container' style="visibility: hidden;">
-	<button id="btn-more" value="" > 더보기  (<span id="searchPage">1</span>)</button>
-</div>
-
+	<div class="btbca" style="	text-align: center;	">
+	<button id="btn-more" class="btn" style="margin: auto; visibility: hidden; border: 1px solid green" > 더보기 <span id="searchPage" >1</span> </button>	
+	</div>
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
 	tr.addEventListener('click', (e) => {
@@ -310,21 +322,15 @@ window.addEventListener('load', () => {
 });
 </script>
 
+
 <script>
 // ■ 검색
 document.querySelector(".searchButton").addEventListener('click', (e)=>{
-	const sfrm = document.keywordFrm;	
+//	const sfrm = document.keywordFrm;	
 	const searchKeyword =  document.querySelector("#searchKeyword").value;
-	console.log(e.target);
 	console.log(searchKeyword);
-	
-	if(searchKeyword == null || searchKeyword ==""){
-		alert("검색어를 입력해주세요!");
-		e.preventDefault();
-		return;
-	}
 
-	const blank_pattern = /^\s+|\s+$/g;
+	const blank_pattern = /^\s+|\s+$/g;  //정규표현식 공란있음 안됨 
 	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
 		alert("검색어를 입력해주세요!");
 		document.querySelector("#searchKeyword").select();
@@ -332,171 +338,195 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		return false;
 	}
 	
-	
 	else if(searchKeyword != null && searchKeyword !="" ){
 		location.href = "${pageContext.request.contextPath}/craig/craigList.do";
 	}	
 });
+</script>
 
 
-// ■ 카테고리 - 비동기를 하나는 해야될거같은디 -- 음 해본다 ^^,, 0330
-document.querySelectorAll("li[data-no]").forEach( (cateli)=>{
 
-	let nav  = document.querySelector("nav");
-	let tbody  = document.querySelector("#craigWholeListTbl tbody");
-	
-	let searchPage =	document.querySelector("#searchPage").innerHTML;
-	let btnmorecontainer =	document.querySelector("#btn-more-container");
-	
-	cateli.addEventListener('click', (e) => {
-
-		const selectedValue = e.target.innerHTML; //값셋팅
-		document.querySelector(".dropdown-toggle").innerHTML = selectedValue;
+<script>
+// ■ 카테고리 - 비동기 
+	const getMoreCategory = ( page, categoryLi ) => {
 		
-		const cateno = cateli.dataset.no;
+		const nav  = document.querySelector("nav");
+		const tbody  = document.querySelector("#craigWholeListTbl tbody");
+	
+		let searchPage = document.querySelector("#searchPage").innerHTML;
+		let categoryNumber = categoryLi.dataset.no;
+	
+		if( categoryLi.dataset.no == null ){ //더보기에서 클릭했을때
+			  categoryNumber = categoryLi.dataset.ano;	
+		}
+
+		nav.innerHTML = "";
 		
-	//비동기시작
-	$.ajax({
-		url : `${pageContext.request.contextPath}/craig/selectCategorySearch.do`,
-		method : 'get',
-		dataType : 'json',
-		data : { categoryNo : cateno,
-				 cpage : searchPage },
-		success(data){
-			
-			nav.innerHTML = "";
+		if( page == 1 ){ // 앞에 내용이 나와야되니까 
 			tbody.innerHTML = "";
+		}
+
+		console.log( "버튼에서 호출했을때 categoryNumber -> " , categoryNumber   );
+		console.log("내가호출한 함수의 page : ", page );
+		
+		//비동기시작
+		$.ajax({
+			url : `${pageContext.request.contextPath}/craig/selectCategorySearch.do`,
+			method : 'get',
+			dataType : 'json',
+			data : { categoryNo : categoryNumber,
+					 cpage : searchPage },
+			success(data){
 			
-			const tr1 =  document.createElement("tr");
-			  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+				const tr1 =  document.createElement("tr");
+				  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+	
+	 			const tr2 =  document.createElement("tr");
+				  	tr2.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+	
+				const tr3 =  document.createElement("tr");
+				  	tr3.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+	
+				if( data.wishCnt[0] == null || data.totalPage == 0  ){ // 결과없다 
 
- 			const tr2 =  document.createElement("tr");
-			  	tr2.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
-
-			const tr3 =  document.createElement("tr");
-			  	tr3.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
-
-			if(data == null || data[0] == null){
-				tbody.innerHTML = "아직 해당 카테고리의 게시물이 없습니다 !";
-			};
-
-			//엄청난 비동기의 시작 .... 일단 다비운다			
-			for( let i=0; i<data.searchCrategory.length; i++ ){
-				tbody.innerHTML = "";
-				let img_html = ``; //◆◆◆이미지
-				
-				if( data.searchCrategory[i].attachments[0].reFilename != null  ){
-					img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
-					    		src="${pageContext.request.contextPath}/resources/upload/craig/\${data.searchCrategory[i].attachments[0].reFilename}" /></a><br/>`
-				   }
-				else if( data.searchCrategory[i].attachments[0].reFilename == null  ){
-					img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 200px; width:200px;" 
-					    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
-			    }
+					tbody.innerHTML = `<p style='position:absolute; top: 450px; left:600px; font-size:33px' >
+											아직 해당 카테고리의 게시물이 없습니다! </p>
+										<img  style='width:700px; height: 600px; position:relative; top: 220px; left:50px; display : block;' 
+						    				src='${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png'/><br/></br></br>`;
+				};
+	
+				// ** 엄청난 비동기의 시작 .... 		
+				for( let i=0; i<data.searchCrategory.length; i++ ){
+					let img_html = ``; //◆◆◆이미지
 					
-				let price_html = ``; //◆◆◆ 가격
-				if( data.searchCrategory[i].price > 0  ){
-					let p = data.searchCrategory[i].price;
-					let price = p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-					price_html = `<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;">\${price}원</p>`
-				}
-				else if( data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
-					price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>`
-			    }else{
-					price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;"> data.searchCrategory[i].price원</p>`
-			    }
-				
-				
-				let state_html = ``; //◆◆◆ 상태
-				if( data.searchCrategory[i].state == 'CR1' ){
-					 state_html = `<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>`
-				}
-							
-				else if( data.searchCrategory[i].state == 'CR3' ){
-					state_html = `<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>`
-				}
-				
-				<%-- 0 4 12 시작 --%>
-				if( parseInt(i/4) == 0){
-					let	    chtml = img_html
-							chtml += `<p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-							chtml += price_html
-							chtml += state_html
-							chtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
-
-					const td = document.createElement('td');
-						  td.dataset.crno = data.searchCrategory[i].no;
-						  $(td).attr('class','crnotd');
-						  td.style.cssText = "width:200px; height: 380px; padding: 10px"
-						  td.innerHTML = chtml;					
-					 tr1.append( td );
+					if( data.searchCrategory[i].attachments[0].reFilename != null  ){
+						img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+						    		src="${pageContext.request.contextPath}/resources/upload/craig/\${data.searchCrategory[i].attachments[0].reFilename}" /></a><br/>`
+					   }
+					else if( data.searchCrategory[i].attachments[0].reFilename == null  ){
+						img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 200px; width:200px;" 
+						    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
+				    }
+						
+					let price_html = ``; //◆◆◆ 가격
+					if( data.searchCrategory[i].price > 0  ){
+						let p = data.searchCrategory[i].price;
+						let price = p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+						price_html = `<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;">\${price}원</p>`
 					}
-				else if( parseInt(i/4) == 1){
-					let	cchtml = img_html
-							cchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-							cchtml += price_html
-							cchtml += state_html
-							cchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
-
-					const td2 = document.createElement('td');
-						  td2.dataset.crno = data.searchCrategory[i].no;
-						  $(td2).attr('class','crnotd');
-						  td2.style.cssText = "width:200px; height: 380px; padding: 10px"
-						  td2.innerHTML = cchtml;					
-					 tr2.append( td2 );
+					else if( data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
+						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>`
+				    }
+					else{
+						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;"> data.searchCrategory[i].price원</p>`
+				    }
+					
+					
+					let state_html = ``; //◆◆◆ 상태
+					if( data.searchCrategory[i].state == 'CR1' ){
+						 state_html = `<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>`
 					}
-				else if( parseInt(i/4) == 2){
-					let 	ccchtml = img_html
+								
+					else if( data.searchCrategory[i].state == 'CR3' ){
+						state_html = `<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>`
+					}
+					
+					<%--  뿌리기  --%>
+					if( parseInt(i/4) == 0){
+						let	    chtml = img_html
+								chtml += `<p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
+								chtml += price_html
+								chtml += state_html
+								chtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
+										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+	
+						const td = document.createElement('td');
+							  td.dataset.crno = data.searchCrategory[i].no;
+							  $(td).attr('class','crnotd');
+							  td.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td.innerHTML = chtml;					
+						 tr1.append( td );
+					}
+					
+					else if( parseInt(i/4) == 1){
+						let	cchtml = img_html
+								cchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
+								cchtml += price_html
+								cchtml += state_html
+								cchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
+										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+	
+						const td2 = document.createElement('td');
+							  td2.dataset.crno = data.searchCrategory[i].no;
+							  $(td2).attr('class','crnotd');
+							  td2.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td2.innerHTML = cchtml;					
+						 tr2.append( td2 );
+					}
+					
+					else if( parseInt(i/4) == 2){
+						let ccchtml = img_html
 							ccchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
 							ccchtml += price_html
 							ccchtml += state_html
 							ccchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"></span></div>`; 
-
-					const td3 = document.createElement('td');
-						  td3.dataset.crno = data.searchCrategory[i].no;
-						  $(td3).attr('class','crnotd');
-						  td3.style.cssText = "width:200px; height: 380px; padding: 10px"
-						  td3.innerHTML = ccchtml;					
-					 tr3.append( td3 );
-					}
+									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+	
+						const td3 = document.createElement('td');
+							  td3.dataset.crno = data.searchCrategory[i].no;
+							  $(td3).attr('class','crnotd');
+							  td3.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td3.innerHTML = ccchtml;					
+						 tr3.append( td3 );
+					}	
+				}//end-for문	
+						 
+				tbody.append( tr1, tr2, tr3 );
 				
-			}//end-for문	
-					 
-			tbody.append( tr1, tr2, tr3 );
-			
-			//페이징
-			
-			console.log( data );
-	/* 		if(data.totalPage==2){
-				$("#btn-more-container").style.visibility = "visible";
-			}
-			 */
+				// 더보기 버튼 보인다  
+		 		if(data.totalPage > 1 ){								 
+					document.querySelector("#btn-more").style.visibility="visible";
+					document.querySelector("#searchPage").innerHTML = Number(searchPage)+1 // 다음페이지셋팅 
+		 		}	
+			},
+			error : console.log,
+			complete(){
+				//마지막 페이지인 경우 더보기 버튼 비활성화 처리
+				if( searchPage == ${totalPage} ){
+				  const button = document.querySelector("#btn-more");
+						document.querySelector("#searchPage").innerHTML = 1;
+						document.querySelector("#btn-more").style.visibility="hidden";
+				}
+			}	
+		});//end-ajax
+	
+	};/// 함수끝 
 
-
-		},
-		error : console.log,
-		complete(){
-<%--
-			if( data. length > 12 ){
-				//마지막 페이지인 경우 더보기 버튼 비활성화 처리 ★
-				document.querySelector("#searchPage").innerHTML += 1;
+	
+	// ※※ 실제 카테고리 선택하면 호출 되는 함수 
+	let letCategoryLi = ""; //전역
+	document.querySelectorAll("li[data-no]").forEach( (categoryLi)=>{
+				
+		categoryLi.addEventListener('click', (e) => {
 			
-				if( page === ${cpage}){
-					const button = document.querySelector("#btn-more");
-					button.disabled = true; // 리턴값이 boolean 값 
-					button.style.cursor = "not-allowed";
-				}	
-			}
-			--%>
-		}
-	});//end-ajax
+		const selectedValue = e.target.innerHTML; //값셋팅
+			  document.querySelector(".dropdown-toggle").innerHTML = selectedValue;
 		
-		
-	})
-});
+		const categoryNumber = categoryLi.dataset.no;
+		      letCategoryLi = e.target; //해당 li
+
+	      getMoreCategory(1, categoryLi); // 함수호출  
+		});		  
+	});		  
+		  
+	// ※※ 더보기 버튼이 있을 경우 
+	document.querySelector("#btn-more").addEventListener('click', ()=>{
+	
+		 const searchPage = document.querySelector("#searchPage").innerHTML; //searchPage
+		 
+		 getMoreCategory(searchPage, letCategoryLi); // ■■ 더보기함수호출
+		 console.log( "함수호출후" , searchPage,  letCategoryLi  ); // 해당  page, li
+	});
 </script>
 
 
