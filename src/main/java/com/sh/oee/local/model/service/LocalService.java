@@ -8,6 +8,7 @@ import com.sh.oee.local.model.dto.Local;
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalEntity;
+import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
 
 
@@ -45,9 +46,22 @@ public interface LocalService {
 
 	// 조회수 증가
 	int hits(int no);
+
 	
 	//좋아요
-	List<Map<String, Object>> likecheck();
+	int selectLocalLike(Map<String, Object> param);
+
+	int DeleteLocalLike(Map<String, Object> param);
+
+	int InsertLocalLike(Map<String, Object> param);
+
+	//첨부파일 삭제
+	int deleteAttachment(int attachNo);
+
+
+	
+
+	
 
 
 }

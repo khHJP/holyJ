@@ -12,4 +12,5 @@ public class LocalLike {
 	private String memberId;
 	private int localNo;
 	private int likecheck;
+	private int count;
 }

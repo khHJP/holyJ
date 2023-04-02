@@ -57,14 +57,14 @@
 	where l.no = #{no}
 </select>
   
-<select id="likecheck" resultType="_int">
-	select
-		likecheck
-	from 
-		local_like
-	where like_no = #{likeNo} and member_id = #{memberId}
+<select id="selectLocalLike" resultType="_int">
+	select count(*)
+	from local_like
+	where local_no = #{no} and member_id = #{memberId}
 </select>
 
+<resultMap type="LocalLike" id="localLikeMap">
+</resultMap>
 
 <resultMap type="local" id="localDetailMap">
 	<id column="NO" property="no"></id>

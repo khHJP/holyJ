@@ -1,6 +1,7 @@
 package com.sh.oee.local.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +28,7 @@ import com.sh.oee.local.model.dto.LocalAttachment;
 
 import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalEntity;
+import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.local.model.service.LocalService;
 import com.sh.oee.member.model.dto.Member;
 
@@ -135,8 +139,13 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(@RequestParam(defaultValue="")String category,@RequestParam int no, Model model) {
+	public void localDetail(@RequestParam(defaultValue="")String category,@RequestParam int no, Model model,Authentication authentication) {
 		Local localdetail = localService.selectLocalOne(no);
+		Member member = ((Member)authentication.getPrincipal());
+		
+		Map<String, Object> param = new HashMap<>();
+		 param.put("memberId", member.getMemberId());
+		 param.put("no", no);
 		
 		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
 		
@@ -145,17 +154,34 @@ public class LocalController {
 		//조회수 증가
 		int readCnt = localService.hits(no);
 		
-		//좋아요 누르기 확인 -- 됐으면
-		List<Map<String,Object>> likecheckMap = localService.likecheck();
-		if(likecheckMap == null) {
-			//사용자가 좋아요 누른 적 없으면 null 반환
-			model.addAttribute("likecheck",0);
-		} else {
-			model.addAttribute("likecheck",likecheckMap);
-		}
+		int findlike = localService.selectLocalLike(param);
 		
 		model.addAttribute("localdetail",localdetail);
 		model.addAttribute("category", category);
+		model.addAttribute("findlike", findlike);
+	}
+	
+	//좋아요
+	@ResponseBody
+	@PostMapping("/localLike.do")
+	public int localLike(@RequestParam int no, String memberId) {
+		Map<String,Object> param = new HashMap<>();
+		
+		param.put("memberId", memberId);
+		param.put("no", no);
+		
+		int locallike = localService.selectLocalLike(param);
+		
+		int result = 0;
+		if(locallike == 1) {
+			result = localService.DeleteLocalLike(param);
+			result = 0;
+		} else {
+			result = localService.InsertLocalLike(param);
+		}
+		log.debug("like result : {}" + result);
+		
+		return result;
 	}
 	
 	// 글 수정하기 폼 이동
@@ -165,21 +191,64 @@ public class LocalController {
 		
 		Local localdetail = localService.selectLocalOne(no);
 		List<Map<String,String>> localCategory = localService.localCategoryList();
+		List<LocalAttachment> originalFiles = localService.selectLocalAttachments(no);
 		log.debug("localdetail ={}",localdetail);
 		
 		model.addAttribute("localdetail",localdetail);
 		model.addAttribute("localCategory", localCategory);
+		model.addAttribute("originalFiles", originalFiles);
 		
 	}
 	
 	// 글 수정하기
 	@PostMapping("/localUpdate.do")
 	public String localUpdate(Local local,
-			RedirectAttributes redirectAttr) {
-
-		int result =  localService.updateLocalBoard(local);
+			@RequestParam("upFile") List<MultipartFile> upFiles) {
 		
-		redirectAttr.addFlashAttribute("msg","게시글이 수정됐습니다.");
+//		String saveDirectory = application.getRealPath("/resources/upload/local");
+//		Local localdetail = localService.selectLocalOne(no);
+		
+//		//원래 저장된 첨부파일 가져오고
+//		List<LocalAttachment> originalFiles = localService.selectLocalAttachments(no);
+//		//다시 담아주고
+//		List<Integer> addFileList = new ArrayList<>();
+//		//비교하기
+//		for(int i=0; i<originalFiles.size();  i++) {
+//			 addFileList.add( originalFiles.get(i).getAttachNo());
+//		 }
+//		//첨부파일 가져온거 삭제하기		
+//		
+//	
+//				
+//		//첨부파일 저장 및 Attachment 객체 만들기
+//				for(MultipartFile upFile : upFiles) {
+//					log.debug("upFile = {} ", upFile);
+//					log.debug("upFile = {} ", upFile.getOriginalFilename());
+//					log.debug("upFileSize = {} ", upFile.getSize());
+//					
+//					if(upFile.getSize() > 0) {
+//						// 저장
+//						String renamedFilename = OeeUtils.renameMultipartFile(upFile);
+//						String originalFilename = upFile.getOriginalFilename();
+//						File destFile = new File(saveDirectory, renamedFilename);
+//						try {
+//							upFile.transferTo(destFile);
+//						}  catch (IllegalStateException | IOException e) {
+//							log.error(e.getMessage(), e);
+//						}
+//						
+//						// attach객체 생성 및 Board에 추가
+//						LocalAttachment attach = new LocalAttachment();
+//						attach.setReFilename(renamedFilename);
+//						attach.setOriginalFilename(originalFilename);
+//						local.addAttachment(attach);
+//					}
+//				}
+				
+				//Board 저장
+				int result = localService.insertLocalBoard(local);
+				log.debug("result : " + result);
+//		redirectAttr.addFlashAttribute("msg","게시글이 수정됐습니다.");
 		return "redirect:/local/localDetail.do?no=" + local.getNo();
 	}
 	
