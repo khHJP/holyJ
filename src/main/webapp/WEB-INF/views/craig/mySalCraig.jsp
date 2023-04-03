@@ -62,8 +62,7 @@
 							<hr id="hogi-hr"/>
 							<ul id="f-button">
 							<c:if test="${sal.state eq 'CR2'}">
-								<input type="button" data-no="${sal.no}" class="book" id="f-li" value="예약중"></input>
-								<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+								<a href="${pageContext.request.contextPath}/chat/chatList.do"><input type="button" onclick="bookFrm" class="book" id="f-li" value="예약중"></input></a>
 							</c:if>
 							<c:if test="${sal.state eq 'CR1'}">
 								<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>
@@ -85,7 +84,7 @@
 	</div>
 
 <script>
-document.querySelector(".book").addEventListener("click", (e) => {
+/* document.querySelector(".book").addEventListener("click", (e) => {
 		
 	const no =  e.target.dataset.no;
 	console.log(  no  );
@@ -107,7 +106,7 @@ document.querySelector(".book").addEventListener("click", (e) => {
 		},
 		error : console.log
 	}); 
-});
+}); */
 document.querySelector(".sal").addEventListener("click", (e) => {
 		
 	const no =  e.target.dataset.no;

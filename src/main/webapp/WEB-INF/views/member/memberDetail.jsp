@@ -18,30 +18,29 @@
 
 	<table>
 		<th>
-				
-		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
-				<div class="avatar-upload">
-				       <div class="avatar-edit">
-				           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-				           <label for="imageUpload">
-				           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload">
-				           </label>
-				       </div>
-				       <div class="avatar-preview">
-				       	<div id="imageP">
-				           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
-				           </div>
-				       </div>
-				   </div>
-				
-					<td>
-						<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
-					</td>
+			<div class="avatar-upload">
+			       <div class="avatar-edit">
+			           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+			           <label for="imageUpload">
+			           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload">
+			           </label>
+			       </div>
+			       <div class="avatar-preview">
+			       	<div id="imageP">
+			           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+			           </div>
+			       </div>
+			   </div>
+			
+				<td>
+					<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
+				</td>
 		</th>
 	</table>
 	<br /><br />
 	<sec:authentication property="principal" var="loginMember"/>
 	<div id="update-container">
+		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
 		<!-- form:form 태그는 유효 아이디값 하나가 hidden 으로 생성된다. -->
 			<div class="detail">
 				<label for="" id="update">닉네임</label>
@@ -100,19 +99,39 @@
 		}
 	};
 	
+	/* 프로필 미리보기 */
+	document.querySelector("#imageUpload").addEventListener('change', (e) => {
+	    const img = e.target;
+	    const div = document.querySelector("#imageP")
+	    const preview = document.createElement("img");
+	    preview.classList.add("imagePreview");
+	    
+	    if(img.files[0]){
+	        // 파일 선택한 경우
+	        const fr = new FileReader(); // html5 api
+	        fr.readAsDataURL(img.files[0]); // 비동기처리 - 언제끝날지 몰라 백그라운드에서 작업함
+	        fr.onload = (e) => {
+	            // 읽기 작업 완료시 호출될 load이벤트핸들러
+	            $('#imageP').empty();
+	            preview.src = e.target.result; // result속성은 dataUrl임
+	            div.append(preview);
+	        };
+	    }
+	    
+	});
 	
-	
-	
+	/* ----------------------------------------------------------------------------------- */
 	function readURL(input) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
-	            $('#imageP').empty();
+	            $('#imagePreview').remove();
 	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
 	        }
 	        reader.readAsDataURL(input.files[0]);
 	    }
 	}
+	/* ----------------------------------------------------------------------------------- */
 	$("#imageUpload").change(function() {
 	    readURL(this);
 	});

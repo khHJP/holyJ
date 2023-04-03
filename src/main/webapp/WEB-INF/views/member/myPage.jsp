@@ -21,9 +21,9 @@
 	<table>
 		<th>
 			<td>
-			<button type="button" class="btn btn-lg" data-bs-toggle="popover" data-bs-title="타이틀이다 이시키야" data-bs-content="안뇽">
+			<!-- <button type="button" class="btn btn-lg" data-bs-toggle="popover" data-bs-title="타이틀이다 이시키야" data-bs-content="안뇽"> -->
 				  <img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
-			</button>
+			
 			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
@@ -83,6 +83,5 @@
 		
 	</script>
 		
-	
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
