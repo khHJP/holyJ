@@ -44,15 +44,17 @@ button, input, optgroup, select, textarea {
 
 <h2> 내 물건 팔기  </h2>
 <div id="craigBoardContainer">
-	
+
 	<form:form id="craigEnrollFrm" name="craigEnrollFrm"  enctype ="multipart/form-data"  method="post"
-		 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >
-		
+		 action="${pageContext.request.contextPath}/craig/craigBoardEnroll.do?${_csrf.parameterName}=${_csrf.token}"  >	
 		<sec:authentication property="principal" var="loginMember"/>
 			<input type="hidden" class="form-control" name="writer" id="writer" value="${loginMember.memberId}" required>
 			
 			<table id="crentb" style="border: 1.5px solid lightgray; border-top:2px solid lightgray; border-bottom:2px solid lightgray; margin-bottom: 20px; padding: 30px;"  >		
 			<!-- ●  첨부파일 ● -->	
+				<tr>
+					<th colspan="3" style="max-height:35px; height: 35px; padding-top:13px; color: green; border-bottom: none "> 모든 내용을 빠짐없이 기재해주세요 </th>	
+				</tr>
 				<tr>
 					<th style="max-width : 100px; min-width: 100px;" colspan="2">
 						<div style="display: flex; margin:20px 0px 10px 0px;">
@@ -104,21 +106,21 @@ button, input, optgroup, select, textarea {
 			</tr>	
 
 			<tr>
-				<th colspan="2" style="border: none">내용</th>
+				<th colspan="2" style="border: none">상세내용</th>
 			</tr>
 
 			<tr>
 				<th colspan="2" style="padding-bottom: 20px;">
-			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 내용을 작성해주세요 ✍️"  style="min-width:650px; height: 90px"  required="required"></textarea></br></br>
+			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 물건에 대한 정보를 써주세요 ✍️  &#13;&#10; &#13;&#10; &nbsp; ex)구매 시기, 구매 장소, 구매 당시 가격 등  "  style="min-width:650px; height: 110px"  required="required"></textarea></br>
 			    </th>
 		    </tr>
 			
-			<tr style="height: 50px;">
+			<tr style="height: 10px;">
 			</tr>			    
 		    
 		    <tr>
 				<th style="border: none; max-width : 100px;">거래희망장소</th>
-				<td style="border: none;  vertical-align: middle"> <button id="pickPlace"  class="btn btn-light"> 장소선택 </button><br>
+				<td style="border: none;  vertical-align: middle"> <button id="pickPlace"  style="border: 1px solid black" class="btn btn-light"> 장소선택 </button><br>
 			</tr>
 
 			<tr>

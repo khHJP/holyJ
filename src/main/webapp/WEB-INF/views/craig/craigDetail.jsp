@@ -123,13 +123,13 @@
 				</c:if>
 			</div>
 			<div class="carousel-item">
-				<c:if test="${fn:length(craigboard.attachments) > 2  }">
+				<c:if test="${fn:length(craigboard.attachments) > 2 && craigboard.attachments[2].reFilename != null  }">
 					<img class="d-block w-100"
 						src="${pageContext.request.contextPath}/resources/upload/craig/${craigboard.attachments[2].reFilename}"
 						alt="Third slide">
 				</c:if>
 				<c:if
-					test="${fn:length(craigboard.attachments) == 1 && craigboard.attachments[2].reFilename== null  }">
+					test="${fn:length(craigboard.attachments) >= 1 && craigboard.attachments[2].reFilename== null  }">
 					<img class="d-block w-100"
 						src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"
 						alt="First slide">
@@ -229,12 +229,15 @@
 
 <!-- contents  -->
 <div id="crbigContainer">
+	<%-- CR1 || CR3 - 거래/나눔 --%>
 	<c:if test="${craigboard.state == 'CR1'}">
 		<span class="badge badge-success" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 예약중 </span>
 	</c:if>
-	
-	<c:if test="${craigboard.state == 'CR3'}">
-		<span class="badge badge-secondary" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+	<c:if test="${craigboard.state == 'CR3' && craigboard.price != 0  }">
+		<span class="badge badge-secondary" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 거래완료 </span>
+	</c:if>
+	<c:if test="${craigboard.state == 'CR3' && craigboard.price == 0 && craigboard.categoryNo != 7  }">
+		<span class="badge badge-secondary" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 나눔완료 </span>
 	</c:if>
 	
 	<p id="titletd">${craigboard.title}</p>
@@ -275,16 +278,17 @@
 		class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
 	</c:if>
 
-	
+	<span>	<img src="${pageContext.request.contextPath}/resources/images/crtag.png"/></span>
 	<span id="crcate" class="spcateNdate"></span> 
 	<span class="spcateNdate" style="margin-left: 10px; margin-right: 10px">|</span>
 	<span class="spcateNdate" style="margin-right: 30px">
+
 		<fmt:parseDate value="${craigboard.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="date" /> 
-		<fmt:formatDate value='${date}' pattern="yyyy년 MM월 dd일" /> 등록
+		<fmt:formatDate value='${date}' pattern="yyyy년 MM월 dd일 a HH시 mm분"  type="both" dateStyle="full" timeStyle="full"  /> 등록
 	</span>
 
 	<c:if test="${craigboard.price > 0}">
-		<p id="crPrice">
+		<p id="crPrice" style="margin-top: 8px;">
 			<fmt:formatNumber pattern="#,###" value="${craigboard.price}" />원
 		</p>
 	</c:if>
@@ -529,6 +533,32 @@ function openPopup(url, name){
 }
 
 
+// 혜진추가 0402 - 채팅수 바로 증가
+const spancrChat = document.querySelector("#spancrChat");
+
+$( "#chatBtn" ).one( "click", function( event ) {
+	const craigNo = ${craigboard.no};
+
+	$.ajax({
+	    url : "${pageContext.request.contextPath}/craig/findmeFromChat.do",
+		method : 'get',
+		data : {no : craigNo},
+		dataType : 'json',
+		success(data){
+					console.log( "data : ", data  );
+					console.log( data==1  );
+					if(data == 1){
+						spancrChat.innerHTML =  parseInt(spancrChat.innerHTML);						
+					}
+					else if(data ==0 ){
+						spancrChat.innerHTML =  parseInt(spancrChat.innerHTML)+ parseInt(1);
+					}
+
+		},
+		error : console.log
+	});//end - ajax	
+});
+
 
 //신고
 document.querySelector("#reportBtn").addEventListener('click', (e)=>{
@@ -545,11 +575,6 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 })
 </script>	
 </c:if>
-
-
-
-
-
 
 
 <script>
@@ -664,11 +689,15 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 	});//end of pushheart 
 </script>
 
+
+
+
 <%-------------------- 다른 판매 상품 -------------------------%>
 <hr style="width: 610px; margin: 0 auto; margin-top: 60px; margin-bottom: 40px; border: 1px solid lightgray" />
 <div id="othercraigDiv">
 <h5 style="font-size: 18px;"> <span style="color:#28A745" >${craigboard.member.nickname}</span> 님의 다른 판매 상품</h5>
 <span> ❗다른 판매 상품은 최대 2개까지 노출됩니다 </span>
+	<c:if test="${othercraigs != null}">
 	<table id="craigWholeListTbl" style="text-align: center; margin-left: -30px; margin-top: 20px">
 		<tbody>
 			<tr style="padding-bottom : 30px; margin-bottom : 30px; ">		
@@ -677,7 +706,7 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 				<div class="explains" >
 					<%-- img --%>
 					<c:if test="${craig.attachments[0].reFilename != null}">
-					    <a><img style="display : inline-block; height : 200px; width:200px; border-radius: 10px" 
+					    <a><img id="eachimg" style="display : inline-block; height : 200px; width:200px; border-radius: 10px" 
 							    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
 					</c:if>
 					<c:if test="${craig.attachments[0].reFilename==null}">
@@ -697,18 +726,29 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 			</c:forEach>
 			</tr>
 		</tbody>
-	</table>	
+	</table>
+	</c:if>
+	<c:if test="${ othercraigs == null || othercraigs == '' || othercraigs[0] == null}">
+		<table style="background-color: #f5f5f5; height: 250px; width:610px; margin-top: 40px; text-align: center; border-radius: 20px">
+			<tbody>
+			<th>	
+			 아직 등록하신 다른 판매중인 상품이 없어요 😣
+			</th>
+			</tbody>
+		</table>	
+	</c:if>
+		
 </div>
 <br><br><br><br>
 <script>
 //■ 상세페이지
-document.querySelectorAll("td[data-crno]").forEach( (td)=>{
-	td.addEventListener('click', (e) => {
-
-		const no = td.dataset.crno;
-		console.log( no );
-		location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;		
+	document.querySelectorAll("td[data-crno]").forEach( (td)=>{
+		td.addEventListener('click', (e) => {
+	
+			const no = td.dataset.crno;
+			console.log( no );
+			location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;		
+		})
 	})
-})
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
