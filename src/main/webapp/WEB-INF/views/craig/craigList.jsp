@@ -21,10 +21,10 @@
 	.dropdown-toggle:hover{ color: black; background-color: white; -webkit-appearance:none; }
 	
 	#writeCraigbtn{
-		height:36px; width: 80px; 
+		height:38px; width: 80px; 
 		background-color: white; 
 		color:black; 
-		border-color: lightgray; 
+		border: 1.5px solid black;
 		top:-1px; position: relative; left:10px;  
 	}
 	
@@ -32,7 +32,7 @@
 	
 	#memberInfo{
 		width: 100px;
-		border:1px solid lightgray;
+		border: 1.5px solid black;
 		height: 38px;
 		padding: 6px;
 		padding-bottom : 12px;
@@ -79,8 +79,8 @@
 <br><br><br>
 	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
-	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
-			<button type="button" style="width:160px; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   	<div class="btn-group" style="margin: 0; padding-left:12px;  padding-right: 67px">
+			<button type="button" style="width:160px; border: 1.5px solid black  ; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    	중고거래 카테고리
 			</button>
 		  	<ul class="dropdown-menu">
@@ -104,7 +104,7 @@
 <section id="craigWhole" >	
 <!-- whole List  -->
 	<c:if test="${searchCraigs == null}">
-		<h3 style="margin: 50px 0 30px 0; text-align: center;">중고거래 인기매물</h3>
+		<h3 style="margin: 80px 0 80px 0; text-align: center;"> 중고거래 인기 매물</h3>
 	</c:if>
 		
 	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
@@ -146,21 +146,28 @@
 									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
 							</c:if>
 								<p id="crtitle" class="crpp">${craig.title}</p>
-							<c:if test="${craig.price > 0}">
-								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
-							</c:if>
+
 							<%-- CR1 || CR3--%>
 							<c:if test="${craig.state == 'CR1'}">
-								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 예약중 </span></p>
 							</c:if>
-							<c:if test="${craig.state == 'CR3'}">
-								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							<c:if test="${craig.state == 'CR2'}">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>
 							</c:if>
-		
+							<c:if test="${craig.state == 'CR3' && craig.price != 0  }">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>
+							</c:if>
+							<c:if test="${craig.state == 'CR3' && craig.price == 0 && craig.categoryNo != 7  }">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>
+							</c:if>
+							<c:if test="${craig.price > 0}">
+								<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							</c:if>		
 							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"> ${craigChatCnt[vs.index]} </span> 
+								<p id="crdong" class="crpp">${craig.dong.dongName}</p> 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"> ${craigChatCnt[vs.index]} </span></p> 
 							</div>
 						</td>
 					<c:if test="${vs.index %4==3}">
@@ -186,22 +193,31 @@
 							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
 									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
 							</c:if>
-								<p id="crtitle" class="crpp">${searchcraig.title}</p>
-							<c:if test="${searchcraig.price > 0}">
-								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
-							</c:if>
+
+							<p id="crtitle" class="crpp">${searchcraig.title}</p>
+							
 							<%-- CR1 || CR3--%>
 							<c:if test="${searchcraig.state == 'CR1'}">
-								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 예약중 </span></p>
 							</c:if>
-							<c:if test="${searchcraig.state == 'CR3'}">
-								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							<c:if test="${searchcraig.state == 'CR2'}">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>
 							</c:if>
-		
+							<c:if test="${searchcraig.state == 'CR3' && searchcraig.price != 0  }">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>
+							</c:if>
+							<c:if test="${searchcraig.state == 'CR3' && searchcraig.price == 0 && searchcraig.categoryNo != 7  }">
+								<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>
+							</c:if>
+							
+							<c:if test="${searchcraig.price > 0}">
+								<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
+							</c:if>		
 							<c:if test="${searchcraig.price == 0 && searchcraig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">${craigChatCnt[searchvs.index]}</span> 
+								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">${craigChatCnt[searchvs.index]}</span></p>
 							</div>
 						</td>
 					<c:if test="${searchvs.index %4==3}">
@@ -412,7 +428,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					if( data.searchCrategory[i].price > 0  ){
 						let p = data.searchCrategory[i].price;
 						let price = p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-						price_html = `<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;">\${price}원</p>`
+						price_html = `<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px;">\${price}원</p>`
 					}
 					else if( data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
 						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>`
@@ -424,21 +440,26 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					
 					let state_html = ``; //◆◆◆ 상태
 					if( data.searchCrategory[i].state == 'CR1' ){
-						 state_html = `<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>`
+						 state_html = `<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span></p>`
 					}
-								
-					else if( data.searchCrategory[i].state == 'CR3' ){
-						state_html = `<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>`
+					else if( data.searchCrategory[i].state == 'CR2'){
+						 state_html = `<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>`;
+					}								
+					else if( data.searchCrategory[i].state == 'CR3' && data.searchCrategory[i].price != 0 ){
+						state_html = `<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>`;
 					}
-					
+					else if( data.searchCrategory[i].state == 'CR3' && data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
+						state_html = `<p style="text-align: left; margin: 0 0 5px 20px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>`;
+					}
+
 					<%--  뿌리기  --%>
 					if( parseInt(i/4) == 0){
 						let	    chtml = img_html
 								chtml += `<p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-								chtml += price_html
 								chtml += state_html
+								chtml += price_html
 								chtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+									<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td = document.createElement('td');
 							  td.dataset.crno = data.searchCrategory[i].no;
@@ -451,10 +472,10 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					else if( parseInt(i/4) == 1){
 						let	cchtml = img_html
 								cchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-								cchtml += price_html
 								cchtml += state_html
+								cchtml += price_html
 								cchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+									<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td2 = document.createElement('td');
 							  td2.dataset.crno = data.searchCrategory[i].no;
@@ -467,10 +488,10 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					else if( parseInt(i/4) == 2){
 						let ccchtml = img_html
 							ccchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-							ccchtml += price_html
 							ccchtml += state_html
+							ccchtml += price_html
 							ccchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td3 = document.createElement('td');
 							  td3.dataset.crno = data.searchCrategory[i].no;
