@@ -4,7 +4,7 @@ body {
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* craig -  enroll, pickPlace 관련 css */
+/* craig -  enroll, pickPlace, update  관련 css */
 h2{
 	margin-top: 100px;
 	text-align: center;
@@ -119,4 +119,8 @@ table td{
 	background-color: #c0c0c0; 
 }
 
+#statemodalcfm:hover{
+	color:black;
+	background-color: #b5b5b5;
+}
 

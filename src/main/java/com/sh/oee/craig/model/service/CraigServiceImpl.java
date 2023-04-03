@@ -205,6 +205,14 @@ public class CraigServiceImpl implements CraigService {
 	public List<Craig> selectOtherCraigs(  Map<String, Object> otherParam ) {
 		return craigDao.selectOtherCraigs(otherParam);
 	}
+	
+	//나 채팅방 찾아
+	@Override
+	public int findmeFromChat(Map<String, Object> param) {
+		return craigDao.findmeFromChat(param);
+	}
+
+
 
 	
 	

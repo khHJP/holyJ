@@ -109,8 +109,8 @@
 <!-- ■ insert ■ jin  -->
 <insert id="insertCraigBoard">
 
-	insert into craig (no, category_no, writer, title, content, latitude, longitude, place_detail, price)
-			values( seq_craig_no.nextval, #{categoryNo}, #{writer}, #{title},#{content}, #{latitude}, #{longitude}, #{placeDetail}, #{price})
+	insert into craig (no, category_no, writer, title, content, latitude, longitude, place_detail, price, reg_date )
+			values( seq_craig_no.nextval, #{categoryNo}, #{writer}, #{title},#{content}, #{latitude}, #{longitude}, #{placeDetail}, #{price}, sysdate+9/24)
 	
 	<selectKey  order="AFTER" resultType="_int" keyProperty="no"> 
 		select seq_craig_no.currval from dual
@@ -118,7 +118,7 @@
 </insert>
 
 <insert id="insertCraigAttachment">
-	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, default)
+	insert into craig_Attachment values(seq_craig_attach_no.nextval, #{craigNo}, #{originalFilename}, #{reFilename}, sysdate+9/24 )
 </insert>
 
 <!-- ■  update - added completedate on0331 ■  jin  -->
@@ -132,7 +132,7 @@
 		place_detail = #{placeDetail},
 		price = #{price},
 		state = #{state},
-		complete_date = sysdate
+		complete_date = sysdate+9/24 
 	where no = #{no}	
 </update>
 
@@ -355,6 +355,13 @@ order by  cr.no desc
 	                    on cr.writer = m.member_id 
 	where not cr.no = #{no} and cr.writer = #{memberId} and cr.state = 'CR2' 
 	order by  cr.no desc     
+</select>
+
+<select id="findmeFromChat" resultType="_int">
+	select count(*) 
+	from craig_chat 
+	where craig_no = #{no}
+		and member_id = #{memberId}
 </select>
 
 </mapper>

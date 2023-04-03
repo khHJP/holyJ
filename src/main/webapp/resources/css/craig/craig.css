@@ -24,7 +24,7 @@ body {
 
 #searchKeyword {
   width: 600px;
-  border: 1px solid lightgray;
+  border: 1.5px solid black;
   border-right: none;
   padding: 5px;
   height:39px;
@@ -38,8 +38,8 @@ body {
 
 .searchButton {
   width: 40px;
-  height: 38px;
-  border: 1.5px solid lightgray;
+  height: 39px;
+  border: 1.5px solid black;
   background: #ffffff;
   text-align: center;
   color: black;
@@ -48,7 +48,7 @@ body {
   font-size: 20px;
   margin-left: -5px;
   position: relative;
-  top:1.8px;
+  top:2px;
 }
 
 
@@ -62,22 +62,31 @@ body {
 	font-weight: 300;
 	font-size: 15px;
 	color: black;
-	
+	text-align: left;
+	padding-left: 20px;
+
 }
 
 #crtitle{
 }
 
+#crwishsp{
+	text-align: center;
+}
+
 #crdong{
 	font-size: 14px;
 	color : black;
-	font-weight: 300
+	font-weight: 300;
+	text-align: left;
+	padding-left: 20px;
 }
 
 #crprice{
 	font-size: 14px;
 	color : black;
-	font-weight: 600
+	font-weight: 600;
+	margin-top: 15px;
 }
 
 
@@ -89,7 +98,8 @@ body {
 .crwishchat{
 	font-size: 14px;
 	color : gray;
-	font-weight: 300
+	font-weight: 300;
+	margin-left: 20px;
 	
 }
 
@@ -100,6 +110,9 @@ body {
 	
 }
 
+ #crchat{
+ 	margin-left: 3px;
+ }
 
 #crContent{
 	font-size: 18px;
@@ -287,3 +300,24 @@ body {
 h5{
 	color: black;
 }
+
+
+.crnotd{
+	text-align: center;
+}
+
+/**
+.crnotd:hover{
+	background-color: #E9ECEF;
+	border-radius : 10px;
+	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	
+}
+**/
+
+#eachimg:hover{
+	transform: scale( 1.08 );
+  	transition: all 0.5s	
+}
+
+

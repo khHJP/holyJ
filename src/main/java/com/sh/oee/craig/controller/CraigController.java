@@ -581,8 +581,22 @@ public class CraigController {
     } 
 
 	 
+	 @ResponseBody
+	 @GetMapping("/findmeFromChat.do")
+	 public int findmeFromChat(@RequestParam int no, Authentication authentication, Model model) {
+		 
+		 Member member = ((Member)authentication.getPrincipal());
+		 
+		 Map<String, Object> param = new HashMap<>();  
+		 param.put("no", no);
+		 param.put("memberId", member.getMemberId());
+		 
+		 Integer result = craigService.findmeFromChat(param);
+		 log.debug("result  : ", result);
+		 return result;
+	 }
 	 
-	 
+
 	 
 	 
 	 

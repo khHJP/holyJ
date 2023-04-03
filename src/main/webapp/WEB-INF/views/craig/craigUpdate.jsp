@@ -101,7 +101,7 @@
 						<select onclick = "selectState(this.value);"  class="custom-select"  id="state" name="state"  style="max-width:100px; height: 31px; border-radius: 10px"  >
 						    <option  value="CR1">예약중</option>
 						    <option  value="CR2">판매중</option>
-						    <option  value="CR3">판매완료</option>
+						    <option  value="CR3">거래완료</option>
 					    </select>	
 				    </div>
 				</td>
@@ -132,11 +132,11 @@
 
 			<tr>
 				<th colspan="2" style="padding-bottom: 20px;">
-			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 내용을 작성해주세요 ✍️"  style="min-width:650px; height: 90px"  required="required"></textarea></br>
+			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 물건에 대한 정보를 써주세요 ✍️  &#13;&#10; &#13;&#10; &nbsp; ex)구매 시기, 구매 장소, 구매 당시 가격 등  "  style="min-width:650px; height: 110px"  required="required"></textarea></br>
 			    </th>
 		    </tr>
 			
-			<tr style="height: 50px;">
+			<tr style="height: 10px;">
 			</tr>			    
 		    
 		    <tr>
@@ -223,9 +223,28 @@
 		}
 	
 	}
-	
-	
 </script>
+
+<!--  거래완료로 변경 시  -->
+<div id="myModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: red"> 주의! </h5>
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></br>
+        거래완료로 변경하시면 추후 게시글 수정이 불가합니다!
+      </br></br></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 //	장소고르기
@@ -247,12 +266,14 @@
 	$("#state").on("change", function(){
 		
 		const text = $(this).find("option:selected").text();
-		if(text=='판매완료'){
-			alert("판매완료로 변경하시면 추후 게시글 수정이 불가합니다!")
+		if(text=='거래완료'){
+    		$('#myModal').modal('show');
 		}
-	});
-	
-	
+		if(text !='거래완료'){
+//			alert("거래완료로 변경하시면 추후 게시글 수정이 불가합니다!");
+    		$('#myModal').modal('hide')
+		}
+	});		
 </script>	
 
 <script>
