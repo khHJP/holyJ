@@ -12,7 +12,7 @@ public class CraigCronTest {
 	 //scheduling - 0403
 	 @Scheduled(cron = "0/5 * * * * *")
 	 public void craigCronScheduleTest() {
-		 log.debug("scheduling 실행 테스트 - 5초에 1번씩 console찍기 ");
+		// log.debug("scheduling 실행 테스트 - 5초에 1번씩 console찍기 ");
 	 }
 	 
 	 

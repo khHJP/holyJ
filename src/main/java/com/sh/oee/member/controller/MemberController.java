@@ -2,11 +2,14 @@ package com.sh.oee.member.controller;
 
 
 import java.net.URLEncoder;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +31,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sh.oee.common.OeeUtils;
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.DongRangeEnum;
 import com.sh.oee.member.model.dto.Gu;
@@ -46,6 +51,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private ServletContext application;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -204,11 +212,32 @@ public class MemberController {
 	}
 	 
 	 @PostMapping("/memberUpdate.do")
-		public String memberUpdate(Member member, Authentication authentication,RedirectAttributes redirectAttr) {
+		public String memberUpdate(Member member, 
+				Authentication authentication,
+				@RequestParam("upFile") MultipartFile imageUpload,
+				RedirectAttributes redirectAttr) {
 			log.debug("member = {}", member);
 			String rawPassword = member.getPassword();
 			String encodePassword = passwordEncoder.encode(rawPassword);
 			member.setPassword(encodePassword);
+			
+			log.debug("imageUpload = {}", imageUpload);
+			String saveDirectory = application.getRealPath("/resources/upload/profile");
+			log.debug("saveDirectory = {}", saveDirectory);
+			
+			if(imageUpload.getSize() >0) {
+				String profileImg = OeeUtils.idMultipartFile(imageUpload, authentication);
+				String originalFilename = imageUpload.getOriginalFilename();
+				File destFile = new File(saveDirectory, profileImg);
+				 try {
+					 imageUpload.transferTo(destFile);
+				 }catch (IllegalStateException | IOException e) {
+						log.error(e.getMessage(), e);
+				 }
+				 log.debug("profileImg = {} ",profileImg);
+				 // 2. profile member에 추가				 
+				 member.setProfileImg(profileImg);
+			}
 			// 1. db변경
 			int result = memberService.updateMember(member);			
 			
@@ -258,8 +287,7 @@ public class MemberController {
 	 }
 	
 	 @GetMapping("/pwCheck.do")
-	 public void pwCheck(Authentication authentication) {
-	 }
+	 public void pwCheck(Authentication authentication) {	 }
 
 	// @RequestMapping("/member") 작성
 	// views에 member folder 생성후 myPage.jsp 생성

@@ -16,18 +16,19 @@
 <br />
 <br />
 
+	<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
 	<table>
 		<th>
 			<div class="avatar-upload">
 			       <div class="avatar-edit">
-			           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+			           <input type='file' id="imageUpload" name="upFile" accept=".png, .jpg, .jpeg" />
 			           <label for="imageUpload">
-			           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload">
+			           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload" name="profileImg">
 			           </label>
 			       </div>
 			       <div class="avatar-preview">
 			       	<div id="imageP">
-			           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+			           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" class="imagePreview">
 			           </div>
 			       </div>
 			   </div>
@@ -40,7 +41,6 @@
 	<br /><br />
 	<sec:authentication property="principal" var="loginMember"/>
 	<div id="update-container">
-		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
 		<!-- form:form 태그는 유효 아이디값 하나가 hidden 으로 생성된다. -->
 			<div class="detail">
 				<label for="" id="update">닉네임</label>
@@ -62,9 +62,10 @@
 			<input type="submit" class="btn btn-outline-success" value="수정" >&nbsp;
 			<input type="button" class="btn btn-outline-success" onclick="deleteMember()" value="탈퇴">
 			</div>
-		</form:form>
 	</div>
+		</form:form>
 <form:form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form:form>
+</body>
 <script>
 	const deleteMember = () => {
 		if(confirm('정말 회원탈퇴하시겠습니까?')){
@@ -75,7 +76,6 @@
 		const nickname = document.querySelector("#nickname");
 		const password = document.querySelector("#password");
 		const phone = document.querySelector("#phone");
-		const profileImg = document.querySelector("#profileImg");
 		
 		// 닉네임 - 한글 2~8자 이상
 		if(!/^[가-힣]{2,8}$/.test(nickname.value)){
@@ -120,47 +120,6 @@
 	    
 	});
 	
-	/* ----------------------------------------------------------------------------------- */
-	function readURL(input) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        reader.onload = function(e) {
-	            $('#imagePreview').remove();
-	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-	        }
-	        reader.readAsDataURL(input.files[0]);
-	    }
-	}
-	/* ----------------------------------------------------------------------------------- */
-	$("#imageUpload").change(function() {
-	    readURL(this);
-	});
-	 
-	/*  document.profileUpdateFrm.addEventListener("submit", (e) => {
-			e.preventDefault(); // 폼제출 방지
-			
-			// FormData객체 생성
-			const frmData = new FormData(e.target);
-			
-			// 등록 POST 
-			$.ajax({
-				url : "${pageContext.request.contextPath}/member/updateProfile.do",
-				method : "POST",
-				data : frmData,
-				dataType : "json",
-				contentType : false,
-				processData : false,
-				success(data){
-					console.log(data);
-					alert(data.result);
-				},
-				error : console.log,
-				complete(){
-					e.target.reset();
-				}
-			});
-		}); */
 	</script>
 	
-</body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
