@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
+import com.sh.oee.chat.model.dto.MsgAttach;
 
 @Mapper
 public interface ChatDao {
@@ -28,8 +29,8 @@ public interface ChatDao {
 
 	@Select("select chatroom_id from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
 	List<String> findCraigChatList(Map<String, Object> craigChatMap);
-
-	@Insert("insert into craig_msg values (seq_craig_msg_no.nextval, #{chatroomId}, #{writer}, #{content}, #{sentTime}, #{type})")
+ 
+	
 	int insertCraigMsg(CraigMsg craigMsg);
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
@@ -45,6 +46,14 @@ public interface ChatDao {
 
 	@Update("update craig_chat set del_date = null, reg_date = #{regDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
 	int updateRegDel(Map<String, Object> regDelMap);
+
+	int insertCraigMsgAttach(MsgAttach attach);
+
+	@Select("select * from craig_msg_attach where re_filename = #{content}")
+	MsgAttach findCraigMsgAttach(String content);
+
+	@Update("update craig_msg_attach set msg_no = #{msgNo} where re_filename = #{reFilename}")
+	int updateCraigAttachMsgNo(Map<String, Object> map);
 
 
 

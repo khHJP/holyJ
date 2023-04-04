@@ -21,7 +21,7 @@
 	.dropdown-toggle:hover{ color: black; background-color: white; -webkit-appearance:none; }
 	
 	#writeCraigbtn{
-		height:38px; width: 80px; 
+		height:39px; width: 80px; 
 		background-color: white; 
 		color:black; 
 		border: 1.5px solid black;
@@ -75,7 +75,6 @@
 }
 </style>
 
-<%-- 해야되는거 - read카운트 처리  --%>
 <br><br><br>
 	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
@@ -102,7 +101,7 @@
 	    </div>
 	</div>
 <section id="craigWhole" >	
-<!-- whole List  -->
+<%-- whole List  --%>
 	<c:if test="${searchCraigs == null}">
 		<h3 style="margin: 80px 0 80px 0; text-align: center;"> 중고거래 인기 매물</h3>
 	</c:if>
@@ -283,8 +282,8 @@
 		</nav>
 
 <%-- 비동기 더보기 버튼 --%>
-	<div class="btbca" style="	text-align: center;	">
-	<button id="btn-more" class="btn" style="margin: auto; visibility: hidden; border: 1px solid green" > 더보기 <span id="searchPage" >1</span> </button>	
+	<div class="btbca" style="text-align: center;	">
+	<button id="btn-more"  class="btn" style="margin: auto; visibility: hidden; width:100px; border: 1px solid green;" > 더보기 <span id="searchPage" >1</span> </button>	
 	</div>
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
