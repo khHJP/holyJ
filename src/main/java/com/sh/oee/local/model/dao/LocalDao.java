@@ -7,13 +7,14 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
-import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
@@ -24,7 +25,7 @@ public interface LocalDao {
 	
 
 	//동네생활 전체목록
-	List<Local> selectLocalListByDongName(List<String> myDongList);
+	List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds);
 	
 	//카테고리
 	@Select("select * from local_category")
@@ -39,7 +40,7 @@ public interface LocalDao {
 	@Select("select * from local where writer = #{memberId}")
 	List<Local> selectLocalList(Member member);
 	
-	List<LocalComment> selectLocalCommentList(String memberId);
+	List<LocalCommentEntity> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------
 
 	//게시글 한건 조회
@@ -73,8 +74,18 @@ public interface LocalDao {
 	int deleteLocalAttachment(int no);
 
 	
-	//첨부파일 삭제
-	@Delete("delete from local_attachment where attach_no = #{attachNo}")
-	int deleteAttachment(int attachNo);
+	
+
+	int selectAttachNo(int no);
+
+	int updateAttachFile(LocalAttachment attach);
+
+	int getLocalTotalCount(Map<String, Object> param);
+
+	//댓글
+	int insertComment(LocalCommentEntity comment);
+
+	List<LocalCommentEntity> commentList(int no);
+
 
 }
