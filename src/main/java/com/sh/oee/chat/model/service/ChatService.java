@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
+import com.sh.oee.chat.model.dto.MsgAttach;
 
 public interface ChatService {
 
@@ -29,5 +30,9 @@ public interface ChatService {
 	int updateDel(Map<String, Object> delMap);
 
 	int updateRegDel(Map<String, Object> regDelMap);
+
+	int insertCraigMsgAttach(MsgAttach attach);
+
+	int updateCraigAttachMsgNo(Map<String, Object> map);
 
 }
