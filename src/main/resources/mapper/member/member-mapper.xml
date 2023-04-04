@@ -20,7 +20,8 @@
 		set 
 			nickname = #{nickname}, 
 			password = #{password}, 
-			phone = #{phone}
+			phone = #{phone},
+			profile_img = #{profileImg}
 		where 
 			member_id = #{ memberId } 
 		</update>

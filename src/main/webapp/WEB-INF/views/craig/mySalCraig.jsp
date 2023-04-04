@@ -28,9 +28,7 @@
 		<c:choose>
 			<c:when test="${not empty mySalCraig}">
 				<c:forEach items="${mySalCraig}" var="sal">
-					<form:form name="salFCriagFrm" action="${pageContext.request.contextPath}/craig/salFCraig.do" method="POST">
-								<input type="hidden" name="no" value="${sal.no}"/>
-						 <ul data-no="${sal.no}" name="no" id="ul-table">
+						 <ul data-no="${sal.no}" id="ul-table">
 					 		<li id="li-img">
 								<c:if test="${sal.attachments[0].reFilename != null}">
 								   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${sal.attachments[0].reFilename}"/>
@@ -60,18 +58,19 @@
 							</ul>
 							</ul>
 							<hr id="hogi-hr"/>
+							<form:form name="salFCriagFrm" action="${pageContext.request.contextPath}/craig/salFCraig.do" method="POST">
+							<input type="hidden" name="no" value="${sal.no}"/>
 							<ul id="f-button">
 							<c:if test="${sal.state eq 'CR2'}">
-								<input type="button" data-no="${sal.no}" class="book" id="f-li" value="예약중"></input>
-								<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+								<a href="${pageContext.request.contextPath}/chat/chatList.do"><input type="button" class="book" id="f-li" value="예약중"/></a>
 							</c:if>
-							<c:if test="${sal.state eq 'CR1'}">
-								<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>
-								<input type="submit" class="finish" id="f-li" value="판매완료"></input>
-							</c:if>
+								<c:if test="${sal.state eq 'CR1'}">
+									<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>
+									<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+								</c:if>
 							</ul>
+							</form:form>
 							<hr id="hogi-hr"/>
-						</form:form>
 				</c:forEach>
 			</c:when>
 				<c:otherwise>
@@ -85,29 +84,16 @@
 	</div>
 
 <script>
-document.querySelector(".book").addEventListener("click", (e) => {
-		
-	const no =  e.target.dataset.no;
-	console.log(  no  );
-	const csrfHeader = "${_csrf.headerName}";
-    const csrfToken = "${_csrf.token}";
-    const headers = {};
-    headers[csrfHeader] = csrfToken;
-	// 등록 POST 
-	$.ajax({
-		url : `${pageContext.request.contextPath}/craig/bookCraig.do`,
-		method : 'POST',
-		headers,
-		data : {no : e.target.dataset.no},
-		success(data){
-			console.log(data);
-			if(data=1){//data =1 -> 성공했다 delete 했다 그래서 리턴값이 1이다 
- 				$(e.target).remove(); //태그 자체를 없애주세요 
- 			}
-		},
-		error : console.log
-	}); 
-});
+document.querySelectorAll("#ul-table").forEach((ul) => {
+	ul.addEventListener('click', (e) => {
+		// console.log(e.target, tr);
+		const no = ul.dataset.no;
+		console.log(no);
+	
+	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
+	});
+});		
+
 document.querySelector(".sal").addEventListener("click", (e) => {
 		
 	const no =  e.target.dataset.no;
@@ -131,15 +117,6 @@ document.querySelector(".sal").addEventListener("click", (e) => {
 		error : console.log
 	}); 
 });
-document.querySelectorAll("#ul-table").forEach((ul) => {
-	ul.addEventListener('click', (e) => {
-		// console.log(e.target, tr);
-		const no = ul.dataset.no;
-		console.log(no);
-	
-	location.href = '${pageContext.request.contextPath}/craig/craigDetail.do?no=' + no;
-	});
-});		
 		
 </script>
 	

@@ -26,19 +26,11 @@
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
-			<td>
-			<c:choose>
-				<c:when test="${principal.manner < 30}">
-					<span id="tmp1"><sec:authentication property="principal.manner"/></span>
-				</c:when>
-				<c:when test="${principal.manner > 90}">
-					<span id="tmp3"><sec:authentication property="principal.manner"/></span>
-				</c:when>
-				<c:otherwise>
-					<span id="tmp2"><sec:authentication property="principal.manner"/></span>
-				</c:otherwise>
-			
-			</c:choose>
+			<td>		
+				<span id="tmp2"><sec:authentication property="principal.manner"/>℃</span>
+				
+				<input type="range" class="form-range" id="disabledRange" value = "<sec:authentication property="principal.manner"/>" style="display:block" disabled>
+
 				<%-- <c:if test="${loginMember.manner < 30}"><span id="tmp1"><sec:authentication property="principal.manner"/></span></c:if>
 				<c:if test="${loginMember.manner >= 30 && loginMember.manner <= 60}"><span id="tmp2"><sec:authentication property="principal.manner"/></span></c:if>
 				<c:if test="${loginMember.manner > 60}"><span id="tmp3"><sec:authentication property="principal.manner"/></span></c:if> --%>
@@ -63,6 +55,14 @@
 		</li>
 		<hr />
 	</div>
-	
 </body>
+<script>
+var emojis = ['😠','😦','😑','😀','😍'];
+
+$("input").change(function(){
+	var i = $(this).val();
+	$(".emoji").html(emojis[i]);
+});
+
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
