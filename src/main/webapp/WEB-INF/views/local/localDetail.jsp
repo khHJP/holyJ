@@ -183,7 +183,9 @@
 		<div id="commentList">
 		<c:forEach items="${commentList}" var="comment">
 		<!-- 모댓글 -->
+		<div class="moComment" style="margin-left:20px;">
 		<c:if test="${comment.commentLevel == 1}">
+			<i class="bi-three-dots-vertical commentdots"></i>
 		<div class="memberInfo">
 			<div class="profileimg">
 				<img src="${pageContext.request.contextPath}/resources/upload/profile/${comment.member.profileImg}" alt="사용자프로필">
@@ -201,9 +203,10 @@
 			<p class="commentContent"> ${comment.content }</p>
 			<span class="replybtn">답글쓰기</span>
 		</c:if>
+		</div>
 		<!-- 대댓글 -->
 		<c:if test="${comment.commentLevel > 1 }">
-			<div class="reComment" style="margin-left : 30px;">
+			<div class="reComment" style="margin-left:60px;">
 				<div class="memberInfo">
 			<div class="profileimg">
 				<img src="${pageContext.request.contextPath}/resources/upload/profile/${comment.member.profileImg}" alt="사용자프로필">
