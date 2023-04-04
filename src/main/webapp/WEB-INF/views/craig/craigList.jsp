@@ -513,15 +513,23 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		 		if(data.totalPage > 1 ){								 
 					document.querySelector("#btn-more").style.visibility="visible";
 					document.querySelector("#searchPage").innerHTML = Number(searchPage)+1 // 다음페이지셋팅 
-		 		}	
+		 		}
+				
+				if( searchPage == data.totalPage   ){ //버튼없애기
+					  const button = document.querySelector("#btn-more");
+							document.querySelector("#searchPage").innerHTML = 1;
+							document.querySelector("#btn-more").style.visibility="hidden";
+							document.querySelector("#btn-more").style.disabled="true";
+					}
+				
 			},
 			error : console.log,
 			complete(){
-				//마지막 페이지인 경우 더보기 버튼 비활성화 처리
-				if( searchPage == ${totalPage} ){
+				 if( searchPage == ${totalPage}   ){ // 이거안됨 왜 ? 무튼 마지막 페이지인 경우 더보기 버튼 비활성화 처리
 				  const button = document.querySelector("#btn-more");
 						document.querySelector("#searchPage").innerHTML = 1;
 						document.querySelector("#btn-more").style.visibility="hidden";
+						document.querySelector("#btn-more").style.disabled="true";
 				}
 			}	
 		});//end-ajax

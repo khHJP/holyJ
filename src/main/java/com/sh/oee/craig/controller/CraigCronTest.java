@@ -29,9 +29,10 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
+/**	혜진만 주석풀고 메소드 실행합니다!
 	@Scheduled(cron="0 15 15 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
-	public void craigCronSchedule() {//매일 19시에 실행 -- 잘되면 오전 1시로 바꾸기 
+	public void craigCronSchedule() {//매일 5시에 실행 -- 잘되면 오전 1시로 바꾸기 
 
 		 
 		log.debug("==========================   메소드 시작   =================================");
@@ -82,14 +83,12 @@ public class CraigCronTest {
 
 	 }
 	
-
+**/
 }
 
 
 /*
-
 어제 4/2일 12시 ~ 23:59분까지 
-반영된 매너온도를 오늘 새벽 1시에 작업하고 
-오늘 꺼는 낼 새벽에 작업한다 
- 
+반영된 매너온도를 오늘 새벽 5시에 작업하고 
+오늘 꺼는 낼 새벽에 작업한다  
  */
