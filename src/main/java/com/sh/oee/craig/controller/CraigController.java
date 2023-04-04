@@ -229,9 +229,9 @@ public class CraigController {
 	  
 	  }
  
-	 // ■ select one craigboard - 0402
+	 // ■ select one craigboard - 0402  --  ModelAndView mav
 	 @GetMapping("/craigDetail.do")
-	 public ModelAndView craigDetail(@RequestParam int no, ModelAndView mav, Authentication authentication, 
+	 public String craigDetail(@RequestParam int no, Model model, Authentication authentication, 
 	 							HttpServletRequest request, HttpServletResponse response) {
 		 
 		 Member member = ((Member)authentication.getPrincipal());
@@ -294,20 +294,20 @@ public class CraigController {
 			 
 			 
 			 List<Craig> othercraigs = craigService.selectOtherCraigs( otherParam );
-			 mav.addObject("othercraigs", othercraigs);
+//			 mav.addObject("othercraigs", othercraigs);
 			 
-			 mav.addObject("craigboard", craigboard); 
-			 mav.addObject("findCraigWish", findCraigWish);		 
-			 mav.setViewName("craig/craigDetail");
+//			 mav.addObject("craigboard", craigboard); 
+//			 mav.addObject("findCraigWish", findCraigWish);		 
+//			 mav.setViewName("craig/craigDetail");
 			 
 //			 model.addAttribute("name", "abc");   --- model은 왜안돼?????????????
-//			 model.addAttribute("craigoneboard", craigoneboard);
-//			 model.addAttribute("findCraigoneWish", findCraigoneWish);
-			 
+			 model.addAttribute("craigboard", craigboard);
+			 model.addAttribute("findCraigWish", findCraigWish);
+			 model.addAttribute("othercraigs", othercraigs);
 
 			 
-			 
-			 return mav;
+			 return "craig/craigDetail" ;
+//			 return mav;
 	 }
 
 
@@ -453,9 +453,10 @@ public class CraigController {
 			 int result = craigService.deleteCraigBoard(no);
 			 log.debug( "■ delete_result : " + result );
 		 }catch (Exception e) {
-				redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 삭제했습니다☺️");
+			 log.debug( "오류 = {}", e );
 		 }
 		 
+ 		 redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 삭제했습니다☺️");		 
 		 return "redirect:/craig/craigList.do";
 	 }
 
@@ -581,8 +582,22 @@ public class CraigController {
     } 
 
 	 
+	 @ResponseBody
+	 @GetMapping("/findmeFromChat.do")
+	 public int findmeFromChat(@RequestParam int no, Authentication authentication, Model model) {
+		 
+		 Member member = ((Member)authentication.getPrincipal());
+		 
+		 Map<String, Object> param = new HashMap<>();  
+		 param.put("no", no);
+		 param.put("memberId", member.getMemberId());
+		 
+		 Integer result = craigService.findmeFromChat(param);
+		 log.debug("result  : ", result);
+		 return result;
+	 }
 	 
-	 
+
 	 
 	 
 	 
