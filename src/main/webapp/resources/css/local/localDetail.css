@@ -93,6 +93,7 @@
 .div-comment {
 	font-size:12px;
 	margin-left:20px;
+	padding-top : 30px;
 }
 .bi-heart{
 	font-size:30px;
@@ -113,7 +114,32 @@ ul {
 .update , .report{
 	padding-top:10px;
 }
-
+#replytext {
+	background : none;
+	border : none;
+	width : 1030px;
+	height : 50px;
+	margin : auto;
+}
+#btnReply {
+	border : 1px dotted gray;
+	background-color : #B1D7B4;
+	margin-bottom : 10px;
+	border-radius : 8px;
+	padding : 2px 5px 2px 5px;
+}
+.replyBtn {
+	float:right;
+}
+.commentContent {
+	margin-left : 115px;
+}
+.replybtn{
+	margin-left :115px;
+	color:lightgray;
+	font-size : 12px;
+	padding-top:-2px;
+}
 
 
 
