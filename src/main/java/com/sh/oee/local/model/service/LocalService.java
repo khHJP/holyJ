@@ -3,10 +3,13 @@ package com.sh.oee.local.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+
+
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
-import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
@@ -15,7 +18,7 @@ import com.sh.oee.member.model.dto.Member;
 public interface LocalService {
 
 	//동네생활 전체목록
-	List<Local> selectLocalListByDongName(List<String> myDongList);
+	List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds);
 
 	//카테고리
 	List<Map<String, String>> localCategoryList();
@@ -32,7 +35,7 @@ public interface LocalService {
 	
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	List<Local> selectLocalList(Member member);
-	List<LocalComment> selectLocalCommentList(String memberId);
+	List<LocalCommentEntity> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------
 	
 	// 게시글 삭제
@@ -55,9 +58,23 @@ public interface LocalService {
 
 	int InsertLocalLike(Map<String, Object> param);
 
-	//첨부파일 삭제
-	int deleteAttachment(int attachNo);
+	
 
+	int selectAttachNo(int no);
+
+	int updateAttachFile(LocalAttachment attach);
+
+	int getLocalTotalCount(Map<String, Object> param);
+
+	
+	//댓글
+	int insertComment(LocalCommentEntity comment);
+
+	List<LocalCommentEntity> commentList(int no);
+
+	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no);
+
+	
 
 	
 

@@ -38,10 +38,16 @@
 				<textarea class="localContent" name="content" id="content" placeholder="내용" required="required">${localdetail.content}</textarea>
 				<hr>
 			</div>
-		
-			<input type="file" name="upFile" id="upFile1" value="${originalFiles[0].attachNo}">	 
+			<c:if test="${originalFiles ne null}">
+				<div>
+					<span>첨부파일: ${originalFiles[0].originalFilename}</span>
+					
+				</div>
+			</c:if>
+			<input type="file" name="upFile" id="upFile1" value="">	 
 		 <hr>
 		<div style="display:inline-block; margin: 0 30px;  float: right;">
+		<input type="hidden" name="no" value="${localdetail.no}">
 		<input type="button" class="cancelbtn" value="취소" onclick="history.go(-1)">
 		<input type="submit" class="submitbtn" value="수정">
 		</div>
