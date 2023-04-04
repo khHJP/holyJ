@@ -2,6 +2,8 @@ package com.sh.oee.manner.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.sh.oee.member.model.dto.Member;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,22 @@ public class Manner {
 	private String writer; // 작성자
 	private String recipient; // 대상자
 	private LocalDateTime regDate; // 등록일
+	private Member  member; // manner 평가 당한 사람 
+	
+	public Manner(@NonNull long mannerNo, int craigNo, Prefer prefer, Compliment compliment, String writer,
+			String recipient, LocalDateTime regDate) {
+		super();
+		this.mannerNo = mannerNo;
+		this.craigNo = craigNo;
+		this.prefer = prefer;
+		this.compliment = compliment;
+		this.writer = writer;
+		this.recipient = recipient;
+		this.regDate = regDate;
+	}
+	
+
+	
+	
+	
 }

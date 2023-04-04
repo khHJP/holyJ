@@ -93,6 +93,5 @@
 	<!--  혜진 schedule 추가 - 0403  -->
 	<task:annotation-driven scheduler="scheduler"/>
 	<task:scheduler id="scheduler" pool-size="10"/>
-
 	
 </beans:beans>
