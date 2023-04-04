@@ -89,7 +89,8 @@ public interface CraigService {
 	//상품+2
 	List<Craig> selectOtherCraigs( Map<String, Object> otherParam);
 
-	
+	// 내 아이디가 채팅방에 있니 	
+	int findmeFromChat(	 Map<String, Object> param );
 	
 	
 	
@@ -100,6 +101,8 @@ public interface CraigService {
 	// 🐹 ------- 효정 start ---------- 🐹	
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
+
 
 
 
