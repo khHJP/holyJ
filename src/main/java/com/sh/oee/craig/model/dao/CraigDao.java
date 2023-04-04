@@ -85,6 +85,8 @@ public interface CraigDao {
 	//상품+2
 	List<Craig> selectOtherCraigs(Map<String, Object> otherParam);
 
+	//나채팅방 찾아
+	int findmeFromChat(Map<String, Object> param);
 
 	
 // ================================ 혜진 ================================
