@@ -18,22 +18,22 @@ import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 
-@EnableScheduling
-@EnableSchedulerLock(defaultLockAtMostFor = "PT30S", defaultLockAtLeastFor = "PT30S") // (기본 세팅)30초동안 Lock
+//@EnableScheduling
+//@EnableSchedulerLock(defaultLockAtMostFor = "PT30S", defaultLockAtLeastFor = "PT30S") // (기본 세팅)30초동안 Lock
 @Component
 @Slf4j
 public class CraigCronTest {
 	
-	private static final String TEN_MIN = "PT10M"; // 1분동안 Lock
+	private static final String TEN_MIN = "PT10M"; // 10분동안 Lock
 
 	@Autowired
 	private MannerService mannerService;
 	
-	@Scheduled(cron="0 0 4 * * *")
+	@Scheduled(cron="0 56 14 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
 	public void craigCronSchedule() {//매일 19시에 실행 -- 잘되면 오전 1시로 바꾸기 
 	// 4/2일의 매너평가가 반영된 tigerhj의 매너온도는 36.5도 -> +0.2 +0.5  +0.1 +0.1 = 36.5 +0.9 = 37.4도가 되어야한다  
-	// 새벽 4시에 한번 더 실행되는지체크하기 
+	// 새벽 4시에 한번 더 실행되는지체크하기  37.4+ 0.9 = 38.3  0 .9 
 		 
 		log.debug("==========================   메소드 시작   =================================");
 		 // 1) 전체 매너리스트 확인한다  
@@ -72,10 +72,25 @@ public class CraigCronTest {
 			 log.debug(" ★★★ result = {}", result); //최대 2개여야됨 			
 			 
 		 }// end - for문 
+		 
+		 int realResult = 0;
+		 if( result > 0) {
+			 realResult = mannerService.updateMannerDone();
+			 log.debug(" ★★★ realResult = {}", realResult);
+		 }
 
 		 log.debug("======================================================================");
 
 	 }
+	
+	
+	/** test method
+	@Scheduled(cron="0 30 10 * * *")
+	@SchedulerLock(name = "craigCrontest",  lockAtLeastForString = "PT5M", lockAtMostForString = "PT14M")
+	public void craigCrontest() {
+		System.out.println("shedulerTest-0404----locktable에 들어가니");
+	}
+	**/
 
 }
 

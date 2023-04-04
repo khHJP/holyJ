@@ -61,6 +61,7 @@ public class CraigController {
 	public void craigList( @RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication,
 						   @RequestParam(required = false) String searchKeyword ){
 
+	try {
 		// member  
 		Member member = ((Member)authentication.getPrincipal());
 		log.debug("■ 찍히냐 member = {} ", member);
@@ -157,7 +158,11 @@ public class CraigController {
 		CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
 		model.addAttribute("craigPage", craigPage);
 		
-		return;
+		
+		}catch (Exception e) {
+			throw e;
+		}
+	return;
 	}
 	
 	

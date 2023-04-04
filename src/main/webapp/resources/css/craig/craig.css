@@ -11,9 +11,9 @@ body {
 
 <!-- 검색바 -->
 .searchdiv {
-	margin-left: 100px;
+	
 	display: inline-block;
-	width: 800px;
+	width: 600px;
 /*--	position: relative;
    	top: 60px;
    	left: 870px;
@@ -22,8 +22,19 @@ body {
    	*/
 }
 
+.seconddivv{
+	display: flex;
+    width: 1300px;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 250px;
+    margin-top: 0px;
+    padding-top: 38px;
+}
+
 #searchKeyword {
-  width: 600px;
+  margin-left : 110px;
+  width: 450px;
   border: 1.5px solid black;
   border-right: none;
   padding: 5px;

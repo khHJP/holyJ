@@ -18,5 +18,8 @@ public interface MannerService {
 	
 	//혜진추가 - 0403 매너온도 compli~
 	int updateComplimentDegree(Map<String, Object> param);
+
+	//혜진추가 - 0404
+	int updateMannerDone();
 	
 }

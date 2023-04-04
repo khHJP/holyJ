@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isErrorPage="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -64,7 +64,7 @@
 		display: flex; justify-content: center; margin-left: -110px;
 	}
 	
-	.searchdiv { margin-left: 1px; display: inline-block; width: 760px; }
+	.searchdiv { margin-left: 1px; display: inline-block; margin-left: -10px}
 	
 /* header */
 .nav-link{ margin-top: -5px }
@@ -74,11 +74,17 @@
     justify-content: flex-end;  margin-top: -5px ;
 }
 </style>
-
+<div style="height: 400px; width:1794px !important; margin-left : -350px;  background-color: #F7F1EB">
+	<div class="seconddivv" >
+	 	<div><h1>우리 동네</h1>
+	 	<h1> 중고 직거래 마켓</h1></div>
+		<div><img  src="${pageContext.request.contextPath}/resources/images/indexdang.png" /></div>
+	</div>
+</div>
 <br><br><br>
 	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
-	   	<div class="btn-group" style="margin: 0; padding-left:12px;  padding-right: 67px">
+	   	<div class="btn-group" style="margin-left: 95px; margin-right: 10px ">
 			<button type="button" style="width:160px; border: 1.5px solid black  ; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    	중고거래 카테고리
 			</button>
@@ -550,5 +556,5 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 </script>
 
 
-<br><br><br><br><br><br>
+<br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
