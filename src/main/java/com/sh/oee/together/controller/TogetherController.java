@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.oee.common.OeeUtils;
@@ -204,7 +205,11 @@ public class TogetherController {
 		LocalDateTime dateTime = LocalDateTime.now() // 현재 시각 (사용할 경우)
 							.withMonth(Integer.parseInt(month))
 							.withDayOfMonth(Integer.parseInt(date))
-		                    .withHour(meridiem.equals("pm") ? Integer.parseInt(hour) + 12 : Integer.parseInt(hour)) // 오전/오후에 따라 시간 설정
+							.withHour(meridiem.equals("pm") && Integer.parseInt(hour) != 12 ? 
+									Integer.parseInt(hour) + 12 : meridiem.equals("am") && Integer.parseInt(hour) != 12 ?
+											Integer.parseInt(hour) : meridiem.equals("pm") && Integer.parseInt(hour) == 12 ?
+													12 : 0
+									)
 		                    .withMinute(Integer.parseInt(minute))
 		                    .withSecond(0)
 		                    .withNano(0);
@@ -233,18 +238,24 @@ public class TogetherController {
 	public void togetherUpdate(@RequestParam int no, Model model) {
 		log.debug("no ={}", no);
 		
+		List<Integer> boardNoList = new ArrayList<>();
+		boardNoList.add(no);
+		Map<String, Object> params = new HashMap<>(); // 왜 때문에 list는 안되고 map만 매개변수에 담길까,,?
+		params.put("boardNoList", boardNoList);
+		
+		
 		// 업무로직
 		Together together = togetherService.selectTogetherByNo(no);
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		log.debug("together = {}", together);
+		List<Map<String, Object>> joinCnt = togetherService.getJoinMemberCnt(params);
 		
-		// 개행, 자바스크립트 코드 방어
-//		together.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(together.getContent())));
 		
 		// view 전달
 		model.addAttribute("together", together);
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("today", new Date());
+		model.addAttribute("joinCnt", joinCnt);
 		
 	}
 	
@@ -261,16 +272,22 @@ public class TogetherController {
 								@RequestParam String hour,
 								@RequestParam String minute) {
 		log.debug("together = {}", together);
+		log.debug(hour);
 		
 		// LocalDateTime 객체 생성
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss");
 		LocalDateTime dateTime = LocalDateTime.now() // 현재 시각 (사용할 경우)
 							.withMonth(Integer.parseInt(month))
 							.withDayOfMonth(Integer.parseInt(date))
-		                    .withHour(meridiem.equals("pm") ? Integer.parseInt(hour) + 12 : Integer.parseInt(hour)) // 오전/오후에 따라 시간 설정
+							.withHour(meridiem.equals("pm") && Integer.parseInt(hour) != 12 ? 
+												Integer.parseInt(hour) + 12 : meridiem.equals("am") && Integer.parseInt(hour) != 12 ?
+														Integer.parseInt(hour) : meridiem.equals("pm") && Integer.parseInt(hour) == 12 ?
+																12 : 0
+									 )
 		                    .withMinute(Integer.parseInt(minute))
 		                    .withSecond(0)
 		                    .withNano(0);
+		
 		log.debug("dateTime = {}", dateTime);
 		
 		String formattedDateTime = dateTime.format(formatter); // 포맷팅된 날짜시간 문자열
@@ -283,7 +300,6 @@ public class TogetherController {
 		
 		return "redirect:/together/togetherDetail.do?no=" + together.getNo();
 	}
-	
 	
 	/**
 	 * 같이해요 삭제
@@ -321,6 +337,19 @@ public class TogetherController {
 		redirectAttr.addFlashAttribute("msg", "모임이 종료되었습니다!😊");
 		
 		return "redirect:/together/togetherDetail.do?no=" + no;
+	}
+	
+	/**
+	 * 테스트
+	 * @param no
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("/addJoinMemberCnt.do")
+	public int updateJoinCnt(@RequestParam int no) {
+		log.debug("no = {}", no);
+		
+		return 0;
 	}
 	
 	/** 👻 정은 끝 👻 */

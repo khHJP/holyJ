@@ -35,4 +35,6 @@ public interface TogetherService {
 
 	List<Map<String, Object>> getJoinMemberCnt(Map<String, Object> param);
 
+	void TimeOverDateTimeUpdate();
+
 }
