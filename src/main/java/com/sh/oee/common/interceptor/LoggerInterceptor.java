@@ -3,14 +3,14 @@ package com.sh.oee.common.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//public class LoggerInterceptor extends HandlerInterceptorAdapter {
-	public class LoggerInterceptor implements HandlerInterceptor{
+public class LoggerInterceptor extends HandlerInterceptorAdapter {
+//	public class LoggerInterceptor implements HandlerInterceptor{
 
 	/**
 	 * 전처리 Handler 호출전
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-//		super.postHandle(request, response, handler, modelAndView);
+		super.postHandle(request, response, handler, modelAndView);
 		
 		log.debug("---------------------------------------------------------");
 		log.debug("ModelAndView = " + modelAndView);

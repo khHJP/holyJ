@@ -274,8 +274,22 @@
 		    <artifactId>osdt_core</artifactId>
 		    <version>21.5.0.0</version>
 		</dependency>
-				
+
+		<!-- 스케줄러 lock -혜진 추가 0403-->
+		<dependency>
+		   <groupId>net.javacrumbs.shedlock</groupId>
+		   <artifactId>shedlock-spring</artifactId>
+		   <version>3.0.0</version>
+		</dependency>
+		
+		<!-- JDBC TEMPLATE -->
+		<dependency>
+		   <groupId>net.javacrumbs.shedlock</groupId>
+		   <artifactId>shedlock-provider-jdbc-template</artifactId>
+		   <version>3.0.0</version>
+		</dependency>								
 	</dependencies>
+	
     <build>
         <plugins>
             <plugin>

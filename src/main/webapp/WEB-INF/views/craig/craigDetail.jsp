@@ -448,6 +448,27 @@ infowindow.open(map, marker);
 </script>
 
 
+<!--  삭제 버튼 클릭시   -->
+<div id="myModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: red"> 주의! </h5>
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></br>
+        정말 게시글을 삭제하시겠습니까 ?
+      </br></br></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="delconfirm">확인</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <%-- 로그인한사람 = writer 일때 --%>
@@ -480,11 +501,15 @@ document.querySelector("#btnUpdate").addEventListener('click', (e) =>{
 	location.href = `${pageContext.request.contextPath}/craig/craigUpdate.do?no=\${craigno}`;
 });
 
+
+
+
 document.querySelector("#btnDelete").addEventListener('click', (e) =>{
-	console.log(e.target);
-	if(confirm("정말 게시글을 삭제하시겠습니까 ⁉️ ")){
-		  document.craigDeleteFrm.submit();	
-		}	
+	$('#myModal').modal('show');
+});
+
+document.querySelector("#delconfirm").addEventListener('click', (e) => {
+	 document.craigDeleteFrm.submit();	
 });
 
 

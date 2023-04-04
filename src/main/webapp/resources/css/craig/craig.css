@@ -52,6 +52,11 @@ body {
 }
 
 
+.searchButton:hover {
+	background-color: #1C7E34;		
+	transition-duration: 0.3s;		
+}
+
 <!-- wholetbl -->
 #craigWholeListTbl{
 	margin: 0 auto;
@@ -266,13 +271,25 @@ body {
 }
 
 
-#btn-more-container{
-	width: 120px;
+.btbca{
+	width: 100px;
 	height: 40px;
 	margin: auto;
 	border: none;
 	text-align: center;	
 }
+
+#btn-more:hover{
+	background-color: #1C7E34;
+	color: white;
+}
+
+/* 글쓰기 */
+#writeCraigbtn:hover{
+	background-color: #1C7E34;
+	color: white;
+}
+
 
 .btnca{
 	 text-align: center;
@@ -280,14 +297,20 @@ body {
 
 #searchPage{
 	color: white;
-	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	
+	transition-duration: 0.3s;	
 }
 
 #btn-more:hover>#searchPage{
-	color: #efefef;
-	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	color: #1C7E34;
+	transition-duration: 0.3s;
 }
+
+#searchPage:hover{
+	background-color: #1C7E34;
+	color: #1C7E34;
+	transition-duration: 0.3s;
+}
+
 
 
 #othercraigDiv{
@@ -320,4 +343,13 @@ h5{
   	transition: all 0.5s	
 }
 
+#statemodalcfm:hover{
+	color:black;
+	background-color: #c0c0c0;
+}
+
+#delconfirm:hover{
+	color:white;
+	background-color: green;
+}
 
