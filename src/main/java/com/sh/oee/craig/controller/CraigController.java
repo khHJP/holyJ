@@ -721,14 +721,6 @@ public class CraigController {
 	 }
 	 
 	 @ResponseBody
-	 @PostMapping("/bookCraig.do")
-	 public int bookCraig(@RequestParam int no) {
-		 log.debug("no = {}", no);
-		 
-		 return craigService.bookCraig(no);
-		 
-	 }
-	 @ResponseBody
 	 @PostMapping("/salCraig.do")
 	 public int salCraig(@RequestParam int no) {
 		 log.debug("no = {}", no);
