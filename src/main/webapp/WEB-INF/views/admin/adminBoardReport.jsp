@@ -65,19 +65,18 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">게시글 신고 관리</h1>
 		<table>
 			<thead>
 				<tr>
 					<th>No</th>
 					<th>작성자</th>
-					<th>신고 유형</th>
+					<th>카테고리</th>
 					<th>게시글</th>
 					<th>신고 사유</th>
 					<th>등록일</th>
-					<th>처리 상태</th>
-					<th></th>
+					<th>상태</th>
+					<th>신고 처리</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,8 +85,16 @@ $(document).ready(function() {
 						<tr id="table-content">
 							<td>${vs.count}</td>
 							<td>${adminBoardReport.writer}</td>
-							<td>${adminBoardReport.reportType}</td>
-							<td class="report-view" data-no="${adminBoardReport.reportPostNo}" data-type="${adminBoardReport.reportType}">
+							<c:if test="${adminBoardReport.reportType == 'CR'}">
+								<td cla>중고거래</td>
+							</c:if>
+							<c:if test="${adminBoardReport.reportType == 'LO'}">
+								<td>동네생활</td>
+							</c:if>
+							<c:if test="${adminBoardReport.reportType == 'TO'}">
+								<td>같이해요</td>
+							</c:if>
+							<td id="count" class="report-view" data-no="${adminBoardReport.reportPostNo}" data-type="${adminBoardReport.reportType}">
 								${adminBoardReport.reportPostNo}
 							</td>
 							<td>${adminBoardReport.reportReason.reasonName}</td>
@@ -96,7 +103,12 @@ $(document).ready(function() {
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>${adminBoardReport.status}</td>
-							<td></td>
+							<td>
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
+								<input type="button" class="report" value="처리"  onclick="adminReportHandle(writer${vs.count});" />
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
+								<input type="button" class="report" value="반려"  onclick="adminReportHandle(writer${vs.count});" />
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>

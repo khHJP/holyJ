@@ -29,26 +29,26 @@ public class AdminServiceImpl implements AdminService {
 	
 	// 회원 목록 조회
 	@Override
-	public List<Member> selectAdminMemberList(RowBounds rowBounds) {
-		return adminDao.selectAdminMemberList(rowBounds);
+	public List<Member> selectAdminMemberList(Map<String, Object> param, RowBounds rowBounds) {
+		return adminDao.selectAdminMemberList(param, rowBounds);
 	}
 	
 	// 중고거래 게시글 목록 조회
 	@Override
-	public List<Craig> selectAdminCraigList(RowBounds rowBounds) {
-		return adminDao.selectAdminCraigList(rowBounds);
+	public List<Craig> selectAdminCraigList(Map<String, Object> param, RowBounds rowBounds) {
+		return adminDao.selectAdminCraigList(param, rowBounds);
 	}
 
 	// 동네생활 게시글 목록 조회
 	@Override
-	public List<Local> selectAdminLocalList(RowBounds rowBounds) {
-		return adminDao.selectAdminLocalList(rowBounds);
+	public List<Local> selectAdminLocalList(Map<String, Object> param, RowBounds rowBounds) {
+		return adminDao.selectAdminLocalList(param, rowBounds);
 	}
 
 	// 같이해요 게시글 목록 조회
 	@Override
-	public List<Together> selectAdminTogetherList(RowBounds rowBounds) {
-		return adminDao.selectAdminTogetherList(rowBounds);
+	public List<Together> selectAdminTogetherList(Map<String, Object> param, RowBounds rowBounds) {
+		return adminDao.selectAdminTogetherList(param, rowBounds);
 	}
 
 	// 게시글 신고 목록 조회
@@ -65,26 +65,26 @@ public class AdminServiceImpl implements AdminService {
 	
 	// 총 회원 수 조회
 	@Override
-	public int selectAdminMemberTotalCount(List<Member> adminMemberList) {
-		return adminDao.selectAdminMemberTotalCount(adminMemberList);
+	public int selectAdminMemberTotalCount(Map<String, Object> param) {
+		return adminDao.selectAdminMemberTotalCount(param);
 	}
 	
 	// 총 중고거래 게시글 수 조회
 	@Override
-	public int selectAdminCraigTotalCount(List<Craig> adminCraigList) {
-		return adminDao.selectAdminCraigTotalCount(adminCraigList);
+	public int selectAdminCraigTotalCount(Map<String, Object> param) {
+		return adminDao.selectAdminCraigTotalCount(param);
 	}
 
 	// 총 동네생활 게시글 수 조회
 	@Override
-	public int selectAdminLocalTotalCount(List<Local> adminLocalList) {
-		return adminDao.selectAdminLocalTotalCount(adminLocalList);
+	public int selectAdminLocalTotalCount(Map<String, Object> param) {
+		return adminDao.selectAdminLocalTotalCount(param);
 	}
 
 	// 총 같이해요 게시글 수 조회
 	@Override
-	public int selectAdminTogetherTotalCount(List<Together> adminTogetherList) {
-		return adminDao.selectAdminTogetherTotalCount(adminTogetherList);
+	public int selectAdminTogetherTotalCount(Map<String, Object> param) {
+		return adminDao.selectAdminTogetherTotalCount(param);
 	}
 
 	// 총 게시글 신고 수 조회

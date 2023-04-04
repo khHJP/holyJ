@@ -40,96 +40,225 @@ public class AdminController {
 	
 	// 회원 목록 조회
 	@GetMapping("/adminMemberList.do")
-	public void adminMemberList(@RequestParam(defaultValue = "1") int currentPage, Model model) {
+	public void adminMemberList(@RequestParam(defaultValue = "1") int currentPage, 
+								@RequestParam(required = false) String searchKeyword,
+								Model model) {
+		
 		// 페이지 처리
 		int limit = 10;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		// 업무 로직
-		List<Member> adminMemberList = adminService.selectAdminMemberList(rowBounds);
-		log.debug("adminMemberList = ()", adminMemberList);
+		List<Member> adminMemberList = null;
+		List<Member> adminMemberSearch = null;
+		int totalCount = 0;
+		int totalPages = 0;
 		
-		int totalCount = adminService.selectAdminMemberTotalCount(adminMemberList);
-		log.debug("totalCount = {}", totalCount);
+		if(searchKeyword == null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			// 업무 로직
+			adminMemberList = adminService.selectAdminMemberList(param, rowBounds);
+			log.debug("adminMemberList = ()", adminMemberList);
+			
+			totalCount = adminService.selectAdminMemberTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		}
 		
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		else if(searchKeyword != null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			log.debug("param = {}", param);
+			
+			// 업무 로직
+			adminMemberSearch = adminService.selectAdminMemberList(param, rowBounds);
+			log.debug("adminMemberSearch = ()", adminMemberSearch);
+			
+			totalCount = adminService.selectAdminMemberTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+			
+		}
 		
 		// view
 		model.addAttribute("adminMemberList", adminMemberList);
+		model.addAttribute("adminMemberSearch", adminMemberSearch);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 	}
 	
 	// 중고거래 게시글 목록 조회
 	@GetMapping("/adminCraigList.do")
-	public void adminCraigList(@RequestParam(defaultValue = "1") int currentPage, Model model) {
+	public void adminCraigList(@RequestParam(defaultValue = "1") int currentPage, 
+							   @RequestParam(required = false) String searchKeyword, 
+							   Model model) {
 		// 페이지 처리
 		int limit = 10;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		// 업무 로직
-		List<Craig> adminCraigList = adminService.selectAdminCraigList(rowBounds);
-		log.debug("adminCraigList = ()", adminCraigList);
+		List<Craig> adminCraigList = null;
+		List<Craig> adminCraigSearch = null;
+		int totalCount = 0;
+		int totalPages = 0;
 		
-		int totalCount = adminService.selectAdminCraigTotalCount(adminCraigList);
-		log.debug("totalCount = {}", totalCount);
+		if(searchKeyword == null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			// 업무 로직
+			adminCraigList = adminService.selectAdminCraigList(param, rowBounds);
+			log.debug("adminCraigList = ()", adminCraigList);
+			
+			totalCount = adminService.selectAdminCraigTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		}
 		
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		else if(searchKeyword != null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			log.debug("param = {}", param);
+			
+			// 업무 로직
+			adminCraigSearch = adminService.selectAdminCraigList(param, rowBounds);
+			log.debug("adminCraigSearch = ()", adminCraigSearch);
+			
+			totalCount = adminService.selectAdminCraigTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+			
+		}
 		
 		// view
 		model.addAttribute("adminCraigList", adminCraigList);
+		model.addAttribute("adminCraigSearch", adminCraigSearch);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 	}
 	
 	// 동네생활 게시글 목록 조회
 	@GetMapping("/adminLocalList.do")
-	public void adminLocalList(@RequestParam(defaultValue = "1") int currentPage, Model model) {
+	public void adminLocalList(@RequestParam(defaultValue = "1") int currentPage, 
+			   				   @RequestParam(required = false) String searchKeyword, 
+			   				   Model model) {
 		// 페이지 처리
 		int limit = 10;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		// 업무 로직
-		List<Local> adminLocalList = adminService.selectAdminLocalList(rowBounds);
-		log.debug("adminLocalList = ()", adminLocalList);
+		List<Local> adminLocalList = null;
+		List<Local> adminLocalSearch = null;
+		int totalCount = 0;
+		int totalPages = 0;
 		
-		int totalCount = adminService.selectAdminLocalTotalCount(adminLocalList);
-		log.debug("totalCount = {}", totalCount);
+		if(searchKeyword == null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			// 업무 로직
+			adminLocalList = adminService.selectAdminLocalList(param, rowBounds);
+			log.debug("adminLocalList = ()", adminLocalList);
+			
+			totalCount = adminService.selectAdminLocalTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		}
 		
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		else if(searchKeyword != null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			log.debug("param = {}", param);
+			
+			// 업무 로직
+			adminLocalSearch = adminService.selectAdminLocalList(param, rowBounds);
+			log.debug("adminLocalSearch = ()", adminLocalSearch);
+			
+			totalCount = adminService.selectAdminLocalTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+			
+		}
 		
 		// view
 		model.addAttribute("adminLocalList", adminLocalList);
+		model.addAttribute("adminLocalSearch", adminLocalSearch);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 	}
 	
 	// 같이해요 게시글 목록 조회
 	@GetMapping("/adminTogetherList.do")
-	public void adminTogetherList(@RequestParam(defaultValue = "1") int currentPage, Model model) {
+	public void adminTogetherList(@RequestParam(defaultValue = "1") int currentPage, 
+			   					  @RequestParam(required = false) String searchKeyword, 
+			   					  Model model) {
 		// 페이지 처리
 		int limit = 10;
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		// 업무 로직
-		List<Together> adminTogetherList = adminService.selectAdminTogetherList(rowBounds);
-		log.debug("adminTogetherList = ()", adminTogetherList);
+		List<Together> adminTogetherList = null;
+		List<Together> adminTogetherSearch = null;
+		int totalCount = 0;
+		int totalPages = 0;
 		
-		int totalCount = adminService.selectAdminTogetherTotalCount(adminTogetherList);
-		log.debug("totalCount = {}", totalCount);
+		if(searchKeyword == null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			// 업무 로직
+			adminTogetherList = adminService.selectAdminTogetherList(param, rowBounds);
+			log.debug("adminTogetherList = ()", adminTogetherList);
+			
+			totalCount = adminService.selectAdminTogetherTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		}
 		
-		// 전체 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		else if(searchKeyword != null) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchKeyword", searchKeyword);
+			
+			log.debug("param = {}", param);
+			
+			// 업무 로직
+			adminTogetherSearch = adminService.selectAdminTogetherList(param, rowBounds);
+			log.debug("adminTogetherSearch = ()", adminTogetherSearch);
+			
+			totalCount = adminService.selectAdminTogetherTotalCount(param);
+			log.debug("totalCount = {}", totalCount);
+			
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+			
+		}
 		
 		// view
 		model.addAttribute("adminTogetherList", adminTogetherList);
+		model.addAttribute("adminTogetherSearch", adminTogetherSearch);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 	}

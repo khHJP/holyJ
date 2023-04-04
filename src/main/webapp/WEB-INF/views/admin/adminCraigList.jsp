@@ -49,7 +49,7 @@ $(document).ready(function() {
 		<ul class="sidebar-nav">
 			<h3>게시글</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 중고거래 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminCraigList.do" style="text-decoration: none; color: #56C271;"> 중고거래 관리 </a></li>
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminLocalList.do" style="text-decoration: none; color: black;"> 동네생활 관리 </a></li>
 			<li class="sidebar-nav-list">
@@ -66,7 +66,10 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
+		<form:form name="adminCraigSearchFrm" method="get">
+			<input type="search" class="search" id="searchKeyword" name="searchKeyword" placeholder="&nbsp; 작성자/제목 검색...">
+			<button type="submit" class="searchButton">검색</button>
+		</form:form>
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">중고거래 관리</h1>
 		<table>
 			<thead>
@@ -82,50 +85,86 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${not empty adminCraigList}">
-					<c:forEach items="${adminCraigList}" var="adminCraig" varStatus="vs">
+				<c:forEach items="${adminCraigList}" var="adminCraig" varStatus="vs">
+					<tr id="table-content">
+						<td id="count" class="craig-view" data-crno="${adminCraig.no}">${vs.count}</td>
+						<td>
+							<select class="craig-category" data-no="${adminCraig.no}">
+								<option value=1 <c:if test="${adminCraig.categoryNo eq 1}"> selected="selected"</c:if>>디지털기기</option>
+								<option value=2 <c:if test="${adminCraig.categoryNo eq 2}"> selected="selected"</c:if>>가구</option>
+								<option value=3 <c:if test="${adminCraig.categoryNo eq 3}"> selected="selected"</c:if>>의류</option>
+								<option value=4 <c:if test="${adminCraig.categoryNo eq 4}"> selected="selected"</c:if>>잡화</option>
+								<option value=5 <c:if test="${adminCraig.categoryNo eq 5}"> selected="selected"</c:if>>서적</option>
+								<option value=6 <c:if test="${adminCraig.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+								<option value=7 <c:if test="${adminCraig.categoryNo eq 7}"> selected="selected"</c:if>>삽니다</option>
+							</select>
+						</td>
+						<td>${adminCraig.writer}</td>
+						<td>${adminCraig.title}</td>
+						<c:if test="${adminCraig.state eq 'CR1'}">
+						<td style="color: #56C271;">예약중</td>
+						</c:if>
+						<c:if test="${adminCraig.state eq 'CR2'}">
+						<td style="color: #56C271;">판매중</td>
+						</c:if>
+						<c:if test="${adminCraig.state eq 'CR3'}">
+						<td style="color: #868B94;">판매완료</td>
+						</c:if>
+						<td>
+							<fmt:parseDate value="${adminCraig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+							<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
+						</td>
+						<td>
+							<fmt:parseDate value="${adminCraig.completeDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="completeDate" /> 
+							<fmt:formatDate value='${completeDate}' pattern="yyyy.MM.dd" />
+						</td>
+						<td>
+							<input type="hidden" class="craig delete" id="craig${vs.count}" value="${adminCraig.no}"/>
+							<input type="button" class="craig delete" value="삭제"  onclick="adminCraigDelete(craig${vs.count});" />
+						</td>
+					</tr>
+				</c:forEach>
+				
+				<c:if test="${adminCraigSearch != null}">
+					<c:forEach items="${adminCraigSearch}" var="adminCraigSearch" varStatus="searchvs">
 						<tr id="table-content">
-							<td class="craig-view" data-crno="${adminCraig.no}">${vs.count}</td>
+							<td id="count" class="craig-view" data-crno="${adminCraigSearch.no}">${searchvs.count}</td>
 							<td>
-								<select class="craig-category" data-no="${adminCraig.no}">
-									<option value=1 <c:if test="${adminCraig.categoryNo eq 1}"> selected="selected"</c:if>>디지털기기</option>
-									<option value=2 <c:if test="${adminCraig.categoryNo eq 2}"> selected="selected"</c:if>>가구</option>
-									<option value=3 <c:if test="${adminCraig.categoryNo eq 3}"> selected="selected"</c:if>>의류</option>
-									<option value=4 <c:if test="${adminCraig.categoryNo eq 4}"> selected="selected"</c:if>>잡화</option>
-									<option value=5 <c:if test="${adminCraig.categoryNo eq 5}"> selected="selected"</c:if>>서적</option>
-									<option value=6 <c:if test="${adminCraig.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
-									<option value=7 <c:if test="${adminCraig.categoryNo eq 7}"> selected="selected"</c:if>>삽니다</option>
+								<select class="craig-category" data-no="${adminCraigSearch.no}">
+									<option value=1 <c:if test="${adminCraigSearch.categoryNo eq 1}"> selected="selected"</c:if>>디지털기기</option>
+									<option value=2 <c:if test="${adminCraigSearch.categoryNo eq 2}"> selected="selected"</c:if>>가구</option>
+									<option value=3 <c:if test="${adminCraigSearch.categoryNo eq 3}"> selected="selected"</c:if>>의류</option>
+									<option value=4 <c:if test="${adminCraigSearch.categoryNo eq 4}"> selected="selected"</c:if>>잡화</option>
+									<option value=5 <c:if test="${adminCraigSearch.categoryNo eq 5}"> selected="selected"</c:if>>서적</option>
+									<option value=6 <c:if test="${adminCraigSearch.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+									<option value=7 <c:if test="${adminCraigSearch.categoryNo eq 7}"> selected="selected"</c:if>>삽니다</option>
 								</select>
 							</td>
-							<td>${adminCraig.writer}</td>
-							<td>${adminCraig.title}</td>
-							<c:if test="${adminCraig.state eq 'CR1'}">
+							<td>${adminCraigSearch.writer}</td>
+							<td>${adminCraigSearch.title}</td>
+							<c:if test="${adminCraigSearch.state eq 'CR1'}">
 							<td>예약중</td>
 							</c:if>
-							<c:if test="${adminCraig.state eq 'CR2'}">
+							<c:if test="${adminCraigSearch.state eq 'CR2'}">
 							<td>판매중</td>
 							</c:if>
-							<c:if test="${adminCraig.state eq 'CR3'}">
+							<c:if test="${adminCraigSearch.state eq 'CR3'}">
 							<td>판매완료</td>
 							</c:if>
 							<td>
-								<fmt:parseDate value="${adminCraig.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:parseDate value="${adminCraigSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
+								<fmt:parseDate value="${adminCraigSearch.completeDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="completeDate" /> 
 								<fmt:formatDate value='${completeDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
-								<input type="hidden" class="craig delete" id="craig${vs.count}" value="${adminCraig.no}"/>
-								<input type="button" class="craig delete" value="삭제"  onclick="adminCraigDelete(craig${vs.count});" />
+								<input type="hidden" class="craig delete" id="craig${searchvs.count}" value="${adminCraigSearch.no}"/>
+								<input type="button" class="craig delete" value="삭제"  onclick="adminCraigDelete(craig${searchvs.count});" />
 							</td>
 						</tr>
 					</c:forEach>
-				</c:if>
-				<c:if test="${empty adminCraigList}">
-					<tr>
-						<td colspan="8">조회된 데이터가 없습니다.</td>
-					</tr>
 				</c:if>
 			</tbody>
 		</table>
@@ -227,6 +266,25 @@ const generatePagination = (totalPages, currentPage) => {
         pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
     }
 }
+
+/* 중고거래 검색 */
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	const searchKeyword =  document.querySelector("#searchKeyword").value;
+	console.log(searchKeyword);
+
+	const blank_pattern = /^\s+|\s+$/g;
+	
+	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
+		alert("검색어를 입력해 주세요!");
+		document.querySelector("#searchKeyword").select();
+		e.preventDefault();
+		return false;
+	}
+	
+	else if(searchKeyword != null && searchKeyword != "" ){
+		location.href = "${pageContext.request.contextPath}/admin/adminCraigList.do";
+	}	
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

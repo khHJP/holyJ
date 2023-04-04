@@ -17,16 +17,16 @@ public interface AdminService {
 	/* select */
 	
 	// 회원 목록 조회
-	List<Member> selectAdminMemberList(RowBounds rowBounds);
+	List<Member> selectAdminMemberList(Map<String, Object> param, RowBounds rowBounds);
 	
 	// 중고거래 게시글 목록 조회
-	List<Craig> selectAdminCraigList(RowBounds rowBounds);
+	List<Craig> selectAdminCraigList(Map<String, Object> param, RowBounds rowBounds);
 
 	// 동네생활 게시글 목록 조회
-	List<Local> selectAdminLocalList(RowBounds rowBounds);
+	List<Local> selectAdminLocalList(Map<String, Object> param, RowBounds rowBounds);
 
 	// 같이해요 게시글 목록 조회
-	List<Together> selectAdminTogetherList(RowBounds rowBounds);
+	List<Together> selectAdminTogetherList(Map<String, Object> param, RowBounds rowBounds);
 
 	// 게시글 신고 목록 조회
 	List<BoardReport> selectAdminBoardReport(RowBounds rowBounds);
@@ -35,16 +35,16 @@ public interface AdminService {
 	List<UserReport> selectAdminUserReport(RowBounds rowBounds);
 	
 	// 총 회원 수 조회
-	int selectAdminMemberTotalCount(List<Member> adminMemberList);
+	int selectAdminMemberTotalCount(Map<String, Object> param);
 	
 	// 총 중고거래 게시글 수 조회
-	int selectAdminCraigTotalCount(List<Craig> adminCraigList);
+	int selectAdminCraigTotalCount(Map<String, Object> param);
 	
 	// 총 동네생활 게시글 수 조회
-	int selectAdminLocalTotalCount(List<Local> adminLocalList);
+	int selectAdminLocalTotalCount(Map<String, Object> param);
 	
 	// 총 같이해요 게시글 수 조회
-	int selectAdminTogetherTotalCount(List<Together> adminTogetherList);
+	int selectAdminTogetherTotalCount(Map<String, Object> param);
 	
 	// 총 게시글 신고 수 조회
 	int selectAdminBoardReportTotalCount(List<BoardReport> adminBoardReport);

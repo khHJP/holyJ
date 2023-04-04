@@ -44,7 +44,7 @@ $(document).ready(function() {
 		<ul class="sidebar-nav">
 			<h3>회원</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 회원 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminMemberList.do" style="text-decoration: none; color: #56C271;"> 회원 관리 </a></li>
 		</ul>
 		<ul class="sidebar-nav">
 			<h3>게시글</h3>
@@ -66,7 +66,10 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
+		<form:form name="adminMemberSearchFrm" method="get">
+			<input type="search" class="search" id="searchKeyword" name="searchKeyword" placeholder="&nbsp; 아이디/닉네임 검색...">
+			<button type="submit" class="searchButton">검색</button>
+		</form:form>
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">회원 관리</h1>
 		<table>
 			<thead>
@@ -83,54 +86,96 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${not empty adminMemberList}">
-					<c:forEach items="${adminMemberList}" var="adminMember" varStatus="vs">
-						<tr id="table-content">
-							<td>${vs.count}</td>
-							<td>${adminMember.memberId}</td>
-							<td>
-								<select class="member-role" data-member-id="${adminMember.memberId}">
-									<option value="ROLE_USER" <c:if test="${adminMember.auth.auth eq 'ROLE_USER'}"> selected="selected"</c:if>> ROLE_USER</option>
-									<option value="ROLE_ADMIN" <c:if test="${adminMember.auth.auth eq 'ROLE_ADMIN'}"> selected="selected"</c:if>>ROLE_ADMIN</option>
-									<option value="ROLE_WARN" <c:if test="${adminMember.auth.auth eq 'ROLE_WARN'}"> selected="selected"</c:if>>ROLE_WARN</option>
-								</select>
-							</td>
-							<td>${adminMember.nickname}</td>
-							<td>
-								<fmt:formatNumber var="phone" value="${adminMember.phone}" pattern="000,0000,0000"/>
-								<c:out value="${fn:replace(phone, ',', '-')}" />
-							</td>
-							<c:if test="${adminMember.manner lt 30}">
-								<td style="color:#3AB0FF">${adminMember.manner}</td>
-							</c:if>
-							<c:if test="${adminMember.manner ge 35 && adminMember.manner lt 50}">
-								<td style="color:#56C271">${adminMember.manner}</td>
-							</c:if>
-							<c:if test="${adminMember.manner ge 50}">
-								<td style="color:red">${adminMember.manner}</td>
-							</c:if>
-							<c:if test="${adminMember.reportCnt lt 3}">
-								<td>${adminMember.reportCnt}</td>
-							</c:if>
-							<c:if test="${adminMember.reportCnt ge 3}">
-								<td style="color: red">${adminMember.reportCnt}</td>
-							</c:if>
-							<td>
-								<fmt:parseDate value="${adminMember.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
-								<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd" />
-							</td>
-							<td>
-								<input type="hidden" class="member delete" id="memberId${vs.count}" value="${adminMember.memberId}"/>
-								<input type="button" class="member delete" value="삭제"  onclick="adminMemberDelete(memberId${vs.count});" />
-							</td>
-						</tr>
-					</c:forEach>
-				</c:if>
-				<c:if test="${empty adminMemberList}">
-					<tr>
-						<td colspan="11">조회된 데이터가 없습니다.</td>
+				<c:forEach items="${adminMemberList}" var="adminMember" varStatus="vs">
+					<tr id="table-content">
+						<td>${vs.count}</td>
+						<td>${adminMember.memberId}</td>
+						<td>
+							<select class="member-role" data-member-id="${adminMember.memberId}">
+								<option value="ROLE_USER" <c:if test="${adminMember.auth.auth eq 'ROLE_USER'}"> selected="selected"</c:if>> ROLE_USER</option>
+								<option value="ROLE_ADMIN" <c:if test="${adminMember.auth.auth eq 'ROLE_ADMIN'}"> selected="selected"</c:if>>ROLE_ADMIN</option>
+								<option value="ROLE_WARN" <c:if test="${adminMember.auth.auth eq 'ROLE_WARN'}"> selected="selected"</c:if>>ROLE_WARN</option>
+							</select>
+						</td>
+						<td>${adminMember.nickname}</td>
+						<td>
+							<fmt:formatNumber var="phone" value="${adminMember.phone}" pattern="000,0000,0000"/>
+							<c:out value="${fn:replace(phone, ',', '-')}" />
+						</td>
+						<c:if test="${adminMember.manner lt 30}">
+							<td style="color:#3AB0FF">${adminMember.manner}</td>
+						</c:if>
+						<c:if test="${adminMember.manner ge 35 && adminMember.manner lt 50}">
+							<td style="color:#56C271">${adminMember.manner}</td>
+						</c:if>
+						<c:if test="${adminMember.manner ge 50}">
+							<td style="color:red">${adminMember.manner}</td>
+						</c:if>
+						<c:if test="${adminMember.reportCnt lt 3}">
+							<td>${adminMember.reportCnt}</td>
+						</c:if>
+						<c:if test="${adminMember.reportCnt ge 3}">
+							<td style="color: red">${adminMember.reportCnt}</td>
+						</c:if>
+						<td>
+							<fmt:parseDate value="${adminMember.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
+							<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd" />
+						</td>
+						<td>
+							<input type="hidden" class="member delete" id="memberId${vs.count}" value="${adminMember.memberId}"/>
+							<input type="button" class="member delete" value="삭제"  onclick="adminMemberDelete(memberId${vs.count});" />
+						</td>
 					</tr>
-				</c:if>
+				</c:forEach>
+				
+				<c:if test="${adminMemberSearch != null}">
+						<c:forEach items="${adminMemberSearch}" var="adminMemberSearch" varStatus="searchvs">
+							<tr id="table-content">
+								<td>${searchvs.count}</td>
+								<td>${adminMemberSearch.memberId}</td>
+								<td>
+									<select class="member-role" data-member-id="${adminMemberSearch.memberId}">
+										<option value="ROLE_USER" <c:if test="${adminMemberSearch.auth.auth eq 'ROLE_USER'}"> selected="selected"</c:if>> ROLE_USER</option>
+										<option value="ROLE_ADMIN" <c:if test="${adminMemberSearch.auth.auth eq 'ROLE_ADMIN'}"> selected="selected"</c:if>>ROLE_ADMIN</option>
+										<option value="ROLE_WARN" <c:if test="${adminMemberSearch.auth.auth eq 'ROLE_WARN'}"> selected="selected"</c:if>>ROLE_WARN</option>
+									</select>
+								</td>
+								<td>${adminMemberSearch.nickname}</td>
+								<td>
+									<fmt:formatNumber var="phone" value="${adminMemberSearch.phone}" pattern="000,0000,0000"/>
+									<c:out value="${fn:replace(phone, ',', '-')}" />
+								</td>
+								<c:if test="${adminMemberSearch.manner lt 30}">
+									<td style="color:#3AB0FF">${adminMember.manner}</td>
+								</c:if>
+								<c:if test="${adminMemberSearch.manner ge 35 && adminMemberSearch.manner lt 50}">
+									<td style="color:#56C271">${adminMemberSearch.manner}</td>
+								</c:if>
+								<c:if test="${adminMemberSearch.manner ge 50}">
+									<td style="color:red">${adminMemberSearch.manner}</td>
+								</c:if>
+								<c:if test="${adminMemberSearch.reportCnt lt 3}">
+									<td>${adminMemberSearch.reportCnt}</td>
+								</c:if>
+								<c:if test="${adminMemberSearch.reportCnt ge 3}">
+									<td style="color: red">${adminMemberSearch.reportCnt}</td>
+								</c:if>
+								<td>
+									<fmt:parseDate value="${adminMemberSearch.enrollDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="enrollDate" /> 
+									<fmt:formatDate value='${enrollDate}' pattern="yyyy.MM.dd" />
+								</td>
+								<td>
+									<input type="hidden" class="member delete" id="memberId${searchvs.count}" value="${adminMemberSearch.memberId}"/>
+									<input type="button" class="member delete" value="삭제"  onclick="adminMemberDelete(memberId${searchvs.count});" />
+								</td>
+							</tr>
+						</c:forEach>
+						<c:if test="${empty adminMemberSearch}">
+							<tr>
+								<td colspan="9">검색 결과가 없습니다.</td>
+							</tr>
+						</c:if>
+					</c:if>
 			</tbody>
 		</table>
 		<nav aria-label="Page navigation example" class="pagebar-box">
@@ -219,6 +264,25 @@ const generatePagination = (totalPages, currentPage) => {
         pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
     }
 }
+
+/* 회원 검색 */
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	const searchKeyword =  document.querySelector("#searchKeyword").value;
+	console.log(searchKeyword);
+
+	const blank_pattern = /^\s+|\s+$/g;
+	
+	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
+		alert("검색어를 입력해 주세요!");
+		document.querySelector("#searchKeyword").select();
+		e.preventDefault();
+		return false;
+	}
+	
+	else if(searchKeyword != null && searchKeyword != "" ){
+		location.href = "${pageContext.request.contextPath}/admin/adminMemberList.do";
+	}	
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

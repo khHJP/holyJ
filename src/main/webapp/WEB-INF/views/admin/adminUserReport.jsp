@@ -65,7 +65,6 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">사용자 신고 관리</h1>
 		<table>
 			<thead>
@@ -76,7 +75,7 @@ $(document).ready(function() {
 					<th>신고한 회원</th>
 					<th>등록일</th>
 					<th>처리 상태</th>
-					<th></th>
+					<th>신고 처리</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -92,7 +91,12 @@ $(document).ready(function() {
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>${adminUserReport.status}</td>
-							<td></td>							
+							<td>
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
+								<input type="button" class="report" value="처리"  onclick="adminMemberDelete(writer${vs.count});" />
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
+								<input type="button" class="report" value="반려"  onclick="adminMemberDelete(writer${vs.count});" />
+							</td>							
 						</tr>
 					</c:forEach>
 				</c:if>
