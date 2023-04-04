@@ -48,7 +48,6 @@ window.addEventListener('load', (e) => {
 	           option.value = i;
 	           option.innerText = i;
 	           option.classList.add(today.getMonth() + 1);
-	           option.style.display='none';
 	           dateTag.append(option);
 	    }
     }
@@ -61,7 +60,6 @@ window.addEventListener('load', (e) => {
                option.value = i;
                option.innerText = i;
                option.classList.add(today.getMonth() + 1);
-               option.style.display='none';
                dateTag.append(option);
         }
     	// 다음달
@@ -100,7 +98,7 @@ window.addEventListener('load', (e) => {
     });
     // 오전 오후
     const meridiem_ = document.querySelectorAll("[name=meridiem]");
-    const meridi = (currHour - 12 > 0 ? 'pm' : 'am');
+    const meridi = (currHour - 12 > 0 || currHour != 0 ? 'pm' : 'am');
     meridiem_.forEach((meridiem) => {
     	if(meridiem.value == meridi){
     		meridiem.checked = true;
@@ -110,8 +108,15 @@ window.addEventListener('load', (e) => {
     const hours = document.querySelectorAll(".hour option");
     const hour_ = (currHour - 12 > 0 ? currHour - 12 : currHour);
     hours.forEach((hour) => {
-    	if(hour.value == hour_){
-    		hour.selected = true;
+    	if(hour_ != 0){
+    		if(hour.value == hour_){
+        		hour.selected = true;
+        	}
+    	}
+    	else {
+    		if(hour.value == 12){
+    			hour.selected = true;
+    		}
     	}
     });
     // 분
@@ -179,7 +184,7 @@ window.addEventListener('load', (e) => {
 							</div>
 							<div class="data-box">
 								<input type="radio" name="age" id="age_100" 
-									   value="100" ${together.age eq age ? 'checked' : ''}>
+									   value="100" ${together.age eq 100 ? 'checked' : ''}>
 								<label for="age_100">누구나</label>
 								<c:forEach begin="20" end="50" var="age">
 									<c:if test="${age % 10 == 0}">
@@ -214,6 +219,7 @@ window.addEventListener('load', (e) => {
 								<div class="sub-box">
 									<i class="bi bi-calendar4-week"></i>
 									<label class="to-title">날짜</label>
+									<p class="error-msg date-error">날짜를 선택해주세요.</p>
 								</div>
 								<div class="data-box">
 									<select id="date-select" class="month select" name="month" required>
@@ -239,7 +245,7 @@ window.addEventListener('load', (e) => {
 									<div class="time-select data-box">
 										<select id="date-select" class="hour select" name="hour" required>
 											<c:forEach begin="1" end="12" var="hour">
-												<option value="${hour}" ${hour eq 7 ? 'selected' : ''}>${hour}</option>
+												<option value="${hour}">${hour}</option>
 											</c:forEach>
 										</select>
 										<select id="date-select" class="minute select" name="minute" required>
@@ -270,6 +276,7 @@ window.addEventListener('load', (e) => {
 						<label class="to-title">모임 내용</label>
 					</div>
 					<textarea rows="10" cols="65" class="content" name="content" style="resize: none;">${together.content}</textarea>
+					<p class="error-msg content-error">내용을 입력해주세요.(5글자 이상)</p>
 				</div>
 			</div>
 			<sec:authentication property="principal" var="loginMember"/>
@@ -302,8 +309,17 @@ document.querySelector(".month").addEventListener("change", (e) => {
 
 /* 참가인원 제어 */
 const joinCnt = document.querySelector(".join-cnt");
+const currJoinCnt = '${joinCnt[0].joinCnt}';
 let cnt = Number(joinCnt.value);
+console.log(currJoinCnt, cnt);
 document.querySelector(".minus").addEventListener("click", (e) => {
+	
+	// 현재 참여인원보다 줄일수 없고, 3명 이하는 안됨
+	if(currJoinCnt >= cnt){
+		alert("현재 참여중인 인원보다 낮은 값을 입력할 수 없습니다.")
+		return;
+	}
+	
 	if (cnt > 3) {
 	    cnt--;
 	    joinCnt.value = cnt;
@@ -322,7 +338,6 @@ document.querySelector(".plus").addEventListener("click", (e) => {
 
 /* 유효성검사 */
 document.togetherUpdateFrm.addEventListener('submit', (e) => {
-	
 	const title = document.querySelector("#title");
 	const categorys = document.querySelectorAll(".category");
 	const content = document.querySelector(".content");
@@ -408,10 +423,14 @@ document.togetherUpdateFrm.addEventListener('submit', (e) => {
 		}
 	});
 	
+	console.log(hour);
 	const meeting = new Date();
 	meeting.setMonth(month - 1);
 	meeting.setDate(date);
-	meeting.setHours(amPm == 'pm' ? Number(hour) + 12 : hour);
+	meeting.setHours(amPm == 'pm' && Number(hour) != 12 ? 
+						Number(hour) + 12 : amPm == 'am' && Number(hour) != 12 ?
+								hour : amPm == 'pm' && Number(hour) == 12 ?
+										12 : 0);
 	meeting.setMinutes(minute);
 	console.log(meeting);
 	
@@ -423,7 +442,7 @@ document.togetherUpdateFrm.addEventListener('submit', (e) => {
 		e.preventDefault();
 	}
 	
-	return true;	
+	return true;
 });
 
 
