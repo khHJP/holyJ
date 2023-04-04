@@ -112,7 +112,7 @@ window.addEventListener('load', (e) => {
 			</div>
 		</div><!-- end header-box -->
 		<div class="content-box">
-			<h4>정보</h4>
+			<h4 class="to-h4">정보</h4>
 			<div class="info required">
 				<!-- 성별 선택 -->
 				<i class="bi bi-people-fill"></i>
@@ -147,9 +147,7 @@ window.addEventListener('load', (e) => {
 			</div>
 			<div class="modify-box">
 				<c:if test="${together.status eq 'Y'}">
-				<!-- 😺 채팅 참여하기 - join으로 이벤트 걸으면 될것같요! 😺 -->
-				<button class="join btn">참가하기</button>
-				<!-- 😺 채팅 참여하기 😺 -->
+					<button class="join btn" data-toggle="modal" data-target="#join-modal">참여하기</button>
 				</c:if>
 				<c:if test="${together.writer eq loginMember.memberId && together.status eq 'Y'}">
 					<button class="btn modify">수정</button>
@@ -161,12 +159,12 @@ window.addEventListener('load', (e) => {
 		</div>
 		<hr>
 		<div class="content-detail-box">
-			<h4>상세내용</h4>
+			<h4 class="to-h4">상세내용</h4>
 			<p>${together.content}</p>
 		</div>
 		<div class="join-member-box">
 			<div class="join-member-title">
-				<h4>참여중인 이웃</h4>
+				<h4 class="to-h4">참여중인 이웃</h4>
 				<div>
 					<span>[&nbsp;</span>
 					<span class="title-cnt">${joinCnt[0].joinCnt}</span>
@@ -238,6 +236,43 @@ window.addEventListener('load', (e) => {
 		</div>
 	</div>
 </div>
+<!-- 참여하기 모달 -->
+<div class="modal fade" id="join-modal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="joinModalLabel">※ 참여하기 알림 ※</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				<span class="text-danger-emphasis"><i class="bi bi-dash-circle"></i>&nbsp;모집이 마감된 대화방입니다.</span>
+            </div>
+			<div class="modal-body">
+				☘️ ${together.title} ☘️
+				</br>
+				모임에 참여하시겠습니까?
+			</div>
+			<div class="modal-footer">
+				<!-- 대화방에 입장한 경우 확인 -->
+				<c:set var="hasEntered" value="false"/>
+				<c:forEach items="${joinMemberList}" var="joinMember">
+				    <c:if test="${joinMember.memberId eq loginMember.memberId}">
+				        <button type="button" class="btn enter">대화방입장</button>
+				        <c:set var="hasEntered" value="true"/>
+				    </c:if>
+				</c:forEach>
+				<!-- 대화방에 입장하지 않은 경우 -->
+				<c:if test="${hasEntered eq false}">
+				    <button type="button" class="btn to_join">참여하기</button>
+				    <button type="button" class="btn to_enter enter">대화방입장</button>
+				</c:if>
+				<button type="button" class="btn" data-dismiss="modal">취소</button>
+			</div>
+		</div>
+	</div>
+</div>
 <c:if test="${together.writer eq loginMember.memberId}">
 <!-- 삭제하기 히든폼 -->
 <form:form name="togetherDeleteFrm" action="${pageContext.request.contextPath}/together/togetherDelete.do" method="post">
@@ -284,13 +319,74 @@ document.querySelector(".report").addEventListener('click', (e) => {
 </c:if>
 <!-- 정은 끝 👻 -->
 
-<c:if test="${together.status eq 'Y'}">
+<c:if test="${together.status eq 'Y' && hasEntered eq false}">
 <script>
-/* 클릭 잘되는지 한번 만들어봤어욤! 지우고 다시하셔도 됩니다! */
-document.querySelector(".join").addEventListener('click', (e) => {
+/* 현재 대화방 참여자가 아닌 경우 */
+document.querySelector(".to_join").addEventListener('click', (e) => {
 	const no = '${together.no}';
-	console.log(e.target, no); 
-	/* location.href = */ 
+	const joinCnt = '${together.joinCnt}';
+	const currJoinCnt = '${joinCnt[0].joinCnt}';
+	const loginMember = '${loginMember.memberId}';
+	const writer = '${together.writer}';
+	const cntTag = document.querySelector(".title-cnt");
+	const alert = document.querySelector(".alert-warning");
+	const enterBtn = document.querySelector(".to_enter");
+	
+	console.log(loginMember, writer);
+
+	/* 정원이 다 찼을 경우 그리고 글쓴이가 아닐 경우 */
+	if(currJoinCnt == joinCnt && loginMember != writer){
+		alert.style.display = 'block';
+		return false;
+	}
+	console.log('다찼으면 여기오면 안됨 또는 작성자는 무조건 넘어와야 해');
+
+	/* 참여하기 클릭시 게시글에서 참여자 수 증가 처리 */
+	const csrfHeader = "${_csrf.headerName}";
+	const csrfToken = "${_csrf.token}";
+	const headers = {};
+	headers[csrfHeader] = csrfToken;
+	
+	/* 
+		아마 여기에서 채팅방에 멤버 넣기를 하면 되지 않을까싶어요,,, 현재 url은 임시로 작성해놨습니다..!! 
+		나중에 url는 수정해주세요!!🥺 
+		int result = chatService.insertTogetehrChat 이런 느낌의 메소드 하시게 되면
+		result 값 또한 넘겨주면 아마 알아서
+		회원 정보가 잘 들어가고 채팅방에 열렸을때,,? 참여자 인원을 +1 해줄 예정입니다..!
+		근데 고민이 있다면,, 이미 참여한 대화방에 입장할때는 인원수를 증가시키면 안되기때문에 버튼을 분기처리 해뒀습니다..!
+		아래에 현재 대화방 참여자인 경우로 한번 만들어 봤습니다🫠
+	*/
+	$.ajax({
+		url : '${pageContext.request.contextPath}/together/addJoinMemberCnt.do',
+		method : 'post',
+		headers,
+		data : {no, loginMember},
+		dataType : 'json',
+		success(data){
+			cntTag.innerText = ''; // 현재 인원수 초기화
+			cntTag.innerText = Number(currJoinCnt) + 1;
+			// 버튼 변경 (참여하기 -> 대화방 입장)
+			e.target.style.display = 'none';
+			enterBtn.style.display = 'unset';
+			
+			// 대화방 팝업?! 
+			
+		},
+		error(jqxhr, textStatus, err ){
+	        console.log(jqxhr, textStatus, err);
+		}
+	});
+	
+});
+</script>
+</c:if>
+
+<c:if test="${together.status eq 'Y' && hasEntered eq true}">
+<script>
+/* 현재 대화방 참여자인 경우 */
+document.querySelector(".enter").addEventListener('click', (e) => {
+	// 아마 여기서는 현재 입장중인 채팅방을 불러오면 될것같아요🫠
+	console.log('확인');
 });
 </script>
 </c:if>

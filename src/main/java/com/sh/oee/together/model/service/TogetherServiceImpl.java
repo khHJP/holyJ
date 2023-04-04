@@ -89,5 +89,10 @@ public class TogetherServiceImpl implements TogetherService {
 	public List<Map<String, Object>> getJoinMemberCnt(Map<String, Object> param) {
 		return togetherDao.getJoinMemberCnt(param);
 	}
+
+	@Override
+	public void TimeOverDateTimeUpdate() {
+		togetherDao.TimeOverDateTimeUpdate();
+	}
 	
 }
