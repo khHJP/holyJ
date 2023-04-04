@@ -4,6 +4,21 @@ h4 {
 }
 
 /* togetherList */
+.together-info-img {
+	background-color: #FFFAD7;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.together-info-box {
+	display: flex;
+    width: 1200px;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: space-evenly;
+    padding: 40px 0;
+}
+.together-img-box img {
+    height: 280px;
+}
 .together-list-container, .together-container {
     width: 1050px;
     margin: 0 auto;
@@ -47,7 +62,7 @@ h4 {
     margin: 0;
     margin-top: 10px;
     font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 400;
+    font-weight: 600;
 }
 .etc-wrap {
 	display: flex;
@@ -109,12 +124,12 @@ h4 {
 }
 .together-body h4 {
     font-size: 1.3rem;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 8px;
 }
 .to-required, .to-cnt, .to-time {
     margin-bottom: 0.45rem;
-    font-weight: 300;
+    font-weight: 400;
 }
 .to-required span{
     font-size: 0.88rem;
@@ -255,7 +270,7 @@ p {
 }
 .status-box h2, .title-box h2 {
 	margin-right: 10px;
-    font-weight: 400;
+    font-weight: 600;
 }
 .ing {
     color: #56C271;
@@ -294,10 +309,10 @@ p {
 	position: relative;
 }
 .info {
-	display: flex;
+    display: flex;
     margin: 15px 0;
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 400;
 }
 .info i {
 	margin-right: 10px;
@@ -414,5 +429,5 @@ p {
 	display: none;
 }
 .to-h4 {
-	font-weight: 400;
+	font-weight: 500;
 }
