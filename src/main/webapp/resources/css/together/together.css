@@ -172,7 +172,7 @@ h4 {
 }
 .member-img img {
     width: 35px;
-    height: auto;
+    height: 35px;
 	border-radius: 3rem;
 }
 .check-cnt {
@@ -214,7 +214,7 @@ p {
 }
 .profile-box img {
     width: 70px;
-    height: auto;
+    height: 70px;
     border-radius: 3rem;
 }
 .manner-box p {
@@ -411,6 +411,7 @@ p {
 }
 .member-info img {
 	height: 55px;
+	width: 55px;
     border-radius: 2rem;
 }
 .info-txt {
