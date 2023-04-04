@@ -16,6 +16,7 @@
 	
 	<!-- #7.2. 자원별 권한여부설정 -->
 	<http pattern="/resources/**" security="none"/>
+	
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>

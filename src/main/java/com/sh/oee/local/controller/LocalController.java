@@ -8,34 +8,40 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.oee.common.OeeUtils;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
-
-import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalCategory;
+import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.local.model.service.LocalService;
+import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 
 import com.sh.oee.member.model.service.MemberService;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 
 import com.sh.oee.together.model.dto.Together;
 
@@ -56,27 +62,60 @@ public class LocalController {
 	
 	//동네생활 게시물 목록
 	@GetMapping("/localList.do")
-	public void localList(Model model , HttpSession session, Authentication authentication) {
+	public void localList(Model model , HttpSession session, 
+			@RequestParam(defaultValue = "1") int currentPage, 
+			 @RequestParam(required = false) String categoryNo) {
 	
+		log.debug("categoryNo = {}", categoryNo);
+
+		Integer no = null;
+		try {
+			no = Integer.parseInt(categoryNo);
+		} catch (NumberFormatException e) {}
+		
 		//글 목록
 		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
 		log.debug("dongList = {}",myDongList);
 		
+		Map<String, Object> param = new HashMap<>();
+		param.put("myDongList", myDongList);
+		param.put("categoryNo", no);
+		
+		int limit = 10;
+		int offset = (currentPage - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		int totalCount = localService.getLocalTotalCount(param);
+		
 		List<Map<String,String>> localCategory = localService.localCategoryList();
-		List<Local> localList = localService.selectLocalListByDongName(myDongList);
+		List<Local> localList = localService.selectLocalListByDongName(param, rowBounds);
+		
+		
+		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+		
+		
+		// 위에서 가져온 같이해요 목록의 번호 추출
+				List<Integer> boardNoList = new ArrayList<>();
+				for(int i = 0; i < localList.size(); i++) {
+					boardNoList.add(localList.get(i).getNo());
+				}
+				Map<String, Object> params = new HashMap<>(); 
+				params.put("boardNoList", boardNoList);
+		
 		//동네정보 가져오기
 		log.debug("localList = {}", localList);
 		log.debug("localCategory = {} ", localCategory);
 		
 		//아이디 가져오기
-		Member member =((Member)authentication.getPrincipal());
-		log.debug("writeMemebr = {}", member);
+//		Member member =((Member)authentication.getPrincipal());
+//		log.debug("writeMemebr = {}", member);
 //		
 		
 		
 		//view단
 		model.addAttribute("localList", localList);
 		model.addAttribute("localCategory",localCategory);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", currentPage);
 //		model.addAttribute("member",member);
 	}
 	
@@ -139,7 +178,7 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(@RequestParam(defaultValue="")String category,@RequestParam int no, Model model,Authentication authentication) {
+	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication) {
 		Local localdetail = localService.selectLocalOne(no);
 		Member member = ((Member)authentication.getPrincipal());
 		
@@ -156,8 +195,11 @@ public class LocalController {
 		
 		int findlike = localService.selectLocalLike(param);
 		
-		model.addAttribute("localdetail",localdetail);
-		model.addAttribute("category", category);
+		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no);
+		
+		model.addAttribute("localcategory", localcategory);
+		model.addAttribute("localdetail", localdetail);
+		model.addAttribute("commentList", commentList);
 		model.addAttribute("findlike", findlike);
 	}
 	
@@ -205,50 +247,47 @@ public class LocalController {
 	public String localUpdate(Local local,
 			@RequestParam("upFile") List<MultipartFile> upFiles) {
 		
-//		String saveDirectory = application.getRealPath("/resources/upload/local");
-//		Local localdetail = localService.selectLocalOne(no);
+		String saveDirectory = application.getRealPath("/resources/upload/local");
+			
 		
-//		//원래 저장된 첨부파일 가져오고
-//		List<LocalAttachment> originalFiles = localService.selectLocalAttachments(no);
-//		//다시 담아주고
-//		List<Integer> addFileList = new ArrayList<>();
-//		//비교하기
-//		for(int i=0; i<originalFiles.size();  i++) {
-//			 addFileList.add( originalFiles.get(i).getAttachNo());
-//		 }
-//		//첨부파일 가져온거 삭제하기		
-//		
-//	
-//				
-//		//첨부파일 저장 및 Attachment 객체 만들기
-//				for(MultipartFile upFile : upFiles) {
-//					log.debug("upFile = {} ", upFile);
-//					log.debug("upFile = {} ", upFile.getOriginalFilename());
-//					log.debug("upFileSize = {} ", upFile.getSize());
-//					
-//					if(upFile.getSize() > 0) {
-//						// 저장
-//						String renamedFilename = OeeUtils.renameMultipartFile(upFile);
-//						String originalFilename = upFile.getOriginalFilename();
-//						File destFile = new File(saveDirectory, renamedFilename);
-//						try {
-//							upFile.transferTo(destFile);
-//						}  catch (IllegalStateException | IOException e) {
-//							log.error(e.getMessage(), e);
-//						}
-//						
-//						// attach객체 생성 및 Board에 추가
-//						LocalAttachment attach = new LocalAttachment();
-//						attach.setReFilename(renamedFilename);
-//						attach.setOriginalFilename(originalFilename);
-//						local.addAttachment(attach);
-//					}
-//				}
+		//기존 첨부파일번호 조회
+		if(upFiles != null || upFiles.size() > 0) {
+			int attachNo = localService.selectAttachNo(local.getNo());	
+			
+			LocalAttachment attach = new LocalAttachment();
+			//첨부파일 저장 및 Attachment 객체 만들기
+			for(MultipartFile upFile : upFiles) {
+				log.debug("upFile = {} ", upFile);
+				log.debug("upFile = {} ", upFile.getOriginalFilename());
+				log.debug("upFileSize = {} ", upFile.getSize());
 				
-				//Board 저장
-				int result = localService.insertLocalBoard(local);
-				log.debug("result : " + result);
-//		redirectAttr.addFlashAttribute("msg","게시글이 수정됐습니다.");
+				if(upFile.getSize() > 0) {
+					// 저장
+					String renamedFilename = OeeUtils.renameMultipartFile(upFile);
+					String originalFilename = upFile.getOriginalFilename();
+					File destFile = new File(saveDirectory, renamedFilename);
+					try {
+						upFile.transferTo(destFile);
+					}  catch (IllegalStateException | IOException e) {
+						log.error(e.getMessage(), e);
+					}
+					
+					// attach객체 생성 및 Board에 추가
+					attach.setReFilename(renamedFilename);
+					attach.setOriginalFilename(originalFilename);
+					attach.setAttachNo(attachNo);
+					//local.addAttachment(attach);
+				}
+			}
+			localService.updateAttachFile(attach);
+		}
+		
+		
+				
+		//Board 저장
+		int result = localService.updateLocalBoard(local);
+		log.debug("result : " + result);
+
 		return "redirect:/local/localDetail.do?no=" + local.getNo();
 	}
 	
@@ -266,6 +305,47 @@ public class LocalController {
 	}
 	
 	
+
+	
+	//댓글 입력
+	@RequestMapping(value = "/commentInsert.do", method = RequestMethod.POST)
+	public String commentInsert(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
+		//public void commentInsert(@RequestParam Map<String, Object> param, HttpSession session) {
+		log.debug("commentㅁㄴ아러밎러 : " + comment );
+		//Member member = (Member) session.getAttribute("loginMember");
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		String memberId = userDetails.getUsername();
+		log.debug("memberId : " + memberId );
+		comment.setWriter(memberId);
+		int result = localService.insertComment(comment);
+		//log.debug("Commentresult : " + result);
+		if(result > 0) {
+			redirectAttr.addFlashAttribute("msg", "댓글을 등록했습니다.");
+			
+		}
+		
+		return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
+	}
+	
+	//댓글 목록
+	@RequestMapping("/commentList.do")
+	public ModelAndView commentList(@RequestParam int no, ModelAndView mav) {
+		List<LocalCommentEntity> commentList = localService.commentList(no);
+		// 뷰 이름 지정
+		mav.setViewName("local/replyList");
+		// 뷰에 전달할 데이터 지정
+		mav.addObject("commentList",commentList);
+		
+		return mav;
+	}
+	
+	//댓글 목록(json 방식 , 데이터를 리턴)
+	@RequestMapping("/listJson.do")
+	@ResponseBody
+	public List<LocalCommentEntity> listJson(@RequestParam int no){
+		List<LocalCommentEntity> commentList = localService.commentList(no);
+		return commentList;
+	}
 	
 	
 	
@@ -294,9 +374,19 @@ public class LocalController {
 	
 	
 	
-	
-	
-	
+	@ResponseBody
+	@GetMapping("/getDongDong.do")
+	public Map<String, Object> getDongDong(@RequestParam int dongNo) {
+		
+		List<Dong>  dongguname  = memberService.selectMydongGuName(dongNo);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("guName", dongguname.get(0).getGu());
+		map.put("dongName", dongguname.get(0).getDongName());
+		log.debug( "■ dongguName : " + map );
+		
+		return map;
+	}
 	
 	
 	
@@ -333,7 +423,7 @@ public class LocalController {
 	public void localComment(Authentication authentication, Model model) {		
 		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
 		
-		List<LocalComment> myLocalComment = localService.selectLocalCommentList(memberId);
+		List<LocalCommentEntity> myLocalComment = localService.selectLocalCommentList(memberId);
 		
 		
 		log.debug("myLocalComment = {}",myLocalComment);
