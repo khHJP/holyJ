@@ -1,5 +1,6 @@
 package com.sh.oee.chat.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sh.oee.chat.model.dao.ChatDao;
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
+import com.sh.oee.chat.model.dto.MsgAttach;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,13 +86,29 @@ public class ChatServiceImpl implements ChatService {
 
 	/**
 	 * INSERT
-	 * - 받아온 중고거래 채팅방의 메시지를 CRAIG_MSG에 삽입
+	 * - CRAIG_MSG 한 행 추가
+	 * - 해당하는 첨부파일이 있다면, 첨부파일 컬럼의 msg_no를 변경
 	 */
 	@Override
 	public int insertCraigMsg(CraigMsg craigMsg) {
-		return chatDao.insertCraigMsg(craigMsg);
+		int result = chatDao.insertCraigMsg(craigMsg);
+		MsgAttach attach = chatDao.findCraigMsgAttach(craigMsg.getContent());
+		Map<String, Object> map = new HashMap<>();
+		
+		if(attach != null) {
+			map.put("msgNo", craigMsg.getMsgNo()); // msg_no 가져오기
+			map.put("reFilename", craigMsg.getContent());
+			result = updateCraigAttachMsgNo(map);
+		}
+		
+		return result;
 	}
 
+	@Override
+	public int updateCraigAttachMsgNo(Map<String, Object> map) {
+		return chatDao.updateCraigAttachMsgNo(map);
+	}
+	
 	@Override
 	public CraigChat findCraigChat(Map<String, Object> craigChatMap) {
 		return chatDao.findCraigChat(craigChatMap);
@@ -117,6 +135,11 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public int updateRegDel(Map<String, Object> regDelMap) {
 		return chatDao.updateRegDel(regDelMap);
+	}
+
+	@Override
+	public int insertCraigMsgAttach(MsgAttach attach) {
+		return chatDao.insertCraigMsgAttach(attach);
 	}
 	
 }
