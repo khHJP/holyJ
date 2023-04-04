@@ -34,7 +34,7 @@
 		</div>
 		<div class="sign-up-box">
 			<h3 class="input-title">닉네임</h3>
-			<p>한글 2~8자의 닉네임을 입력해주세요.</p>
+			<p>한글 2~7자의 닉네임을 입력해주세요.</p>
 			<input type="text" name="nickname" id="nickname" class="sign-up-input" required>
 		</div>
 		<div class="sign-up-box">
@@ -88,8 +88,8 @@ document.querySelector("#gu-select").addEventListener('change', (e) => {
 });
 
 const memberId = document.querySelector("#memberId");
-const idValid = document.querySelector("#idValid");
-const pwdValid = document.querySelector("#pwdValid");
+let idValid = document.querySelector("#idValid");
+let pwdValid = document.querySelector("#pwdValid");
 
 /* 아이디 중복검사 */
 document.querySelector(".dupl-btn").addEventListener('click', (e) => {
@@ -166,21 +166,26 @@ document.querySelector("#pwdCheck").addEventListener('keyup', (e) => {
 	}
 	else{
 		checkPwd.nextElementSibling.style.visibility = "hidden";		
-		pwdValid.value = 1;
 	}
 });
 
 /* 유효성 검사 */ 
 document.memberEnrollFrm.addEventListener('submit', (e) => {
+
+	const checkId = document.querySelector("#idValid")
+	const checkPwd = document.querySelector("#pwdValid");
+	console.log(checkId, checkPwd);
+	
 	
 	// 아이디, 비밀번호 
-	if(idValid === 0 || pwdValid.value === 0)
+	if(checkId.value == 0 || checkPwd.value == 0){
 		e.preventDefault();
+	}
 	
 	console.log("idValid : ", idValid, "pwdValid : ", pwdValid);
 	// 닉네임
 	const nickname = document.querySelector("#nickname");
-	if(!/^.[가-힣]{2,}$/.test(nickname.value)){
+	if(!/^.[가-힣]{2,7}$/.test(nickname.value)){
 		nickname.select();
 		nickname.previousElementSibling.style.color='#E64848';
 		e.preventDefault();
@@ -214,7 +219,7 @@ document.memberEnrollFrm.addEventListener('submit', (e) => {
 		e.preventDefault();
 	}
 	
-	return true;
+ 	return true;
 	
 });
 

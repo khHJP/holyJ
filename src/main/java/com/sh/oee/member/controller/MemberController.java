@@ -100,7 +100,7 @@ public class MemberController {
 		// view 전달
 		redirectAtrr.addFlashAttribute("msg", "오이 가족이 되신걸 환영합니다!"); // msg 안나옴,, 왤까,,?
 		
-		return "redirect:/";
+		return "redirect:/oee";
 	}
 	
 	/**
@@ -122,7 +122,6 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	
 	/**
 	 * 아이디 중복체크 (비동기)
 	 * @param memberId

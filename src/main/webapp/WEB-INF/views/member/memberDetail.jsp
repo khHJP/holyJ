@@ -65,6 +65,7 @@
 	</div>
 		</form:form>
 <form:form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form:form>
+
 </body>
 <script>
 	const deleteMember = () => {
@@ -112,14 +113,56 @@
 	        fr.readAsDataURL(img.files[0]); // 비동기처리 - 언제끝날지 몰라 백그라운드에서 작업함
 	        fr.onload = (e) => {
 	            // 읽기 작업 완료시 호출될 load이벤트핸들러
+	        	  $('#imageP').empty();
+	              preview.src = e.target.result; // result속성은 dataUrl임
+	              div.append(preview);
+	          };
+	      }
+	      
+	  });
+	
+/* 	function readURL(input) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function(e) {
 	            $('#imageP').empty();
 	            preview.src = e.target.result; // result속성은 dataUrl임
 	            div.append(preview);
 	        };
 	    }
+
 	    
 	});
 	
+	}
+	$("#imageUpload").change(function() {
+	    readURL(t);
+	}); */
+	 
+	/*  document.profileUpdateFrm.addEventListener("submit", (e) => {
+			e.preventDefault(); // 폼제출 방지
+			
+			// FormData객체 생성
+			const frmData = new FormData(e.target);
+			
+			// 등록 POST 
+			$.ajax({
+				url : "${pageContext.request.contextPath}/member/updateProfile.do",
+				method : "POST",
+				data : frmData,
+				dataType : "json",
+				contentType : false,
+				processData : false,
+				success(data){
+					console.log(data);
+					alert(data.result);
+				},
+				error : console.log,
+				complete(){
+					e.target.reset();
+				}
+			});
+		}); */
 	</script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
