@@ -128,6 +128,7 @@
 					</ul>
 				</div>
 				<!-- 채팅방 메시지내용 end  -->
+				
 				<div class="message-input">
 	
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
@@ -186,13 +187,14 @@ const chatroomId = '${chatroomId}';
 const memberId = '${memberId}';
 const profImg = '${chatUser.profileImg}';
 
+// csrf 토큰  
+const csrfHeader = "${_csrf.headerName}";
+const csrfToken = "${_csrf.token}";
+const headers = {};
+headers[csrfHeader] = csrfToken;
+
 /* 채팅방 나가기 */
 document.querySelector("#craigExit").addEventListener("click", (e) => {
-	const csrfHeader = "${_csrf.headerName}";
-    const csrfToken = "${_csrf.token}";
-    const headers = {};
-    headers[csrfHeader] = csrfToken;
-	
 	$.ajax({
 		url : `${pageContext.request.contextPath}/chat/updateDel.do?memberId=\${memberId}&chatroomId=\${chatroomId}`,
 		method : 'POST',
@@ -231,34 +233,40 @@ document.querySelector("#upFile").addEventListener("change", (e) => {
 });
 
 
-
+/* 첨부파일 전송시 */
 document.querySelector("#upFileBtn").addEventListener('click', (e) => {
 
-	const formData = new FormData();
-	const file = document.querySelector("#upFile").files[0];
-	console.log(file);	
-	formData.append("file", file);
-	
-	const csrfHeader = "${_csrf.headerName}";
-    const csrfToken = "${_csrf.token}";
-    const headers = {};
-    headers[csrfHeader] = csrfToken;
-	// 2. 첨부파일 가져오기
-	$.ajax({
-		headers,
-		url : '${pageContext.request.contextPath}/chat/craigChatAttach',
-		processData : false,
-		contentType : false, 
-		data : formData,
-		type : "POST",
-		success(data){
-			
-		}
-	,
-	
-	});
-	
-	
+    const formData = new FormData();
+    const file = document.querySelector("#upFile").files[0];
+    console.log(file);    
+    formData.append("file", file);
+    formData.append("memberId", memberId);
+
+    // 2. 첨부파일 가져오기
+    $.ajax({
+        headers,
+        url : '${pageContext.request.contextPath}/chat/craigChatAttach',
+        processData : false,
+        contentType : false, 
+        data : formData,
+        dataType: "json",
+        type : "POST",
+        success(data){
+   			const {profileImg, attach} = data;
+	        const payload = {
+	        	chatroomId,
+             	writer : '<sec:authentication property="principal.username"/>',
+             	content : attach.reFilename,
+             	sentTime : Date.now(),
+             	type : 'FILE',
+             	prof : profileImg
+            }
+	        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+            
+        },
+        error: console.log
+    });    
+    
 });
 
 /* 메시지 전송하기 */
@@ -267,14 +275,9 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	
 	// 1. input에 작성한 메세지내용 가져오기
 	const msg = document.querySelector("#msg");
-	
-	// 2. 첨부파일 가져오기
-	const file = document.querySelector("#upFile").files[0];
 
-	if(!msg.value && !file) return; // 메시지 없거나, 첨부파일 없을시 return 
+	if(!msg.value) return; // 메시지 없을시 return 
 
-	// 메시지일때 
-	if(msg.value){
 	// 2. payload : CraigMsg와 규격 맞춤
 	const payload = {
 		chatroomId,
@@ -284,11 +287,11 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 		type : 'CHAT',
 		prof : '${chatUser.profileImg}'
 	};
+	
+	// 3. 전송
 	stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
 	msg.value = '';
 	msg.focus();
-	}
-	// 3. 전송
 
 }); 
 	
