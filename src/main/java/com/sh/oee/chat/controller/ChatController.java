@@ -61,30 +61,39 @@ public class ChatController {
 	/**
 	 * 중고거래 채팅방 첨부파일 저장 처리
 	 */
-	@PostMapping("/craigChatAttach")
-	@ResponseBody
-	public void craigChatAttach(MultipartFile file, HttpSession session) {
-		
-		
-		String saveDirectory = application.getRealPath("/resources/upload/chat/craig");
-		
-		if(file.getSize() > 0) {
-			// 1. 파일 저장하기
-			String renamedFilename = OeeUtils.renameMultipartFile(file);
-			String originalFilename = file.getOriginalFilename();
-			File destFile = new File(saveDirectory, renamedFilename);
-			try {
-				file.transferTo(destFile);
-			} catch (IllegalStateException | IOException e) {
-				log.error(e.getMessage(), e);
-			}
-			
-			// 2. MsgAttach객체 생성 
-			MsgAttach attach = new MsgAttach();
-			attach.setReFilename(renamedFilename);
-			attach.setOriginalFilename(originalFilename);
-		}
-	}
+    @PostMapping("/craigChatAttach")
+    @ResponseBody
+    public Map<String, Object> craigChatAttach(MultipartFile file, String memberId) {
+    
+        String saveDirectory = application.getRealPath("/resources/upload/chat/craig");
+        log.debug("저장경로 = {}", saveDirectory);
+        
+        // 1. 반환할 MsgAttach객체 생성 
+        MsgAttach attach = new MsgAttach();
+        
+        if(file.getSize() > 0) {
+            // 2. 파일 저장하기
+            String reFilename = OeeUtils.renameMultipartFile(file);
+            String originalFilename = file.getOriginalFilename();
+            File destFile = new File(saveDirectory, reFilename);
+            try {
+                file.transferTo(destFile);
+            } catch (IllegalStateException | IOException e) {
+                log.error(e.getMessage(), e);
+            }
+            
+            // 2. craig_msg_attach에 한행 추가
+            attach.setReFilename(reFilename);
+            attach.setOriginalFilename(originalFilename);
+            chatService.insertCraigMsgAttach(attach);
+        }
+        Map<String, Object> map = new HashMap<>();
+        Member member = memberService.selectOneMember(memberId);
+        map.put("profileImg", member.getProfileImg());
+        map.put("attach", attach);
+        
+        return map; // 메시지 보내기위해 필요한것: renamedFilename, profileImg 
+    }
 	/**
 	 * 중고거래 채팅방 나가기 처리 
 	 */
