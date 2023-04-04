@@ -29,8 +29,8 @@
 				       </div>
 				       <div class="avatar-preview">
 				       	<div id="imageP">
-				           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
-				           </div>
+				           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview cur	rentImg">
+			           </div>
 				       </div>
 				   </div>
 				
@@ -66,7 +66,7 @@
 		</form:form>
 	</div>
 <form:form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form:form>
-<script>
+<script>	
 	const deleteMember = () => {
 		if(confirm('정말 회원탈퇴하시겠습니까?')){
 			document.memberDeleteFrm.submit();
@@ -102,8 +102,7 @@
 	
 	
 	
-	
-	function readURL(input) {
+/* 	function readURL(input) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
@@ -114,8 +113,8 @@
 	    }
 	}
 	$("#imageUpload").change(function() {
-	    readURL(this);
-	});
+	    readURL(t);
+	}); */
 	 
 	/*  document.profileUpdateFrm.addEventListener("submit", (e) => {
 			e.preventDefault(); // 폼제출 방지

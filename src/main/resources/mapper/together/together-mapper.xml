@@ -251,6 +251,16 @@
 			no = #{no}
 	</update>
 	
+	<!-- 날짜가 지난 모임 종료 -->
+	<update id="TimeOverDateTimeUpdate">
+		update 
+		    together
+		set
+		    status = 'N'
+		where
+		    <![CDATA[date_time < sysdate]]>
+	</update>
+	
 	<!-- 👻 정은 끝 👻 -->
 
 

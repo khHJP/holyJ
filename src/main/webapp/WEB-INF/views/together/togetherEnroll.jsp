@@ -365,7 +365,10 @@ document.togetherEnrollFrm.addEventListener('submit', (e) => {
 	const meeting = new Date();
 	meeting.setMonth(month - 1);
 	meeting.setDate(date);
-	meeting.setHours(amPm == 'pm' ? Number(hour) + 12 : hour);
+	meeting.setHours(amPm == 'pm' && Number(hour) != 12 ? 
+			Number(hour) + 12 : amPm == 'am' && Number(hour) != 12 ?
+					hour : amPm == 'pm' && Number(hour) == 12 ?
+							12 : 0);
 	meeting.setMinutes(minute);
 	console.log(meeting);
 	
