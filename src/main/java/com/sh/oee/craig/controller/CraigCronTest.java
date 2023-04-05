@@ -29,11 +29,11 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
-	@Scheduled(cron="0 54 10 * * *")
+/**	혜진만 주석풀고 메소드 실행합니다! **/
+	@Scheduled(cron="0 0 4 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
-	public void craigCronSchedule() {//매일 19시에 실행 -- 잘되면 오전 1시로 바꾸기 
-	// 4/2일의 매너평가가 반영된 tigerhj의 매너온도는 36.5도 -> +0.2 +0.5  +0.1 +0.1 = 36.5 +0.9 = 37.4도가 되어야한다  
-	// 새벽 4시에 한번 더 실행되는지체크하기  37.4+ 0.9 = 38.3 
+	public void craigCronSchedule() {//매일 5시에 실행 -- 잘되면 오전 1시로 바꾸기 
+
 		 
 		log.debug("==========================   메소드 시작   =================================");
 		 // 1) 전체 매너리스트 확인한다  
@@ -72,6 +72,12 @@ public class CraigCronTest {
 			 log.debug(" ★★★ result = {}", result); //최대 2개여야됨 			
 			 
 		 }// end - for문 
+		 
+		 int realResult = 0;
+		 if( result > 0) {
+			 realResult = mannerService.updateMannerDone();
+			 log.debug(" ★★★ realResult = {}", realResult);
+		 }
 
 		 log.debug("======================================================================");
 
@@ -81,9 +87,7 @@ public class CraigCronTest {
 
 
 /*
-
 어제 4/2일 12시 ~ 23:59분까지 
-반영된 매너온도를 오늘 새벽 1시에 작업하고 
-오늘 꺼는 낼 새벽에 작업한다 
- 
+반영된 매너온도를 오늘 새벽 5시에 작업하고 
+오늘 꺼는 낼 새벽에 작업한다  
  */

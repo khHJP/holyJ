@@ -48,6 +48,8 @@ create table CRAIG (
 	state varchar2(10) default 'CR2', -- 예약중/판매중/판매완료
 	buyer varchar2(30),
 	complete_date date,
+	REPORT_YN CHAR(1) default 'N' ,
+
 	constraint pk_craig_no primary key(no),
 	constraint fk_craig_category_no foreign key (category_no) references craig_category(category_no) on delete set null,
 	constraint fk_craig_writer foreign key (writer) references member(member_id),

@@ -50,4 +50,10 @@
 	</bean>
 	<!-- @Transactional 어노테이션이 붙은 메소드 대상으로 Transaction advice 삽입 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>	
+	
+	<!-- lock provider of your choice (jdbc/zookeeper/mongo/whatever) -->
+	<bean id="lockProvider" class="net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider">
+	    <constructor-arg ref="dataSource"/>
+	</bean>
+
 </beans>
