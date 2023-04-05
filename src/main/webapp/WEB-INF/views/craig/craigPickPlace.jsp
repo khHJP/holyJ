@@ -145,6 +145,7 @@
 		    
 		    console.log( document.querySelector("#platitude") ); //잘나오냐
 		    console.log( document.querySelector("#longitude") );
+		    console.log( message );
 		}); //end 카카오
 
 	   };//end success

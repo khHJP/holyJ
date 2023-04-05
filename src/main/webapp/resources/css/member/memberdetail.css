@@ -43,7 +43,7 @@ form#command{
 }
 #comment{
 	padding: 10px;
-    margin-left: 9.5vw;
+    margin-left: 11vw;
     font-size: 13px;
     color: lightslategrey;
     text-align: left;
@@ -86,8 +86,8 @@ form#command{
     position: relative;
 }
 .imagePreview {
-        width: 100%;
-        height: 100%;
+        width: 150px;
+        height: 150px;
         border-radius: 100%;
         background-size: cover;
         background-repeat: no-repeat;

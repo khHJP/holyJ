@@ -16,27 +16,26 @@
 <br />
 <br />
 
+	<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
 	<table>
 		<th>
-				
-		<form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post">
-				<div class="avatar-upload">
-				       <div class="avatar-edit">
-				           <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-				           <label for="imageUpload">
-				           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload">
-				           </label>
-				       </div>
-				       <div class="avatar-preview">
-				       	<div id="imageP">
-				           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview cur	rentImg">
+			<div class="avatar-upload">
+			       <div class="avatar-edit">
+			           <input type='file' id="imageUpload" name="upFile" accept=".png, .jpg, .jpeg" />
+			           <label for="imageUpload">
+			           	<img src="${pageContext.request.contextPath}/resources/images/pick.png" alt="imageupload" id="imgupload" name="profileImg">
+			           </label>
+			       </div>
+			       <div class="avatar-preview">
+			       	<div id="imageP">
+			           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" class="imagePreview">
 			           </div>
-				       </div>
-				   </div>
-				
-					<td>
-						<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
-					</td>
+			       </div>
+			   </div>
+			
+				<td>
+					<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
+				</td>
 		</th>
 	</table>
 	<br /><br />
@@ -63,10 +62,12 @@
 			<input type="submit" class="btn btn-outline-success" value="수정" >&nbsp;
 			<input type="button" class="btn btn-outline-success" onclick="deleteMember()" value="탈퇴">
 			</div>
-		</form:form>
 	</div>
+		</form:form>
 <form:form name="memberDeleteFrm" action="${pageContext.request.contextPath}/member/memberDelete.do" method="POST"></form:form>
-<script>	
+
+</body>
+<script>
 	const deleteMember = () => {
 		if(confirm('정말 회원탈퇴하시겠습니까?')){
 			document.memberDeleteFrm.submit();
@@ -76,7 +77,6 @@
 		const nickname = document.querySelector("#nickname");
 		const password = document.querySelector("#password");
 		const phone = document.querySelector("#phone");
-		const profileImg = document.querySelector("#profileImg");
 		
 		// 닉네임 - 한글 2~8자 이상
 		if(!/^[가-힣]{2,8}$/.test(nickname.value)){
@@ -100,17 +100,40 @@
 		}
 	};
 	
-	
+	/* 프로필 미리보기 */
+	document.querySelector("#imageUpload").addEventListener('change', (e) => {
+	    const img = e.target;
+	    const div = document.querySelector("#imageP")
+	    const preview = document.createElement("img");
+	    preview.classList.add("imagePreview");
+	    
+	    if(img.files[0]){
+	        // 파일 선택한 경우
+	        const fr = new FileReader(); // html5 api
+	        fr.readAsDataURL(img.files[0]); // 비동기처리 - 언제끝날지 몰라 백그라운드에서 작업함
+	        fr.onload = (e) => {
+	            // 읽기 작업 완료시 호출될 load이벤트핸들러
+	        	  $('#imageP').empty();
+	              preview.src = e.target.result; // result속성은 dataUrl임
+	              div.append(preview);
+	          };
+	      }
+	      
+	  });
 	
 /* 	function readURL(input) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function(e) {
 	            $('#imageP').empty();
-	            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-	        }
-	        reader.readAsDataURL(input.files[0]);
+	            preview.src = e.target.result; // result속성은 dataUrl임
+	            div.append(preview);
+	        };
 	    }
+
+	    
+	});
+	
 	}
 	$("#imageUpload").change(function() {
 	    readURL(t);
@@ -142,5 +165,4 @@
 		}); */
 	</script>
 	
-</body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
