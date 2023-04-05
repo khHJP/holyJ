@@ -26,8 +26,8 @@ public class Local extends LocalEntity {
 	
 	
 	//기본생성자
-	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, int attachCount) {
-		super(no, categoryNo, writer, title, content, regDate, hits);
+	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, int attachCount, String reportYn) {
+		super(no, categoryNo, writer, title, content, regDate, hits, reportYn);
 	}
 	
 	
@@ -39,9 +39,9 @@ public class Local extends LocalEntity {
 
 
 
-	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits,
+	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, String reportYn,
 			int attachCount, List<LocalAttachment> attachments, Member member, Dong dong, LocalCategory localcategory) {
-		super(no, categoryNo, writer, title, content, regDate, hits);
+		super(no, categoryNo, writer, title, content, regDate, hits, reportYn);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;

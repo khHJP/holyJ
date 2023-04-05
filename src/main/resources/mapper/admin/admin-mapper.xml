@@ -283,6 +283,105 @@
 			member_id = #{memberId}
 	</update>
 	
+	<update id="updateAdminBoardReportHandle">
+		update
+			board_report
+		set
+			status = 'Y'
+		where
+			report_no = #{reportNo}
+	</update>
+	
+	<update id="updateAdminCraigBoardReportYn">
+		update
+		 	craig
+		set
+			report_yn = 'Y'
+		where
+			no = #{reportPostNo}
+	</update>
+	
+	<update id="updateAdminCraigMemberBoardReportCnt">
+		update
+			member
+		set
+			report_cnt = report_cnt + 1
+		where
+			member_id = 
+			(select
+				writer
+			from
+				craig
+			where
+				no = #{reportPostNo})
+	</update>
+	
+	<update id="updateAdminLocalBoardReportYn">
+		update
+		 	local
+		set
+			report_yn = 'Y'
+		where
+			no = #{reportPostNo}
+	</update>
+	
+	<update id="updateAdminLocalMemberBoardReportCnt">
+		update
+			member
+		set
+			report_cnt = report_cnt + 1
+		where
+			member_id = 
+			(select
+				writer
+			from
+				local
+			where
+				no = #{reportPostNo})
+	</update>
+	
+	<update id="updateAdminTogetherBoardReportYn">
+		update
+		 	together
+		set
+			report_yn = 'Y'
+		where
+			no = #{reportPostNo}
+	</update>
+	
+	<update id="updateAdminTogetherMemberBoardReportCnt">
+		update
+			member
+		set
+			report_cnt = report_cnt + 1
+		where
+			member_id = 
+			(select
+				writer
+			from
+				together
+			where
+				no = #{reportPostNo})
+	</update>
+	
+	<update id="updateAdminUserReportHandle">
+		update
+			user_report
+		set
+			status = 'Y'
+		where
+			report_no = #{reportNo}
+	</update>
+	
+	<update id="updateAdminMemberUserReportCnt">
+		update
+			member
+		set
+			report_cnt = report_cnt + 1
+		where
+			member_id = #{reportedMember}
+	</update>
+	
 	<!-- delete -->
 	
 	<delete id="deleteAdminCraig">

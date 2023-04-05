@@ -132,7 +132,61 @@ public class AdminServiceImpl implements AdminService {
 	public int updateAdminMemberUnregister(String memberId) {
 		return adminDao.updateAdminMemberUnregister(memberId);
 	}
+	
+	// 게시글 신고 상태 처리
+	@Override
+	public int updateAdminBoardReportHandle(int reportNo) {
+		return adminDao.updateAdminBoardReportHandle(reportNo);
+	}
 
+	// 중고거래 게시글 신고 여부 처리
+	@Override
+	public int updateAdminCraigBoardReportYn(int reportPostNo) {
+		return adminDao.updateAdminCraigBoardReportYn(reportPostNo);
+	}
+
+	// 중고거래 게시글 작성자 신고 횟수 처리
+	@Override
+	public int updateAdminCraigMemberBoardReportCnt(int reportPostNo) {
+		return adminDao.updateAdminCraigMemberBoardReportCnt(reportPostNo);
+	}
+	
+	// 동네생활 게시글 신고 여부 처리
+	@Override
+	public int updateAdminLocalBoardReportYn(int reportPostNo) {
+		return adminDao.updateAdminLocalBoardReportYn(reportPostNo);
+	}
+
+	// 동네생활 게시글 작성자 신고 횟수 처리
+	@Override
+	public int updateAdminLocalMemberBoardReportCnt(int reportPostNo) {
+		return adminDao.updateAdminLocalMemberBoardReportCnt(reportPostNo);
+	}
+	
+	// 같이해요 게시글 신고 여부 처리
+	@Override
+	public int updateAdminTogetherBoardReportYn(int reportPostNo) {
+		return adminDao.updateAdminTogetherBoardReportYn(reportPostNo);
+	}
+
+	// 같이해요 게시글 작성자 신고 횟수 처리
+	@Override
+	public int updateAdminTogetherMemberBoardReportCnt(int reportPostNo) {
+		return adminDao.updateAdminTogetherMemberBoardReportCnt(reportPostNo);
+	}
+	
+	// 사용자 신고 상태 처리
+	@Override
+	public int updateAdminUserReportHandle(int reportNo) {
+		return adminDao.updateAdminUserReportHandle(reportNo);
+	}
+	
+	// 사용자 신고 횟수 처리
+	@Override
+	public int updateAdminMemberUserReportCnt(String reportedMember) {
+		return adminDao.updateAdminMemberUserReportCnt(reportedMember);
+	}
+	
 	/*
 	 * delete
 	 */

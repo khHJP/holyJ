@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -70,7 +71,7 @@ $(document).ready(function() {
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>작성자</th>
+					<th>신고자</th>
 					<th>신고 사유</th>
 					<th>신고한 회원</th>
 					<th>등록일</th>
@@ -91,12 +92,11 @@ $(document).ready(function() {
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>${adminUserReport.status}</td>
-							<td>
-								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
-								<input type="button" class="report" value="처리"  onclick="adminMemberDelete(writer${vs.count});" />
-								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.writer}"/>
-								<input type="button" class="report" value="반려"  onclick="adminMemberDelete(writer${vs.count});" />
-							</td>							
+							<td data-reported-member="${adminUserReport.reportedMember}">
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminUserReport.reportNo}"/>
+								<input type="button" class="report" value="처리"  onclick="adminReportHandle(writer${vs.count}); this.onclick=null;"  />
+								<input type="button" class="report" value="취소"  onclick="adminReportCancle(writer${vs.count}); this.onclick=null;" />
+							</td>						
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -113,7 +113,44 @@ $(document).ready(function() {
 	</div>
 
 </section>
+<!-- 사용자 신고 처리 폼 -->
+<form:form name="adminUserReportHandleFrm" action="${pageContext.request.contextPath}/admin/adminUserReportHandle.do" method="post">
+	<input type="hidden" name="reportNo">
+	<input type="hidden" name="reportedMember">
+</form:form>
+<!-- 사용자 신고 취소 폼 -->
+<form:form name="adminUserReportCancleFrm" action="${pageContext.request.contextPath}/admin/adminUserReportCancle.do" method="post">
+	<input type="hidden" name="reportNo">
+</form:form>
 <script>
+/* 사용자 신고 처리 */
+function adminReportHandle(e) {
+	const reportNo = e.value;
+	const reportedMember = e.parentNode.dataset.reportedMember;
+	console.log(reportNo, reportedMember);	
+	const frm = document.adminUserReportHandleFrm;
+	console.log(frm);
+	
+	if(confirm('이 신고건을 처리하시겠습니까?')) {
+		frm.reportNo.value = reportNo;
+		frm.reportedMember.value = reportedMember;
+		frm.submit();
+	}
+};
+
+/* 사용자 신고 취소 */
+function adminReportCancle(e) {
+	const reportNo = e.value;
+	console.log(reportNo);	
+	const frm = document.adminUserReportCancleFrm;
+	console.log(frm);
+	
+	if(confirm('이 신고건을 취소하시겠습니까?')) {
+		frm.reportNo.value = reportNo;
+		frm.submit();
+	}
+};
+
 /* 페이지 처리 */
 /* 페이지네이션 버튼을 생성하는 함수 */
 const generatePagination = (totalPages, currentPage) => {

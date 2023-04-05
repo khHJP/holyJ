@@ -69,6 +69,33 @@ public interface AdminService {
 	// 회원 삭제 탈퇴일 수정
 	int updateAdminMemberUnregister(String memberId);
 	
+	// 게시글 신고 상태 처리
+	int updateAdminBoardReportHandle(int reportNo);
+	
+	// 중고거래 게시글 신고 여부 처리
+	int updateAdminCraigBoardReportYn(int reportPostNo);
+	
+	// 중고거래 게시글 작성자 신고 횟수 처리
+	int updateAdminCraigMemberBoardReportCnt(int reportPostNo);
+	
+	// 동네생활 게시글 신고 여부 처리
+	int updateAdminLocalBoardReportYn(int reportPostNo);
+	
+	// 동네생활 게시글 작성자 신고 횟수 처리
+	int updateAdminLocalMemberBoardReportCnt(int reportPostNo);
+	
+	// 같이해요 게시글 신고 여부 처리
+	int updateAdminTogetherBoardReportYn(int reportPostNo);
+	
+	// 같이해요 게시글 작성자 신고 횟수 처리
+	int updateAdminTogetherMemberBoardReportCnt(int reportPostNo);
+	
+	// 사용자 신고 상태 처리
+	int updateAdminUserReportHandle(int reportNo);
+	
+	// 사용자 신고 횟수 처리
+	int updateAdminMemberUserReportCnt(String reportedMember);
+	
 	/* delete */
 	
 	// 중고거래 게시글 삭제
