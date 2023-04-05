@@ -32,8 +32,90 @@ public class Craig extends CraigEntity {
 	public void addAttachment(CraigAttachment attach) {
 		this.attachments.add(attach);		
 	}
+
+	
+	//
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, String reportYn, int attachCount) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate, reportYn);
+		this.attachCount = attachCount;
+	}
+
+	//
+	public Craig(List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong) {
+		super();
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+	}
+
+	
+	//
+	public Craig(int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong,
+			int wish) {
+		super();
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+	}
+
+
+	
+	//
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, String reportYn, int attachCount, List<CraigAttachment> attachments,
+			Member member, DongRange dongrange, Dong dong, int wish, int chat) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate, reportYn);
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+		this.chat = chat;
+	}
 	
 	
+
+
+	
+}	
+
+	
+	//
+	
+	
+	/**
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, int attachCount) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate);
+		this.attachCount = attachCount;
+	}
+	
+	//매개변수생성자
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, List<CraigAttachment> attachments, Member member, DongRange dongrange,
+			Dong dong) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate);
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+	}
+
+
 	//생성자
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
@@ -83,9 +165,5 @@ public class Craig extends CraigEntity {
 		this.wish = wish;
 		this.chat = chat;
 	}
+**/
 
-
-	
-
-
-}
