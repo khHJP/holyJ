@@ -18,4 +18,5 @@ public class LocalEntity {
 	private LocalDateTime regDate;
 	private int hits;
 	private String reportYn;
+
 }
