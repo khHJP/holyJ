@@ -26,6 +26,10 @@
 	href="${pageContext.request.contextPath}/resources/css/chat/chatroom.css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 <body>
 	<div class="chat">
@@ -75,8 +79,48 @@
 						<span class="price"> <fmt:formatNumber value="${craig.price}" pattern="#,###" />원</span>
 					</div>
 				</div>
-				<button type="button" class="btn btn-outline-secondary">약속잡기</button>
+				<div class="btnWrap">
+					<c:choose>
+						<c:when test="${craig.state eq 'CR1'}">
+							<button id="meetingDate" type="button" class="btn btn-outline-secondary" >
+								${meetingDate}
+							</button>
+							<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">장소 공유</button>						
+						</c:when>
+						<c:when test="${craig.state eq 'CR2'}">
+							<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>				
+						</c:when>
+						<c:when test="${craig.state eq 'CR3'}">판매완료</c:when>
+					</c:choose>
+				</div>
 			</div>
+
+			
+			<!-- 약속잡기 Modal -->
+			<div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="meetingModalLabel">약속잡기</h5>
+			      </div>
+			      <div class="modal-body" style="height: 270px;">
+			        <div id="meetingWrap" >
+						<!-- datePicker 넣을 div -->
+						<div id="datePicker" class="d-flex justify-content-center"></div>
+						<div id="timeWrap" class="d-flex justify-content-center" style="margin-top: 220px;">
+							<form id="timeForm">
+								<input type="time" name="time" id="time"/>
+							</form>			
+						</div>	
+					</div>
+			      </div>
+			      <div class="modal-footer ">
+			        <button id="saveMeeting" type="button" class="btn btn-primary">약속 등록</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
 			<!--------- 게시글정보 end ----------->
 	
 			<!-------------- 채팅방 메시지내용 start  ------------>
@@ -93,7 +137,7 @@
 							<c:if test="${craigMsg.type == 'CHAT'}">
 								<li class="replies">
 									<p>${craigMsg.content}</p>	
-									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
 							<!-- 첨부파일인 경우 -->
@@ -102,7 +146,7 @@
 									<div class="attachFile">
 										<img class="attachImg" src="${pageContext.request.contextPath}/resources/upload/chat/craig/${craigMsg.content}" alt="" />
 									</div>
-									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
 						</c:if>
@@ -115,7 +159,7 @@
 								<li class="sent">
 									<img class="profImg" src="${pageContext.request.contextPath}/resources/upload/profile/${otherUser.profileImg}" alt="">
 									<p>${craigMsg.content}</p>	
-									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
 							<!-- 첨부파일인 경우 -->
@@ -125,7 +169,7 @@
 									<div class="attachFile">
 										<img class="attachImg" src="${pageContext.request.contextPath}/resources/upload/chat/craig/${craigMsg.content}" alt="" />
 									</div>
-									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="hh:mm a"/></span>
+									<span class="msg_time attach"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
 						</c:if>
@@ -178,6 +222,7 @@ const stompClient = Stomp.over(ws);
 const chatroomId = '${chatroomId}';
 const memberId = '${memberId}';
 const profImg = '${chatUser.profileImg}';
+const otherImg = '${otherUser.profileImg}';
 
 // csrf 토큰  
 const csrfHeader = "${_csrf.headerName}";
@@ -185,6 +230,131 @@ const csrfToken = "${_csrf.token}";
 const headers = {};
 headers[csrfHeader] = csrfToken;
 
+/* 약속잡기 toggle이벤트 */
+/* document.querySelector("#meeting").addEventListener('click', (e) => {
+	const meeting = document.getElementById('meetingWrap');
+	
+	$("#meetingWrap").modal('show');
+	
+	if(meeting.style.display !== 'none'){
+		meeting.style.display = 'none';
+	}
+	else {
+		meeting.style.display = 'block';
+	}
+
+}); */
+
+
+
+// meetingDate 변수 선언
+let meetingDate;
+
+/* Datepicker */
+$(function(){
+	$("#datePicker").datepicker({
+	    maxViewMode: 1,
+	    language: "ko",
+	    todayHighlight: true,
+	    startDate: '-0d',
+	    endDate: '+7d',
+	    autoclose: true
+	})
+	.on("changeDate", function(e){
+		console.log(e);
+		meetingDate = e.date;
+	
+	})
+	$('.datepicker').css({
+		"position" : "absolute",
+		"z-index" : "100",
+		"background-color" : "white",
+		"border" : "1px solid black",
+		"margin-left" : "10px"
+	});
+	$('.datepicker table').css({
+		"margin" : "0 auto"
+	});
+});
+
+document.querySelector("#saveMeeting").addEventListener('click', (e) => {
+	const frm = document.querySelector("#timeForm");
+	const time = frm.time.value; // 19:12
+	
+	const dateBtn = document.querySelector("#meetingDate");
+	const placeBtn = document.querySelector("#meetingPlace");
+	
+	
+	
+	if(!time){
+		alert("시간을 선택해주세요");
+	}
+	else if(!meetingDate){
+		alert("날짜를 선택해주세요");
+	}
+	else{
+		// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
+		meetingDate.setHours(time.substring(0, 2));
+		meetingDate.setMinutes(time.slice(-2)); 
+		
+		
+		// date버튼 html용 
+		let mon = meetingDate.getMonth() + 1;
+		let day = meetingDate.getDate();
+		const weekday = ['일', '월', '화', '수', '목', '금', '토'];
+		let week = weekday[meetingDate.getDay()];
+		let times = convertTime(meetingDate);
+		
+		let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
+		
+		
+		// 2023-04-12 19:12 형식으로 변환
+		let date = meetingDate.getFullYear() + '-' 
+					+ ( (meetingDate.getMonth() + 1) < 9 ? 
+							"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
+					+ ( (meetingDate.getDate()) < 9 ? 
+							"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
+					+ meetingDate.getHours() + ':' 
+					+ ( meetingDate.getMinutes() < 10 ? 
+							"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
+		meetingDate = date;
+	
+		
+
+		
+		// 중고거래 예약 테이블에 행 추가
+   $.ajax({
+	        headers,
+	        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
+	        data : {
+				chatroomId, memberId, meetingDate
+	        },
+	        type : "POST",
+	        success(data){
+	    		// 1. date버튼에 약속일자 입력
+	    		$("#meetingDate").css({
+	    			"display" : "block"
+	    		});
+	    		$("#meetingDate").html(dateHtml);
+	    		
+	    		// 2. 장소공유 버튼 보이기
+	    		$("#meetingPlace").css({
+	    			"display" : "block"
+	    		});
+	    		
+	    		// 3. modal 닫기 + 버튼 감추기
+	    		$("#meeting").css({
+	    			"display" : "none"
+	    		}); 	
+	        },
+	        error: console.log,
+	        complete(){
+	    		$("#meetingModal").modal('hide'); // 모달 감추기	        	
+	        }
+	    });  
+	}
+	
+});
 
 
 /* 첨부파일 전송시 */
@@ -231,7 +401,7 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	// 1. input에 작성한 메세지내용 가져오기
 	const msg = document.querySelector("#msg");
 	if(!msg.value) return; // 메시지 없을시 return 
-
+	
 	// 2. payload : CraigMsg와 규격 맞춤
 	const payload = {
 		chatroomId,
@@ -252,68 +422,105 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 stompClient.connect({}, (frame) => {
 	
 	stompClient.subscribe("/app/craigChat/${chatroomId}", (message) => {		
+		// content type 헤더에 담기
+		const {'content-type' : contentType} = message.headers;
+		
 		// 받아온 json 구조분해할당
 		const {writer, content, sentTime, type, prof} = JSON.parse(message.body);
 		const time = convertTime(new Date(sentTime)); // jquery Date으로 변경 + 12시간 변환함수
 		
-		// 채팅내용 화면에 뿌리기
-		const ul = document.querySelector("#message-container ul");
 		
-		/* 메시지 보낸사람이 로그인한 사용자인지 상대방인지 분기  */
-		/* 내 메시지일때 */
-		if(memberId == writer){
-			console.log(type);
-			
-			/* 메시지 유형이 chat */
-			if( type == 'CHAT'){
-				console.log("내 채팅입니다" + type);
-				ul.innerHTML += `
-				<li class="replies">
-					<p>\${content}</p>	
-					<span class="msg_time">\${time}</span>
-				</li>
-				`;
-			} 
-			/* 메시지 유형이 file */
-			else {
-				console.log("내 파일입니다" +type);
-				const li = document.createElement("li");
-					li.classList.add("replies");
+		const ul = document.querySelector("#message-container ul");
 
-				const div = document.createElement("div");
-					div.classList.add("attach");
-				const img = document.createElement("img");
-					img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
-				div.append(img);
+		if(contentType){
+			/*** 내가 보낸 메시지일때 ***/
+			if(memberId == writer){
 				
-				const p = document.createElement("p");
-					p.innerHTML = `\${content}`;
-				const span = document.createElement("span");
+				/* 메시지 유형이 chat */
+				if( type == 'CHAT'){
+					ul.innerHTML += `
+					<li class="replies">
+						<p>\${content}</p>	
+						<span class="msg_time">\${time}</span>
+					</li>
+					`;
+				} 
+				
+				/* 메시지 유형이 file */
+				else {
+					const li = document.createElement("li");
+					li.classList.add("replies");
+	
+					const div = document.createElement("div");
+					div.classList.add("attachFile");
+					
+					const img = document.createElement("img");
+					img.classList.add("attachImg");
+					img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+					div.append(img);
+	
+					const span = document.createElement("span");
 					span.classList.add("msg_time");
 					span.innerHTML = `\${time}`;
-				li.append(div, p, span);
-				ul.append(li);
+					
+					li.append(div, span);
+					ul.append(li);
+				}
 			}
-		}
-			
-		/* 상대방이 보낸 메시지 */
-		if(memberId != writer){
-			const li = document.createElement("li");
-			li.classList.add("sent");
-			const img = document.createElement("img");
-			img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${prof}`;
-			const p = document.createElement("p");
-			p.innerHTML = `\${content}`;
-			const span = document.createElement("span");
-			span.classList.add("msg_time");
-			span.innerHTML = `\${time}`;
-			
-			li.append(img, p, span);
-			ul.append(li);			
-		}	
+				
+			/*** 상대방이 보낸 메시지일때 ***/
+			if(memberId != writer){
+	
+				/* 메시지 유형이 chat */
+				if( type == 'CHAT'){
+					const li = document.createElement("li");
+					li.classList.add("sent");
+	
+					const img = document.createElement("img");
+					img.classList.add("profImg");
+					img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${otherImg}`;
+					
+					const p = document.createElement("p");
+					p.innerHTML = `\${content}`;
+					
+					const span = document.createElement("span");
+					span.classList.add("msg_time");
+					span.innerHTML = `\${time}`;
+					
+					li.append(img, p, span);
+					ul.append(li);
+				} 
 
+				/* 메시지 유형이 file */
+				else {
+					const li = document.createElement("li");
+					li.classList.add("sent");
+	
+					const img = document.createElement("img");
+					img.classList.add("profImg");
+					img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${otherImg}`;
+					
+					const div = document.createElement("div");
+					div.classList.add("attachFile");
+					
+					const sentImg = document.createElement("img");
+					sentImg.classList.add("attachImg");
+					sentImg.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+					div.append(sentImg);
+	
+					const span = document.createElement("span");
+					span.classList.add("msg_time");
+					span.innerHTML = `\${time}`;
+					
+					li.append(img, div, span);
+					ul.append(li);
+				}
+			}	
+		
+		}
+		// 메시지창 끌어올리기
 		$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
-	});
+	}); // 구독 끝 
 });
 
 
@@ -358,6 +565,7 @@ document.querySelector("#upFile").addEventListener("change", (e) => {
 });
 
 
+
 /* 채팅시간 12시간으로 변환하는 함수 */
 function convertTime(now){
 	let hour = now.getHours();
@@ -375,11 +583,13 @@ function convertTime(now){
 		default :
 			daynight = '오후';
 			hour -= 12;
+			if(hour < 10){
 			hour = '0' + hour;
+			}
 			break;
 		}
 	} 
-	const convertedTime = hour + ':' + min + ' ' + daynight;
+	const convertedTime = daynight + ' ' + hour + ':' + min + ' ';
 	return convertedTime;
 }
 	

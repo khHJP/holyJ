@@ -35,7 +35,7 @@ public interface ChatDao {
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 
-	@Select("select * from craig_chat where member_id = #{memberId} and craig_no = #{craigNo} and chatroom_id = #{chatroomId}")
+	@Select("select * from craig_chat where member_id = #{memberId} and chatroom_id = #{chatroomId}")
 	CraigChat findCraigChat(Map<String, Object> craigChatMap);
 
 	@Select("select * from craig_msg where chatroom_id = #{chatroomId} and sent_time > #{regDate} order by msg_no")
