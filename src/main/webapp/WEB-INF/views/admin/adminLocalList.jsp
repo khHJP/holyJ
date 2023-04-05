@@ -51,7 +51,7 @@ $(document).ready(function() {
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminCraigList.do" style="text-decoration: none; color: black;"> 중고거래 관리 </a></li>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 동네생활 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminLocalList.do" style="text-decoration: none; color: #56C271;"> 동네생활 관리 </a></li>
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminTogetherList.do" style="text-decoration: none; color: black;"> 같이해요 관리 </a></li>
 		</ul>
@@ -66,7 +66,10 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
+		<form:form name="adminLocalSearchFrm" method="get">
+			<input type="search" class="search" id="searchKeyword" name="searchKeyword" placeholder="&nbsp; 작성자/제목 검색...">
+			<button type="submit" class="searchButton">검색</button>
+		</form:form>
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">동네생활 관리</h1>
 		<table>
 			<thead>
@@ -79,37 +82,55 @@ $(document).ready(function() {
 					<th>동네생활 삭제</th>
 				</tr>
 			</thead>
-			<c:set var="category" value="${localCategory}" scope="page"/>
 			<tbody>
-				<c:if test="${not empty adminLocalList}">
-					<c:forEach items="${adminLocalList}" var="adminLocal" varStatus="vs">
+				<c:forEach items="${adminLocalList}" var="adminLocal" varStatus="vs">
+					<tr id="table-content">
+						<td id="count" class="local-view" data-lono="${adminLocal.no}">${vs.count}</td>
+						<td>
+							<select class="local-category" data-no="${adminLocal.no}">
+								<option value=1 <c:if test="${adminLocal.categoryNo eq 1}"> selected="selected"</c:if>>동네질문</option>
+								<option value=2 <c:if test="${adminLocal.categoryNo eq 2}"> selected="selected"</c:if>>동네소식</option>
+								<option value=3 <c:if test="${adminLocal.categoryNo eq 3}"> selected="selected"</c:if>>분실/실종센터</option>
+								<option value=4 <c:if test="${adminLocal.categoryNo eq 4}"> selected="selected"</c:if>>해주세요</option>
+							</select>
+						</td>
+						<td>${adminLocal.writer}</td>
+						<td>${adminLocal.title}</td>
+						<td>
+							<fmt:parseDate value="${adminLocal.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+							<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
+						</td>
+						<td>
+							<input type="hidden" class="local delete" id="local${vs.count}" value="${adminLocal.no}"/>
+							<input type="button" class="local delete" value="삭제"  onclick="adminLocalDelete(local${vs.count});" />
+						</td>
+					</tr>
+				</c:forEach>
+				
+				<c:if test="${adminLocalSearch != null}">
+					<c:forEach items="${adminLocalSearch}" var="adminLocalSearch" varStatus="searchvs">
 						<tr id="table-content">
-							<td class="local-view" data-lono="${adminLocal.no}">${vs.count}</td>
+							<td id="count" class="local-view" data-lono="${adminLocalSearch.no}">${searchvs.count}</td>
 							<td>
-								<select class="local-category" data-no="${adminLocal.no}">
-									<option value=1 <c:if test="${adminLocal.categoryNo eq 1}"> selected="selected"</c:if>>동네질문</option>
-									<option value=2 <c:if test="${adminLocal.categoryNo eq 2}"> selected="selected"</c:if>>동네소식</option>
-									<option value=3 <c:if test="${adminLocal.categoryNo eq 3}"> selected="selected"</c:if>>분실/실종센터</option>
-									<option value=4 <c:if test="${adminLocal.categoryNo eq 4}"> selected="selected"</c:if>>해주세요</option>
+								<select class="local-category" data-no="${adminLocalSearch.no}">
+									<option value=1 <c:if test="${adminLocalSearch.categoryNo eq 1}"> selected="selected"</c:if>>동네질문</option>
+									<option value=2 <c:if test="${adminLocalSearch.categoryNo eq 2}"> selected="selected"</c:if>>동네소식</option>
+									<option value=3 <c:if test="${adminLocalSearch.categoryNo eq 3}"> selected="selected"</c:if>>분실/실종센터</option>
+									<option value=4 <c:if test="${adminLocalSearch.categoryNo eq 4}"> selected="selected"</c:if>>해주세요</option>
 								</select>
 							</td>
-							<td>${adminLocal.writer}</td>
-							<td>${adminLocal.title}</td>
+							<td>${adminLocalSearch.writer}</td>
+							<td>${adminLocalSearch.title}</td>
 							<td>
-								<fmt:parseDate value="${adminLocal.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:parseDate value="${adminLocalSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
-								<input type="hidden" class="local delete" id="local${vs.count}" value="${adminLocal.no}"/>
-								<input type="button" class="local delete" value="삭제"  onclick="adminLocalDelete(local${vs.count});" />
+								<input type="hidden" class="local delete" id="local${searchvs.count}" value="${adminLocalSearch.no}"/>
+								<input type="button" class="local delete" value="삭제"  onclick="adminLocalDelete(local${searchvs.count});" />
 							</td>
 						</tr>
 					</c:forEach>
-				</c:if>
-				<c:if test="${empty adminLocalList}">
-					<tr>
-						<td colspan="6">조회된 데이터가 없습니다.</td>
-					</tr>
 				</c:if>
 			</tbody>
 		</table>
@@ -210,6 +231,25 @@ const generatePagination = (totalPages, currentPage) => {
         pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
     }
 }
+
+/* 동네생활 검색 */
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	const searchKeyword =  document.querySelector("#searchKeyword").value;
+	console.log(searchKeyword);
+
+	const blank_pattern = /^\s+|\s+$/g;
+	
+	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
+		alert("검색어를 입력해 주세요!");
+		document.querySelector("#searchKeyword").select();
+		e.preventDefault();
+		return false;
+	}
+	
+	else if(searchKeyword != null && searchKeyword != "" ){
+		location.href = "${pageContext.request.contextPath}/admin/adminLocalList.do";
+	}	
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

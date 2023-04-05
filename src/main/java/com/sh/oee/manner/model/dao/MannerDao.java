@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sh.oee.manner.model.dto.Manner;
 
@@ -23,5 +24,9 @@ public interface MannerDao {
 
 	//혜진
 	int updateComplimentDegree(Map<String, Object> param);
+
+
+	@Update("update manner_review set done = 'Y' where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD')")
+	int updateMannerDone();
 
 }
