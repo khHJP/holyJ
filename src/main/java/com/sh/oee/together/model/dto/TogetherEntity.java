@@ -15,17 +15,18 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TogetherEntity {
 
-	private int no;
-	private String writer;
-	private int categoryNo;
-	private String title;
-	private String content;
-	private int joinCnt;
-	private LocalDateTime dateTime;
-	private String place;
-	private Gender gender;
-	private String age; // 20 30 40 .. 100
-	private LocalDateTime regDate;
-	private String status;
-	
+    private int no;
+    private String writer;
+    private int categoryNo;
+    private String title;
+    private String content;
+    private int joinCnt;
+    private LocalDateTime dateTime;
+    private String place;
+    private Gender gender;
+    private String age; // 20 30 40 .. 100
+    private LocalDateTime regDate;
+    private String status;
+    private String reportYn;
+    
 }

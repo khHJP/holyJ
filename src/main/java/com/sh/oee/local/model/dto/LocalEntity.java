@@ -17,4 +17,10 @@ public class LocalEntity {
 	private String content;
 	private LocalDateTime regDate;
 	private int hits;
+<<<<<<< HEAD
+	private String reportYn;
+=======
+	
+	
+>>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 }

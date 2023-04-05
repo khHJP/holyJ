@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
 <!-- 글꼴 Noto Sans Korean-->
@@ -65,19 +66,18 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">게시글 신고 관리</h1>
 		<table>
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>작성자</th>
-					<th>신고 유형</th>
+					<th>신고자</th>
+					<th>카테고리</th>
 					<th>게시글</th>
 					<th>신고 사유</th>
 					<th>등록일</th>
-					<th>처리 상태</th>
-					<th></th>
+					<th>상태</th>
+					<th>신고 처리</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,8 +86,16 @@ $(document).ready(function() {
 						<tr id="table-content">
 							<td>${vs.count}</td>
 							<td>${adminBoardReport.writer}</td>
-							<td>${adminBoardReport.reportType}</td>
-							<td class="report-view" data-no="${adminBoardReport.reportPostNo}" data-type="${adminBoardReport.reportType}">
+							<c:if test="${adminBoardReport.reportType == 'CR'}">
+								<td cla>중고거래</td>
+							</c:if>
+							<c:if test="${adminBoardReport.reportType == 'LO'}">
+								<td>동네생활</td>
+							</c:if>
+							<c:if test="${adminBoardReport.reportType == 'TO'}">
+								<td>같이해요</td>
+							</c:if>
+							<td id="count" class="report-view" data-no="${adminBoardReport.reportPostNo}" data-type="${adminBoardReport.reportType}">
 								${adminBoardReport.reportPostNo}
 							</td>
 							<td>${adminBoardReport.reportReason.reasonName}</td>
@@ -96,7 +104,11 @@ $(document).ready(function() {
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>${adminBoardReport.status}</td>
-							<td></td>
+							<td data-no="${adminBoardReport.reportPostNo}" data-type="${adminBoardReport.reportType}">
+								<input type="hidden" class="report" id="writer${vs.count}" value="${adminBoardReport.reportNo}"/>
+								<input type="button" class="report" value="처리"  onclick="adminReportHandle(writer${vs.count}); this.onclick=null;" />
+								<input type="button" class="report" value="취소"  onclick="adminReportCancle(writer${vs.count}); this.onclick=null;" />
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -113,6 +125,23 @@ $(document).ready(function() {
 	</div>
 
 </section>
+<!-- 게시글 신고 처리 폼 -->
+<form:form name="adminCraigBoardReportHandleFrm" action="${pageContext.request.contextPath}/admin/adminCraigBoardReportHandle.do" method="post">
+	<input type="hidden" name="reportNo">
+	<input type="hidden" name="reportPostNo">
+</form:form>
+<form:form name="adminLocalBoardReportHandleFrm" action="${pageContext.request.contextPath}/admin/adminLocalBoardReportHandle.do" method="post">
+	<input type="hidden" name="reportNo">
+	<input type="hidden" name="reportPostNo">
+</form:form>
+<form:form name="adminTogetherBoardReportHandleFrm" action="${pageContext.request.contextPath}/admin/adminTogetherBoardReportHandle.do" method="post">
+	<input type="hidden" name="reportNo">
+	<input type="hidden" name="reportPostNo">
+</form:form>
+<!-- 게시글 신고 취소 폼 -->
+<form:form name="adminBoardReportCancleFrm" action="${pageContext.request.contextPath}/admin/adminBoardReportCancle.do" method="post">
+	<input type="hidden" name="reportNo">
+</form:form>
 <script>
 /* 신고 게시글 상세페이지 이동 */
 document.querySelectorAll(".report-view").forEach( (td)=>{
@@ -134,6 +163,62 @@ document.querySelectorAll(".report-view").forEach( (td)=>{
 		}
 	});
 });
+
+/* 게시글 신고 처리 */
+function adminReportHandle(e) {
+	const reportNo = e.value;
+	const reportPostNo = e.parentNode.dataset.no;
+	const reportType = e.parentNode.dataset.type;
+	console.log(reportNo, reportPostNo, reportType);	
+	
+	const craigfrm = document.adminCraigBoardReportHandleFrm;
+	const localfrm = document.adminLocalBoardReportHandleFrm;
+	const togetherfrm = document.adminTogetherBoardReportHandleFrm;
+	console.log(craigfrm);
+	console.log(localfrm);
+	console.log(togetherfrm);
+	
+	if(reportType == 'CR') {
+		if(confirm('이 신고건을 처리하시겠습니까?')) {
+			craigfrm.reportNo.value = reportNo;
+			craigfrm.reportPostNo.value = reportPostNo;
+			craigfrm.submit();
+		}
+	}
+	
+	if(reportType == 'LO') {
+		if(confirm('이 신고건을 처리하시겠습니까?')) {
+			localfrm.reportNo.value = reportNo;
+			localfrm.reportPostNo.value = reportPostNo;
+			localfrm.submit();
+		}
+	}
+	
+	if(reportType == 'TO') {
+		if(confirm('이 신고건을 처리하시겠습니까?')) {
+			togetherfrm.reportNo.value = reportNo;
+			togetherfrm.reportPostNo.value = reportPostNo;
+			togetherfrm.submit();
+		}
+	}
+	
+	this.onclick = null;
+};
+
+/* 게시글 신고 취소 */
+function adminReportCancle(e) {
+	const reportNo = e.value;
+	console.log(reportNo);	
+	const frm = document.adminBoardReportCancleFrm;
+	console.log(frm);
+	
+	if(confirm('이 신고건을 취소하시겠습니까?')) {
+		frm.reportNo.value = reportNo;
+		frm.submit();
+	}
+	
+	this.onclick = null;
+};
 
 /* 페이지 처리 */
 /* 페이지네이션 버튼을 생성하는 함수 */
