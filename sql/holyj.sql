@@ -593,3 +593,73 @@ create table persistent_logins (
 );
 
 select * from persistent_logins;
+
+
+---  수정한 테이블 정보 0405 
+ 
+ --  같이해요 대화방 / 메세지 / 첨부파일 관련 테이블 수정   230405 
+--=============================================
+-- 같이해요 대화방 TOGETHER_CHAT   -- 새로만들었어요 0405 
+--=============================================
+CREATE TABLE TOGETHER_CHAT (
+    TOGETHER_NO NUMBER,
+    MEMBER_ID VARCHAR2(30) NOT NULL,
+    ROLE CHAR(1) NOT NULL,
+    REG_DATE DATE DEFAULT SYSDATE,
+    LAST_CHECK NUMBER default 0,
+    
+    CONSTRAINT PK_TOGETHER_TOGETHER_NO_MEMBER_ID PRIMARY KEY(TOGETHER_NO, MEMBER_ID), --복합pk
+    CONSTRAINT FK_TOGETHER_TOGETHER_TOGETHER_NO FOREIGN KEY(TOGETHER_NO) REFERENCES TOGETHER(NO) on delete cascade, -- 같이해요 게시물 삭제시 대화방 삭제
+    CONSTRAINT FK_TOGETHER_MEMBER_ID FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(MEMBER_ID),
+    CONSTRAINT CK_TOGETHER_ROLE CHECK(ROLE IN ('A','M')) -- Admin , Member
+);
+
+
+
+--=============================================
+-- 같이해요 메시지 TOGETHER_MSG  -- 새로만들었어요 0405 
+--=============================================
+CREATE TABLE TOGETHER_MSG (
+    MSG_NO NUMBER,
+    TOGETHER_NO NUMBER,  --복합fk
+    MEMBER_ID VARCHAR2(30) NOT NULL,--복합fk
+    CONTENT VARCHAR2(3000) NOT NULL, -- file타입의 경우 파일이름
+    SENT_TIME NUMBER NOT NULL,
+    TYPE varchar2(50) not null,
+    
+    CONSTRAINT PK_TOGETHER_MSG_NO PRIMARY KEY(MSG_NO),
+    CONSTRAINT FK_TOGETHER_MNO_MEMBER_ID FOREIGN KEY(TOGETHER_NO, MEMBER_ID) REFERENCES TOGETHER_CHAT(TOGETHER_NO, MEMBER_ID) on delete set null, -- 같이해요 게시물 삭제시 null로
+    constraint CK_TOGETHER_MSG_TYPE CHECK(TYPE in ('CHAT', 'FILE'))
+);
+
+CREATE SEQUENCE SEQ_TOGETHER_MSG_NO;
+
+
+--=============================================
+-- 같이해요 메시지 첨부파일 TOGETHER_MSG_ATTACH -- 수정 0405 (변경된거없음)
+--=============================================
+CREATE TABLE TOGETHER_MSG_ATTACH (
+    ATTACH_NO NUMBER,
+    MSG_NO NUMBER NOT NULL,
+    ORIGINAL_FILENAME VARCHAR2(500),
+    RE_FILENAME VARCHAR2(500),
+    REG_DATE DATE DEFAULT SYSDATE,
+    
+    CONSTRAINT PK_TOGETHER_MSG_ATTACH_NO PRIMARY KEY(ATTACH_NO),
+    CONSTRAINT FK_TOGETHER_MSG_NO FOREIGN KEY(MSG_NO) REFERENCES TOGETHER_MSG(MSG_NO) on delete cascade -- 메시지 삭제시 첨부파일 삭제
+);
+
+-- COMMENT
+COMMENT ON COLUMN TOGETHER_MSG_ATTACH.ATTACH_NO IS '첨부파일 NO';
+COMMENT ON COLUMN TOGETHER_MSG_ATTACH.MSG_NO IS '메시지 NO';
+COMMENT ON COLUMN TOGETHER_MSG_ATTACH.ORIGINAL_FILENAME IS '원본파일명';
+COMMENT ON COLUMN TOGETHER_MSG_ATTACH.RE_FILENAME IS '서버파일명';
+COMMENT ON COLUMN TOGETHER_MSG_ATTACH.REG_DATE IS '등록일';
+
+CREATE SEQUENCE SEQ_TOGETHER_MSG_ATTACH_NO;
+
+---
+select * from TOGETHER
+select * from TOGETHER_MSG
+select * from TOGETHER_MSG_ATTACH
+select * from together_chat
