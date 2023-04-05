@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -70,9 +71,21 @@ public interface LocalService {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no);
+	//댓글정렬
+	List<LocalCommentEntity> commentList(int no, String orderBy);
 
-	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no);
+	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no, String orderBy);
+
+	//삭제
+	int deleteComment(int no);
+
+	//수정
+	int updateComment(LocalComment comment);
+
+	int insertReComment(LocalCommentEntity comment);
+
+	//댓글 최신순
+	List<LocalCommentEntity> commentNewList(int no);
 
 	
 

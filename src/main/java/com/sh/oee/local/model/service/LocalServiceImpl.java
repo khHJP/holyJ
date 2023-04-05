@@ -12,6 +12,7 @@ import com.sh.oee.local.model.dao.LocalDao;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -157,10 +158,6 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.insertComment(comment);
 	}
 
-	@Override
-	public List<LocalCommentEntity> commentList(int no) {
-		return localDao.commentList(no);
-	}
 
 //	@Override
 //	public int insertComment(Map<String, Object> param) {
@@ -169,8 +166,33 @@ public class LocalServiceImpl implements LocalService {
 //	}
 
 	@Override
-	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no) {
+	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no, String orderBy) {
 		// TODO Auto-generated method stub
-		return localDao.commentList(no);
+		return localDao.commentList(no,orderBy);
+	}
+
+	@Override
+	public int deleteComment(int no) {
+		return localDao.deleteComment(no);
+	}
+
+	@Override
+	public int updateComment(LocalComment comment) {
+		return localDao.updateComment(comment);
+	}
+
+	@Override
+	public int insertReComment(LocalCommentEntity comment) {
+		return localDao.insertReComment(comment);
+	}
+
+	@Override
+	public List<LocalCommentEntity> commentNewList(int no) {
+		return localDao.commentNewList(no);
+	}
+
+	@Override
+	public List<LocalCommentEntity> commentList(int no, String orderBy) {
+		return localDao.commentList(no, orderBy);
 	}
 }

@@ -134,7 +134,7 @@ ul {
 .commentContent {
 	margin-left : 115px;
 }
-.replybtn{
+.replybtn,.replyUpdate{
 	margin-left :115px;
 	color:lightgray;
 	font-size : 12px;
@@ -144,6 +144,11 @@ ul {
 	float:right;
 	color:#B1D7B4;
 }
-
+.replyDelete{
+	margin-left :10px;
+	color:lightgray;
+	font-size : 12px;
+	padding-top:-2px;
+}
 
 

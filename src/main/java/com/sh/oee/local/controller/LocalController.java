@@ -30,6 +30,7 @@ import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalCategory;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -178,7 +179,9 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication) {
+	public void localDetail(LocalCategory localcategory,@RequestParam int no,
+			 @RequestParam(required = false) String orderBy,
+			Model model,Authentication authentication) {
 		Local localdetail = localService.selectLocalOne(no);
 		Member member = ((Member)authentication.getPrincipal());
 		
@@ -195,7 +198,7 @@ public class LocalController {
 		
 		int findlike = localService.selectLocalLike(param);
 		
-		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no);
+		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no,orderBy);
 		
 		model.addAttribute("localcategory", localcategory);
 		model.addAttribute("localdetail", localdetail);
@@ -305,20 +308,33 @@ public class LocalController {
 	}
 	
 	
+	// 댓글 삭제하기(
+	@PostMapping("/deleteComment.do")
+	public String deleteComment(LocalComment comment) {
+		log.debug("comment_no : {}", comment);
+		int result = localService.deleteComment(comment.getCommentNo());
+		return "redirect:/local/localDetail.do?no="+comment.getNo();
+	}
 
+	
+	// 댓글 수정하기
+	@PostMapping("/updateComment.do")
+	public String updateComment(LocalComment comment) {
+		log.debug("comment : " + comment );
+		int result = localService.updateComment(comment);
+		return "redirect:/local/localDetail.do?no="+comment.getNo();
+		
+	}
 	
 	//댓글 입력
 	@RequestMapping(value = "/commentInsert.do", method = RequestMethod.POST)
 	public String commentInsert(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
-		//public void commentInsert(@RequestParam Map<String, Object> param, HttpSession session) {
-		log.debug("commentㅁㄴ아러밎러 : " + comment );
-		//Member member = (Member) session.getAttribute("loginMember");
+		log.debug("comment보여라! : " + comment );
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String memberId = userDetails.getUsername();
 		log.debug("memberId : " + memberId );
 		comment.setWriter(memberId);
 		int result = localService.insertComment(comment);
-		//log.debug("Commentresult : " + result);
 		if(result > 0) {
 			redirectAttr.addFlashAttribute("msg", "댓글을 등록했습니다.");
 			
@@ -327,26 +343,52 @@ public class LocalController {
 		return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
 	}
 	
-	//댓글 목록
-	@RequestMapping("/commentList.do")
-	public ModelAndView commentList(@RequestParam int no, ModelAndView mav) {
-		List<LocalCommentEntity> commentList = localService.commentList(no);
+	//답댓글 입력
+		@RequestMapping(value = "/insertReComment.do", method = RequestMethod.POST)
+		public String insertReComment(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
+			
+			log.debug("ReComment보여라! : " + comment );
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String memberId = userDetails.getUsername();
+			log.debug("memberId : " + memberId );
+			comment.setWriter(memberId);
+			comment.setRefNo(comment.getCommentNo());
+			comment.setCommentLevel(2);
+			int result = localService.insertReComment(comment);
+			if(result > 0) {
+				redirectAttr.addFlashAttribute("msg", "답댓글을 등록했습니다.");
+				
+			}
+			
+			return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
+		}
+	
+
+	
+		@GetMapping("/commentList.do")
+		public ModelAndView commentList(@RequestParam int localNo,
+		                                 @RequestParam(required = false) String orderBy,
+		                                 ModelAndView mav) {
+		    List<LocalCommentEntity> commentList = localService.commentList(localNo, orderBy);
+		    mav.setViewName("local/replyList");
+		    mav.addObject("commentList", commentList);
+		    return mav;
+		}
+			
+	
+	//댓글 목록 최신순
+	@RequestMapping("/commentNewList.do")
+	public ModelAndView commentNewList(@RequestParam int no, ModelAndView mav) {
+		
+		List<LocalCommentEntity> commentNewList = localService.commentNewList(no);
 		// 뷰 이름 지정
 		mav.setViewName("local/replyList");
 		// 뷰에 전달할 데이터 지정
-		mav.addObject("commentList",commentList);
+		mav.addObject("commentNewList",commentNewList);
 		
 		return mav;
 	}
-	
-	//댓글 목록(json 방식 , 데이터를 리턴)
-	@RequestMapping("/listJson.do")
-	@ResponseBody
-	public List<LocalCommentEntity> listJson(@RequestParam int no){
-		List<LocalCommentEntity> commentList = localService.commentList(no);
-		return commentList;
-	}
-	
+	 
 	
 	
 	

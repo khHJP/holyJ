@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -85,7 +86,17 @@ public interface LocalDao {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no);
+	List<LocalCommentEntity> commentList(int no,String orderBy);
 
+	//댓글삭제
+	@Delete("delete from local_comment where comment_no = #{commentNo}")
+	int deleteComment(int no);
+	
+	//댓글 수정
+	int updateComment(LocalComment comment);
 
+	int insertReComment(LocalCommentEntity comment);
+
+	//댓글 최신순
+	List<LocalCommentEntity> commentNewList(int no);
 }
