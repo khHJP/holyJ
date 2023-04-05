@@ -27,5 +27,6 @@ public class TogetherEntity {
 	private String age; // 20 30 40 .. 100
 	private LocalDateTime regDate;
 	private String status;
+	private String reportYn;
 	
 }

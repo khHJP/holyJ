@@ -209,6 +209,7 @@
 		    #{gender},
 		    #{age},
 		    default,
+		    default,
 		    default
 		)
 		<selectKey order="AFTER" resultType="_int" keyProperty="no">

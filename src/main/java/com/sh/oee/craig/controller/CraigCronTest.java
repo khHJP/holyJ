@@ -76,15 +76,6 @@ public class CraigCronTest {
 		 log.debug("======================================================================");
 
 	 }
-	
-	
-	/**
-	@Scheduled(cron="0 30 10 * * *")
-	@SchedulerLock(name = "craigCrontest",  lockAtLeastForString = "PT5M", lockAtMostForString = "PT14M")
-	public void craigCrontest() {
-		System.out.println("shedulerTest-0404----locktable에 들어가니");
-	}
-	**/
 
 }
 
