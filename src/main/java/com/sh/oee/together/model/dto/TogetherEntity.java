@@ -2,8 +2,6 @@ package com.sh.oee.together.model.dto;
 
 import java.time.LocalDateTime;
 
-import com.sh.oee.member.model.dto.Dong;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

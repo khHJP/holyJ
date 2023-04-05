@@ -53,7 +53,7 @@ $(document).ready(function() {
 			<li class="sidebar-nav-list">
 			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminLocalList.do" style="text-decoration: none; color: black;"> 동네생활 관리 </a></li>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="" style="text-decoration: none; color: #56C271;"> 같이해요 관리 </a></li>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminTogetherList.do" style="text-decoration: none; color: #56C271;"> 같이해요 관리 </a></li>
 		</ul>
 		<ul class="sidebar-nav">
 			<h3>신고</h3>
@@ -66,7 +66,10 @@ $(document).ready(function() {
 		</ul>
 	</div>
 	<div id="admin-content">
-		<input type="search" id="search" placeholder="&nbsp;&nbsp;&nbsp;Search...">
+		<form:form name="adminTogetherSearchFrm" method="get">
+			<input type="search" class="search" id="searchKeyword" name="searchKeyword" placeholder="&nbsp; 작성자/제목 검색...">
+			<button type="submit" class="searchButton">검색</button>
+		</form:form>
 		<h1 style="font-family: 'BMJUA', sanserif; margin-top: 30px; margin-bottom: 10px;">같이해요 관리</h1>
 		<table>
 			<thead>
@@ -81,38 +84,65 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${not empty adminTogetherList}">
-					<c:forEach items="${adminTogetherList}" var="adminTogether" varStatus="vs">
+				<c:forEach items="${adminTogetherList}" var="adminTogether" varStatus="vs">
+					<tr id="table-content">
+						<td id="count" class="together-view" data-tono="${adminTogether.no}">${vs.count}</td>
+						<td>
+							<select class="together-category" data-no="${adminTogether.no}">
+								<option value=1 <c:if test="${adminTogether.categoryNo eq 1}"> selected="selected"</c:if>>밥/카페</option>
+								<option value=2 <c:if test="${adminTogether.categoryNo eq 2}"> selected="selected"</c:if>>운동</option>
+								<option value=3 <c:if test="${adminTogether.categoryNo eq 3}"> selected="selected"</c:if>>스터디</option>
+								<option value=4 <c:if test="${adminTogether.categoryNo eq 4}"> selected="selected"</c:if>>취미</option>
+								<option value=5 <c:if test="${adminTogether.categoryNo eq 5}"> selected="selected"</c:if>>반려동물</option>
+								<option value=6 <c:if test="${adminTogether.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+							</select>
+						</td>
+						<td>${adminTogether.writer}</td>
+						<td>${adminTogether.title}</td>
+						<c:if test="${adminTogether.status == 'Y'}">
+							<td style="color: #56C271;">모집중</td>
+						</c:if>
+						<c:if test="${adminTogether.status == 'N'}">
+							<td style="color: #868B94;">모집완료</td>
+						</c:if>
+						<td>
+							<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+							<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
+						</td>
+						<td>
+							<input type="hidden" class="together delete" id="together${vs.count}" value="${adminTogether.no}"/>
+							<input type="button" class="together delete" value="삭제"  onclick="adminTogetherDelete(together${vs.count});" />
+						</td>
+					</tr>
+				</c:forEach>
+				
+				<c:if test="${adminTogetherSearch != null}">
+					<c:forEach items="${adminTogetherSearch}" var="adminTogetherSearch" varStatus="searchvs">
 						<tr id="table-content">
-							<td class="together-view" data-tono="${adminTogether.no}">${vs.count}</td>
+							<td id="count" class="together-view" data-tono="${adminTogetherSearch.no}">${searchvs.count}</td>
 							<td>
-								<select class="together-category" data-no="${adminTogether.no}">
-									<option value=1 <c:if test="${adminTogether.categoryNo eq 1}"> selected="selected"</c:if>>밥/카페</option>
-									<option value=2 <c:if test="${adminTogether.categoryNo eq 2}"> selected="selected"</c:if>>운동</option>
-									<option value=3 <c:if test="${adminTogether.categoryNo eq 3}"> selected="selected"</c:if>>스터디</option>
-									<option value=4 <c:if test="${adminTogether.categoryNo eq 4}"> selected="selected"</c:if>>취미</option>
-									<option value=5 <c:if test="${adminTogether.categoryNo eq 5}"> selected="selected"</c:if>>반려동물</option>
-									<option value=6 <c:if test="${adminTogether.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
+								<select class="together-category" data-no="${adminTogetherSearch.no}">
+									<option value=1 <c:if test="${adminTogetherSearch.categoryNo eq 1}"> selected="selected"</c:if>>밥/카페</option>
+									<option value=2 <c:if test="${adminTogetherSearch.categoryNo eq 2}"> selected="selected"</c:if>>운동</option>
+									<option value=3 <c:if test="${adminTogetherSearch.categoryNo eq 3}"> selected="selected"</c:if>>스터디</option>
+									<option value=4 <c:if test="${adminTogetherSearch.categoryNo eq 4}"> selected="selected"</c:if>>취미</option>
+									<option value=5 <c:if test="${adminTogetherSearch.categoryNo eq 5}"> selected="selected"</c:if>>반려동물</option>
+									<option value=6 <c:if test="${adminTogetherSearch.categoryNo eq 6}"> selected="selected"</c:if>>기타</option>
 								</select>
 							</td>
-							<td>${adminTogether.writer}</td>
-							<td>${adminTogether.title}</td>
-							<td>${adminTogether.status}</td>
+							<td>${adminTogetherSearch.writer}</td>
+							<td>${adminTogetherSearch.title}</td>
+							<td>${adminTogetherSearch.status}</td>
 							<td>
-								<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:parseDate value="${adminTogetherSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>
-								<input type="hidden" class="together delete" id="together${vs.count}" value="${adminTogether.no}"/>
-								<input type="button" class="together delete" value="삭제"  onclick="adminTogetherDelete(together${vs.count});" />
+								<input type="hidden" class="together delete" id="together${searchvs.count}" value="${adminTogetherSearch.no}"/>
+								<input type="button" class="together delete" value="삭제"  onclick="adminTogetherDelete(together${searchvs.count});" />
 							</td>
 						</tr>
 					</c:forEach>
-				</c:if>
-				<c:if test="${empty adminTogetherList}">
-					<tr>
-						<td colspan="7">조회된 데이터가 없습니다.</td>
-					</tr>
 				</c:if>
 			</tbody>
 		</table>
@@ -214,6 +244,25 @@ const generatePagination = (totalPages, currentPage) => {
         pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
     }
 }
+
+/* 같이해요 검색 */
+document.querySelector(".searchButton").addEventListener('click', (e) => {
+	const searchKeyword =  document.querySelector("#searchKeyword").value;
+	console.log(searchKeyword);
+
+	const blank_pattern = /^\s+|\s+$/g;
+	
+	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
+		alert("검색어를 입력해 주세요!");
+		document.querySelector("#searchKeyword").select();
+		e.preventDefault();
+		return false;
+	}
+	
+	else if(searchKeyword != null && searchKeyword != "" ){
+		location.href = "${pageContext.request.contextPath}/admin/adminTogetherList.do";
+	}	
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -28,6 +28,48 @@ public class Craig extends CraigEntity {
 	private int chat; //chat
 	
 	
+	///
+	public void addAttachment(CraigAttachment attach) {
+		this.attachments.add(attach);		
+	}
+	
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, String reportYn, int attachCount) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate, reportYn);
+		this.attachCount = attachCount;
+	}
+
+
+	public Craig(List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong) {
+		super();
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+	}
+
+	public Craig(int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong,
+			int wish) {
+		super();
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+	}
+
+
+	
+	
+
+	
+	//
+	
+	
+	/**
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
 			LocalDateTime completeDate, int attachCount) {
@@ -51,9 +93,7 @@ public class Craig extends CraigEntity {
 
 	
 	
-	public void addAttachment(CraigAttachment attach) {
-		this.attachments.add(attach);		
-	}
+
 
 	
 	
@@ -104,7 +144,7 @@ public class Craig extends CraigEntity {
 		this.wish = wish;
 		this.chat = chat;
 	}
-
+**/
 
 
 }
