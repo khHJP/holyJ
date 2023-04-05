@@ -356,28 +356,31 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 		근데 고민이 있다면,, 이미 참여한 대화방에 입장할때는 인원수를 증가시키면 안되기때문에 버튼을 분기처리 해뒀습니다..!
 		아래에 현재 대화방 참여자인 경우로 한번 만들어 봤습니다🫠
 	*/
+/******************* 효정 시작 *********************/
+
 	$.ajax({
-		url : '${pageContext.request.contextPath}/together/addJoinMemberCnt.do',
-		method : 'post',
-		headers,
-		data : {no, loginMember},
-		dataType : 'json',
+		url : `${pageContext.request.contextPath}/chat/togetherChat/\${no}`,
+		method : 'GET',
+		dataType : "json",
 		success(data){
-			cntTag.innerText = ''; // 현재 인원수 초기화
-			cntTag.innerText = Number(currJoinCnt) + 1;
-			// 버튼 변경 (참여하기 -> 대화방 입장)
-			e.target.style.display = 'none';
-			enterBtn.style.display = 'unset';
+			const {memberId, chatroomId} = data;
 			
-			// 대화방 팝업?! 
-			
+			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
+			const name = "craigChatroom";
+			openPopup(url, name);
 		},
-		error(jqxhr, textStatus, err ){
-	        console.log(jqxhr, textStatus, err);
-		}
-	});
+		error : console.log
+		});		
 	
 });
+
+/* 팝업열기 */
+function openPopup(url, name){
+	let win;
+	win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
+	win.opener.self;
+}
+/******************* 효정 끝 *********************/
 </script>
 </c:if>
 
