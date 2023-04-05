@@ -28,6 +28,7 @@ public class CraigEntity {
 	private State state; // default - 'CR2' |  예약중/판매중/판매완료
 	private String buyer;
 	private LocalDateTime completeDate;
+	private String reportYn;
 	
 }
 
