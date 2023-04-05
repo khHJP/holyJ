@@ -21,10 +21,12 @@ public class Manner {
 	private String writer; // 작성자
 	private String recipient; // 대상자
 	private LocalDateTime regDate; // 등록일
+	private String done;
 	private Member  member; // manner 평가 당한 사람 
 	
+	//멤버없는 생성자 (manner테이블 고유)
 	public Manner(@NonNull long mannerNo, int craigNo, Prefer prefer, Compliment compliment, String writer,
-			String recipient, LocalDateTime regDate) {
+			String recipient, LocalDateTime regDate, String done) {
 		super();
 		this.mannerNo = mannerNo;
 		this.craigNo = craigNo;
@@ -33,9 +35,11 @@ public class Manner {
 		this.writer = writer;
 		this.recipient = recipient;
 		this.regDate = regDate;
+		this.done = done;
 	}
 	
-
+	
+	
 	
 	
 	
