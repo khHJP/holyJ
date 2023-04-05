@@ -19,4 +19,5 @@ public class LocalCommentEntity extends LocalEntity{
 	private LocalDateTime regDate;
 	private LocalEntity localEntity;
 	
+	
 }
