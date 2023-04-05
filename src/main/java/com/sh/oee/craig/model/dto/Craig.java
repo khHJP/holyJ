@@ -32,7 +32,9 @@ public class Craig extends CraigEntity {
 	public void addAttachment(CraigAttachment attach) {
 		this.attachments.add(attach);		
 	}
+
 	
+	//
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
 			LocalDateTime completeDate, String reportYn, int attachCount) {
@@ -41,7 +43,7 @@ public class Craig extends CraigEntity {
 		this.attachCount = attachCount;
 	}
 
-
+	//
 	public Craig(List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong) {
 		super();
 		this.attachments = attachments;
@@ -50,6 +52,8 @@ public class Craig extends CraigEntity {
 		this.dong = dong;
 	}
 
+	
+	//
 	public Craig(int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong,
 			int wish) {
 		super();
@@ -63,7 +67,27 @@ public class Craig extends CraigEntity {
 
 
 	
+	//
+	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
+			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
+			LocalDateTime completeDate, String reportYn, int attachCount, List<CraigAttachment> attachments,
+			Member member, DongRange dongrange, Dong dong, int wish, int chat) {
+		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
+				buyer, completeDate, reportYn);
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.member = member;
+		this.dongrange = dongrange;
+		this.dong = dong;
+		this.wish = wish;
+		this.chat = chat;
+	}
 	
+	
+
+
+	
+}	
 
 	
 	//
@@ -91,20 +115,20 @@ public class Craig extends CraigEntity {
 		this.dong = dong;
 	}
 
-	
-	
 
-
-	
-	
-	//attachCount까지 쓴 버전 
+	//생성자
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
-			LocalDateTime completeDate, int attachCount, List<CraigAttachment> attachments, Member member,
-			DongRange dongrange, Dong dong) {
+			LocalDateTime completeDate, String reportYn, int attachCount) {
 		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
-				buyer, completeDate);
+				buyer, completeDate, reportYn);
 		this.attachCount = attachCount;
+	}
+
+
+	//4개
+	public Craig(List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong) {
+		super();
 		this.attachments = attachments;
 		this.member = member;
 		this.dongrange = dongrange;
@@ -112,13 +136,10 @@ public class Craig extends CraigEntity {
 	}
 
 	
-	//+wish 
-	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
-			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
-			LocalDateTime completeDate, int attachCount, List<CraigAttachment> attachments, Member member,
-			DongRange dongrange, Dong dong, int wish) {
-		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
-				buyer, completeDate);
+	//6개
+	public Craig(int attachCount, List<CraigAttachment> attachments, Member member, DongRange dongrange, Dong dong,
+			int wish) {
+		super();
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;
@@ -128,14 +149,14 @@ public class Craig extends CraigEntity {
 	}
 
 	
-	//++chat
 	
+	//모두
 	public Craig(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate,
 			Double latitude, Double longitude, String placeDetail, int price, int hits, State state, String buyer,
-			LocalDateTime completeDate, int attachCount, List<CraigAttachment> attachments, Member member,
-			DongRange dongrange, Dong dong, int wish, int chat) {
+			LocalDateTime completeDate, String reportYn, int attachCount, List<CraigAttachment> attachments,
+			Member member, DongRange dongrange, Dong dong, int wish, int chat) {
 		super(no, categoryNo, writer, title, content, regDate, latitude, longitude, placeDetail, price, hits, state,
-				buyer, completeDate);
+				buyer, completeDate, reportYn);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;
@@ -146,5 +167,3 @@ public class Craig extends CraigEntity {
 	}
 **/
 
-
-}

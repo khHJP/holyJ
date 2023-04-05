@@ -40,4 +40,9 @@ public class MannerServiceImpl implements MannerService {
 	public int updateComplimentDegree(Map<String, Object> param) {
 		return mannerDao.updateComplimentDegree(param);
 	}
+
+	@Override
+	public int updateMannerDone() {
+		return mannerDao.updateMannerDone();
+	}
 }

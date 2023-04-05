@@ -10,7 +10,7 @@
     	from manner_review r left join member m 
         on r.writer = m.member_id
    	    where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD') 
-        
+        	  and done = 'N'
 	</select>
 	
 	<resultMap type="manner" id="mannerMemberMap">
