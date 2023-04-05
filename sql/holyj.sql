@@ -220,6 +220,10 @@ COMMENT ON COLUMN TOGETHER.STATUS IS '모집상태';
 
 CREATE SEQUENCE SEQ_TOGETHER_NO;
 
+-- 신고 여부 컬럼 및 CK 제약조건 추가
+alter table TOGETHER ADD REPORT_YN char(1) default 'N';
+alter table TOGETHER add constraint ck_together_report_yn check(REPORT_YN in ('Y', 'N'));
+
 --=============================================
 -- 같이해요 대화방 TOGETHER_CHAT
 --=============================================
@@ -331,6 +335,10 @@ create table CRAIG (
 );
 
 create sequence seq_craig_no;
+
+-- 신고 여부 컬럼 및 CK 제약조건 추가
+alter table CRAIG ADD REPORT_YN char(1) default 'N';
+alter table CRAIG add constraint ck_craig_report_yn check(REPORT_YN in ('Y', 'N'));
 
 --=============================================
 -- 중고거래 첨부파일 CRAIG_ATTACHMENT
@@ -497,6 +505,10 @@ comment on column LOCAL.REG_DATE is '등록일';
 comment on column LOCAL.HITS is '조회수';
 
 create sequence seq_local_no;
+
+-- 신고 여부 컬럼 및 CK 제약조건 추가
+alter table LOCAL ADD REPORT_YN char(1) default 'N';
+alter table LOCAL add constraint ck_local_report_yn check(REPORT_YN in ('Y', 'N'));
 
 --=============================================
 -- 동네생활 공감 LOCAL_LIKE
