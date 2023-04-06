@@ -31,8 +31,8 @@ public class LocalServiceImpl implements LocalService {
 	
 	//동네생활 전체 목록 조회
 	@Override
-	public List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds) {
-		return localDao.selectLocalListByDongName(param, rowBounds);
+	public List<Local> selectLocalListByDongName(Map<String, Object> param) {
+		return localDao.selectLocalListByDongName(param);
 	}
 	
 	//카테고리
@@ -158,10 +158,10 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.insertComment(comment);
 	}
 
-	@Override
-	public List<LocalCommentEntity> commentList(int no) {
-		return localDao.commentList(no);
-	}
+//	@Override
+//	public List<LocalCommentEntity> commentList(int no) {
+//		return localDao.commentList(no);
+//	}
 
 //	@Override
 //	public int insertComment(Map<String, Object> param) {
@@ -170,9 +170,9 @@ public class LocalServiceImpl implements LocalService {
 //	}
 
 	@Override
-	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no) {
+	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(Map<String, Object> param) {
 		// TODO Auto-generated method stub
-		return localDao.commentList(no);
+		return localDao.commentList(param);
 	}
 
 	//댓글 삭제

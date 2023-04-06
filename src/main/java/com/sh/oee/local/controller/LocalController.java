@@ -63,61 +63,55 @@ public class LocalController {
 	
 	//동네생활 게시물 목록
 	@GetMapping("/localList.do")
-	public void localList(Model model , HttpSession session, 
-			@RequestParam(defaultValue = "1") int currentPage, 
-			 @RequestParam(required = false) String categoryNo) {
-	
-		log.debug("categoryNo = {}", categoryNo);
+	public void localList(Model model, HttpSession session,
+	        @RequestParam(required = false) String searchKeyword,
+	        @RequestParam(required = false) String categoryNo) {
 
-		Integer no = null;
-		try {
-			no = Integer.parseInt(categoryNo);
-		} catch (NumberFormatException e) {}
-		
-		//글 목록
-		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
-		log.debug("dongList = {}",myDongList);
-		
-		Map<String, Object> param = new HashMap<>();
-		param.put("myDongList", myDongList);
-		param.put("categoryNo", no);
-		
-		int limit = 10;
-		int offset = (currentPage - 1) * limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		int totalCount = localService.getLocalTotalCount(param);
-		
-		List<Map<String,String>> localCategory = localService.localCategoryList();
-		List<Local> localList = localService.selectLocalListByDongName(param, rowBounds);
-		
-		
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
-		
-		
-		// 위에서 가져온 같이해요 목록의 번호 추출
-				List<Integer> boardNoList = new ArrayList<>();
-				for(int i = 0; i < localList.size(); i++) {
-					boardNoList.add(localList.get(i).getNo());
-				}
-				Map<String, Object> params = new HashMap<>(); 
-				params.put("boardNoList", boardNoList);
-		
-		//동네정보 가져오기
-		log.debug("localList = {}", localList);
-		log.debug("localCategory = {} ", localCategory);
-		
-		//아이디 가져오기
-//		Member member =((Member)authentication.getPrincipal());
-//		log.debug("writeMemebr = {}", member);
-//		
-		
-		
-		//view단
-		model.addAttribute("localList", localList);
-		model.addAttribute("localCategory",localCategory);
-		model.addAttribute("totalPages", totalPages);
-		model.addAttribute("currentPage", currentPage);
-//		model.addAttribute("member",member);
+	    log.debug("categoryNo = {}", categoryNo);
+
+	    try {
+	        Integer no = null;
+	        if (categoryNo != null) { // null 체크를 추가한 부분
+	            try {
+	                no = Integer.parseInt(categoryNo);
+	            } catch (NumberFormatException e) {
+	                log.warn("categoryNo parameter is not a number: {}", categoryNo);
+	            }
+	        }
+
+	        // 글 목록
+	        List<String> myDongList = (List<String>) session.getAttribute("myDongList");
+	        log.debug("dongList = {}", myDongList);
+
+	        Map<String, Object> param = new HashMap<>();
+	        param.put("myDongList", myDongList);
+	        param.put("categoryNo", no);
+	        param.put("searchKeyword", searchKeyword);
+
+	        List<Map<String, String>> localCategory = localService.localCategoryList();
+	        List<Local> localList = localService.selectLocalListByDongName(param);
+
+	        // 위에서 가져온 동네생활 목록의 번호 추출
+	        List<Integer> boardNoList = new ArrayList<>();
+	        for (int i = 0; i < localList.size(); i++) {
+	            boardNoList.add(localList.get(i).getNo());
+	        }
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("boardNoList", boardNoList);
+
+
+	        // 동네정보 가져오기
+	        log.debug("localList = {}", localList);
+	        log.debug("localCategory = {} ", localCategory);
+
+	        // view단
+	        model.addAttribute("localList", localList);
+	        model.addAttribute("localCategory", localCategory);
+	        model.addAttribute("searchKeyword", searchKeyword);
+	    } catch (Exception e) {
+	        throw e;
+	    }
+	    return;
 	}
 	
 	
@@ -179,13 +173,18 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication) {
-		Local localdetail = localService.selectLocalOne(no);
-		Member member = ((Member)authentication.getPrincipal());
+	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication,
+							@RequestParam(required = false, defaultValue = "asc") String order) {
 		
 		Map<String, Object> param = new HashMap<>();
-		 param.put("memberId", member.getMemberId());
-		 param.put("no", no);
+		param.put("no", no);
+		param.put("order", order);
+		
+		Local localdetail = localService.selectLocalOne(no);
+		
+		Member member = ((Member)authentication.getPrincipal());
+		param.put("memberId", member.getMemberId());
+		
 		
 		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
 		
@@ -196,7 +195,7 @@ public class LocalController {
 		
 		int findlike = localService.selectLocalLike(param);
 		
-		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no);
+		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(param);
 		
 		model.addAttribute("localcategory", localcategory);
 		model.addAttribute("localdetail", localdetail);
@@ -205,34 +204,7 @@ public class LocalController {
 	}
 	
 	
-	@GetMapping("/localNewDetail.do")
-	public void localNewDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication) {
-		Local localdetail = localService.selectLocalOne(no);
-		Member member = ((Member)authentication.getPrincipal());
-		
-		Map<String, Object> param = new HashMap<>();
-		 param.put("memberId", member.getMemberId());
-		 param.put("no", no);
-		
-		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
-		
-		log.debug("localdetail : {}", localdetail);
-		
-		//조회수 증가
-		int readCnt = localService.hits(no);
-		
-		int findlike = localService.selectLocalLike(param);
-		
-		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no);
-		List<LocalCommentEntity> commentNewList = localService.commentNewList(no);
-		
-		model.addAttribute("commentNewList", commentNewList);
-		model.addAttribute("localcategory", localcategory);
-		model.addAttribute("localdetail", localdetail);
-		model.addAttribute("commentList", commentList);
-		model.addAttribute("findlike", findlike);
-	}
-	
+
 	//좋아요
 	@ResponseBody
 	@PostMapping("/localLike.do")
@@ -390,31 +362,7 @@ public class LocalController {
 			return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
 		}
 	
-	//댓글 목록
-	@RequestMapping("/commentList.do")
-	public ModelAndView commentList(@RequestParam int no, ModelAndView mav) {
-		List<LocalCommentEntity> commentList = localService.commentList(no);
-		// 뷰 이름 지정
-		mav.setViewName("local/replyList");
-		// 뷰에 전달할 데이터 지정
-		mav.addObject("commentList",commentList);
-		
-		return mav;
-	}
-	
-	
-	//댓글 목록 최신순
-	@RequestMapping("/commentNewList.do")
-	public ModelAndView commentNewList(@RequestParam int no, ModelAndView mav) {
-		
-		List<LocalCommentEntity> commentNewList = localService.commentNewList(no);
-		// 뷰 이름 지정
-		mav.setViewName("local/replyList");
-		// 뷰에 전달할 데이터 지정
-		mav.addObject("commentNewList",commentNewList);
-		
-		return mav;
-	}
+
 	 
 	
 	

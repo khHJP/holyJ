@@ -26,7 +26,7 @@ public interface LocalDao {
 	
 
 	//동네생활 전체목록
-	List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds);
+	List<Local> selectLocalListByDongName(Map<String, Object> param);
 	
 	//카테고리
 	@Select("select * from local_category")
@@ -86,7 +86,7 @@ public interface LocalDao {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no);
+	List<LocalCommentEntity> commentList(Map<String, Object> param);
 
 	//댓글삭제
 	@Delete("delete from local_comment where comment_no = #{commentNo}")

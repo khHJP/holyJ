@@ -19,7 +19,7 @@ import com.sh.oee.member.model.dto.Member;
 public interface LocalService {
 
 	//동네생활 전체목록
-	List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds);
+	List<Local> selectLocalListByDongName(Map<String, Object> param);
 
 	//카테고리
 	List<Map<String, String>> localCategoryList();
@@ -71,9 +71,9 @@ public interface LocalService {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no);
+	//List<LocalCommentEntity> commentList(int no);
 
-	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no);
+	List<LocalCommentEntity> selectLocalCommentListByBoardNo(Map<String, Object> param);
 
 	//삭제
 	int deleteComment(int no);

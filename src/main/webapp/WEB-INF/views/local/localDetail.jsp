@@ -10,31 +10,6 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/local/localDetail.css" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<script>
-	//댓글목록(Controller 방식)
-	function commentList(){
-		$.ajax({
-			type:"get",
-			url: `${pageContext.request.contextPath}/local/commentList.do`,
-			success : function(result){
-				$("#commentList").html(result);
-			}
-		});
-	};
-	
-	
-	$(document).on('click', '#commentNewList', function() {
-	    $.ajax({
-	        type: 'GET',
-	        url: `${pageContext.request.contextPath}/local/localNewDetail.do`,
-	        data: {no: ${localdetail.no}}, // no 파라미터 값 설정
-	        success: function(data) {
-	            $('.replyList').html(data);
-	        }
-	    });
-	});
-</script>
 
 <script>
 //답댓
@@ -106,6 +81,16 @@ function replyEdit(commentNo, content) {
 		$('#replyEditText').val(content);
 	}
 
+	
+}
+
+function setCommentOrderList(order) {
+	console.log(${localdetail.no});
+	if(order == 'asc'){
+		location.href = '/oee/local/localDetail.do?no='+${localdetail.no}+'&order=asc';
+	}else if(order == 'desc'){
+		location.href = '/oee/local/localDetail.do?no='+${localdetail.no}+'&order=desc';
+	}
 }
 </script>
 </head>
@@ -186,15 +171,17 @@ function replyEdit(commentNo, content) {
 				</div>
 			</div>
 		</form>
-		<div class="div-comment">
-			<div id="commentOriList">
-			<button id="commentOriList">·등록순</button>
+		<c:if test="${not empty commentList}">
+			<div class="div-comment">
+				<div id="commentOriList">
+					<button id="commentOriList" onclick="setCommentOrderList('asc');">·등록순</button>
+				</div>
+				&nbsp;&nbsp;&nbsp;
+				<div id="commentNewList">
+					<button id="commentNewList" onclick="setCommentOrderList('desc');">·최신순</button>
+				</div>
 			</div>
-			&nbsp;&nbsp;&nbsp;
-			<div id="commentNewList">
-			<button id="commentNewList">·최신순</button>
-			</div>
-		</div>
+		</c:if>
 		<c:forEach items="${commentList}" var="comment">
 	<!-- -등록순 최신순 -->
 		<div id="commentList">

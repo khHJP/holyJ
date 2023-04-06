@@ -34,6 +34,9 @@
 			and
 				category_no = #{categoryNo}
 		</if>
+		<if test="searchKeyword != null" >
+			and ( title like '%' || #{searchKeyword} ||  '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
 	
 	order by 
 		reg_date desc
@@ -128,15 +131,7 @@
 	<association property="localcategory" javaType="localcategory">
 		<id column="CATEGORY_NO" property="categoryNo"/>
 		<result column="CATEGORY_NAME" property="categoryName"/>
-	</association>
-	<!--   
-	<association property="locallike" javaType="localLike">
-		<id column="LIKE_NO" property="likeNo"/>
-		<result column="MEMBER_ID" property="memberId"/>
-		<result column="LOCAL_NO" property="localNo"/>
-		<result column="LIKECHECK" property="likecheck"/>
-	</association>
-	--> 
+	</association> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
@@ -258,36 +253,16 @@
 			on l.no = lc.local_no
 			left join member m
 			on lc.writer = m.member_id 
-	WHERE lc.local_no = #{localNo}
+	WHERE lc.local_no = #{no}
 	START WITH lc.comment_level = 1
 	CONNECT BY PRIOR lc.comment_no = lc.ref_no
-	ORDER SIBLINGS BY lc.reg_date
+	<if test='"asc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date asc
+	</if>
+	<if test='"desc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date desc
+	</if>
      
-
-</select>
-
-<!-- 최신순 -->
-<select id="commentNewList" resultMap="localCommentMap">
-	SELECT
-		lc.* ,
-		m.nickname,
-		(select profile_img from member where member_id = lc.writer) profile_img,
-        (select
-                dong_name
-            from
-                member m right join dong d
-                    on m.dong_no = d.dong_no
-                where member_id = lc.writer) dong_name
-	FROM 
-		local l left join  local_comment lc 
-			on l.no = lc.local_no
-			left join member m
-			on lc.writer = m.member_id 
-	WHERE lc.local_no = #{localNo}
-	START WITH lc.comment_level = 1
-	CONNECT BY PRIOR lc.comment_no = lc.ref_no
-	ORDER BY lc.reg_date desc
-     	
 
 </select>
 
