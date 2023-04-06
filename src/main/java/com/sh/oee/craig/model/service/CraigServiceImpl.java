@@ -245,6 +245,11 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.mySalFCraig(memberId);
 	}
 	@Override
+	public List<Craig> mySalCraig1(String memberId) {
+		// TODO Auto-generated method stub
+		return craigDao.mySalCraig1(memberId);
+	}
+	@Override
 	public List<Craig> myWishCraig(String memberId) {
 		// TODO Auto-generated method stub
 		return craigDao.myWishCraig(memberId);
@@ -253,11 +258,6 @@ public class CraigServiceImpl implements CraigService {
 	public int salFCraig(int no) {
 		// TODO Auto-generated method stub
 		return craigDao.salFCraig(no);
-	}
-	@Override
-	public int bookCraig(int no) {
-		// TODO Auto-generated method stub
-		return craigDao.bookCraig(no);
 	}
 	@Override
 	public int salCraig(int no) {
@@ -276,6 +276,7 @@ public class CraigServiceImpl implements CraigService {
 		return craigDao.findCraigByCraigNo(craigNo);
 	}
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 
 	

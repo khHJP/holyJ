@@ -12,6 +12,7 @@ hr{
 td{
 	padding-left: 35px;
 }
+/*-------------------------------------------------------------*/
 .btn1{
 	border-radius: 50px;
     height: 100px;
@@ -35,7 +36,7 @@ td{
     width: 50px; 
     border-radius: 50px;
 }
-div.modal-content{
+div.modal-header{
 	 background-color: #d5ffd6;
 }
 div.modal-body{
@@ -46,6 +47,11 @@ div.modal-body{
 div.modal-body li{
 	margin: 10px;
 }
+.btn-secondary{
+	 background-color: #d5ffd6;
+	
+}
+/*-------------------------------------------------------------*/
 td button{
 	background: #7FB77E;
     color: white;

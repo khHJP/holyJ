@@ -22,7 +22,7 @@
 		<th>
 			<td>
 		
-		
+<!-- -------------------------------------------------------------------------------------------------------------- -->		
 			<!-- Button trigger modal -->
 			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 			<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
@@ -47,20 +47,20 @@
 			      <div class="modal-body">
 			        <li>
 			        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
-			        <a href="">중고거래</a>
+			        <a href="${pageContext.request.contextPath}/craig/mySalCraig1.do">중고거래</a>
 			        </li>
 			        <li>
 			        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
-			        <a href="">동네생활</a>
+			        <a href="${pageContext.request.contextPath}/local/myLocal.do">동네생활</a>
 			        </li>
 			        <li>
 			        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
-			        <a href="">같이해요</a>
-			        </li>
-			        <li>
-					<img src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="" id="mypageimg"/>
-					<a href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록</a>
-				</li>
+			        <a href="${pageContext.request.contextPath}/together/myTogether.do">같이해요</a>
+			        </li>			 
+					<li>
+					<img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+					<a href="${pageContext.request.contextPath}/manner/myManner.do">받은매너</a>
+					</li>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

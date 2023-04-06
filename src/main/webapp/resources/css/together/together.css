@@ -432,3 +432,66 @@ p {
 .to-h4 {
 	font-weight: 500;
 }
+/*-------------------------------------------------------------*/
+.profile-box img{
+	border-radius: 50px;
+    margin: -20px;
+    /* margin: 50px 0 0 50px; */
+}
+#nickname{
+	font-size: 23px;
+    font-weight: 600;
+}
+#imagemodal{
+	margin-left: 3px;
+    margin-right: 5px;
+    height: 70px; 
+    width: 70px; 
+    border-radius: 50px;
+}
+#modal-header{
+	 background-color: #d5ffd6;
+}
+#exampleModalLabel{
+	padding: 5px;
+}
+#dong{
+	padding: 3px;
+    padding-left: 8px;
+}
+#modal-body{
+	list-style: none;
+    font-size: 22px;
+    font-family: 'Noto Sans KR', sans-serif;
+    background: white;
+    padding: 10px;
+}
+.btn-list{
+	border: 0px;
+    background: white;
+    font-weight: 300;
+}
+#modal-body li a:hover{
+	text-decoration: none;
+	color : grey;
+}
+#modal-body li{
+	margin-left: 10px;
+	padding: 8px;
+}
+#modal-footer{
+	background: white;
+}
+.btn-secondary1{
+	 background-color: #d5ffd6;
+	
+}
+.btn1{
+	border-radius: 50px;
+    height: 70px;
+    width: 70px;
+}
+#mypageimg{
+	width: 20px;
+}
+/*-------------------------------------------------------------*/
