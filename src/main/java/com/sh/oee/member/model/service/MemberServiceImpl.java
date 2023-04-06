@@ -76,9 +76,14 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	
 	
-	
-	
-	
+	/**
+	 * 효정 시작
+	 */
+	@Override
+	public Dong selectOneDong(int dongNo) {
+		return memberDao.selectOneDong(dongNo);
+	}
+	/** 효정 끝 */
 	
 	
 // 혜진 시작 - 70번째줄  혜진꺼 다시
@@ -102,6 +107,8 @@ public class MemberServiceImpl implements MemberService {
 	public   List<Dong> selectMydongGuName(int dongNo) {
 		return memberDao.selectMydongGuName(dongNo);
 	}
+
+
 
 
 

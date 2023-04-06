@@ -275,6 +275,13 @@ input, button, select, textarea{
 	padding: 4px;
 }
 
+.messages ul li.replies #placeMap {
+	border-radius: 10%;
+	float: right;
+	padding: 4px;
+	width: 200px;
+	height: 200px;
+}
 
 /* 메시지박스 */
 .messages ul li p {
@@ -310,7 +317,7 @@ input, button, select, textarea{
 }
 
 .messages ul li.sent .msg_time.attach{
-    margin-left: 160px;
+    margin-left: 204px;
     margin-top: -21px;
     position: absolute;
 }
