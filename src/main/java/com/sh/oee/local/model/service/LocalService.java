@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -18,7 +19,7 @@ import com.sh.oee.member.model.dto.Member;
 public interface LocalService {
 
 	//동네생활 전체목록
-	List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds);
+	List<Local> selectLocalListByDongName(Map<String, Object> param);
 
 	//카테고리
 	List<Map<String, String>> localCategoryList();
@@ -70,9 +71,20 @@ public interface LocalService {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no);
+	//List<LocalCommentEntity> commentList(int no);
 
-	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no);
+	List<LocalCommentEntity> selectLocalCommentListByBoardNo(Map<String, Object> param);
+
+	//삭제
+	int deleteComment(int no);
+
+	//수정
+	int updateComment(LocalComment comment);
+
+	int insertReComment(LocalCommentEntity comment);
+
+	//댓글 최신순
+	List<LocalCommentEntity> commentNewList(int no);
 
 	
 
