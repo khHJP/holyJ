@@ -21,10 +21,55 @@
 	<table>
 		<th>
 			<td>
-			<!-- <button type="button" class="btn btn-lg" data-bs-toggle="popover" data-bs-title="타이틀이다 이시키야" data-bs-content="안뇽"> -->
-				  <img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+		
+		
+			<!-- Button trigger modal -->
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+			</button>
 			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+			      <div class="modal-header">
+				      <div>
+					        <h3 class="modal-title fs-5" id="exampleModalLabel">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagemodal">
+					        <sec:authentication property="principal.nickname"/></h3>
+					        <h6><sec:authentication property="principal.enrollDate"/>
+					        <fmt:formatDate value="${loginMember.enrollDate}" type="date"/>가입
+					        </h6>
+				        </div>
+					        <h6><sec:authentication property="principal.manner"/>℃</h6>
+			      </div>
+			      
+			      <div class="modal-body">
+			        <li>
+			        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+			        <a href="">중고거래</a>
+			        </li>
+			        <li>
+			        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+			        <a href="">동네생활</a>
+			        </li>
+			        <li>
+			        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+			        <a href="">같이해요</a>
+			        </li>
+			        <li>
+					<img src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="" id="mypageimg"/>
+					<a href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록</a>
+				</li>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 			</td>
+		<!-- --------------------------------------------------------------------------------------------- -->
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
@@ -74,13 +119,12 @@
 			</ul>
 		</div>
 	<script>
-		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+	const myModal = document.getElementById('myModal')
+	const myInput = document.getElementById('myInput')
 
-	  $( function () {
-	    $( '[data-toggle="popover"]' ).popover()
-	  } );
-		
+	myModal.addEventListener('shown.bs.modal', () => {
+	  myInput.focus()
+	})
 	</script>
 		
 </body>
