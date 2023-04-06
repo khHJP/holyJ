@@ -26,8 +26,9 @@ public class ChatMsgController {
 	@MessageMapping("/craigChat/{chatroomId}")
 	@SendTo("/app/craigChat/{chatroomId}")
 	public CraigMsg craigMsg(CraigMsg craigMsg, @DestinationVariable String chatroomId) { // @DestinationVariable : Stomp가 사용하는 pathVariable
-		log.debug("craigMsg = {}", craigMsg);
-		int result = chatService.insertCraigMsg(craigMsg);
+		int result = chatService.insertCraigMsg(craigMsg);		
+		
+		log.debug("craigMsg메시지 = {}", craigMsg);
 
 		return craigMsg;
 	}
