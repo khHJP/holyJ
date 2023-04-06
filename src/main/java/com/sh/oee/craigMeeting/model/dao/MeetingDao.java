@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sh.oee.craigMeeting.model.dto.CraigMeeting;
 
@@ -16,6 +17,9 @@ public interface MeetingDao {
 
 	@Select("select * from craig_meeting where no = #{craigNo}")
 	CraigMeeting findMeetingByCraigNo(int craigNo);
+
+	@Update("update craig_meeting set longitude = #{meetingLon}, latitude = #{meetingLat} where no = #{no}")
+	int enrollMeetingPlace(Map<String, Object> map);
 
 
 }

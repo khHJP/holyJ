@@ -29,8 +29,7 @@ public interface ChatDao {
 
 	@Select("select chatroom_id from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
 	List<String> findCraigChatList(Map<String, Object> craigChatMap);
- 
-	
+ 	
 	int insertCraigMsg(CraigMsg craigMsg);
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
