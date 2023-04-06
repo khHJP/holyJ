@@ -47,7 +47,10 @@ public interface MemberDao {
 	 */
 
 
-	
+	/** 효정 시작 */
+	@Select("select * from dong where dong_no = #{dongNo}")
+	Dong selectOneDong(int dongNo);
+	/** 효정 끝 */
 	
 	
 	
@@ -91,6 +94,8 @@ public interface MemberDao {
 	String selectMydongName(int dongNo);
 
 	 List<Dong> selectMydongGuName(int dongNo);
+
+
 	
 }
 /**혜진도전 0320 -- 끝 80번쨰줄 **/

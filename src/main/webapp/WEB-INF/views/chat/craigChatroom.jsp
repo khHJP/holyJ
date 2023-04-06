@@ -29,7 +29,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f728657c1f1828a75b9c549d4888eb1"
+    ></script>
 </head>
 <body>
 	<div class="chat">
@@ -80,12 +83,21 @@
 					</div>
 				</div>
 				<div class="btnWrap">
+<!-- 				<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소 공유</button>	 -->
 					<c:choose>
 						<c:when test="${craig.state eq 'CR1'}">
-							<button id="meetingDate" type="button" class="btn btn-outline-secondary" >
-								${meetingDate}
-							</button>
-							<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">장소 공유</button>						
+							<!-- 로그인중인 사용자가 예약자일때 / 게시글 작성자일때 -->
+							<c:if test="${memberId == craig.buyer || memberId == craig.writer}">
+								<button id="meetingDate" type="button" class="btn btn-outline-secondary" >
+									${meetingDate}
+								</button>
+								<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소 공유</button>													
+							</c:if>
+							<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
+								<button id="meetingDate" type="button" class="btn btn-outline-secondary" >
+									예약중인 상품입니다
+								</button>
+							</c:if>
 						</c:when>
 						<c:when test="${craig.state eq 'CR2'}">
 							<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>				
@@ -95,8 +107,7 @@
 				</div>
 			</div>
 
-			
-			<!-- 약속잡기 Modal -->
+			<!----------- 약속잡기 Modal start ------------->
 			<div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
@@ -120,6 +131,28 @@
 			    </div>
 			  </div>
 			</div>
+			<!------------ 약속잡기 Modal end -------------->
+			
+			<!----------- 위치공유 Modal start ------------->
+			<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="locationModalLabel">장소공유</h5>
+			      </div>
+			      <div class="modal-body" style="height: 400px;">
+						<div id="map" style="width:450px;height:400px;"></div>
+						<input type="text" id="placeName" placeholder="장소명을 입력해주세요"/>
+			      </div>
+			      <div class="modal-footer ">
+			        <button id="savePlace" type="button" class="btn btn-primary" style="position: relative; z-index: 10;">장소등록</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+			<!------------ 위치공유 Modal end ------------->
+			
 			
 			<!--------- 게시글정보 end ----------->
 	
@@ -149,6 +182,7 @@
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							<!-- 장소인 경우 -->
 						</c:if>
 						
 						<!------------- 다른사람이 보낸 메시지일때 -->
@@ -172,6 +206,7 @@
 									<span class="msg_time attach"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							<!-- 장소인 경우 -->
 						</c:if>
 					</c:forEach>
 				</ul>
@@ -220,8 +255,13 @@ const stompClient = Stomp.over(ws);
 
 // 채팅방아이디 
 const chatroomId = '${chatroomId}';
+// 로그인한 사용자 아이디
 const memberId = '${memberId}';
+// 로그인한 사용자 동
+const dong = '${dong}';
+// 로그인한 사용자 프로필이미지
 const profImg = '${chatUser.profileImg}';
+// 상대방 프로필이미지
 const otherImg = '${otherUser.profileImg}';
 
 // csrf 토큰  
@@ -244,6 +284,133 @@ headers[csrfHeader] = csrfToken;
 	}
 
 }); */
+
+/* 위치 공유 */
+var container = document.getElementById('map');
+var map;
+
+let meetingLat;
+let meetingLon;
+
+$(document).ready(function(){
+	if(navigator.geolocation){
+		// 현위치 가져오기
+		navigator.geolocation.getCurrentPosition(function(position){
+			let lat = position.coords.latitude; // 위도
+			let lon = position.coords.longitude; // 경도
+
+			const options = {
+					center: new kakao.maps.LatLng(lat,lon),
+					level: 2
+			}
+			map = new kakao.maps.Map(container, options); // map 생성
+			
+			// marker 생성
+			var marker = new kakao.maps.Marker({
+				position: map.getCenter()
+			});
+			marker.setMap(map);
+			
+			// 지도 클릭 마커표시 이벤트 
+			kakao.maps.event.addListener(map, 'click', function(mouseEvent){
+			    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+			    
+				// 클릭한 위도, 경도
+				var latlng = mouseEvent.latLng;
+				
+				meetingLat = latlng.getLat(); // 위도
+				meetingLon = latlng.getLng(); // 경도 
+				
+	            // 마커를 클릭한 위치에 표시
+	            marker.setPosition(latlng);
+	 
+	            var iwPosition = mouseEvent.latLng;
+	            
+	            document.querySelector("#savePlace").addEventListener('click', (e) => {
+					const placeName = document.querySelector("#placeName").value;
+					console.log(placeName);
+
+					// 인포윈도우 내용   
+					var iwContent = 
+						`<div style="padding:5px;">
+							\${placeName}<br><a href="https://map.kakao.com/link/to/\${placeName},\${meetingLat},\${meetingLon}" style="color:blue" target="_blank">길찾기</a>
+						</div>`;
+					
+					// 인포윈도우 생성
+					var infowindow = new kakao.maps.InfoWindow({
+					    position : iwPosition, 
+					    content : iwContent 
+					});
+					
+					infowindow.open(map, marker); 
+	            }); // 장소등록 끝
+				
+			}); // 마커표시 끝
+			
+			
+		}); // 현위치 가져오기 끝
+		
+		
+	} // if 끝
+	else {
+		// 현위치를 알수없을때는 사용자 정보에서 동을 가져와 입력 
+		let lon = ${dong.longitude};
+		let lat = ${dong.latitude};
+		
+		const options = {
+			center: new kakao.maps.LatLng(lat,lon),
+			level: 2
+		}
+		map = new kakao.maps.Map(container, options);
+	} // else 끝
+	
+});
+
+
+// 모달열릴때 지도 크기조절
+$("#locationModal").on('shown.bs.modal', function(){
+	 map.relayout();
+});
+
+
+
+// 장소등록
+document.querySelector("#savePlace").addEventListener('click', (e) => {
+	const placeName = document.querySelector("#placeName").value;
+	console.log(placeName);
+	// 장소명 미입력시
+	if (placeName == ""){
+		alert("장소명을 입력해주세요");
+	}
+	
+	let meetingPlace = meetingLat + ',' + meetingLon + ',' + placeName;
+	
+	// craig_meeting에서 해당 행 update 처리
+    $.ajax({
+        headers,
+        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeetingPlace',
+        data : {
+			no: '${craig.no}', meetingLat, meetingLon
+        },
+        type : "POST",
+        success(){
+			// 장소 메시지 전송 처리
+	        const payload = {
+	        	chatroomId,
+             	writer : '<sec:authentication property="principal.username"/>',
+             	content : meetingPlace,
+             	sentTime : Date.now(),
+             	type : 'PLACE',
+            }
+	        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+
+        },
+        error: console.log
+    });   
+	
+
+
+});
 
 
 
@@ -277,13 +444,13 @@ $(function(){
 	});
 });
 
+/* 예약 */
 document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 	const frm = document.querySelector("#timeForm");
 	const time = frm.time.value; // 19:12
 	
 	const dateBtn = document.querySelector("#meetingDate");
 	const placeBtn = document.querySelector("#meetingPlace");
-	
 	
 	
 	if(!time){
@@ -320,8 +487,6 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 		meetingDate = date;
 	
 		
-
-		
 		// 중고거래 예약 테이블에 행 추가
    $.ajax({
 	        headers,
@@ -331,30 +496,34 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 	        },
 	        type : "POST",
 	        success(data){
-	    		// 1. date버튼에 약속일자 입력
-	    		$("#meetingDate").css({
-	    			"display" : "block"
-	    		});
-	    		$("#meetingDate").html(dateHtml);
-	    		
-	    		// 2. 장소공유 버튼 보이기
-	    		$("#meetingPlace").css({
-	    			"display" : "block"
-	    		});
-	    		
-	    		// 3. modal 닫기 + 버튼 감추기
-	    		$("#meeting").css({
-	    			"display" : "none"
-	    		}); 	
+
 	        },
-	        error: console.log,
-	        complete(){
-	    		$("#meetingModal").modal('hide'); // 모달 감추기	        	
-	        }
+	        error: console.log
 	    });  
+		
+		// 1. date버튼에 약속일자 입력
+		$("#meetingDate").css({
+			"display" : "block"
+		});
+		$("#meetingDate").html(dateHtml);
+		
+		// 2. 장소공유 버튼 보이기
+		$("#meetingPlace").css({
+			"display" : "block"
+		});
+		
+		// 3. modal 닫기 + 버튼 감추기
+		$("#meeting").css({
+			"display" : "none"
+		}); 	
+		
+		$("#meetingModal").modal('hide'); // 모달 감추기	        	
 	}
 	
 });
+
+
+
 
 
 /* 첨부파일 전송시 */
@@ -447,7 +616,7 @@ stompClient.connect({}, (frame) => {
 				} 
 				
 				/* 메시지 유형이 file */
-				else {
+				else if ( type == 'FILE'){
 					const li = document.createElement("li");
 					li.classList.add("replies");
 	
@@ -465,6 +634,63 @@ stompClient.connect({}, (frame) => {
 					
 					li.append(div, span);
 					ul.append(li);
+				}
+				/* 메시지 유형이 place */
+				
+				else if ( type == 'PLACE'){
+					const li = document.createElement("li");
+					li.classList.add("replies");
+	
+					const div = document.createElement("div");
+					div.id = "placeMap";
+					div.setAttribute("onload", "placeMap.relayout();");
+		
+					const span = document.createElement("span");
+					span.classList.add("msg_time");
+					span.innerHTML = `\${time}`;
+					
+					li.append(div, span);
+					ul.append(li);	
+			
+					// content에서 위/경도, 장소명 가져오기
+					let places = content.split(',');
+					const meetingLat = places[0];
+					const meetingLon = places[1];
+					const placeName = places[2];
+					
+					console.log(meetingLat);
+					console.log(meetingLon);
+					console.log(placeName);
+					
+			   		 // 장소채팅용 map 
+			        var placeMapContainer = document.getElementById("placeMap"),
+			        	mapOption = {
+			        	center : new kakao.maps.LatLng(meetingLat, meetingLon),
+			        	level: 2
+			        };
+			   		var placeMap = new kakao.maps.Map(placeMapContainer, mapOption);
+			    	
+			   		// 마커
+			   		var placeMarker = new kakao.maps.Marker({
+			    		position: new kakao.maps.LatLng(meetingLat, meetingLon)
+			    	});
+			    	
+			    	placeMarker.setMap(placeMap);
+			    	
+					// 인포윈도우 내용   
+					var iwContent = 
+						`<div style="padding:5px;">
+							\${placeName}<br><a href="https://map.kakao.com/link/to/\${placeName},\${meetingLat},\${meetingLon}" style="color:blue" target="_blank">길찾기</a>
+						</div>`;
+					
+					// 인포윈도우 생성
+					var infowindow = new kakao.maps.InfoWindow({
+					    position : new kakao.maps.LatLng(meetingLat, meetingLon), 
+					    content : iwContent 
+					});
+					
+					infowindow.open(placeMap, placeMarker); 
+					
 				}
 			}
 				
@@ -492,7 +718,7 @@ stompClient.connect({}, (frame) => {
 				} 
 
 				/* 메시지 유형이 file */
-				else {
+				else if ( type == 'FILE'){
 					const li = document.createElement("li");
 					li.classList.add("sent");
 	
@@ -613,7 +839,17 @@ $(document).ready(function(){
 	window.resizeTo(wid, hei);
 });
 
+/* 버튼 보이기설정 */
+$(document).ready(function(){
+	$("#meetingDate").css({
+		"display" : "block"
+	});
+});
+
+
+
 </script>
 </sec:authorize>
+
 </body>
 </html>
