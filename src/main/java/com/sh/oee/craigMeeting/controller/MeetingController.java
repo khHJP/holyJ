@@ -44,7 +44,6 @@ public class MeetingController {
 	 */
 	@PostMapping("/enrollMeeting")
 	@ResponseBody
-	
 	public Map<String, Object> craigMeeting(String chatroomId, String memberId, String meetingDate){
 		log.debug("오셨나욥 = {}", chatroomId);
 
@@ -67,11 +66,36 @@ public class MeetingController {
 		map.put("memberId", memberId);
 		map.put("date", date);
 		
-		log.debug("어디봐봐 = {}", map);
+		// BUYER 아이디 찾기
+		// 판매자아이디, 채팅방 아이디로 판매자 외의 다른 멤버 가져옴
+		String seller = craigService.findCraigByCraigNo(no).getWriter();
+		Map<String, Object> otherMap = new HashMap<>();
+		otherMap.put("memberId", seller);
+		otherMap.put("chatroomId", chatroomId);
+		
+		String buyer = chatService.findOtherFromCraigChat(otherMap);
+
+		map.put("buyer", buyer);
 		
 		int result = meetingService.enrollMeeting(map);
 		
-		return null;
+		return map;
 	}
 	
+	/**
+	 * 장소공유시 update처리
+	 */
+	@PostMapping("/enrollMeetingPlace")
+	@ResponseBody
+	public void enrollMeetingPlace(int no, String meetingLat, String meetingLon){
+		log.debug("약속번호 = {}", no);
+		log.debug("위도 = {}", meetingLat);
+		log.debug("경도 = {}", meetingLon);
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("meetingLat", meetingLat);
+		map.put("meetingLon", meetingLon);
+		
+		int result = meetingService.enrollMeetingPlace(map);
+	}
 }
