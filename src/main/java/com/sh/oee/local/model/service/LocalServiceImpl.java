@@ -158,6 +158,10 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.insertComment(comment);
 	}
 
+	@Override
+	public List<LocalCommentEntity> commentList(int no) {
+		return localDao.commentList(no);
+	}
 
 //	@Override
 //	public int insertComment(Map<String, Object> param) {
@@ -166,11 +170,12 @@ public class LocalServiceImpl implements LocalService {
 //	}
 
 	@Override
-	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no, String orderBy) {
+	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no) {
 		// TODO Auto-generated method stub
-		return localDao.commentList(no,orderBy);
+		return localDao.commentList(no);
 	}
 
+	//댓글 삭제
 	@Override
 	public int deleteComment(int no) {
 		return localDao.deleteComment(no);
@@ -189,10 +194,5 @@ public class LocalServiceImpl implements LocalService {
 	@Override
 	public List<LocalCommentEntity> commentNewList(int no) {
 		return localDao.commentNewList(no);
-	}
-
-	@Override
-	public List<LocalCommentEntity> commentList(int no, String orderBy) {
-		return localDao.commentList(no, orderBy);
 	}
 }

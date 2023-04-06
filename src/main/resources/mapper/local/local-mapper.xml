@@ -262,15 +262,7 @@
 	START WITH lc.comment_level = 1
 	CONNECT BY PRIOR lc.comment_no = lc.ref_no
 	ORDER SIBLINGS BY lc.reg_date
-      <if test="orderBy == 'latest'">
-            ORDER SIBLINGS BY lc.reg_date DESC
-        </if>
-        <if test="orderBy == 'oldest'">
-            ORDER SIBLINGS BY lc.reg_date ASC
-        </if>
-        <if test="orderBy == null or orderBy == ''">
-            ORDER SIBLINGS BY lc.reg_date DESC
-        </if> 	
+     
 
 </select>
 

@@ -86,7 +86,7 @@ public interface LocalDao {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	List<LocalCommentEntity> commentList(int no,String orderBy);
+	List<LocalCommentEntity> commentList(int no);
 
 	//댓글삭제
 	@Delete("delete from local_comment where comment_no = #{commentNo}")

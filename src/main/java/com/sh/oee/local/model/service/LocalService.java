@@ -71,10 +71,9 @@ public interface LocalService {
 	//댓글
 	int insertComment(LocalCommentEntity comment);
 
-	//댓글정렬
-	List<LocalCommentEntity> commentList(int no, String orderBy);
+	List<LocalCommentEntity> commentList(int no);
 
-	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no, String orderBy);
+	List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no);
 
 	//삭제
 	int deleteComment(int no);

@@ -22,35 +22,18 @@
 			}
 		});
 	};
-</script>
-<script>
-
-$(document).ready(function() {
-	  // 등록순 버튼 클릭 시
-	  $('#commentOriList').click(function() {
+	
+	
+	$(document).on('click', '#commentNewList', function() {
 	    $.ajax({
-	      type: 'get',
-	      url: `${pageContext.request.contextPath}/local/commentList.do`,
-	      data: {localNo: ${localdetail.no}, orderBy: 'oldest'},
-	      success: function(result) {
-	        $('#commentList').html(result);
-	      }
+	        type: 'GET',
+	        url: `${pageContext.request.contextPath}/local/localNewDetail.do`,
+	        data: {no: ${localdetail.no}}, // no 파라미터 값 설정
+	        success: function(data) {
+	            $('.replyList').html(data);
+	        }
 	    });
-	  });
-	  
-	  // 최신순 버튼 클릭 시
-	  $('#commentNewList').click(function() {
-	    $.ajax({
-	      type: 'get',
-	      url: `${pageContext.request.contextPath}/local/commentList.do`,
-	      data: {localNo: ${localdetail.no}, orderBy: 'latest'},
-	      success: function(result) {
-	        $('#commentList').html(result);
-	      }
-	    });
-	  });
 	});
-
 </script>
 
 <script>
@@ -212,8 +195,9 @@ function replyEdit(commentNo, content) {
 			<button id="commentNewList">·최신순</button>
 			</div>
 		</div>
-		<div id="commentList">
 		<c:forEach items="${commentList}" var="comment">
+	<!-- -등록순 최신순 -->
+		<div id="commentList">
 		<!-- 모댓글 -->
 		<div class="moComment" style="margin-left:20px;">
 			<c:if test="${comment.commentLevel == 1}">
@@ -267,10 +251,10 @@ function replyEdit(commentNo, content) {
 			</c:if>
 			</div>
 		</c:if>
+		</div>
 		</c:forEach>
 		</div>
 	</div>
-</div>
 <!-- 댓글 등록순(기본) 최신순 정렬 (클릭하면 로직 따르게...?) -->
 
 
