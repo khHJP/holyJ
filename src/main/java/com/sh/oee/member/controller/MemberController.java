@@ -83,7 +83,6 @@ public class MemberController {
 	 * @param redirectAtrr
 	 * @return
 	 */
-
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAtrr) {
 		log.debug("member = {}", member);
@@ -100,7 +99,7 @@ public class MemberController {
 		// view 전달
 		redirectAtrr.addFlashAttribute("msg", "오이 가족이 되신걸 환영합니다!"); // msg 안나옴,, 왤까,,?
 		
-		return "redirect:/oee";
+		return "redirect:/";
 	}
 	
 	/**
