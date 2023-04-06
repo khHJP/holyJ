@@ -3,15 +3,12 @@ package com.sh.oee.chat.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,18 +36,17 @@ import com.sh.oee.common.OeeUtils;
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
-import com.sh.oee.craigMeeting.model.dto.CraigMeeting;
-import com.sh.oee.craigMeeting.model.service.MeetingService;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
+import com.sh.oee.together.model.dto.Together;
 import com.sh.oee.together.model.service.TogetherService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@RequestMapping("/chat")
-public class ChatController {
+@RequestMapping("/togetherChat")
+public class TogetherChatController {
 
 	@Autowired
 	private ChatService chatService;
@@ -60,8 +57,6 @@ public class ChatController {
 	@Autowired
 	private TogetherService togetherService;
 	@Autowired
-	private MeetingService meetingService;
-	@Autowired
 	private ServletContext application;
 
 	@GetMapping("/chatList.do")
@@ -69,6 +64,51 @@ public class ChatController {
 
 	}
 
+	/**
+	 *  같이해요 채팅방 입장
+	 */
+	@ResponseBody
+	@GetMapping("togetherChat/{togetherNo}")
+	public Map<String, Object> togetherChat(@PathVariable int togetherNo, Authentication authentication, Model model,
+			HttpSession session) {
+
+		// 1. 로그인한 사용자 id 꺼내기
+		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
+
+		// 2. 게시글 번호로 게시글객체 -> 작성자 id 꺼내오기
+		Together together = togetherService.selectTogetherByNo(togetherNo);
+		String writer = together.getWriter();
+
+		// 3. 사용자가 게시글 작성자일때
+		if(memberId.equals(writer)) {
+			
+		}
+		// 4. 게시글 작성자가 아닐때
+		else {
+			
+		}
+		
+		// 3. memberId, craigNo로 chatroom_id 조회
+		/*
+		 * Map<String, Object> craigChatMap = new HashMap<>();
+		 * craigChatMap.put("memberId", memberId); craigChatMap.put("craigNo", craigNo);
+		 * 
+		 * String chatroomId = chatService.findCraigChatroomId(craigChatMap);
+		 * 
+		 * // 채팅방 첫 입장시 if (chatroomId == null) { // 1. chatroomId 생성 chatroomId =
+		 * chatroomId = generateCraigChatroomId(); log.debug("채팅방번호 = {}", chatroomId);
+		 * 
+		 * // 2. craig_chat 테이블에 2행 insert (로그인한 사용자memberId, 게시글 작성자 sellerId)
+		 * List<CraigChat> chatMembers = Arrays.asList(new CraigChat(chatroomId,
+		 * memberId, craigNo), new CraigChat(chatroomId, sellerId, craigNo)); int result
+		 * = chatService.createCraigChatroom(chatMembers); }
+		 * 
+		 * Map<String, Object> map = new HashMap<>(); map.put("memberId", memberId);
+		 * map.put("chatroomId", chatroomId);
+		 */
+
+		return null;
+	}
 	
 
 	/**
@@ -276,6 +316,7 @@ public class ChatController {
 		// 1. chatroomId, memberId, craigNo로 craigChat객체 가져오기
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
+		craigChatMap.put("craigNo", craigNo);
 		craigChatMap.put("chatroomId", chatroomId);
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
@@ -331,11 +372,6 @@ public class ChatController {
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
 		model.addAttribute("craig", craig);
 		
-		CraigMeeting meeting = meetingService.findMeetingByCraigNo(craigNo);
-		if(meeting != null) {
-			model.addAttribute("meetingDate", convertMeetingDate(meeting.getMeetingDate()));
-		}
-		
 		// 6. 게시글 첨부파일 담기
 		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
 		model.addAttribute("craigImg", craigImg);
@@ -344,18 +380,5 @@ public class ChatController {
 		model.addAttribute("chatroomId", chatroomId);
 
 		return "chat/craigChatroom";
-	}
-	
-	public String convertMeetingDate (LocalDateTime meetingDate){
-		String dateText = "";
-		
-		DayOfWeek dayOfWeek = meetingDate.getDayOfWeek();
-		String day = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN); // 요일 한국어로 출력 (토) 
-		
-		dateText += 
-				meetingDate.getMonthValue() + "/" + meetingDate.getDayOfMonth() + "(" + day + ") "
-				+ meetingDate.format(DateTimeFormatter.ofPattern("a hh:mm"));
-
-		return dateText;
 	}
 }

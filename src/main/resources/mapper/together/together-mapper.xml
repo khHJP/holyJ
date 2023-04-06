@@ -209,6 +209,7 @@
 		    #{gender},
 		    #{age},
 		    default,
+		    default,
 		    default
 		)
 		<selectKey order="AFTER" resultType="_int" keyProperty="no">
@@ -224,7 +225,6 @@
 		insert into 
 		    together_chat
 		values (
-		    SEQ_TOGETHER_CHATROOM_NO.nextval,
 		    #{togetherNo},
 		    #{memberId},
 		    #{role},

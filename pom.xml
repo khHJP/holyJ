@@ -287,7 +287,7 @@
 		   <groupId>net.javacrumbs.shedlock</groupId>
 		   <artifactId>shedlock-provider-jdbc-template</artifactId>
 		   <version>3.0.0</version>
-		</dependency>								
+		</dependency>							
 	</dependencies>
 	
     <build>
