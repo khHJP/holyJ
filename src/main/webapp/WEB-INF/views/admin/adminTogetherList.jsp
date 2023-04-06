@@ -106,7 +106,7 @@ $(document).ready(function() {
 							<td style="color: #868B94;">모집완료</td>
 						</c:if>
 						<td>
-							<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+							<fmt:parseDate value="${adminTogether.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" /> 
 							<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 						</td>
 						<td>
@@ -134,7 +134,7 @@ $(document).ready(function() {
 							<td>${adminTogetherSearch.title}</td>
 							<td>${adminTogetherSearch.status}</td>
 							<td>
-								<fmt:parseDate value="${adminTogetherSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+								<fmt:parseDate value="${adminTogetherSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />
 							</td>
 							<td>

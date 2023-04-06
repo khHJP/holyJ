@@ -95,8 +95,8 @@ window.addEventListener('load', (e) => {
 			<sec:authorize access="isAuthenticated()">
 			<div class="login-box">
 				<div class="notice-wrap">
-					<i class="bi bi-bookmark"></i>
-					<i class="bi bi-bell"></i>
+					<button onclick="openPopup('${pageContext.request.contextPath}/notice/newNotice.do')" style="all: unset"><i class="bi bi-bookmark"></i></button>
+					<button onclick="openPopup('${pageContext.request.contextPath}/notice/adminNotice.do')" style="all: unset"><i class="bi bi-bell"></i></button>
 				</div>
 				<div class="profile-wrap">
 					<sec:authentication property="principal" var="loginMember"/>					
@@ -127,5 +127,10 @@ document.querySelector(".profile-wrap").addEventListener('click', (e) => {
 	const selectBox = document.querySelector(".my-select-box");
 	selectBox.classList.toggle('show-toggle');
 });
+
+function openPopup(url) {
+	var popup = window.open(url, 'popup', 'width=500, height=600, top=50, left=50');
+	popup.focus();
+}
 </script>
 </sec:authorize>

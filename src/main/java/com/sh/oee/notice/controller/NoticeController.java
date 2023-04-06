@@ -79,4 +79,10 @@ public class NoticeController {
 			return noticeService.deleteKeyword(keywordNo);
 	    }
 	//-------------------------------하나 끝---------------------
+	    
+	    @GetMapping("/newNotice.do")
+	    public void newNotice (Model model) {}
+	    
+	    @GetMapping("/adminNotice.do")
+	    public void adminNotice (Model model) {}
 }

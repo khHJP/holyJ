@@ -100,7 +100,7 @@ $(document).ready(function() {
 							</select>
 						</td>
 						<td>${adminCraig.writer}</td>
-						<td>${adminCraig.title}</td>
+						<td style="width: 230px;">${adminCraig.title}</td>
 						<c:if test="${adminCraig.state eq 'CR1'}">
 						<td style="color: #56C271;">예약중</td>
 						</c:if>
