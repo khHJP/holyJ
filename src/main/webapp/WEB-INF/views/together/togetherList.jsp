@@ -56,7 +56,7 @@ $(document).ready(function() {
 			<span>
 				관심사가 비슷한 이웃과
 				</br>
-				온오프라인으로 모일 수 있어요.
+				온&middot;오프라인으로 모일 수 있어요.
 			</span>
 		</div>
 		<div class="together-img-box">

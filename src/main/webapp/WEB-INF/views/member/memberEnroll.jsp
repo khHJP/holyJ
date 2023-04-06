@@ -135,6 +135,11 @@ document.querySelector(".dupl-btn").addEventListener('click', (e) => {
 	});
 });
 
+/* 아이디 중복검사후 아이디 재설정한 경우 */
+document.querySelector(".dupl-btn").addEventListener('focus', (e) => {
+	idValid.value = 0;
+}
+
 /* 비밀번호 유효성 검사 */
 // 영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
 document.querySelector("#pwd").addEventListener('blur', (e) => {
@@ -146,12 +151,12 @@ document.querySelector("#pwd").addEventListener('blur', (e) => {
 	for(let i = 0; i < regExpArr.length; i++){
 		if(!regExpArr[i].test(pwd)){
 			e.target.previousElementSibling.style.color="#E64848";
-			pwdValid.value = 0;
+			pwdValid.value = 0; // 비번 조건에 맞지 않으면 0
 			return;
 		}
 	}
 	e.target.previousElementSibling.style.color="#868B94";
-	pwdValid.value = 1;
+	pwdValid.value = 1; // 비번 조건에 맞으면 1
 });
 
 /* 비멀번호 확인 */
@@ -162,10 +167,11 @@ document.querySelector("#pwdCheck").addEventListener('keyup', (e) => {
 	if(checkPwd.value != pwd){
 		checkPwd.nextElementSibling.style.visibility = "visible";
 		checkPwd.nextElementSibling.style.color = "#E64848";
-		pwdValid.value = 0;
+		pwdValid.value = 0; // 비번 일치하지 않으면 0
 	}
 	else{
-		checkPwd.nextElementSibling.style.visibility = "hidden";		
+		checkPwd.nextElementSibling.style.visibility = "hidden";
+		pwdValid.value = 1;
 	}
 });
 

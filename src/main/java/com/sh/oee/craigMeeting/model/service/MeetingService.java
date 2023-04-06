@@ -10,4 +10,6 @@ public interface MeetingService {
 
 	CraigMeeting findMeetingByCraigNo(int craigNo);
 
+	int enrollMeetingPlace(Map<String, Object> map);
+
 }

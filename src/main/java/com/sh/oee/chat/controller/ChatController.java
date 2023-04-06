@@ -40,6 +40,7 @@ import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
 import com.sh.oee.craigMeeting.model.dto.CraigMeeting;
 import com.sh.oee.craigMeeting.model.service.MeetingService;
+import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
 import com.sh.oee.together.model.service.TogetherService;
@@ -325,7 +326,8 @@ public class ChatController {
 		
 		// 4. 사용자 아이디 담기
 		model.addAttribute("memberId", memberId);
-		model.addAttribute("chatUser", memberService.selectOneMember(memberId));
+		Member chatUser = memberService.selectOneMember(memberId);
+		model.addAttribute("chatUser", chatUser);
 		
 		// 5. 게시글 정보 담기
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
@@ -343,6 +345,12 @@ public class ChatController {
 		// 7. 채팅방아이디 담기
 		model.addAttribute("chatroomId", chatroomId);
 
+		// 8. 사용자의 dong_no로 해당 지역 위경도 가져오기
+		int dongNo = chatUser.getDongNo();
+		Dong dong = memberService.selectOneDong(dongNo);
+		model.addAttribute("dong", dong);
+		log.debug("동정보 = {}", dong);
+		
 		return "chat/craigChatroom";
 	}
 	

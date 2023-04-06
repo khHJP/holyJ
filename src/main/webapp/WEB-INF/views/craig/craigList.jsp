@@ -76,7 +76,7 @@
     justify-content: flex-end;  margin-top: -5px ;
 }
 </style>
-<div style="height: 260px; margin-bottom:20px; width:1794px !important; margin-left : -350px;  background-color: #E3EDCD">
+<div style="height: 240px; margin-bottom:20px; width:2294px !important; margin-left : -350px;  background-color: #E3EDCD">
 	<div class="seconddivv" >
 	 	<div style="margin-top: 10px; margin-left: 75px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
 	 	<p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p></div>
@@ -109,8 +109,8 @@
 	</div>
 <section id="craigWhole" >	
 <%-- whole List  --%>
-	<c:if test="${searchCraigs == null}">
-		<h3 style="margin: 80px 40px 80px 0; text-align: center; padding-left : 70px;"> 중고거래 인기 매물</h3>
+	<c:if test="${searchCraigs == null  }">
+		<h3 id="popularh3" style="margin: 80px 40px 80px 0; text-align: center; padding-left : 70px;"> 중고거래 인기 매물</h3>
 	</c:if>
 		
 	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
@@ -374,6 +374,9 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		
 		const nav  = document.querySelector("nav");
 		const tbody  = document.querySelector("#craigWholeListTbl tbody");
+		const h3  = document.querySelector("#popularh3");
+		
+		h3.innerHTML = "";
 	
 		let searchPage = document.querySelector("#searchPage").innerHTML;
 		let categoryNumber = categoryLi.dataset.no;
@@ -411,7 +414,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 	
 				if( data.wishCnt[0] == null || data.totalPage == 0  ){ // 결과없다 
 
-					tbody.innerHTML = `<p style='position:absolute; top: 700px; left:600px; font-size:33px' >
+					tbody.innerHTML = `<p style='position:absolute; top: 520px; left:600px; font-size:33px' >
 											아직 해당 카테고리의 게시물이 없습니다! </p>
 										<img  style='width:700px; height: 600px; position:relative; top: 220px; left:280px; display : block;' 
 						    				src='${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png'/><br/></br></br>`;
