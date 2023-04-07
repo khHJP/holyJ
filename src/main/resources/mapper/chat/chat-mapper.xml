@@ -19,5 +19,23 @@
 		    rnum = 1
 	</select>
 
+	<insert id="insertCraigMsgAttach">
+		insert into
+			craig_msg_attach
+		values (
+			seq_craig_msg_attach_no.nextval, 
+			null, 
+			#{originalFilename}, 
+			#{reFilename}, 
+			default
+		)
+		<selectKey order="AFTER" resultType="_int" keyProperty="attachNo">
+			select
+				seq_craig_msg_attach_no.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	
 <resultMap type="craigMsg" id="craigMsgMap"></resultMap>
 </mapper>

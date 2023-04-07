@@ -126,14 +126,21 @@ footer{
 	font-weight: bold;
 }
 
-
 #craig_bar button {
 	position: relative;
     margin-left: 35px;
     margin-top: 3px;
-	font-size: 15px;
+	font-size: 15px;	
 }
-
+#craig_bar #meetingPlace {
+	margin-left: 10px;
+}
+.btnWrap {
+	display: flex;
+}
+#meetingPlace {
+	margin-left: 10px;
+}
 /*********** 채팅방 메뉴 ************/
 #action_menu_btn{
 	position: absolute;
@@ -246,10 +253,6 @@ input, button, select, textarea{
 }
 
 /* 보낸 메시지  */
-.messages ul li.replies img {
-	float: right;
-	margin: 0 0 0 8px;
-}
 .messages ul li.replies p {
 	background: #7FB77E;
 	float: right;
@@ -264,17 +267,29 @@ input, button, select, textarea{
     font-size: 12px;
 }
 
-.messages ul li.replies .attachFile img{
+.messages ul li.replies .attachFile img {
 	width: 150px;
 	height: 150px;
 	border-radius: 10%;
+	float: right;
+	padding: 4px;
 }
 
-/* 프로필이미지 */
-.card .messages ul li.sent img {
-	width: 40px;
-	border-radius:50%;
-	float: left;
+.messages ul li.replies #placeMap {
+	border-radius: 10%;
+	float: right;
+	padding: 4px;
+	width: 200px;
+	height: 200px;
+}
+
+.messages ul li.book div {
+	text-align: center;
+	margin: 0 auto;
+}
+
+.messages ul li.book div span {
+	color: #868B94;
 }
 
 /* 메시지박스 */
@@ -288,7 +303,10 @@ input, button, select, textarea{
 
 
 /* 받은 메시지  */
-.card .messages ul li.sent img {
+.card .messages ul li.sent .profImg {
+	width: 40px;
+	border-radius:50%;
+	float: left;
 	margin: 0 8px 0 0;
 }
 .messages ul li.sent p {
@@ -301,6 +319,21 @@ input, button, select, textarea{
     color: #868B94;
     font-size: 12px;
 }
+.messages ul li.sent .attachFile img{
+	width: 150px;
+	height: 150px;
+	border-radius: 10%;
+}
 
-
-
+.messages ul li.sent .msg_time.attach{
+    margin-left: 204px;
+    margin-top: -21px;
+    position: absolute;
+}
+.messages ul li.sent  #placeMap {
+	border-radius: 10%;
+	float: left;
+	padding: 4px;
+	width: 200px;
+	height: 200px;
+}

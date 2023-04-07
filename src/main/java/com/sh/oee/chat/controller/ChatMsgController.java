@@ -24,7 +24,7 @@ public class ChatMsgController {
 	 * 중고거래 채팅방에서 메시지 보낼때 CRAIG_MSG insert 처리
 	 */
 	@MessageMapping("/craigChat/{chatroomId}")
-	@SendTo("/app/craigChat/{chatroomId")
+	@SendTo("/app/craigChat/{chatroomId}")
 	public CraigMsg craigMsg(CraigMsg craigMsg, @DestinationVariable String chatroomId, MultipartFile upFile) { // @DestinationVariable : Stomp가 사용하는 pathVariable
 		log.debug("craigMsg = {}", craigMsg);
 		

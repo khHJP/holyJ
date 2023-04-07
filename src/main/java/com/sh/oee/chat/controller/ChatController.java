@@ -3,11 +3,15 @@ package com.sh.oee.chat.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -34,8 +38,12 @@ import com.sh.oee.common.OeeUtils;
 import com.sh.oee.craig.model.dto.Craig;
 import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
+import com.sh.oee.craigMeeting.model.dto.CraigMeeting;
+import com.sh.oee.craigMeeting.model.service.MeetingService;
+import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
+import com.sh.oee.together.model.service.TogetherService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,6 +59,10 @@ public class ChatController {
 	@Autowired
 	private MemberService memberService;
 	@Autowired
+	private TogetherService togetherService;
+	@Autowired
+	private MeetingService meetingService;
+	@Autowired
 	private ServletContext application;
 
 	@GetMapping("/chatList.do")
@@ -58,33 +70,44 @@ public class ChatController {
 
 	}
 
+	
+
 	/**
 	 * 중고거래 채팅방 첨부파일 저장 처리
 	 */
-	@PostMapping("/craigChatAttach")
-	@ResponseBody
-	public void craigChatAttach(MultipartFile file, HttpSession session) {
-		
-		
-		String saveDirectory = application.getRealPath("/resources/upload/chat/craig");
-		
-		if(file.getSize() > 0) {
-			// 1. 파일 저장하기
-			String renamedFilename = OeeUtils.renameMultipartFile(file);
-			String originalFilename = file.getOriginalFilename();
-			File destFile = new File(saveDirectory, renamedFilename);
-			try {
-				file.transferTo(destFile);
-			} catch (IllegalStateException | IOException e) {
-				log.error(e.getMessage(), e);
-			}
-			
-			// 2. MsgAttach객체 생성 
-			MsgAttach attach = new MsgAttach();
-			attach.setReFilename(renamedFilename);
-			attach.setOriginalFilename(originalFilename);
-		}
-	}
+    @PostMapping("/craigChatAttach")
+    @ResponseBody
+    public Map<String, Object> craigChatAttach(MultipartFile file, String memberId) {
+    
+        String saveDirectory = application.getRealPath("/resources/upload/chat/craig");
+        log.debug("저장경로 = {}", saveDirectory);
+        
+        // 1. 반환할 MsgAttach객체 생성 
+        MsgAttach attach = new MsgAttach();
+        
+        if(file.getSize() > 0) {
+            // 2. 파일 저장하기
+            String reFilename = OeeUtils.renameMultipartFile(file);
+            String originalFilename = file.getOriginalFilename();
+            File destFile = new File(saveDirectory, reFilename);
+            try {
+                file.transferTo(destFile);
+            } catch (IllegalStateException | IOException e) {
+                log.error(e.getMessage(), e);
+            }
+            
+            // 2. craig_msg_attach에 한행 추가
+            attach.setReFilename(reFilename);
+            attach.setOriginalFilename(originalFilename);
+            chatService.insertCraigMsgAttach(attach);
+        }
+        Map<String, Object> map = new HashMap<>();
+        Member member = memberService.selectOneMember(memberId);
+        map.put("profileImg", member.getProfileImg());
+        map.put("attach", attach);
+        
+        return map; // 메시지 보내기위해 필요한것: renamedFilename, profileImg 
+    }
 	/**
 	 * 중고거래 채팅방 나가기 처리 
 	 */
@@ -254,10 +277,12 @@ public class ChatController {
 		// 1. chatroomId, memberId, craigNo로 craigChat객체 가져오기
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
-		craigChatMap.put("craigNo", craigNo);
 		craigChatMap.put("chatroomId", chatroomId);
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
+		
+		// craigMsgs 객체 선언
+		List<CraigMsg> craigMsgs = null;
 		
 		// 2. DEL_DATE 조회 후 분기 
 		// 2-1. DEL_DATE = null : 안나갔음
@@ -268,7 +293,7 @@ public class ChatController {
 			regMap.put("regDate", reg.getTime());
 			regMap.put("chatroomId", chatroomId);
 			
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			
 			model.addAttribute("craigMsgs", craigMsgs);			
 		}
@@ -287,7 +312,7 @@ public class ChatController {
 			Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 			regMap.put("regDate", now.getTime());
 			// 대화내역 찾기 (after reg_date)
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			model.addAttribute("craigMsgs", craigMsgs);
 		}
 		
@@ -301,14 +326,22 @@ public class ChatController {
 		Member otherUser = memberService.selectOneMember(otherUserId);
 		
 		model.addAttribute("otherUser", otherUser);
-		
+	
 		// 4. 사용자 아이디 담기
 		model.addAttribute("memberId", memberId);
-		model.addAttribute("chatUser", memberService.selectOneMember(memberId));
+		Member chatUser = memberService.selectOneMember(memberId);
+		model.addAttribute("chatUser", chatUser);
 		
 		// 5. 게시글 정보 담기
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
 		model.addAttribute("craig", craig);
+		
+		CraigMeeting meeting = null;
+		meeting = meetingService.findMeetingByCraigNo(craigNo);
+		model.addAttribute("meeting", meeting);
+		if(meeting != null) {
+			model.addAttribute("meetingDate", convertMeetingDate(meeting.getMeetingDate()));
+		}
 		
 		// 6. 게시글 첨부파일 담기
 		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
@@ -317,6 +350,26 @@ public class ChatController {
 		// 7. 채팅방아이디 담기
 		model.addAttribute("chatroomId", chatroomId);
 
+		// 8. 사용자의 dong_no로 해당 지역 위경도 가져오기
+		int dongNo = chatUser.getDongNo();
+		Dong dong = memberService.selectOneDong(dongNo);
+		model.addAttribute("dong", dong);
+		log.debug("동정보 = {}", dong);
+		
+		
 		return "chat/craigChatroom";
+	}
+	
+	public String convertMeetingDate (LocalDateTime meetingDate){
+		String dateText = "";
+		
+		DayOfWeek dayOfWeek = meetingDate.getDayOfWeek();
+		String day = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN); // 요일 한국어로 출력 (토) 
+		
+		dateText += 
+				meetingDate.getMonthValue() + "/" + meetingDate.getDayOfMonth() + "(" + day + ") "
+				+ meetingDate.format(DateTimeFormatter.ofPattern("a hh:mm"));
+
+		return dateText;
 	}
 }
