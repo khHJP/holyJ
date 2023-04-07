@@ -438,6 +438,9 @@ p {
     margin: -20px;
     /* margin: 50px 0 0 50px; */
 }
+#imagePreview:hover{
+	cursor: pointer;
+}
 #nickname{
 	font-size: 23px;
     font-weight: 600;
@@ -471,6 +474,10 @@ p {
     background: white;
     font-weight: 300;
 }
+.btn-list:hover{
+	cursor: pointer;
+	color: gray;
+	}
 #modal-body li a:hover{
 	text-decoration: none;
 	color : grey;

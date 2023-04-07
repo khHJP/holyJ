@@ -732,6 +732,17 @@ public class CraigController {
 				
 		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
+	 @GetMapping("/mySalFCraig1.do")
+	 public void mySalFCraig1(String memberId, Model model) {
+		 // member  
+		 log.debug("memberId = {} ", memberId);
+		 
+		 List<Craig> mySalFCraig = craigService.mySalFCraig(memberId);
+		 
+		 log.debug("mySalFCraig = {}",mySalFCraig);
+		 
+		 model.addAttribute("mySalFCraig",mySalFCraig);
+	 }
 	 
 	 @ResponseBody
 	 @PostMapping("/salCraig.do")

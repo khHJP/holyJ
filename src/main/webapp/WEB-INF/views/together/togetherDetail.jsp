@@ -17,6 +17,7 @@ window.addEventListener('load', (e) => {
 	else if(temperature.innerText >= 30 && temperature.innerText < 50) temperature.style.color = '#56C271'; 
 	else if(temperature.innerText >= 50) temperature.style.color = '#F94C66'; 
 });
+
 </script>
 <sec:authentication property="principal" var="loginMember"/>
 <div class="together-container">

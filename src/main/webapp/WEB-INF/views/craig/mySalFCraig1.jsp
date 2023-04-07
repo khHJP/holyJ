@@ -9,74 +9,63 @@
 	<jsp:param value="마이페이지" name="subtitle"/>
 </jsp:include>
 <!-- css 주소 바꾸기 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig/mySalCraig.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/craig/mySalFCraig.css" />
 
 </head>
 <body>
 <br /><br />
 	<div class="craig-container">
-				<c:if test="${fn:length(mySalCraig) >= 0}">
-					<h1 class="sub_title">${member.memberId}님의 판매내역</h1>
-				</c:if>
+		<h1 class="sub_title">나의 판매내역</h1>
 		<br />
 		<div>
 			<ul class="craig-ul">
-				<li><a id="craig-li" class="bold" href="${pageContext.request.contextPath}/craig/mySalCraig1.do">판매중</a></li>
-		        <li>
-				<form:form name="salFCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalFCraig1.do" method="GET">
-				        <button type="submit" class="btn-list">판매완료</button>
-				        <input type="hidden" name="memberId" value="${mySalCraig1.writer}"/>
-			        </form:form>
-		        </li>
+				<li><a id="craig-li" href="${pageContext.request.contextPath}/craig/mySalCraig.do">판매중</a></li>
+				<li><a id="craig-li" class="bold" href="${pageContext.request.contextPath}/craig/mySalFCraig.do">거래완료</a></li>
 			</ul>
 		</div>
 	<section id="board-container" class="container">
 		<table id="tbl-board" class="table ul-hover">
 		<c:choose>
-			<c:when test="${not empty mySalCraig}">
-				<c:forEach items="${mySalCraig}" var="sal">
-						 <ul data-no="${sal.no}" id="ul-table">
+			<c:when test="${not empty mySalFCraig}">
+				<c:forEach items="${mySalFCraig}" var="salF">
+						 <ul data-no="${salF.no}" id="ul-table">
 					 		<li id="li-img">
-								<c:if test="${sal.attachments[0].reFilename != null}">
-								   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${sal.attachments[0].reFilename}"/>
+								<c:if test="${salF.attachments[0].reFilename != null}">
+								   <img id="img" src="${pageContext.request.contextPath}/resources/upload/craig/${salF.attachments[0].reFilename}"/>
 								</c:if>
-								<c:if test="${sal.attachments[0].reFilename==null}">
+								<c:if test="${salF.attachments[0].reFilename==null}">
 								    <img id="img" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/>
 								</c:if> 
 							</li>
 							<ul id="ul-title">
-								<li class="span1" id="buyTitle">${sal.title}</li>
-								<li class="span1" id="buyPlace">${sal.placeDetail}</li>
+								<li class="span1" id="buyTitle">${salF.title}</li>
+								<li class="span1" id="buyPlace">${salF.placeDetail}</li>
 								<ul id="ul-price">
-									<c:if test="${sal.state eq 'CR2'}">
-										<li class="span1" id="buyCom">판매중</li>	
-									</c:if>
-									<c:if test="${sal.state eq 'CR1'}">
-										<li class="span1" id="buyCom">예약중</li>	
-									</c:if>
-									<c:if test="${sal.price ne '0'}">														
+									<li class="span1" id="buyCom">거래완료</li>	
+									<c:if test="${salF.price ne '0'}">														
 										<li class="span1" id="buyPrice">
-										<fmt:formatNumber value="${sal.price}" pattern="#,###" />원</li>
+										<fmt:formatNumber value="${salF.price}" pattern="#,###" />원</li>
 									</c:if>
-									<c:if test="${sal.price eq '0'}">					
+									<c:if test="${salF.price eq '0'}">					
 										<li class="span1" id="buyPrice">나눔💚<li>
 									</c:if>
 								</ul>
 							</ul>
 							</ul>
 							<hr id="hogi-hr"/>
+							<li id="hogi"><a href="${pageContext.request.contextPath}/manner/myManner.do">후기 보기</a></li>
+							<hr id="hogi-hr"/>
 				</c:forEach>
 			</c:when>
 				<c:otherwise>
 					<div id="empty">
 						<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
-					옹잉?? 판매중인 내역이 없어용!!</div>
+					옹잉?? 거래완료된 내역이 없어용!!</div>
 				</c:otherwise>
 			</c:choose>
 		</table>
 	</section> 
 	</div>
-
 <script>
 document.querySelectorAll("#ul-table").forEach((ul) => {
 	ul.addEventListener('click', (e) => {
@@ -89,5 +78,6 @@ document.querySelectorAll("#ul-table").forEach((ul) => {
 });		
 		
 </script>
-	
+			
+		
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
