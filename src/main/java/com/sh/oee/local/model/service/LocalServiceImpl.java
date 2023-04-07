@@ -12,6 +12,7 @@ import com.sh.oee.local.model.dao.LocalDao;
 import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -30,8 +31,8 @@ public class LocalServiceImpl implements LocalService {
 	
 	//동네생활 전체 목록 조회
 	@Override
-	public List<Local> selectLocalListByDongName(Map<String, Object> param, RowBounds rowBounds) {
-		return localDao.selectLocalListByDongName(param, rowBounds);
+	public List<Local> selectLocalListByDongName(Map<String, Object> param) {
+		return localDao.selectLocalListByDongName(param);
 	}
 	
 	//카테고리
@@ -42,9 +43,9 @@ public class LocalServiceImpl implements LocalService {
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	@Override
-	public List<Local> selectLocalList(Member member) {
+	public List<Local> selectLocalList(String memberId) {
 		// TODO Auto-generated method stub
-		return localDao.selectLocalList(member);
+		return localDao.selectLocalList(memberId);
 	}
 	@Override
 	public List<LocalCommentEntity> selectLocalCommentList(String memberId) {
@@ -157,10 +158,10 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.insertComment(comment);
 	}
 
-	@Override
-	public List<LocalCommentEntity> commentList(int no) {
-		return localDao.commentList(no);
-	}
+//	@Override
+//	public List<LocalCommentEntity> commentList(int no) {
+//		return localDao.commentList(no);
+//	}
 
 //	@Override
 //	public int insertComment(Map<String, Object> param) {
@@ -169,8 +170,29 @@ public class LocalServiceImpl implements LocalService {
 //	}
 
 	@Override
-	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(int no) {
+	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(Map<String, Object> param) {
 		// TODO Auto-generated method stub
-		return localDao.commentList(no);
+		return localDao.commentList(param);
+	}
+
+	//댓글 삭제
+	@Override
+	public int deleteComment(int no) {
+		return localDao.deleteComment(no);
+	}
+
+	@Override
+	public int updateComment(LocalComment comment) {
+		return localDao.updateComment(comment);
+	}
+
+	@Override
+	public int insertReComment(LocalCommentEntity comment) {
+		return localDao.insertReComment(comment);
+	}
+
+	@Override
+	public List<LocalCommentEntity> commentNewList(int no) {
+		return localDao.commentNewList(no);
 	}
 }

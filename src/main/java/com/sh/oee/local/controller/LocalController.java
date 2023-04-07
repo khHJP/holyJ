@@ -30,6 +30,7 @@ import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalCategory;
+import com.sh.oee.local.model.dto.LocalComment;
 import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
@@ -62,61 +63,55 @@ public class LocalController {
 	
 	//동네생활 게시물 목록
 	@GetMapping("/localList.do")
-	public void localList(Model model , HttpSession session, 
-			@RequestParam(defaultValue = "1") int currentPage, 
-			 @RequestParam(required = false) String categoryNo) {
-	
-		log.debug("categoryNo = {}", categoryNo);
+	public void localList(Model model, HttpSession session,
+	        @RequestParam(required = false) String searchKeyword,
+	        @RequestParam(required = false) String categoryNo) {
 
-		Integer no = null;
-		try {
-			no = Integer.parseInt(categoryNo);
-		} catch (NumberFormatException e) {}
-		
-		//글 목록
-		List<String> myDongList = (List<String>)session.getAttribute("myDongList");
-		log.debug("dongList = {}",myDongList);
-		
-		Map<String, Object> param = new HashMap<>();
-		param.put("myDongList", myDongList);
-		param.put("categoryNo", no);
-		
-		int limit = 10;
-		int offset = (currentPage - 1) * limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		int totalCount = localService.getLocalTotalCount(param);
-		
-		List<Map<String,String>> localCategory = localService.localCategoryList();
-		List<Local> localList = localService.selectLocalListByDongName(param, rowBounds);
-		
-		
-		int totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
-		
-		
-		// 위에서 가져온 같이해요 목록의 번호 추출
-				List<Integer> boardNoList = new ArrayList<>();
-				for(int i = 0; i < localList.size(); i++) {
-					boardNoList.add(localList.get(i).getNo());
-				}
-				Map<String, Object> params = new HashMap<>(); 
-				params.put("boardNoList", boardNoList);
-		
-		//동네정보 가져오기
-		log.debug("localList = {}", localList);
-		log.debug("localCategory = {} ", localCategory);
-		
-		//아이디 가져오기
-//		Member member =((Member)authentication.getPrincipal());
-//		log.debug("writeMemebr = {}", member);
-//		
-		
-		
-		//view단
-		model.addAttribute("localList", localList);
-		model.addAttribute("localCategory",localCategory);
-		model.addAttribute("totalPages", totalPages);
-		model.addAttribute("currentPage", currentPage);
-//		model.addAttribute("member",member);
+	    log.debug("categoryNo = {}", categoryNo);
+
+	    try {
+	        Integer no = null;
+	        if (categoryNo != null) { // null 체크를 추가한 부분
+	            try {
+	                no = Integer.parseInt(categoryNo);
+	            } catch (NumberFormatException e) {
+	                log.warn("categoryNo parameter is not a number: {}", categoryNo);
+	            }
+	        }
+
+	        // 글 목록
+	        List<String> myDongList = (List<String>) session.getAttribute("myDongList");
+	        log.debug("dongList = {}", myDongList);
+
+	        Map<String, Object> param = new HashMap<>();
+	        param.put("myDongList", myDongList);
+	        param.put("categoryNo", no);
+	        param.put("searchKeyword", searchKeyword);
+
+	        List<Map<String, String>> localCategory = localService.localCategoryList();
+	        List<Local> localList = localService.selectLocalListByDongName(param);
+
+	        // 위에서 가져온 동네생활 목록의 번호 추출
+	        List<Integer> boardNoList = new ArrayList<>();
+	        for (int i = 0; i < localList.size(); i++) {
+	            boardNoList.add(localList.get(i).getNo());
+	        }
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("boardNoList", boardNoList);
+
+
+	        // 동네정보 가져오기
+	        log.debug("localList = {}", localList);
+	        log.debug("localCategory = {} ", localCategory);
+
+	        // view단
+	        model.addAttribute("localList", localList);
+	        model.addAttribute("localCategory", localCategory);
+	        model.addAttribute("searchKeyword", searchKeyword);
+	    } catch (Exception e) {
+	        throw e;
+	    }
+	    return;
 	}
 	
 	
@@ -178,13 +173,18 @@ public class LocalController {
 	
 	//한건조회(상세페이지)
 	@GetMapping("/localDetail.do")
-	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication) {
-		Local localdetail = localService.selectLocalOne(no);
-		Member member = ((Member)authentication.getPrincipal());
+	public void localDetail(LocalCategory localcategory,@RequestParam int no, Model model,Authentication authentication,
+							@RequestParam(required = false, defaultValue = "asc") String order) {
 		
 		Map<String, Object> param = new HashMap<>();
-		 param.put("memberId", member.getMemberId());
-		 param.put("no", no);
+		param.put("no", no);
+		param.put("order", order);
+		
+		Local localdetail = localService.selectLocalOne(no);
+		
+		Member member = ((Member)authentication.getPrincipal());
+		param.put("memberId", member.getMemberId());
+		
 		
 		localdetail.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(localdetail.getContent())));
 		
@@ -195,7 +195,7 @@ public class LocalController {
 		
 		int findlike = localService.selectLocalLike(param);
 		
-		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(no);
+		List<LocalCommentEntity> commentList = localService.selectLocalCommentListByBoardNo(param);
 		
 		model.addAttribute("localcategory", localcategory);
 		model.addAttribute("localdetail", localdetail);
@@ -203,6 +203,8 @@ public class LocalController {
 		model.addAttribute("findlike", findlike);
 	}
 	
+	
+
 	//좋아요
 	@ResponseBody
 	@PostMapping("/localLike.do")
@@ -305,20 +307,33 @@ public class LocalController {
 	}
 	
 	
+	// 댓글 삭제하기(
+	@PostMapping("/deleteComment.do")
+	public String deleteComment(LocalComment comment) {
+		log.debug("comment_no : {}", comment);
+		int result = localService.deleteComment(comment.getCommentNo());
+		return "redirect:/local/localDetail.do?no="+comment.getNo();
+	}
 
+	
+	// 댓글 수정하기
+	@PostMapping("/updateComment.do")
+	public String updateComment(LocalComment comment) {
+		log.debug("comment : " + comment );
+		int result = localService.updateComment(comment);
+		return "redirect:/local/localDetail.do?no="+comment.getNo();
+		
+	}
 	
 	//댓글 입력
 	@RequestMapping(value = "/commentInsert.do", method = RequestMethod.POST)
 	public String commentInsert(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
-		//public void commentInsert(@RequestParam Map<String, Object> param, HttpSession session) {
-		log.debug("commentㅁㄴ아러밎러 : " + comment );
-		//Member member = (Member) session.getAttribute("loginMember");
+		log.debug("comment보여라! : " + comment );
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String memberId = userDetails.getUsername();
 		log.debug("memberId : " + memberId );
 		comment.setWriter(memberId);
 		int result = localService.insertComment(comment);
-		//log.debug("Commentresult : " + result);
 		if(result > 0) {
 			redirectAttr.addFlashAttribute("msg", "댓글을 등록했습니다.");
 			
@@ -327,26 +342,28 @@ public class LocalController {
 		return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
 	}
 	
-	//댓글 목록
-	@RequestMapping("/commentList.do")
-	public ModelAndView commentList(@RequestParam int no, ModelAndView mav) {
-		List<LocalCommentEntity> commentList = localService.commentList(no);
-		// 뷰 이름 지정
-		mav.setViewName("local/replyList");
-		// 뷰에 전달할 데이터 지정
-		mav.addObject("commentList",commentList);
-		
-		return mav;
-	}
+	//답댓글 입력
+		@RequestMapping(value = "/insertReComment.do", method = RequestMethod.POST)
+		public String insertReComment(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
+			
+			log.debug("ReComment보여라! : " + comment );
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String memberId = userDetails.getUsername();
+			log.debug("memberId : " + memberId );
+			comment.setWriter(memberId);
+			comment.setRefNo(comment.getCommentNo());
+			comment.setCommentLevel(2);
+			int result = localService.insertReComment(comment);
+			if(result > 0) {
+				redirectAttr.addFlashAttribute("msg", "답댓글을 등록했습니다.");
+				
+			}
+			
+			return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
+		}
 	
-	//댓글 목록(json 방식 , 데이터를 리턴)
-	@RequestMapping("/listJson.do")
-	@ResponseBody
-	public List<LocalCommentEntity> listJson(@RequestParam int no){
-		List<LocalCommentEntity> commentList = localService.commentList(no);
-		return commentList;
-	}
-	
+
+	 
 	
 	
 	
@@ -409,10 +426,21 @@ public class LocalController {
 	@GetMapping("/myLocal.do")
 	public void local(Authentication authentication, Model model) {
 		// member  
-		Member member = ((Member)authentication.getPrincipal());
-		log.debug("member = {} ", member);
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		log.debug("memberId = {} ", memberId);
 		
-		List<Local> myLocal = localService.selectLocalList(member);
+		List<Local> myLocal = localService.selectLocalList(memberId);
+		
+		log.debug("myLocal = {}",myLocal);
+		
+		model.addAttribute("myLocal",myLocal);
+	}
+	@GetMapping("/myLocal1.do")
+	public void local(String memberId, Model model) {
+		// member  
+		log.debug("memberId = {} ", memberId);
+		
+		List<Local> myLocal = localService.selectLocalList(memberId);
 		
 		log.debug("myLocal = {}",myLocal);
 		

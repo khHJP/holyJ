@@ -48,4 +48,6 @@ public interface TogetherDao {
 
 	void TimeOverDateTimeUpdate();
 
+	List<Together> selectTogether1List(String memberId);
+
 }

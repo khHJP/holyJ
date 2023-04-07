@@ -34,6 +34,9 @@
 			and
 				category_no = #{categoryNo}
 		</if>
+		<if test="searchKeyword != null" >
+			and ( title like '%' || #{searchKeyword} ||  '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
 	
 	order by 
 		reg_date desc
@@ -128,15 +131,7 @@
 	<association property="localcategory" javaType="localcategory">
 		<id column="CATEGORY_NO" property="categoryNo"/>
 		<result column="CATEGORY_NAME" property="categoryName"/>
-	</association>
-	<!--   
-	<association property="locallike" javaType="localLike">
-		<id column="LIKE_NO" property="likeNo"/>
-		<result column="MEMBER_ID" property="memberId"/>
-		<result column="LOCAL_NO" property="localNo"/>
-		<result column="LIKECHECK" property="likecheck"/>
-	</association>
-	--> 
+	</association> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
@@ -241,43 +236,69 @@
 </insert>
 
 <!-- 댓글목록 -->
+<!-- 등록순 -->
 <select id="commentList" resultMap="localCommentMap">
 	SELECT
 		lc.* ,
 		m.nickname,
-		(select profile_img from member where member_id = l.writer) profile_img,
+		(select profile_img from member where member_id = lc.writer) profile_img,
         (select
                 dong_name
             from
                 member m right join dong d
                     on m.dong_no = d.dong_no
-                where member_id = l.writer) dong_name
+                where member_id = lc.writer) dong_name
 	FROM 
 		local l left join  local_comment lc 
 			on l.no = lc.local_no
 			left join member m
 			on lc.writer = m.member_id 
-	WHERE lc.local_no = #{localNo}
+	WHERE lc.local_no = #{no}
 	START WITH lc.comment_level = 1
 	CONNECT BY PRIOR lc.comment_no = lc.ref_no
-	ORDER SIBLINGS BY lc.reg_date
-     	
+	<if test='"asc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date asc
+	</if>
+	<if test='"desc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date desc
+	</if>
+     
 
 </select>
 
 
+
+<!-- re댓글 작성 -->
+<insert id="insertReComment">
+	insert into 
+ 		local_comment 
+	values(
+		seq_local_comment_no.nextval,
+		#{localNo},
+		#{writer},
+		#{refNo},
+		#{commentLevel},
+		#{content},
+		default
+	)
+</insert>
+
+
 <!-- 댓글 수정 -->
-
-
-<!-- 댓글 삭제 -->
+<update id="updateComment">
+	update local_comment
+	set
+		content = #{content}
+	where
+		comment_no = #{commentNo}
+</update>
 
 
 
 
 
 <!-- 하나님 것 -->
-<select id="selectLocalCommentList" resultMap="localCommentMap">
-	
+<select id="selectLocalCommentList" resultMap="localCommentEntity">
 	select 
 		lc.* ,
 		l.title,
@@ -288,7 +309,7 @@
 	where 
 		lc.writer = #{memberId}
 </select>
-
+<resultMap type="localCommentEntity" id="localCommentEntity"></resultMap>
 <resultMap type="localComment" id="localCommentMap">
 	<id column="COMMENT_NO" property="commentNo"></id>
 		<result column="LOCAL_NO" property="localNo" />
@@ -307,5 +328,10 @@
 			<id column="DONG_NO" property="dongNo"/>
 			<result column="DONG_NAME" property="dongName"/>
 		</association>
+	<!-- 	<association property="localEntity" javaType="localEntity">
+			<id column="NO" property="no"/>
+			<result column="WRITER" property="writer"/>
+			<result column="TITLE" property="title"/>
+		</association> -->
 </resultMap>	
 </mapper>
