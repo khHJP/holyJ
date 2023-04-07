@@ -62,6 +62,16 @@ window.addEventListener('load', (e) => {
 <!-- 🐹 효정 03/24 로그인시 websocket연결 end 🐹 -->
 </head>
 <body>
+<div class="modal fade" id="alert-modal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
 <div id="container">
 	<header>
 		<div id="header-container">
