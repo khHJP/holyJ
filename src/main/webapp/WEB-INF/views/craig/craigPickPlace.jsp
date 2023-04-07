@@ -78,7 +78,6 @@
 		</div>
 
 		<input style="margin-left : 200px" class ="inputbuttons"  type="button" id="placeCancel" value="취소" onclick="window.close();"/>		
-<!--	<input  style="margin-left : 30px" class ="inputbuttons"  type="button"  id="placeEnroll"  value="등록" onclick="setTimeout( ()=> { setParentText()}, 500)" /> -->
 		<input  style="margin-left : 30px" class ="inputbuttons"  type="button"  id="placeEnroll"  value="등록" onclick="setParentText()" />
 	</form:form>
 	

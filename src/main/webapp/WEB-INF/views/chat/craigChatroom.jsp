@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> <%-- 혜진 0406 추가  --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +33,7 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f728657c1f1828a75b9c549d4888eb1"
     ></script>
+	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
 </head>
 <body>
 	<div class="chat">
@@ -102,23 +103,202 @@
 									</c:if>									
 								</c:if>
 							</c:if>
-							
+						
 							<!-- 예약자가 아닐때 -->
 							<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
 								<button type="button" class="btn btn-success" >예약중</button>
 							</c:if>
-					</c:if >
-					<!-- 판매중일때  -->
-					<c:if test="${craig.state eq 'CR2'}">
-						<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
-					</c:if>
-					<!-- 판매완료일때  -->
-					<c:if test="${craig.state eq 'CR3'}">
-						<button type="button" class="btn btn btn-dark" >판매완료</button>
-					</c:if>
-					
+					</c:if >		
+							<!-- 판매중일때  -->
+							<c:if test="${craig.state eq 'CR2'}">
+								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
+							</c:if>
+						<!-- 판매완료일때  -->	
+						<c:when test="${craig.state eq 'CR3'}">
+							<button type="button" class="btn btn-outline-secondary" > 판매완료 </button> 
+	<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
+								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
+							</c:if>
+						</c:when>
+
 				</div>
+			</div>		
+						
+<%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~  혜진 거래후기보내기 시작   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>		
+			<%-- 1) 거래후기보내기 modal start(혜진) --%>
+			<%--  최초 거래후기보내기 클릭시 뜨는멘트    --%>
+			<div id="myModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel" style="color: black"> 후기 보내기 </h5>
+			        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+					 <c:if test="${memberId == craig.buyer }">  <!--  로그인한사람 나 = 구매자일경우  -->
+					 	${craig.writer}님과 상품을 거래하셨나요?
+					 </c:if>
+			
+					 <c:if test="${memberId ==  craig.writer   }">	<!--  로그인한사람 나 = 판매자일경우  -->					 
+					 	${craig.buyer}님과 상품을 거래하셨나요?
+					 </c:if>
+			      	</br></br>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">취소</button>
+			        <button type="button" class="btn btn-primary" id="buyerconfirm" style="background-color: #2a9944;">예,거래했어요! </button>        
+			      </div>
+			    </div>
+			  </div>
 			</div>
+
+			<%--  2) 거래후기보내기 모달시작   --%>
+			<div class="modal fade" id="mySecondModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle"> 🥒후기 보내기 </h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+		      	<%--======   매너평가(거래후기보내기) ======= --%>
+				       		<form:form id="craigMannerFrm" name="craigMannerFrm"   method="post" 
+					       		 action="${pageContext.request.contextPath}/manner/craigMannerEnroll.do"  >
+						       						       	
+				 				<input type="hidden" class="form-control" name="chatroomId" id="chatroomId" value="${chatroomId}" required>					
+				 				<input type="hidden" class="form-control" name="craigNo" id="craigNo" value="${craig.no}" required>				
+				 				<input type="hidden" class="form-control" name="writer" id="writer" value="${memberId}" required>				
+				
+								<p style="margin-bottom:-13px;" >${chatUser.nickname}님,<p>
+					    		<c:if test="${memberId == craig.buyer }">
+									<input type="hidden" class="form-control" name="recipient" id="recipient" value="${craig.writer}" required>
+									<p>${otherUser.nickname}님 과의 거래가 어떠셨나요? <p>
+						 		</c:if>	 
+					     	 	<c:if test="${memberId ==  craig.writer   }">
+									<input type="hidden" class="form-control" name="recipient" id="recipient" value="${craig.buyer}" required>
+									<p>${otherUser.nickname}님 과의 거래가 어떠셨나요? <p>
+						 		</c:if>
+									<p style="color:gray; font-size: 14px; margin-top: 30px;">거래 후기는 나만 볼 수 있어요. <p>	 
+					
+								<div id="bigMannerDiv">	<%-- 필수선택값  --%>			
+									<div>
+										<img class="mannerimages" src="${pageContext.request.contextPath}/resources/images/bad.png" alt="" /><br>
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA1" value="MA1" onclick="checkOnlyOne(this)"> <label for="MA1"> 별로예요 </label>
+									</div>	 
+									<div>
+										<img class="mannerimages"  src="${pageContext.request.contextPath}/resources/images/good.png"    alt="" /><br>
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA2" value="MA2" onclick="checkOnlyOne(this)" ><label for="MA2"> 좋아요 </label>
+									</div>	 
+									<div>
+										<img class="mannerimages"  src="${pageContext.request.contextPath}/resources/images/best.png"    alt="" /><br>					
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA3" value="MA3" onclick="checkOnlyOne(this)"   > <label for="MA3"> 최고예요💚 </label>
+									</div>		 
+								</div>		 
+								
+								<div id="compliDiv">
+									<p> 어떤 점이 좋았나요 ? </p>
+									<input type="checkbox" class="complibox" name="compliment" id="COM1" value="COM1" onclick="checkCom(this)" > <label for="COM1"> 제가 있는 곳까지 와서 거래했어요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM2" value="COM2" onclick="checkCom(this)" > <label for="COM2"> 응답이 빨라요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM3" value="COM3" onclick="checkCom(this)" > <label for="COM3"> 친절하고 매너가 좋아요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM4" value="COM4" onclick="checkCom(this)" > <label for="COM4"> 시간 약속을 잘 지켜요. </label><br>
+								</div>
+							</form:form>	
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal"> 취소 </button>
+			        <button type="button" class="btn btn-primary" style="background-color: green" id="sendMannerFormbtn" > 후기 보내기 </button>
+			      </div>
+			    </div>
+			  </div>
+		</div><%-- end --%>
+			<c:if test="${craig.state eq 'CR3' &&  mydonemanner.mannerNo == null}">
+			<script>
+				 //1) 거래했냐 ? 						 
+				document.querySelector("#sendreview").addEventListener('click', (e)=>{
+					$('#myModal').modal('show');
+				});
+				 
+				//2) 했다 ~ 
+				document.querySelector("#buyerconfirm").addEventListener('click', (e) => {
+					$('#myModal').modal('hide'); //원래꺼 닫어
+					$('#mySecondModal').modal('show');
+				});
+				
+				//  체크박스 
+				const checkOnlyOne = ( input ) => { 
+					const checkboxes = document.getElementsByName("prefer");
+					checkboxes.forEach( (cb) => {
+					  cb.checked = false;		  
+					})
+			  	
+			  		input.checked = true;
+				};
+				
+				const checkCom = ( input ) => { 
+			  		const complibox = document.getElementsByName("compliment");
+			  		complibox.forEach( (cb) => {
+					    cb.checked = false;		  
+					})
+			
+			  		input.checked = true;
+				};
+				
+				//  유효성검사 후 폼 전송  
+				document.querySelector("#sendMannerFormbtn").addEventListener('click', (e) => {
+					
+					const checkboxes = document.getElementsByName("prefer");
+					const prefer = document.querySelectorAll("[name=prefer]");
+					let type;
+					
+					checkboxes.forEach((preferType) => {
+						if(preferType.checked == true){
+							type = preferType;
+						}
+					});
+					
+					if(type == null){
+						alert("거래 선호도를 반드시 하나는 선택해주셔야해요 !");
+						return false;
+					}
+					else{
+						document.craigMannerFrm.submit();
+					 	setTimeout( () => window.close(), 2500 );	
+					}
+					
+				});//end 
+			</script>
+			</c:if>
+			
+<!--  msg - alert    -->
+<div id="successModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black"> 🥒매너평가완료 </h5>
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        </br>거래 후기를 성공적으로 보냈습니다 💚
+      </br></br></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">확인</button>     
+      </div>
+    </div>
+  </div>
+</div>	
+<c:if test="${not empty msg}">
+	<script>
+	$('#successModal').modal('show');
+	</script>
+</c:if>		
+<%-- <%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~ 혜진 거래후기보내기  끝   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>			
+
 
 			<!----------- 약속잡기 Modal start ------------->
 			<div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
