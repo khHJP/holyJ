@@ -410,6 +410,13 @@ CREATE TABLE CRAIG_MSG (
     CONSTRAINT ck_CRAIG_MSG_TYPE check(type in ('CHAT', 'FILE'))
 );
 
+-- 제약조건 삭제후 추가함 (chat, file, book, place)
+alter table 
+    craig_msg
+add constraint ck_CRAIG_MSG_TYPE check(type in('CHAT', 'FILE', 'BOOK', 'PLACE'));
+
+
+
 CREATE SEQUENCE seq_CRAIG_MSG_NO;
 --=============================================
 -- 중고거래 메시지 첨부파일 CRAIG_MSG_ATTACH

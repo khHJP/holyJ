@@ -43,9 +43,9 @@ public class LocalServiceImpl implements LocalService {
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	@Override
-	public List<Local> selectLocalList(Member member) {
+	public List<Local> selectLocalList(String memberId) {
 		// TODO Auto-generated method stub
-		return localDao.selectLocalList(member);
+		return localDao.selectLocalList(memberId);
 	}
 	@Override
 	public List<LocalCommentEntity> selectLocalCommentList(String memberId) {

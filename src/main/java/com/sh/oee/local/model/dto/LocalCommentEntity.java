@@ -1,7 +1,6 @@
 package com.sh.oee.local.model.dto;
 
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,7 @@ public class LocalCommentEntity extends LocalEntity{
 	private String content;
 	private LocalDateTime regDate;
 	private LocalEntity localEntity;
+	
 	
 	
 }

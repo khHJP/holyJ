@@ -281,6 +281,9 @@ public class ChatController {
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
 		
+		// craigMsgs 객체 선언
+		List<CraigMsg> craigMsgs = null;
+		
 		// 2. DEL_DATE 조회 후 분기 
 		// 2-1. DEL_DATE = null : 안나갔음
 		if(craigChat.getDelDate() == null) {
@@ -290,7 +293,7 @@ public class ChatController {
 			regMap.put("regDate", reg.getTime());
 			regMap.put("chatroomId", chatroomId);
 			
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			
 			model.addAttribute("craigMsgs", craigMsgs);			
 		}
@@ -309,7 +312,7 @@ public class ChatController {
 			Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 			regMap.put("regDate", now.getTime());
 			// 대화내역 찾기 (after reg_date)
-			List<CraigMsg> craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			model.addAttribute("craigMsgs", craigMsgs);
 		}
 		
@@ -323,7 +326,7 @@ public class ChatController {
 		Member otherUser = memberService.selectOneMember(otherUserId);
 		
 		model.addAttribute("otherUser", otherUser);
-		
+	
 		// 4. 사용자 아이디 담기
 		model.addAttribute("memberId", memberId);
 		Member chatUser = memberService.selectOneMember(memberId);
@@ -333,7 +336,9 @@ public class ChatController {
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
 		model.addAttribute("craig", craig);
 		
-		CraigMeeting meeting = meetingService.findMeetingByCraigNo(craigNo);
+		CraigMeeting meeting = null;
+		meeting = meetingService.findMeetingByCraigNo(craigNo);
+		model.addAttribute("meeting", meeting);
 		if(meeting != null) {
 			model.addAttribute("meetingDate", convertMeetingDate(meeting.getMeetingDate()));
 		}
@@ -350,6 +355,7 @@ public class ChatController {
 		Dong dong = memberService.selectOneDong(dongNo);
 		model.addAttribute("dong", dong);
 		log.debug("동정보 = {}", dong);
+		
 		
 		return "chat/craigChatroom";
 	}

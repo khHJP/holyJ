@@ -97,12 +97,11 @@ public interface CraigDao {
 	//-----------------------하나시작------------------------
 	List<Craig> myBuyCraig(String memberId);
 	List<Craig> mySalCraig(String memberId);
+	List<Craig> mySalCraig1(String memberId);
 	List<Craig> mySalFCraig(String memberId);
 	List<Craig> myWishCraig(String memberId);
 	@Update("update craig set state = 'CR3', complete_date = sysdate where no = #{no}")
 	int salFCraig(int no);
-	@Update("update craig set state = 'CR1' where no = #{no}")
-	int bookCraig(int no);
 	@Update("update craig set state = 'CR2' where no = #{no}")
 	int salCraig(int no);
 	//-----------------------하나끝------------------------
@@ -116,6 +115,7 @@ public interface CraigDao {
 	@Update("update craig set state = 'CR1', buyer = #{buyer} where no = #{no}")
 	int updateCraigMeeting(Map<String, Object> map);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 
 

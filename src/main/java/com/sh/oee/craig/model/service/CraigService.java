@@ -47,10 +47,10 @@ public interface CraigService {
 	//---------------------하나 시작------------------------
 	List<Craig> myBuyCraig(String memberId);
 	List<Craig> mySalCraig(String memberId);
+	List<Craig> mySalCraig1(String memberId);
 	List<Craig> mySalFCraig(String memberId);
 	List<Craig> myWishCraig(String memberId);
 	int salFCraig(int no);
-	int bookCraig(int no);
 	int salCraig(int no);
 	//---------------------하나 끝-------------------------
 	
@@ -101,6 +101,7 @@ public interface CraigService {
 	// 🐹 ------- 효정 start ---------- 🐹	
 	Craig findCraigByCraigNo(int craigNo);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 
 

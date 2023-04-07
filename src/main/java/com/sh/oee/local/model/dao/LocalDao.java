@@ -39,7 +39,7 @@ public interface LocalDao {
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
 	@Select("select * from local where writer = #{memberId}")
-	List<Local> selectLocalList(Member member);
+	List<Local> selectLocalList(String memberId);
 	
 	List<LocalCommentEntity> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------

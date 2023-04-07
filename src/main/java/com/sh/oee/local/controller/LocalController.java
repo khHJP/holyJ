@@ -426,10 +426,21 @@ public class LocalController {
 	@GetMapping("/myLocal.do")
 	public void local(Authentication authentication, Model model) {
 		// member  
-		Member member = ((Member)authentication.getPrincipal());
-		log.debug("member = {} ", member);
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		log.debug("memberId = {} ", memberId);
 		
-		List<Local> myLocal = localService.selectLocalList(member);
+		List<Local> myLocal = localService.selectLocalList(memberId);
+		
+		log.debug("myLocal = {}",myLocal);
+		
+		model.addAttribute("myLocal",myLocal);
+	}
+	@GetMapping("/myLocal1.do")
+	public void local(String memberId, Model model) {
+		// member  
+		log.debug("memberId = {} ", memberId);
+		
+		List<Local> myLocal = localService.selectLocalList(memberId);
 		
 		log.debug("myLocal = {}",myLocal);
 		
