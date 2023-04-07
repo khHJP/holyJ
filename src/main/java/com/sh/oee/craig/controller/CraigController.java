@@ -707,6 +707,19 @@ public class CraigController {
 				
 			model.addAttribute("mySalCraig",mySalCraig);
 		}
+	 
+	 @GetMapping("/mySalCraig1.do")
+	 public void mySalCraig1(String memberId, Model model) {
+		 // member  
+		 log.debug("memberId = {} ", memberId);
+		 
+		 List<Craig> mySalCraig = craigService.mySalCraig(memberId);
+		 
+		 log.debug("mySalCraig = {}",mySalCraig);
+		 
+		 model.addAttribute("mySalCraig",mySalCraig);
+	 }
+	 
 	 @GetMapping("/mySalFCraig.do")
 	 public void mySalFCraig(Authentication authentication, Model model) {
 		 // member  
@@ -717,6 +730,17 @@ public class CraigController {
 				
 		 log.debug("mySalFCraig = {}",mySalFCraig);
 				
+		 model.addAttribute("mySalFCraig",mySalFCraig);
+	 }
+	 @GetMapping("/mySalFCraig1.do")
+	 public void mySalFCraig1(String memberId, Model model) {
+		 // member  
+		 log.debug("memberId = {} ", memberId);
+		 
+		 List<Craig> mySalFCraig = craigService.mySalFCraig(memberId);
+		 
+		 log.debug("mySalFCraig = {}",mySalFCraig);
+		 
 		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
 	 

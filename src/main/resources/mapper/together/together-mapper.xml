@@ -13,6 +13,14 @@
 	where
 		writer = #{memberId}
 	</select>
+	<select id="selectTogether1List" resultMap="togetherMap">
+	select
+		*
+	from
+		together
+	where
+		writer = #{memberId}
+	</select>
 	
 	<resultMap type="together" id="togetherMap"></resultMap>	
 	<!-- 🐱 하나 끝 🐱 -->

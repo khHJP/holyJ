@@ -179,10 +179,13 @@ where
 <select id="mySalCraig" resultMap="craigMap">
 select
 	c.*,
-	ca.*
+	ca.*,
+	m.*
 from
 	craig c join craig_attachment ca
 	on c.no = ca.craig_no
+	join member m
+	on c.writer = m.member_id
 where
 	c.writer = #{memberId} and c.state not like 'CR3'
 	

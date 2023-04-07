@@ -8,7 +8,7 @@
 	<select id="craigCronSchedule" resultMap="mannerMemberMap">
 		select * 
     	from manner_review r left join member m 
-        on r.writer = m.member_id
+        on r.recipient = m.member_id
    	    where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD') 
         	  and done = 'N'
 	</select>
@@ -21,6 +21,7 @@
 		<result column="writer" property="writer"  />	
 		<result column="recipient" property="recipient"  />	
 		<result column="reg_date" property="regDate"  />	
+		<result column="done" property="done"  />
 
 		<collection property="member" ofType="member" >
 			<id column="member_id" property="memberId" />
@@ -54,5 +55,20 @@
 		set manner =  manner+0.1  
 		where  member_id = #{memberId}		
 	</update>
+	
+	
+	
+	<!-- 혜진 추가 - 거래후기넣기  -->
+	<insert id="craigMannerEnroll">
+		insert into manner_review
+		values( seq_manner_no.nextval, #{craigNo}, #{prefer},  #{compliment},  #{writer}, #{recipient}, sysdate+9/24, default )
+	</insert>
+	
+	<select id="selectMannerOne" resultType="manner">
+		select *
+		from manner_review 
+		where writer = #{writer} and craig_no = #{craigNo}	
+	</select>
+	
 	
 </mapper>

@@ -283,6 +283,15 @@ input, button, select, textarea{
 	height: 200px;
 }
 
+.messages ul li.book div {
+	text-align: center;
+	margin: 0 auto;
+}
+
+.messages ul li.book div span {
+	color: #868B94;
+}
+
 /* 메시지박스 */
 .messages ul li p {
     display: inline-block;
@@ -322,3 +331,43 @@ input, button, select, textarea{
     position: absolute;
 }
 
+
+/*--- 혜진추가   0406 --*/
+
+#bigMannerDiv{
+	display: flex;
+    justify-content: space-around;
+}
+
+
+.mannerimages{
+	width: 118px;
+    height: 104px;
+    padding-right: 20px;
+	
+}
+
+.mannerbox{
+	margin-left: 7px;
+}
+
+#compliDiv{
+	margin-top: 40px;
+}
+
+#sendreview:hover {
+	background-color: green;
+}
+
+#buyerconfirm:hover {
+	background-color: #00e600;
+}
+ 
+
+.messages ul li.sent  #placeMap {
+	border-radius: 10%;
+	float: left;
+	padding: 4px;
+	width: 200px;
+	height: 200px;
+}

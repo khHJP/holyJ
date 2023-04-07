@@ -75,6 +75,8 @@
 	#map { 	margin: 0 auto; }
 	
 	.bg-warning {   background-color: #56C271 !important; }
+	#btnDelete:hover{ background-color: #6C757D !important; color:white !important;  }
+	#btnUpdate:hover{ background-color: #FEC106 !important; color:black !important;  }
 </style>
 
 <br>
@@ -245,7 +247,7 @@
 <%-- sec 안써도됨 --%>
 	<c:if test="${loginMember.memberId != craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:695px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:780px; width: 400px; display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -303,21 +305,21 @@
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> · 조회 </span> <span id="spancrReadCount">${craigboard.hits}</span>
 
+		<!-- ♣♣♣♣♣ 로그인한사람 = 글쓴이 아닐 경우 채팅하기 버튼 ♣♣♣♣♣  -->
 		<sec:authentication property="principal" var="loginMember" />
 		<c:if test="${craigboard.member.memberId != loginMember.memberId}">		
-		<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
-
-		<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  -->
-		<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
-		<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★  -->
+			<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
+			<c:if test="${ craigboard.state != 'CR3' || ( craigboard.state =='CR3' && craigboard.buyer == loginMember.memberId )}">
+				<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
+			</c:if>	
 		</c:if>	
 		
 		<!-- ♣♣♣♣♣ 로그인한사람 = 글쓴이  경우 채팅하기 버튼 ♣♣♣♣♣  -->
 		<sec:authentication property="principal" var="loginMember" />
-		<c:if test="${craigboard.member.memberId == loginMember.memberId}">
-			<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
-		<!-- ♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣  -->
-		</c:if>	
+			<c:if test="${craigboard.member.memberId == loginMember.memberId}">
+				<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
+			<!-- ♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣  -->
+			</c:if>	
 	</div>
 </div>
 
@@ -776,4 +778,7 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 		})
 	})
 </script>
+
+<%-- 와머지? 채팅에 이거 넣을려고 햇는디 ,,, 하지말까			<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  
+			<c:if test="${ craigboard.state != 'CR3' || ( craigboard.state =='CR3' && craigboard.buyer == loginMember.memberId )}"> --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

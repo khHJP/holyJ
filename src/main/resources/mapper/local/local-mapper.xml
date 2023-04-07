@@ -291,8 +291,7 @@
 
 
 <!-- 하나님 것 -->
-<select id="selectLocalCommentList" resultMap="localCommentMap">
-	
+<select id="selectLocalCommentList" resultMap="localCommentEntity">
 	select 
 		lc.* ,
 		l.title,
@@ -303,7 +302,7 @@
 	where 
 		lc.writer = #{memberId}
 </select>
-
+<resultMap type="localCommentEntity" id="localCommentEntity"></resultMap>
 <resultMap type="localComment" id="localCommentMap">
 	<id column="COMMENT_NO" property="commentNo"></id>
 		<result column="LOCAL_NO" property="localNo" />
@@ -322,5 +321,10 @@
 			<id column="DONG_NO" property="dongNo"/>
 			<result column="DONG_NAME" property="dongName"/>
 		</association>
+	<!-- 	<association property="localEntity" javaType="localEntity">
+			<id column="NO" property="no"/>
+			<result column="WRITER" property="writer"/>
+			<result column="TITLE" property="title"/>
+		</association> -->
 </resultMap>	
 </mapper>
