@@ -66,7 +66,7 @@ public class MannerController {
 		String memberId = manner.getWriter();
 		int no = manner.getCraigNo();
 
-		String comliment  = manner.getCompliment().toString();
+		String comliment  = String.valueOf(   manner.getCompliment());
 		if( comliment == null) {
 			comliment = "";
 		}
