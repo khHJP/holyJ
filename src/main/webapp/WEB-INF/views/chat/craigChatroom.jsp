@@ -114,12 +114,12 @@
 								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
 							</c:if>
 						<!-- 판매완료일때  -->	
-						<c:when test="${craig.state eq 'CR3'}">
+						<c:if test="${craig.state eq 'CR3'}">
 							<button type="button" class="btn btn-outline-secondary" > 판매완료 </button> 
 	<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
 								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
 							</c:if>
-						</c:when>
+						</c:if>
 
 				</div>
 			</div>		
@@ -184,7 +184,7 @@
 						 		</c:if>
 									<p style="color:gray; font-size: 14px; margin-top: 30px;">거래 후기는 나만 볼 수 있어요. <p>	 
 					
-								<div id="bigMannerDiv">	<%-- 필수선택값  --%>			
+								<div id="bigMannerDiv" style="display: flex;  justify-content: space-around;">	<%-- 필수선택값  --%>			
 									<div>
 										<img class="mannerimages" src="${pageContext.request.contextPath}/resources/images/bad.png" alt="" /><br>
 										<input type="checkbox" class="mannerbox" name="prefer" id="MA1" value="MA1" onclick="checkOnlyOne(this)"> <label for="MA1"> 별로예요 </label>
@@ -240,11 +240,17 @@
 				
 				const checkCom = ( input ) => { 
 			  		const complibox = document.getElementsByName("compliment");
-			  		complibox.forEach( (cb) => {
-					    cb.checked = false;		  
-					})
-			
-			  		input.checked = true;
+					
+			  		if($('input').is(":checked")){
+			  			console.log("체크된상태");
+			  			
+			  			complibox.forEach( (other) => {
+			  				if(other != input){
+			  					other.checked = false;	
+			  				}		  
+						});	
+			  		}
+			  		console.log("선택된애 : ", input);
 				};
 				
 				//  유효성검사 후 폼 전송  
