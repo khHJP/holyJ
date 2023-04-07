@@ -75,6 +75,8 @@
 	#map { 	margin: 0 auto; }
 	
 	.bg-warning {   background-color: #56C271 !important; }
+	#btnDelete:hover{ background-color: #6C757D !important; color:white !important;  }
+	#btnUpdate:hover{ background-color: #FEC106 !important; color:black !important;  }
 </style>
 
 <br>
