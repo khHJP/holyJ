@@ -36,13 +36,30 @@ public class MannerServiceImpl implements MannerService {
 		return mannerDao.updateMannerDegree(param);
 	}
 
+	//혜진추가
 	@Override
 	public int updateComplimentDegree(Map<String, Object> param) {
 		return mannerDao.updateComplimentDegree(param);
 	}
-
+	
+	//혜진추가
 	@Override
 	public int updateMannerDone() {
 		return mannerDao.updateMannerDone();
 	}
+
+	
+	// 혜진추가 
+	@Override
+	public int craigMannerEnroll(Manner manner) {
+		return mannerDao.craigMannerEnroll(manner);
+	}
+
+	//혜진추가 - 내가 매너평가한거있냐 
+	@Override
+	public Manner selectMannerOne(Map<String, Object> mannerMap) {
+		return mannerDao.selectMannerOne(mannerMap);
+	}
+
+
 }

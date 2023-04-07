@@ -22,4 +22,11 @@ public interface MannerService {
 	//혜진추가 - 0404
 	int updateMannerDone();
 	
+	//혜진추가 - 0406
+	int craigMannerEnroll(Manner manner);
+
+	//나 매너평가한거있냐 찾기 0406
+	Manner selectMannerOne(Map<String, Object> mannerMap);
+
+
 }
