@@ -206,13 +206,6 @@ public class TogetherController {
 								@RequestParam String minute,
 								RedirectAttributes redirectAttr) {
 		
-		log.debug("together = {}", together);
-		log.debug("month = {}", month);
-		log.debug("date = {}", date);
-		log.debug("meridiem = {}", meridiem);
-		log.debug("hour = {}", hour);
-		log.debug("minute = {}", minute);
-		
 		// LocalDateTime 객체 생성
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss");
 		LocalDateTime dateTime = LocalDateTime.now() // 현재 시각 (사용할 경우)
