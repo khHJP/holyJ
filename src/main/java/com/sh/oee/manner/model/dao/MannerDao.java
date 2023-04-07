@@ -29,4 +29,12 @@ public interface MannerDao {
 	@Update("update manner_review set done = 'Y' where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD')")
 	int updateMannerDone();
 
+	//혜진 추가 
+	int craigMannerEnroll(Manner manner);
+
+	//혜진추가 
+	Manner selectMannerOne(Map<String, Object> mannerMap);
+
+
+
 }
