@@ -198,7 +198,7 @@ function setCommentOrderList(order) {
 							<span>${comment.dong.dongName}</span>
 							&nbsp;
 							<fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
-								<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
+								<fmt:formatDate value="${regDate}" pattern="MM.dd a HH:mm"/>
 						</div>
 					</div>
 				</div>
