@@ -5,15 +5,17 @@ body {
 	min-width: 1200px;
     max-width: 1200px;
 	min-height: 1000px;
+	overflow-x: hidden;
+	
 }
 
 <!--- craigList 랑 detail css 파일  --->
 
 <!-- 검색바 -->
 .searchdiv {
-	margin-left: 100px;
+	
 	display: inline-block;
-	width: 800px;
+	width: 600px;
 /*--	position: relative;
    	top: 60px;
    	left: 870px;
@@ -22,9 +24,20 @@ body {
    	*/
 }
 
+.seconddivv{
+	display: flex;
+    width: 1300px;
+    justify-content: flex-start
+    align-items: center;
+    margin-left: 270px;
+    margin-top: 0px;
+    padding-top: 38px;
+}
+
 #searchKeyword {
-  width: 600px;
-  border: 1px solid lightgray;
+  margin-left: 20px;
+  width: 750px;
+  border: 1.5px solid black;
   border-right: none;
   padding: 5px;
   height:39px;
@@ -38,8 +51,8 @@ body {
 
 .searchButton {
   width: 40px;
-  height: 38px;
-  border: 1.5px solid lightgray;
+  height: 39px;
+  border: 1.5px solid black;
   background: #ffffff;
   text-align: center;
   color: black;
@@ -48,9 +61,14 @@ body {
   font-size: 20px;
   margin-left: -5px;
   position: relative;
-  top:1.8px;
+  top:2px;
 }
 
+
+.searchButton:hover {
+	background-color: #1C7E34;		
+	transition-duration: 0.3s;		
+}
 
 <!-- wholetbl -->
 #craigWholeListTbl{
@@ -62,22 +80,30 @@ body {
 	font-weight: 300;
 	font-size: 15px;
 	color: black;
-	
+	text-align: left;
+	padding-left: 5px;
+
 }
 
 #crtitle{
 }
 
+#crwishsp{
+	text-align: center;
+}
+
 #crdong{
 	font-size: 14px;
 	color : black;
-	font-weight: 300
+	font-weight: 300;
+	text-align: left;
 }
 
 #crprice{
 	font-size: 14px;
 	color : black;
-	font-weight: 600
+	font-weight: 600;
+	margin-top: 15px;
 }
 
 
@@ -89,7 +115,8 @@ body {
 .crwishchat{
 	font-size: 14px;
 	color : gray;
-	font-weight: 300
+	font-weight: 300;
+	margin-left: 5px;
 	
 }
 
@@ -100,6 +127,9 @@ body {
 	
 }
 
+ #crchat{
+ 	margin-left: 3px;
+ }
 
 #crContent{
 	font-size: 18px;
@@ -253,13 +283,25 @@ body {
 }
 
 
-#btn-more-container{
-	width: 120px;
+.btbca{
+	width: 100px;
 	height: 40px;
 	margin: auto;
 	border: none;
 	text-align: center;	
 }
+
+#btn-more:hover{
+	background-color: #1C7E34;
+	color: white;
+}
+
+/* 글쓰기 */
+#writeCraigbtn:hover{
+	background-color: #1C7E34;
+	color: white;
+}
+
 
 .btnca{
 	 text-align: center;
@@ -267,14 +309,20 @@ body {
 
 #searchPage{
 	color: white;
-	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	
+	transition-duration: 0.3s;	
 }
 
 #btn-more:hover>#searchPage{
-	color: #efefef;
-	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	color: #1C7E34;
+	transition-duration: 0.3s;
 }
+
+#searchPage:hover{
+	background-color: #1C7E34;
+	color: #1C7E34;
+	transition-duration: 0.3s;
+}
+
 
 
 #othercraigDiv{
@@ -287,3 +335,33 @@ body {
 h5{
 	color: black;
 }
+
+
+.crnotd{
+	text-align: center;
+}
+
+/**
+.crnotd:hover{
+	background-color: #E9ECEF;
+	border-radius : 10px;
+	transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	
+}
+**/
+
+#eachimg:hover{
+	transform: scale( 1.08 );
+  	transition: all 0.5s	
+}
+
+#statemodalcfm:hover{
+	color:black;
+	background-color: #c0c0c0;
+}
+
+#delconfirm:hover{
+	color:white;
+	background-color: green;
+}
+

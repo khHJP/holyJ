@@ -16,6 +16,7 @@
 	
 	<!-- #7.2. 자원별 권한여부설정 -->
 	<http pattern="/resources/**" security="none"/>
+	
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
@@ -24,15 +25,15 @@
 		<intercept-url pattern="/member/checkIdDuplicate.do" access="isAnonymous()"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 
-
-		
 		<!-- 🐹 효정 03/24 stomp endoint 추가 🐹-->
 		<intercept-url pattern="/stomp/**" access="permitAll"/>
 		<intercept-url pattern="/chat/**" access="permitAll"/>
 		<!-- 🐹 ********* 효정 end ********* 🐹-->
+		
+		<!-- 예지 0403 ROLE_WARN 권한인 경우 접근 불가 -->
+		<intercept-url pattern="/*/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
 
 		<!-- 모든 url에 접근하려면 인증 받아야함 -->
-
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
 		<form-login 
@@ -48,11 +49,8 @@
 		<remember-me
 			data-source-ref="dataSource"
 			token-validity-seconds="604800"/><!-- 오이마켓은 1주동안 로그인이 유지 가능 -->
-
-
 			
 		<access-denied-handler error-page="/error/accessDenied.do"/>
-		
 
 	</http>	
 	

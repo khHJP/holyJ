@@ -22,11 +22,12 @@ public class Local extends LocalEntity {
 	private List<LocalAttachment> attachments = new ArrayList<>();
 	private Member member;
 	private Dong dong;
+	private LocalCategory localcategory;
 	
 	
 	//기본생성자
-	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, int attachCount) {
-		super(no, categoryNo, writer, title, content, regDate, hits);
+	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, int attachCount, String reportYn) {
+		super(no, categoryNo, writer, title, content, regDate, hits, reportYn);
 	}
 	
 	
@@ -37,15 +38,26 @@ public class Local extends LocalEntity {
 	}
 
 
-	//매개변수생성자 (다 넣은 것)
-	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits,
-			int attachCount, List<LocalAttachment> attachments, Member member, Dong dong) {
-		super(no, categoryNo, writer, title, content, regDate, hits);
+
+	public Local(int no, int categoryNo, String writer, String title, String content, LocalDateTime regDate, int hits, String reportYn,
+			int attachCount, List<LocalAttachment> attachments, Member member, Dong dong, LocalCategory localcategory) {
+		super(no, categoryNo, writer, title, content, regDate, hits, reportYn);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.member = member;
 		this.dong = dong;
+		this.localcategory = localcategory;
 	}
+
+
+
+	
+
+
+
+
+
+	
 	
 	
 

@@ -3,6 +3,7 @@ package com.sh.oee.local.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import com.sh.oee.local.model.dto.Local;
 
 import com.sh.oee.local.model.dto.LocalAttachment;
 import com.sh.oee.local.model.dto.LocalComment;
+import com.sh.oee.local.model.dto.LocalCommentEntity;
 import com.sh.oee.local.model.dto.LocalEntity;
 import com.sh.oee.local.model.dto.LocalLike;
 import com.sh.oee.member.model.dto.Member;
@@ -29,8 +31,8 @@ public class LocalServiceImpl implements LocalService {
 	
 	//동네생활 전체 목록 조회
 	@Override
-	public List<Local> selectLocalListByDongName(List<String> myDongList) {
-		return localDao.selectLocalListByDongName(myDongList);
+	public List<Local> selectLocalListByDongName(Map<String, Object> param) {
+		return localDao.selectLocalListByDongName(param);
 	}
 	
 	//카테고리
@@ -46,7 +48,7 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.selectLocalList(member);
 	}
 	@Override
-	public List<LocalComment> selectLocalCommentList(String memberId) {
+	public List<LocalCommentEntity> selectLocalCommentList(String memberId) {
 		// TODO Auto-generated method stub
 		return localDao.selectLocalCommentList(memberId);
 	}
@@ -126,13 +128,71 @@ public class LocalServiceImpl implements LocalService {
 		return localDao.DeleteLocalLike(param);
 	}
 	
-	@Override
-	public int deleteAttachment(int attachNo) {
-		return localDao.deleteAttachment( attachNo);
-	}
+	
 	
 	@Override
 	public int InsertLocalLike(Map<String, Object> param) {
 		return localDao.InsertLocalLike(param);
+	}
+
+	@Override
+	public int selectAttachNo(int no) {
+		
+		return localDao.selectAttachNo(no);
+	}
+
+	@Override
+	public int updateAttachFile(LocalAttachment attach) {
+		return localDao.updateAttachFile(attach);
+		
+	}
+
+	@Override
+	public int getLocalTotalCount(Map<String, Object> param) {
+		return localDao.getLocalTotalCount(param);
+	}
+
+	//댓글
+	@Override
+	public int insertComment(LocalCommentEntity comment) {
+		return localDao.insertComment(comment);
+	}
+
+//	@Override
+//	public List<LocalCommentEntity> commentList(int no) {
+//		return localDao.commentList(no);
+//	}
+
+//	@Override
+//	public int insertComment(Map<String, Object> param) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+
+	@Override
+	public List<LocalCommentEntity> selectLocalCommentListByBoardNo(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return localDao.commentList(param);
+	}
+
+	//댓글 삭제
+	@Override
+	public int deleteComment(int no) {
+		return localDao.deleteComment(no);
+	}
+
+	@Override
+	public int updateComment(LocalComment comment) {
+		return localDao.updateComment(comment);
+	}
+
+	@Override
+	public int insertReComment(LocalCommentEntity comment) {
+		return localDao.insertReComment(comment);
+	}
+
+	@Override
+	public List<LocalCommentEntity> commentNewList(int no) {
+		return localDao.commentNewList(no);
 	}
 }

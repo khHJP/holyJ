@@ -45,6 +45,25 @@ $(document).ready(function() {
 	// 
 });
 </script>
+<div class="together-info-img">
+	<div class="together-info-box">
+		<div>
+			<h1>
+				취미를 공유할 수 있는
+				</br>
+				동네 친구를 만들어보세요.
+			</h1>
+			<span>
+				관심사가 비슷한 이웃과
+				</br>
+				온&middot;오프라인으로 모일 수 있어요.
+			</span>
+		</div>
+		<div class="together-img-box">
+			<img alt="" src="${pageContext.request.contextPath}/resources/images/together-info (2).png">
+		</div>
+	</div>
+</div>
 <div class="together-list-container">
 	<div class="together-list-wrap">
 		<div class="category-nav" data-category-num>

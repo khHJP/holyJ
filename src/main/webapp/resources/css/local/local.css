@@ -1,12 +1,29 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+/*info Local*/
+.local-explain {
+	background-color : #CEECF5;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.local-explain-text{
+	display: flex;
+    width: 1200px;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: space-evenly;
+    padding: 30px 0;
+}
+.local-explain-img img{
+	height: 190px;
+	width : 200px;
+}
 .mydong,.search,.localsearch,.searchbtn,.writebtn{
 	justify-content:center;
 }
 
 /*my dong*/
-.mydong{
+#mydong{
 	border:1px solid black;
 	height:40px;
 	align-items: center;
@@ -19,8 +36,9 @@
 	position: relative;
 	width:100%;
 	display:flex;
+	margin-top : 15px;
 }
-.localsearch{
+#searchKeyword{
 	width:800px;
 	border: 1px solid gray;
 	padding: 10px;

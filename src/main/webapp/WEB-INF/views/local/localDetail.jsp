@@ -10,11 +10,94 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/local/localDetail.css" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font.css" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+<script>
+//답댓
+function reReply(commentNo) {
+	$('#replyFrm').remove();
+	$reply = $(`
+			<form action="${pageContext.request.contextPath}/local/insertReComment.do" method="post" id="replyFrm">
+				<input type="text" id="replyEditText" name="content" placeholder="답댓글을 작성하세요"></input>
+				<input type="hidden" name="commentNo" id="replyCommentNo" value="">
+				<input type="hidden" name="localNo" value="${localdetail.no}">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<button type="submit">등록</button>
+			</form>
+		`);
+	
+	if($('#replyFrm').length <= 0){
+		$('#parentContent-'+commentNo).append($reply);
+
+		$('#replyCommentNo').val(commentNo);
+		
+		
+	}
+}
+//댓삭
+function replyDelete(commentNo) {
+	$('#replyFrm').remove();
+	$reply = $(`
+			<form action="${pageContext.request.contextPath}/local/deleteComment.do" method="post" id="replyFrm">
+				<input type="hidden" name="commentNo" id="replyCommentNo" value="">
+				<input type="hidden" name="no" value="${localdetail.no}">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>
+		`);
+	
+	if($('#replyFrm').length <= 0){
+		$('#parentContent-'+commentNo).append($reply);
+
+		$('#replyCommentNo').val(commentNo);
+		
+		if(confirm('댓글을 삭제하시겠습니까?')){
+			$('#replyFrm').submit();
+		}
+	}
+}
+//댓글 수정
+function replyEdit(commentNo, content) {
+	$('#replyFrm').remove();
+	console.log(commentNo, content);
+	/*
+	$replyContent = $('#parentContent-'+commentNo);
+	$replyInput = $(`<input type="text" id="replyEditText" placeholder="댓글을 작성하세요"></input>`);
+	$replyNo = $(`<input type="hidden" name="commentNo" id="replyCommentNo" value="">`);
+	$subminBtn = $(`<button type="submit" id="replyUpdate" onclick="">등록</button>`);*/
+	
+	$reply = $(`
+				<form action="${pageContext.request.contextPath}/local/updateComment.do" method="post" id="replyFrm">
+					<input type="text" id="replyEditText" name="content" placeholder="댓글을 작성하세요"></input>
+					<input type="hidden" name="commentNo" id="replyCommentNo" value="">
+					<input type="hidden" name="no" value="${localdetail.no}">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					<button type="submit" id="replyUpdate">등록</button>
+				</form>
+			`);
+
+	if($('#replyFrm').length <= 0){
+		$('#parentContent-'+commentNo).append($reply);
+
+		$('#replyCommentNo').val(commentNo);
+		$('#replyEditText').val(content);
+	}
+
+	
+}
+
+function setCommentOrderList(order) {
+	console.log(${localdetail.no});
+	if(order == 'asc'){
+		location.href = '/oee/local/localDetail.do?no='+${localdetail.no}+'&order=asc';
+	}else if(order == 'desc'){
+		location.href = '/oee/local/localDetail.do?no='+${localdetail.no}+'&order=desc';
+	}
+}
+</script>
+</head>
 <sec:authentication property="principal" var="loginMember"/>
 <div class="localboard-container">
 	<div class="localboard-wrap">
-		<span class="category">${category}</span>
+		<span class="category">${localdetail.localcategory.categoryName}</span>
 		<div class="memberInfo">
 			<div class="profileimg">
 				<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">
@@ -75,16 +158,93 @@
 				</c:if>
 				</span> 
 						
-
-					<span class="comment-btn">댓글쓰기</span>
 			</div>
-		<div class="div-comment">
-			<span>·등록순</span>
-			&nbsp;&nbsp;&nbsp;
-			<span>·최신순</span>
+		<!-- 댓글 -->
+		<form name="commentInsertFrm" action="${pageContext.request.contextPath}/local/commentInsert.do" method="post">
+			<div class="comment-wrap">
+				<input type="text" id="replytext" name="content" placeholder="댓글을 작성하세요"></input>
+				<input type="hidden" name="localNo" value="${localdetail.no}" >
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<br>
+				<div class=replyBtn>
+				<p><button type="submit" id="btnReply">댓글 작성</button></p>
+				</div>
+			</div>
+		</form>
+		<c:if test="${not empty commentList}">
+			<div class="div-comment">
+				<div id="commentOriList">
+					<button id="commentOriList" onclick="setCommentOrderList('asc');">·등록순</button>
+				</div>
+				&nbsp;&nbsp;&nbsp;
+				<div id="commentNewList">
+					<button id="commentNewList" onclick="setCommentOrderList('desc');">·최신순</button>
+				</div>
+			</div>
+		</c:if>
+		<c:forEach items="${commentList}" var="comment">
+	<!-- -등록순 최신순 -->
+		<div id="commentList">
+		<!-- 모댓글 -->
+		<div class="moComment" style="margin-left:20px;">
+			<c:if test="${comment.commentLevel == 1}">
+				<div class="memberInfo">
+					<div class="profileimg">
+						<img src="${pageContext.request.contextPath}/resources/upload/profile/${comment.member.profileImg}" alt="사용자프로필">
+					</div>
+					<div class="detailInfo">
+						<span class="nickname">${comment.member.nickname}</span>
+						<div class="dong-date">
+							<span>${comment.dong.dongName}</span>
+							&nbsp;
+							<fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
+								<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
+						</div>
+					</div>
+				</div>
+				<p class="commentContent" id="parentContent-${comment.commentNo}"> ${comment.content }</p>
+			
+				<!-- 댓글 수정 삭제 버튼 넣기 -->
+				<button type="button" onclick="reReply(${comment.commentNo});">답글쓰기</button>
+				<c:if test="${comment.writer == loginMember.memberId  }">
+					<button type="button" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
+					<button type="button" onclick="replyDelete(${comment.commentNo});">삭제</button>
+					
+				</c:if>
+			</c:if>
+		</div>
+		<!-- 대댓글 -->
+		<c:if test="${comment.commentLevel > 1 }">
+			<div class="reComment" style="margin-left:60px;">
+				<div class="memberInfo">
+			<div class="profileimg">
+				<img src="${pageContext.request.contextPath}/resources/upload/profile/${comment.member.profileImg}" alt="사용자프로필">
+			</div>
+			<div class="detailInfo">
+				<span class="nickname">${comment.member.nickname}</span>
+				<div class="dong-date">
+					<span>${comment.dong.dongName}</span>
+					&nbsp;
+					<fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
+						<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
+					</div>
+				</div>
+			</div>
+				<p class="commentContent" id="parentContent-${comment.commentNo}">${comment.content}</p>
+				<c:if test="${comment.writer == loginMember.memberId  }">
+				<button type="button" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
+				<button type="button" onclick="replyDelete(${comment.commentNo});">삭제</button>
+				
+			</c:if>
+			</div>
+		</c:if>
+		</div>
+		</c:forEach>
 		</div>
 	</div>
-</div>
+<!-- 댓글 등록순(기본) 최신순 정렬 (클릭하면 로직 따르게...?) -->
+
+
 <c:if test="${localdetail.writer eq loginMember.memberId}">
 <form:form name="localDeleteFrm"  enctype ="multipart/form-data"  method="post"
 	 action="${pageContext.request.contextPath}/local/localDelete.do?${_csrf.parameterName}=${_csrf.token}" >
@@ -92,13 +252,13 @@
 </form:form>
 
 <script>
-//수정하기
+//게시글 수정하기
 document.querySelector("#update").addEventListener('click', (e) => {
 	const no ='${localdetail.no}'
 		location.href = '${pageContext.request.contextPath}/local/localUpdate.do?no=' + no;
 });
 
-//삭제하기
+//게시글 삭제하기
 document.querySelector("#deletee").addEventListener('click', (e) => {
 	if(confirm('게시글을 삭제하시겠습니까?')){
 		document.localDeleteFrm.submit();
@@ -122,7 +282,13 @@ document.querySelector(".report").addEventListener('click', (e) => {
 </script>
 </c:if>
 
+
+
+
+
+
 <script>
+//게시글 수정하기, 삭제하기, 신고하기 토글
 $(function (){
 	$("#togglebtn").click(function (){
   	$("#divToggle").toggle();
@@ -132,6 +298,7 @@ $(function (){
 
 
 <script>
+//좋아요
 	document.querySelector(".hearts").addEventListener('click', (e) => {
 
 		const img = e.target;

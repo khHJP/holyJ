@@ -49,9 +49,13 @@ List<Dong> selectMydongGuName(int dongNo);
 
 
 
+
+
 //혜진영역 
 
-
+/** 효정 시작 **/
+Dong selectOneDong(int dongNo);
+/** 효정 끝 **/
 
 
 

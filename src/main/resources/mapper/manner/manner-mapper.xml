@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.oee.manner.model.dao.MannerDao">
+
+	<!-- ■ select manner and member - jin -->
+	<select id="craigCronSchedule" resultMap="mannerMemberMap">
+		select * 
+    	from manner_review r left join member m 
+        on r.writer = m.member_id
+   	    where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD') 
+        	  and done = 'N'
+	</select>
+	
+	<resultMap type="manner" id="mannerMemberMap">
+		<id  column="manner_no" property="mannerNo" />
+		<result column="craig_no" property="craigNo"  />
+		<result column="prefer" property="prefer"  />	
+		<result column="compliment" property="compliment"  />	
+		<result column="writer" property="writer"  />	
+		<result column="recipient" property="recipient"  />	
+		<result column="reg_date" property="regDate"  />	
+
+		<collection property="member" ofType="member" >
+			<id column="member_id" property="memberId" />
+			<result column="name" property="name" />
+			<result column="dong_no" property="dongNo" />
+			<result column="dong_range" property="dongRange" />
+			<result column="manner" property="manner" /> 
+			<result column="nickname" property="nickname" />  
+			<result column="profile_img" property="profileImg" />  
+		</collection>
+	</resultMap>
+	
+	<update id="updateMannerDegree">
+		update member
+		<set>
+			<if test=" prefer == 'MA1' "> 
+		    manner =  manner-0.5    
+			</if>
+			<if test=" prefer == 'MA2' "> 
+		    manner =  manner+0.2    
+			</if>
+			<if test=" prefer == 'MA3' "> 
+		    manner =  manner+0.5    
+			</if>		
+		</set>
+		 where member_id = #{memberId}		
+	</update>
+	
+	<update id="updateComplimentDegree">
+		update member
+		set manner =  manner+0.1  
+		where  member_id = #{memberId}		
+	</update>
+	
+</mapper>

@@ -85,6 +85,8 @@ public interface CraigDao {
 	//상품+2
 	List<Craig> selectOtherCraigs(Map<String, Object> otherParam);
 
+	//나채팅방 찾아
+	int findmeFromChat(Map<String, Object> param);
 
 	
 // ================================ 혜진 ================================
@@ -110,7 +112,11 @@ public interface CraigDao {
 	// 🐹 ------- 효정 start ---------- 🐹
 	@Select("select * from craig where no = #{craigNo}")
 	Craig findCraigByCraigNo(int craigNo);
+	
+	@Update("update craig set state = 'CR1', buyer = #{buyer} where no = #{no}")
+	int updateCraigMeeting(Map<String, Object> map);
 	// 🐹 --------- 효정 end ---------- 🐹	
+
 
 
 

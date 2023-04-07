@@ -209,6 +209,7 @@
 		    #{gender},
 		    #{age},
 		    default,
+		    default,
 		    default
 		)
 		<selectKey order="AFTER" resultType="_int" keyProperty="no">
@@ -224,7 +225,6 @@
 		insert into 
 		    together_chat
 		values (
-		    SEQ_TOGETHER_CHATROOM_NO.nextval,
 		    #{togetherNo},
 		    #{memberId},
 		    #{role},
@@ -249,6 +249,18 @@
 			age = #{age}
 		where
 			no = #{no}
+	</update>
+	
+	<!-- 날짜가 지난 모임 종료 -->
+	<update id="TimeOverDateTimeUpdate">
+		update 
+		    together
+		set
+		    status = 'N'
+		where
+			status = 'Y'
+			and
+		    <![CDATA[date_time < sysdate]]>
 	</update>
 	
 	<!-- 👻 정은 끝 👻 -->

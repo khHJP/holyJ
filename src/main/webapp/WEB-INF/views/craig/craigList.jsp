@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isErrorPage="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -21,10 +21,10 @@
 	.dropdown-toggle:hover{ color: black; background-color: white; -webkit-appearance:none; }
 	
 	#writeCraigbtn{
-		height:36px; width: 80px; 
+		height:39px; width: 80px; 
 		background-color: white; 
 		color:black; 
-		border-color: lightgray; 
+		border: 1.5px solid black;
 		top:-1px; position: relative; left:10px;  
 	}
 	
@@ -32,7 +32,7 @@
 	
 	#memberInfo{
 		width: 100px;
-		border:1px solid lightgray;
+		border: 1.5px solid black;
 		height: 38px;
 		padding: 6px;
 		padding-bottom : 12px;
@@ -44,9 +44,11 @@
 	#craigWholeListTbl{
 		margin: auto;
 		margin-top : 50px;
-		padding: 40px;
+ 		padding: 40px;
+ 		margin-left : -25px;		
 		border: none;
-		width : 700px;	
+/*		width : 700px;	
+ 		원래700 */
 	}
 	
 	.explains{ margin-bottom: 50px; width : 240px; margin: auto; }
@@ -64,7 +66,7 @@
 		display: flex; justify-content: center; margin-left: -110px;
 	}
 	
-	.searchdiv { margin-left: 1px; display: inline-block; width: 760px; }
+	.searchdiv { margin-left: 1px; display: inline-block; margin-left: -10px}
 	
 /* header */
 .nav-link{ margin-top: -5px }
@@ -74,13 +76,17 @@
     justify-content: flex-end;  margin-top: -5px ;
 }
 </style>
-
-<%-- 해야되는거 - read카운트 처리  --%>
-<br><br><br>
+<div style="height: 240px; margin-bottom:20px; width:2294px !important; margin-left : -350px;  background-color: #E3EDCD">
+	<div class="seconddivv" >
+	 	<div style="margin-top: 10px; margin-left: 75px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
+	 	<p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p></div>
+<%--		<div><img  style="height: 262px" src="${pageContext.request.contextPath}/resources/images/indexdang.png" /></div>  --%>
+	</div>
+</div>
 	<%-- 글쓰기 / 카데고리 --%>
 	<div id="searchToWriteDiv">
-	   	<div class="btn-group" style="margin: 0; padding-right: 50px">
-			<button type="button" style="width:160px; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   	<div class="btn-group" style="margin-left: 93px; margin-right: 10px ">
+			<button type="button" style="width:160px; border: 1.5px solid black  ; height:36px; appearance:none; margin-top: 2px;" class="btn btn-success dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    	중고거래 카테고리
 			</button>
 		  	<ul class="dropdown-menu">
@@ -102,9 +108,9 @@
 	    </div>
 	</div>
 <section id="craigWhole" >	
-<!-- whole List  -->
-	<c:if test="${searchCraigs == null}">
-		<h3 style="margin: 50px 0 30px 0; text-align: center;">중고거래 인기매물</h3>
+<%-- whole List  --%>
+	<c:if test="${searchCraigs == null  }">
+		<h3 id="popularh3" style="margin: 80px 40px 80px 0; text-align: center; padding-left : 70px;"> 중고거래 인기 매물</h3>
 	</c:if>
 		
 	<c:if test="${searchCraigs[0] != null && searchCraigs != '' && searchKeyword != null && searchKeyword != '' }">
@@ -117,7 +123,7 @@
 		</script>
 	</c:if>
 	<c:if test="${searchCraigs[0] == null && searchKeyword != null  }">
-		<h3 style="margin: auto; margin-top: 50px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과가 없습니다!</h3>
+		<h3 style="margin: auto; margin-top: 80px; text-align: center;"><span id="searchWord" style="color: green; text-decoration: underline;">${searchKeyword} </span>(으)로 검색한 결과가 없습니다!</h3>
 		<img  style="width:700px; height: 600px; margin:70px 0 0 280px " src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="First slide" >
 		<script>
 		document.querySelector(".dropdown-toggle").addEventListener('click', e=>{
@@ -134,33 +140,40 @@
 				<c:if test="${vs.index%4==0}">
 					<tr data-no="${craig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
 				</c:if>
-					  <td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 10px">
+					  <td class="crnotd" data-crno="${craig.no}" style="width:350px; height: 380px; padding: 30px; padding-right: 45px">
 						<div class="explains">
 							<%-- img --%>
 							<c:if test="${craig.attachments[0].reFilename != null}">
-							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+							    <a><img id="eachimg"  style="display : inline-block; height : 250px; width:240px; " 
 									    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
 							</c:if>
 							<c:if test="${craig.attachments[0].reFilename==null}">
-							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+							    <a><img id="eachimg"  style="display : inline-block; height : 250px; width:240px;" 
 									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
 							</c:if>
 								<p id="crtitle" class="crpp">${craig.title}</p>
-							<c:if test="${craig.price > 0}">
-								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
-							</c:if>
+
 							<%-- CR1 || CR3--%>
 							<c:if test="${craig.state == 'CR1'}">
-								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 예약중 </span></p>
 							</c:if>
-							<c:if test="${craig.state == 'CR3'}">
-								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							<c:if test="${craig.state == 'CR2'}">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>
 							</c:if>
-		
+							<c:if test="${craig.state == 'CR3' && craig.price != 0  }">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>
+							</c:if>
+							<c:if test="${craig.state == 'CR3' && craig.price == 0 && craig.categoryNo != 7  }">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>
+							</c:if>
+							<c:if test="${craig.price > 0}">
+								<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							</c:if>		
 							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
-								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; margin-top: 15px; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${craig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"> ${craigChatCnt[vs.index]} </span> 
+								<p id="crdong" class="crpp">${craig.dong.dongName}</p> 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[vs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat"> ${craigChatCnt[vs.index]} </span></p> 
 							</div>
 						</td>
 					<c:if test="${vs.index %4==3}">
@@ -175,33 +188,42 @@
 				<c:if test="${searchvs.index%4==0}">
 					<tr data-no="${searchcraig.no}" style="padding-bottom : 30px; margin-bottom : 30px; ">
 				</c:if>
-					  <td class="crnotd" data-crno="${searchcraig.no}" style="width:200px; height: 380px; padding: 10px">
+					  <td class="crnotd" data-crno="${searchcraig.no}" style="width:350px; height: 380px; padding: 10px">
 						<div class="explains">
 							<%-- img --%>
 							<c:if test="${searchcraig.attachments[0].reFilename != null}">
-							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px; " 
+							    <a><img id="eachimg"  style="display : inline-block; height : 250px; width:240px; " 
 									    src="${pageContext.request.contextPath}/resources/upload/craig/${searchcraig.attachments[0].reFilename}"/></a><br/>
 							</c:if>
 							<c:if test="${searchcraig.attachments[0].reFilename==null}">
-							    <a><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+							    <a><img id="eachimg"  style="display : inline-block; height : 250px; width:240px;" 
 									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
 							</c:if>
-								<p id="crtitle" class="crpp">${searchcraig.title}</p>
-							<c:if test="${searchcraig.price > 0}">
-								<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
-							</c:if>
+
+							<p id="crtitle" class="crpp">${searchcraig.title}</p>
+							
 							<%-- CR1 || CR3--%>
 							<c:if test="${searchcraig.state == 'CR1'}">
-								<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 예약중 </span></p>
 							</c:if>
-							<c:if test="${searchcraig.state == 'CR3'}">
-								<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>
+							<c:if test="${searchcraig.state == 'CR2'}">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>
 							</c:if>
-		
+							<c:if test="${searchcraig.state == 'CR3' && searchcraig.price != 0  }">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>
+							</c:if>
+							<c:if test="${searchcraig.state == 'CR3' && searchcraig.price == 0 && searchcraig.categoryNo != 7  }">
+								<p style="text-align: left; margin: 0 0 0px 5px; "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>
+							</c:if>
+							
+							<c:if test="${searchcraig.price > 0}">
+								<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px;"> <fmt:formatNumber pattern="#,###" value="${searchcraig.price}" />원</p>
+							</c:if>		
 							<c:if test="${searchcraig.price == 0 && searchcraig.categoryNo != 7 }">
 								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
 							</c:if>
-								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> <span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">${craigChatCnt[searchvs.index]}</span> 
+								<p id="crdong" class="crpp">${searchcraig.dong.dongName}</p> 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">${wishCnt[searchvs.index]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">${craigChatCnt[searchvs.index]}</span></p>
 							</div>
 						</td>
 					<c:if test="${searchvs.index %4==3}">
@@ -267,8 +289,8 @@
 		</nav>
 
 <%-- 비동기 더보기 버튼 --%>
-	<div class="btbca" style="	text-align: center;	">
-	<button id="btn-more" class="btn" style="margin: auto; visibility: hidden; border: 1px solid green" > 더보기 <span id="searchPage" >1</span> </button>	
+	<div class="btbca" style="text-align: center;	">
+	<button id="btn-more"  class="btn" style="margin: auto; visibility: hidden; width:100px; border: 1px solid green;" > 더보기 <span id="searchPage" >1</span> </button>	
 	</div>
 <script>
 document.querySelectorAll("span[data-no]").forEach( (tr)=>{
@@ -352,6 +374,9 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		
 		const nav  = document.querySelector("nav");
 		const tbody  = document.querySelector("#craigWholeListTbl tbody");
+		const h3  = document.querySelector("#popularh3");
+		
+		h3.innerHTML = "";
 	
 		let searchPage = document.querySelector("#searchPage").innerHTML;
 		let categoryNumber = categoryLi.dataset.no;
@@ -389,9 +414,9 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 	
 				if( data.wishCnt[0] == null || data.totalPage == 0  ){ // 결과없다 
 
-					tbody.innerHTML = `<p style='position:absolute; top: 450px; left:600px; font-size:33px' >
+					tbody.innerHTML = `<p style='position:absolute; top: 520px; left:600px; font-size:33px' >
 											아직 해당 카테고리의 게시물이 없습니다! </p>
-										<img  style='width:700px; height: 600px; position:relative; top: 220px; left:50px; display : block;' 
+										<img  style='width:700px; height: 600px; position:relative; top: 220px; left:280px; display : block;' 
 						    				src='${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png'/><br/></br></br>`;
 				};
 	
@@ -400,11 +425,11 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					let img_html = ``; //◆◆◆이미지
 					
 					if( data.searchCrategory[i].attachments[0].reFilename != null  ){
-						img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 200px; width:200px;" 
+						img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 250px; width:240px;" 
 						    		src="${pageContext.request.contextPath}/resources/upload/craig/\${data.searchCrategory[i].attachments[0].reFilename}" /></a><br/>`
 					   }
 					else if( data.searchCrategory[i].attachments[0].reFilename == null  ){
-						img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 200px; width:200px;" 
+						img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 250px; width:240px;" 
 						    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
 				    }
 						
@@ -412,38 +437,43 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					if( data.searchCrategory[i].price > 0  ){
 						let p = data.searchCrategory[i].price;
 						let price = p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-						price_html = `<p id="crprice" class="crpp" style="display: inline-block; font-size:17px; margin-right: 20px;">\${price}원</p>`
+						price_html = `<p id="crprice" class="crpp" style="font-size:17px; margin-right: 20px; margin-top: 15px;">\${price}원</p>`
 					}
 					else if( data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
-						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>`
+						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:15px; font-size: 17px;">나눔💚</p>`
 				    }
 					else{
-						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;"> data.searchCrategory[i].price원</p>`
+						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:15px; font-size: 17px;"> data.searchCrategory[i].price원</p>`
 				    }
 					
 					
 					let state_html = ``; //◆◆◆ 상태
 					if( data.searchCrategory[i].state == 'CR1' ){
-						 state_html = `<span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span>`
+						 state_html = `<p style="text-align: left; margin: 0 0 0px 5px;  "><span class="badge badge-success" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 예약중 </span></p>`
 					}
-								
-					else if( data.searchCrategory[i].state == 'CR3' ){
-						state_html = `<span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: center; vertical-align: middle;"> 판매완료 </span>`
+					else if( data.searchCrategory[i].state == 'CR2'){
+						 state_html = `<p style="text-align: left; margin: 0 0 0px 5px;  "><span class="badge badge-secondary" style="height: 22px;font-size: 13px; text-align: left; bavertical-align: middle; background-color: white"> </span></p>`;
+					}								
+					else if( data.searchCrategory[i].state == 'CR3' && data.searchCrategory[i].price != 0 ){
+						state_html = `<p style="text-align: left; margin: 0 0 0px 5px;  "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 거래완료 </span></p>`;
 					}
-					
+					else if( data.searchCrategory[i].state == 'CR3' && data.searchCrategory[i].price == 0 && data.searchCrategory[i].categoryNo != 7 ){
+						state_html = `<p style="text-align: left; margin: 0 0 0px 5px;  "><span class="badge badge-secondary" style="height: 22px; font-size: 13px; text-align: left; vertical-align: middle;"> 나눔완료 </span></p>`;
+					}
+
 					<%--  뿌리기  --%>
 					if( parseInt(i/4) == 0){
 						let	    chtml = img_html
 								chtml += `<p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-								chtml += price_html
 								chtml += state_html
+								chtml += price_html
 								chtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+									<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td = document.createElement('td');
 							  td.dataset.crno = data.searchCrategory[i].no;
 							  $(td).attr('class','crnotd');
-							  td.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td.style.cssText = "width:350px; height: 380px; padding: 10px; padding-right:30px;"
 							  td.innerHTML = chtml;					
 						 tr1.append( td );
 					}
@@ -451,15 +481,15 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					else if( parseInt(i/4) == 1){
 						let	cchtml = img_html
 								cchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-								cchtml += price_html
 								cchtml += state_html
+								cchtml += price_html
 								cchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-										<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+									<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td2 = document.createElement('td');
 							  td2.dataset.crno = data.searchCrategory[i].no;
 							  $(td2).attr('class','crnotd');
-							  td2.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td2.style.cssText = "width:350px; height: 380px; padding: 10px; padding-right:30px;"
 							  td2.innerHTML = cchtml;					
 						 tr2.append( td2 );
 					}
@@ -467,15 +497,15 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					else if( parseInt(i/4) == 2){
 						let ccchtml = img_html
 							ccchtml += `<div class="explains"><p id="crtitle" class="crpp">\${data.searchCrategory[i].title}</p>`
-							ccchtml += price_html
 							ccchtml += state_html
+							ccchtml += price_html
 							ccchtml += `<p id="crdong" class="crpp">\${data.searchCrategory[i].dong.dongName}</p> 
-									<span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></div>`; 
+								<p style="text-align: left"><span id="crwishsp" class="crwishchat" >관심</span>  <span id="crwish">\${data.wishCnt[i]}</span>  <span id="crchat" class="crwishchat"> · 채팅</span><span id="crchat">\${data.craigChatCnt[i]}</span></p></div>`; 
 	
 						const td3 = document.createElement('td');
 							  td3.dataset.crno = data.searchCrategory[i].no;
 							  $(td3).attr('class','crnotd');
-							  td3.style.cssText = "width:200px; height: 380px; padding: 10px"
+							  td3.style.cssText = "width:350px; height: 380px; padding: 10px; padding-right:30px;"
 							  td3.innerHTML = ccchtml;					
 						 tr3.append( td3 );
 					}	
@@ -487,16 +517,27 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		 		if(data.totalPage > 1 ){								 
 					document.querySelector("#btn-more").style.visibility="visible";
 					document.querySelector("#searchPage").innerHTML = Number(searchPage)+1 // 다음페이지셋팅 
-		 		}	
+		 		}
+				
+				if( searchPage >= data.totalPage   ){ //버튼없애기
+					  const button = document.querySelector("#btn-more");
+							document.querySelector("#searchPage").innerHTML = 1;
+							document.querySelector("#btn-more").style.visibility="hidden";
+							document.querySelector("#btn-more").style.disabled="true";
+					}
+				
 			},
 			error : console.log,
 			complete(){
-				//마지막 페이지인 경우 더보기 버튼 비활성화 처리
-				if( searchPage == ${totalPage} ){
-				  const button = document.querySelector("#btn-more");
+				 // 이거안됨 왜 ? 무튼 마지막 페이지인 경우 더보기 버튼 비활성화 처리
+					if(searchPage == ${totalPage}){
+						console.log(  "complete 안" )
+						console.log(  ${totalPage} )
+				  		const button = document.querySelector("#btn-more");
 						document.querySelector("#searchPage").innerHTML = 1;
 						document.querySelector("#btn-more").style.visibility="hidden";
-				}
+						document.querySelector("#btn-more").style.disabled="true";
+					}
 			}	
 		});//end-ajax
 	
@@ -530,5 +571,5 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 </script>
 
 
-<br><br><br><br><br><br>
+<br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

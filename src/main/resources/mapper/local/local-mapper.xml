@@ -25,22 +25,64 @@
 		from
 			local l
 		)
-	<where>
+	where
 		dong_name in
-		<foreach collection="list" item="dongName" open="(" close=")" separator=",">
+		<foreach collection="myDongList" item="dongName" open="(" close=")" separator=",">
 			#{dongName}
 		</foreach>
-	</where>
+		<if test="categoryNo != null and categoryNo != ''">
+			and
+				category_no = #{categoryNo}
+		</if>
+		<if test="searchKeyword != null" >
+			and ( title like '%' || #{searchKeyword} ||  '%' or  content like  '%' || #{searchKeyword}|| '%' )
+		</if>
+	
 	order by 
 		reg_date desc
 </select>
 
+<select id="getLocalTotalCount" resultMap="localTotalCountMap">
+		select
+			count(*)
+		from
+			(
+			select
+				l.*,
+    			(
+        		select 
+        			dong_name 
+        		from 
+            		member m right join dong d
+                		on m.dong_no = d.dong_no
+        		where 
+        			member_id = l.writer
+        		) dong_name
+			from
+    			local l
+    		)
+		where
+    		dong_name in 
+    		<foreach collection="myDongList" item="dongName" open="(" close=")" separator=",">
+				#{dongName}
+			</foreach>
+			<if test="categoryNo != null and categoryNo != ''">
+			and
+				category_no = #{categoryNo}
+			</if>
+			
+	</select>
+	
+	<resultMap id="localTotalCountMap" type="java.lang.Integer" />
+
+<!-- 게시글 한건 조회 -->
  <select id="selectLocalOne" resultMap="localDetailMap">
 	select 
 		l.*,
 		la.attach_no,
 		la.original_filename,
 		la.re_filename,
+		c.category_name category_name,
         (select nickname from member where member_id = l.writer) nickname,
         (select profile_img from member where member_id = l.writer) profile_img,
         (select
@@ -54,6 +96,8 @@
 			on l.no = la.local_no
 				left join member m
 			on l.writer = m.member_id
+				left join local_category c 
+			on l.category_no = c.category_no
 	where l.no = #{no}
 </select>
   
@@ -84,14 +128,10 @@
 		<id column="DONG_NO" property="dongNo"/>
 		<result column="DONG_NAME" property="dongName"/>
 	</association>
-	<!--   
-	<association property="locallike" javaType="localLike">
-		<id column="LIKE_NO" property="likeNo"/>
-		<result column="MEMBER_ID" property="memberId"/>
-		<result column="LOCAL_NO" property="localNo"/>
-		<result column="LIKECHECK" property="likecheck"/>
-	</association>
-	--> 
+	<association property="localcategory" javaType="localcategory">
+		<id column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+	</association> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
@@ -109,6 +149,24 @@
 	where
 		no = #{no}
 </update>
+
+<update id="updateAttachFile">
+	update local_attachment set 
+		ORIGINAL_FILENAME = #{originalFilename},
+		RE_FILENAME = #{reFilename},
+		REG_DATE = sysdate
+	where
+		ATTACH_NO = #{attachNo}
+</update>
+
+<select id="selectAttachNo" resultType="_int">
+	select
+		ATTACH_NO
+	from
+		local_attachment
+	where
+		LOCAL_NO = #{no}
+</select>
 
 <update id="hits">
 	update local set
@@ -160,6 +218,86 @@
 		default
 	)
 </insert>
+
+<!-- 댓글 작성 -->
+<insert id="insertComment">
+ 	insert into 
+ 		local_comment 
+	values(
+		seq_local_comment_no.nextval,
+		#{localNo},
+		#{writer},
+		#{refNo},
+		default,
+		#{content},
+		default
+	)
+		
+</insert>
+
+<!-- 댓글목록 -->
+<!-- 등록순 -->
+<select id="commentList" resultMap="localCommentMap">
+	SELECT
+		lc.* ,
+		m.nickname,
+		(select profile_img from member where member_id = lc.writer) profile_img,
+        (select
+                dong_name
+            from
+                member m right join dong d
+                    on m.dong_no = d.dong_no
+                where member_id = lc.writer) dong_name
+	FROM 
+		local l left join  local_comment lc 
+			on l.no = lc.local_no
+			left join member m
+			on lc.writer = m.member_id 
+	WHERE lc.local_no = #{no}
+	START WITH lc.comment_level = 1
+	CONNECT BY PRIOR lc.comment_no = lc.ref_no
+	<if test='"asc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date asc
+	</if>
+	<if test='"desc".equals(order)'>
+		ORDER SIBLINGS BY lc.reg_date desc
+	</if>
+     
+
+</select>
+
+
+
+<!-- re댓글 작성 -->
+<insert id="insertReComment">
+	insert into 
+ 		local_comment 
+	values(
+		seq_local_comment_no.nextval,
+		#{localNo},
+		#{writer},
+		#{refNo},
+		#{commentLevel},
+		#{content},
+		default
+	)
+</insert>
+
+
+<!-- 댓글 수정 -->
+<update id="updateComment">
+	update local_comment
+	set
+		content = #{content}
+	where
+		comment_no = #{commentNo}
+</update>
+
+
+
+
+
+<!-- 하나님 것 -->
 <select id="selectLocalCommentList" resultMap="localCommentMap">
 	
 	select 
@@ -172,5 +310,24 @@
 	where 
 		lc.writer = #{memberId}
 </select>
-<resultMap type="localComment" id="localCommentMap"></resultMap>	
+
+<resultMap type="localComment" id="localCommentMap">
+	<id column="COMMENT_NO" property="commentNo"></id>
+		<result column="LOCAL_NO" property="localNo" />
+		<result column="WRITER" property="writer" />
+		<result column="REF_NO" property="refNo" />
+		<result column="COMMENT_LEVEL" property="commentLevel" />
+		<result column="CONTENT" property="content" />
+		<result column="REG_DATE" property="regDate" />
+		<association property="member" javaType="member">
+			<id column="MEMBER_ID" property="memberId"/>
+			<result column="NICKNAME" property="nickname"/>
+			<result column="MANNER" property="manner"/>
+			<result column="PROFILE_IMG" property="profileImg"/>
+		</association>
+		<association property="dong" javaType="dong">
+			<id column="DONG_NO" property="dongNo"/>
+			<result column="DONG_NAME" property="dongName"/>
+		</association>
+</resultMap>	
 </mapper>

@@ -33,7 +33,7 @@
 								</c:if> 
 							</li>
 							<ul id="ul-title">
-								<li class="span1" id="buyTitle">${wish.title}<img id="heart"src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="" /></li>									
+								<li class="span1" id="buyTitle">${wish.title}<img id="heart"src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt=""/></li>									
 								<li class="span1" id="buyPlace">${wish.placeDetail}</li>
 								<c:if test="${wish.price ne '0'}">														
 									<li class="span1" id="buyPrice">
