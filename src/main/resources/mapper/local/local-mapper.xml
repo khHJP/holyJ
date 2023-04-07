@@ -313,15 +313,13 @@
 	select 
 		l.*,
 		m.* 
-	from 
+	from
 		local l join member m
 		on l.writer = m.member_id
 	where 
 		l.writer = #{memberId}
-
 </select>
 <resultMap type="localCommentEntity" id="localCommentEntity"></resultMap>
-<resultMap type="local" id="localMap"></resultMap>
 <resultMap type="localComment" id="localCommentMap">
 	<id column="COMMENT_NO" property="commentNo"></id>
 		<result column="LOCAL_NO" property="localNo" />
