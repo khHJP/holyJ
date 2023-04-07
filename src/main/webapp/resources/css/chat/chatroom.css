@@ -283,6 +283,15 @@ input, button, select, textarea{
 	height: 200px;
 }
 
+.messages ul li.book div {
+	text-align: center;
+	margin: 0 auto;
+}
+
+.messages ul li.book div span {
+	color: #868B94;
+}
+
 /* 메시지박스 */
 .messages ul li p {
     display: inline-block;
@@ -321,4 +330,10 @@ input, button, select, textarea{
     margin-top: -21px;
     position: absolute;
 }
-
+.messages ul li.sent  #placeMap {
+	border-radius: 10%;
+	float: left;
+	padding: 4px;
+	width: 200px;
+	height: 200px;
+}

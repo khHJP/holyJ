@@ -34,6 +34,15 @@ public class MannerController {
 		
 		model.addAttribute("mannerList",mannerList);
 	}
+	@GetMapping("/myManner1.do")
+	public void mannerList(String memberId, Model model) {		
+		
+		List<Manner> mannerList = mannerService.selectMannerList(memberId);
+		
+		log.debug("mannerList = {}",mannerList);
+		
+		model.addAttribute("mannerList",mannerList);
+	}
 	
 	//-------------- 하나 끝 ------------------------------------------
 }
