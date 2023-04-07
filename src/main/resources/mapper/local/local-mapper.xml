@@ -309,7 +309,7 @@
 	where 
 		lc.writer = #{memberId}
 </select>
-<select id="selectLocalList" resultMap="localMap">
+<select id="selectLocalList" resultMap="localDetailMap">
 	select 
 		l.*,
 		m.* 

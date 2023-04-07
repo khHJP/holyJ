@@ -15,7 +15,7 @@
 <body>
 <br /><br />
 	<div class="manner-container">
-		<h1 class="sub_title">&닉네임&이 받은 매너</h1>
+		<h1 class="sub_title">${mannerList[0].member.nickname}님이 받은 매너</h1>
 		<hr />
 			<table id="tbl-board" class="table">
 				<div class="manner-ti">

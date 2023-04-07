@@ -14,6 +14,7 @@ public interface MannerDao {
 
 	@Select("select * from manner_review where recipient = #{memberId}")
 	List<Manner> selectMannerList(String memberId);
+	List<Manner> selectMannerList1(String memberId);
 
 	
 	//혜진추가-0403

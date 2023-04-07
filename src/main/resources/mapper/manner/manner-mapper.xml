@@ -71,4 +71,18 @@
 	</select>
 	
 	
+	<select id="selectMannerList1" resultMap="mannerMemberMap">
+		select 
+			mr.*,
+			m.* 
+		from 
+			craig c join manner_review mr
+			on mr.craig_no = c.no
+			join member m
+			on mr.recipient = m.member_id
+		where 
+			mr.recipient = #{memberId}
+	</select>
+	
+	
 </mapper>

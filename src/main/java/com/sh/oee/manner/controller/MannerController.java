@@ -41,7 +41,7 @@ public class MannerController {
 	@GetMapping("/myManner1.do")
 	public void mannerList(String memberId, Model model) {		
 		
-		List<Manner> mannerList = mannerService.selectMannerList(memberId);
+		List<Manner> mannerList = mannerService.selectMannerList1(memberId);
 		
 		log.debug("mannerList = {}",mannerList);
 		
