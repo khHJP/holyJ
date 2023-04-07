@@ -14,8 +14,10 @@
 </head>
 <body>
 <br /><br />
+		<c:choose>
+				<c:when test="${not empty myLocal}">
 	<div class="local-container">
-		<h1 class="sub_title">&닉네임&님 동네생활 글</h1>
+		<h1 class="sub_title">${mySalCraig[0].member.nickname}님 동네생활 글</h1>
 		<br />
 		<div>
 			<ul class="local-ul">
@@ -25,8 +27,6 @@
 		<hr />
 <section id="board-container" class="container">
 	<table id="tbl-board" class="table table-hover">
-		<c:choose>
-				<c:when test="${not empty myLocal}">
 					<c:forEach items="${myLocal}" var="local">
 							 <tr data-no="${local.no}" id="tr-table">
 								<c:choose>
