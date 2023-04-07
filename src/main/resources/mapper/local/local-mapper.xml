@@ -13,15 +13,8 @@
 		(
 		select
 			l.*,
-			(
-			select
-				dong_name
-			from
-				member m right join dong d
-					on m.dong_no =  d.dong_no
-			where
-				member_id = l.writer
-			) dong_name
+			(select dong_name from member m right join dong d on m.dong_no =  d.dong_no where member_id = l.writer) dong_name,
+            (select re_filename from local_attachment la where la.local_no=l.no ) re_filename
 		from
 			local l
 		)
