@@ -38,7 +38,7 @@ public interface LocalDao {
 	int insertLocalAttachment(LocalAttachment attach);
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
-	@Select("select * from local where writer = #{memberId}")
+	
 	List<Local> selectLocalList(String memberId);
 	
 	List<LocalCommentEntity> selectLocalCommentList(String memberId);

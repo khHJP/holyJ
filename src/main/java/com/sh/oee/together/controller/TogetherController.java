@@ -61,17 +61,17 @@ public class TogetherController {
 		model.addAttribute("myTogether",myTogether);
 	}
 	@GetMapping("/myTogether1.do")
-	public void together(String memberId, Model model) {
+	public void together(@RequestParam String memberId, Model model) {
 		// member  
 		log.debug("memberId = {} ", memberId);
 		
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
-		List<Together> myTogether1 = togetherService.selectTogether1List(memberId);
+		List<Together> myTogether = togetherService.selectTogether1List(memberId);
 		
-		log.debug("myTogether1 = {}",myTogether1);
+		log.debug("myTogether = {}",myTogether);
 		
 		model.addAttribute("categorys", categorys);
-		model.addAttribute("myTogether",myTogether1);
+		model.addAttribute("myTogether",myTogether);
 	}
 		
 	/** 🐱 하나 끝 🐱 */

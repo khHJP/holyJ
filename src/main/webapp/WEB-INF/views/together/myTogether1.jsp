@@ -14,7 +14,7 @@
 </head>
 <br /><br />
 	<div class="together-container">
-		<h1 class="sub_title">&닉네임&님 같이해요 게시글</h1>
+		<h1 class="sub_title">${myTogether[0].member.nickname}님 같이해요 게시글</h1>
 	
 <section id="board-container" class="container">
 	<c:set var="category" value="${categorys}"/>

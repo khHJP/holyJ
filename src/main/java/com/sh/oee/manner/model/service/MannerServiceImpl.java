@@ -18,11 +18,23 @@ public class MannerServiceImpl implements MannerService {
 	@Autowired
 	private MannerDao mannerDao;
 
+	// ☏☏☏☏☏☏☏☏ 하나 추가 ☏☏☏☏☏☏☏☏ //
 	@Override
 	public List<Manner> selectMannerList(String memberId) {
 		// TODO Auto-generated method stub
 		return mannerDao.selectMannerList(memberId);
 	}
+	@Override
+	public List<Manner> selectMannerList1(String memberId) {
+		// TODO Auto-generated method stub
+		return mannerDao.selectMannerList1(memberId);
+	}
+	@Override
+	public List<Manner> selectSendMannerList(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return mannerDao.selectSendMannerList(param);
+	}
+	// ☏☏☏☏☏☏☏☏ 하나 끝 ☏☏☏☏☏☏☏☏ //
 
 	//혜진추가 - 0403 
 	@Override

@@ -175,15 +175,78 @@
 <table id="crboProfiletbl">
 	<thead>
 		<tr>
-		<%-- ■ 프사 --%>
+		
+		<!-- -------------------------------------------------------------------------------------------------------------- -->		
+			<!-- Button trigger modal -->
+			<%-- ■ 프사 --%>
 			<td style="width: 60px">
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 				<c:if test="${craigboard.member.profileImg == null }">
 					<img id="proimg" src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 				</c:if>
 				<c:if test="${craigboard.member.profileImg != null }">
 					<img id="proimg" src="${pageContext.request.contextPath}/resources/upload/profile/${craigboard.member.profileImg}";" alt="임시이미지">
 				</c:if>
+			</button>
 			</td>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content" id="modal-content">
+			      <div class="modal-header" id="modal-header">
+				      <div>
+					      <div style="display:flex;">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/${craigboard.member.profileImg}"  alt="프로필" name="profileImg" id="imagemodal">
+					        <div>
+					        <h4 class="modal-title1 fs-5" id="exampleModalLabel">
+					        ${craigboard.member.nickname}
+					        </h4>
+					        </div>
+					      </div>
+			      	</div>
+					     <h6>${craigboard.member.manner}℃</h6>
+			        </div>
+			      
+			      <div class="modal-body" id="modal-body">
+			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">중고거래</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myLocal1Frm" action="${pageContext.request.contextPath}/local/myLocal1.do" method="GET">
+				      	<li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+					        <button type="submit" class="btn-list">동네생활</button>
+					        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myTogether1Frm" action="${pageContext.request.contextPath}/together/myTogether1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">같이해요</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myManner1Frm" action="${pageContext.request.contextPath}/manner/myManner1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">받은매너</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      </div>
+			      <div class="modal-footer" id="modal-footer">
+			        <button type="button" class="btn btn-secondary1" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		<!-- --------------------------------------------------------------------------------------------- -->
+			
+		
 
 			<td id="nickNdong"  colspan="5">${craigboard.member.nickname}<br>
 				<span id="memberInfo"></span>

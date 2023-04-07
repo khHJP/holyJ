@@ -173,7 +173,7 @@ from
 	craig c join craig_attachment ca
 	on c.no = ca.craig_no
 where
-	c.buyer = #{memberId}
+	c.buyer = #{memberId} and c.state like 'CR3'
 	
 </select>
 <select id="mySalCraig" resultMap="craigMap">

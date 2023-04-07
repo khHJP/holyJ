@@ -70,5 +70,32 @@
 		where writer = #{writer} and craig_no = #{craigNo}	
 	</select>
 	
+	<!-- ☏☏☏☏☏☏☏☏☏☏☏☏ 하나 추가 ☏☏☏☏☏☏☏☏☏☏☏☏ -->  
+	<select id="selectMannerList1" resultMap="mannerMemberMap">
+		select 
+			mr.*,
+			m.* 
+		from 
+			craig c join manner_review mr
+			on mr.craig_no = c.no
+			join member m
+			on mr.recipient = m.member_id
+		where 
+			mr.recipient = #{memberId}
+	</select>
+	<select id="selectSendMannerList" resultMap="mannerMemberMap">
+		select 
+			mr.*,
+			m.* 
+		from 
+			craig c join manner_review mr
+			on mr.craig_no = c.no
+			join member m
+			on mr.recipient = m.member_id
+		where 
+			mr.recipient = #{memberId} and mr.craig_no = #{no}
+	</select>
+	<!-- ☏☏☏☏☏☏☏☏☏☏☏☏ 하나 끝 ☏☏☏☏☏☏☏☏☏☏☏☏ -->  
+	
 	
 </mapper>

@@ -50,8 +50,8 @@ window.addEventListener('load', (e) => {
 					        </div>
 					      </div>
 			      	</div>
-					        <h6>${together.member.manner}℃</h6>
-			      </div>
+					     <h6>${together.member.manner}℃</h6>
+			        </div>
 			      
 			      <div class="modal-body" id="modal-body">
 			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
