@@ -114,12 +114,12 @@
 								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
 							</c:if>
 						<!-- 판매완료일때  -->	
-						<c:when test="${craig.state eq 'CR3'}">
+						<c:if test="${craig.state eq 'CR3'}">
 							<button type="button" class="btn btn-outline-secondary" > 판매완료 </button> 
 	<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
 								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
 							</c:if>
-						</c:when>
+						</c:if>
 
 				</div>
 			</div>		
