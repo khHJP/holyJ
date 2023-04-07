@@ -10,6 +10,7 @@ public interface MannerService {
 	
 	List<Manner> selectMannerList(String memberId);
 	List<Manner> selectMannerList1(String memberId);
+	List<Manner> selectSendMannerList(Map<String, Object> param);
 
 	//혜진추가 - 0403
 	List<Manner> craigCronSchedule();

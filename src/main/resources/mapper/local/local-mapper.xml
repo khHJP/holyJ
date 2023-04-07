@@ -78,6 +78,7 @@
 		c.category_name category_name,
         (select nickname from member where member_id = l.writer) nickname,
         (select profile_img from member where member_id = l.writer) profile_img,
+        (select manner from member where member_id = l.writer) manner,
         (select
                 dong_name
             from

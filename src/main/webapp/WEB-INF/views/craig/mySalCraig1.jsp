@@ -21,11 +21,6 @@
 	<div class="craig-container">
 			<h1 class="sub_title">${mySalCraig[0].member.nickname}님의 판매내역</h1>
 		<br />
-		<div>
-			<ul class="craig-ul">
-				<li><a id="craig-li" class="bold" href="${pageContext.request.contextPath}/craig/mySalCraig1.do">판매중</a></li>
-			</ul>
-		</div>
 				<c:forEach items="${mySalCraig}" var="sal">
 						 <ul data-no="${sal.no}" id="ul-table">
 					 		<li id="li-img">

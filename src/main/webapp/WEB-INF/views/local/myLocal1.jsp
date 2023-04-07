@@ -15,21 +15,19 @@
 <body>
 <br /><br />
 	<c:choose>
-			<c:when test="${not empty myLocal}">
-	<div class="local-container">
+		<c:when test="${not empty myLocal}">
+			<div class="local-container">
 				<h1 class="sub_title">${myLocal[0].member.nickname}님 동네생활 글</h1>
-		<br />		
-		<div>
-			<ul class="local-ul">
-				<li><a class="board"id="local-li" href="${pageContext.request.contextPath}/local/myLocal1.do">게시글</a></li>
-			</ul>
-		</div>
+			</div>
+		<br />	
 		<hr />
 		</c:when>
 		<c:otherwise>
 			<div class="local-container">
-				<h1 class="sub_title">동네생활 글</h1>
+				<h1 class="sub_title"></h1>
 			</div>
+			<br />	
+		<hr />
 		</c:otherwise>
 		</c:choose>
 <section id="board-container" class="container">
@@ -61,7 +59,7 @@
 				<c:otherwise>
 					<div id="empty">
 						<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
-					옹잉?? 작성한 게시물이 없어용!!</div>
+					옹잉?? 동네생활 게시물이 없어용!!</div>
 				</c:otherwise>
 			</c:choose>
 	</table>
