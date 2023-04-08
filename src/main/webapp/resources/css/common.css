@@ -190,6 +190,53 @@ footer {
 	font-size: 35px;
     color: black;
 }
+.alert-modal-content {
+	background: white;
+    border-radius: 20px;
+}
+.alert-modal-header {
+	border-style: none;
+    position: absolute;
+    right: 0px;
+}
+.close {
+	z-index: 99;
+}
+.alert-modal-body {
+	border-radius: 20px;
+}
+.alert-msg-img {
+	text-align: center;
+}
+.alert-msg-img img {
+	height: 80px;
+}
+.alert-msg-text {
+	font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.alert-msg-text p {
+	line-height: 34px;
+    text-align: center;
+    font-weight: 300;
+}
+.alert-msg-text h4 {
+	font-weight: 400;
+    font-size: 20px;
+    color: #4D5159;
+}
+.alert-modal-craig {
+    color: #56C271;
+}
+.alert-modal-local {
+    color: #FF8A3D;
+}
+.alert-modal-together {
+	color: #0081B4;
+}
 
 /* login */
 .modal-content {
