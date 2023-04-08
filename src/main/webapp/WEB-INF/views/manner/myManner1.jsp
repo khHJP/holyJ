@@ -84,7 +84,7 @@
 											<hr />
 									</div>
 							</c:when>
-							<c:otherwise>
+							<c:when test="${manner.compliment eq 'COM4'}">
 									<div class="span1" id="like">시간 약속을 잘 지켜요.
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
@@ -92,7 +92,7 @@
 										</div>
 											<hr />
 									</div>
-						</c:otherwise>
+							</c:when>
 					</c:choose>
 					</tr>								
 				</c:forEach>

@@ -15,7 +15,7 @@
 <body>
 <br /><br />
 	<div class="manner-container">
-		<h1 class="sub_title">${sendMannerList[0].member.nickname}님이 보내신 매너평가</h1>
+		<h1 class="sub_title">${sendMannerList[0].member.nickname}님에게 따뜻한 후기를 보냈어요</h1>
 		<hr />
 			<table id="tbl-board" class="table">
 				<div class="manner-ti">

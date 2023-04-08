@@ -53,7 +53,12 @@
 							</ul>
 							</ul>
 							<hr id="hogi-hr"/>
-							<li id="hogi"><a href="${pageContext.request.contextPath}/manner/myManner.do">후기 보기</a></li>
+							<form:form action="${pageContext.request.contextPath}/manner/takeManner.do" method="GET">
+							<input type="hidden" name="no" value="${salF.no}"/>
+							<ul id="hogi-ul">
+								<input id="hogi" type="submit" value="받은 후기보기"/>
+							</ul>
+							</form:form>
 							<hr id="hogi-hr"/>
 				</c:forEach>
 			</c:when>
