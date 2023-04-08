@@ -411,3 +411,14 @@ h5{
 .mannerdgr{
 	color:black;
 }
+
+#btnUpdate{
+	border: 0.5px solid #c0c0c0;
+	line-height: 2.1;
+}
+#btnDelete{
+	border: 0.5px solid #c0c0c0;
+	line-height: 2.2;
+}
+#btnDelete:hover{ background-color: #6C757D !important; color:white !important;  }
+#btnUpdate:hover{ background-color: #FEC106 !important; color:black !important; }

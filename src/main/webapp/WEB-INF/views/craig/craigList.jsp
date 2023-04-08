@@ -78,7 +78,7 @@
 </style>
 <div style="height: 240px; margin-bottom:20px; width:2294px !important; margin-left : -350px;  background-color: #E3EDCD">
 	<div class="seconddivv" >
-	 	<div style="margin-top: 10px; margin-left: 75px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
+	 	<div style="margin-top: 10px; margin-left: 81px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
 	 	<p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p></div>
 <%--		<div><img  style="height: 262px" src="${pageContext.request.contextPath}/resources/images/indexdang.png" /></div>  --%>
 	</div>

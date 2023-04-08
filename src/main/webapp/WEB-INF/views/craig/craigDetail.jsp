@@ -88,8 +88,6 @@
 	}
 		
 	.bg-warning {   background-color: #56C271 !important; }
-	#btnDelete:hover{ background-color: #6C757D !important; color:white !important;  }
-	#btnUpdate:hover{ background-color: #FEC106 !important; color:black !important;  }
 </style>
 
 <br>
@@ -220,7 +218,6 @@
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px;">
 							  <div class="progress-bar bg-warning" role="progressbar" style="width: 65%; background-color:color: #56C271 !important; float: right; margin-right: 0" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
-	
 						</c:if>
 						<c:if test="${craigboard.member.manner ge 50}">
 							<span style="color: red">°C</span>
@@ -228,22 +225,16 @@
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px">
 							  <div class="progress-bar bg-danger" role="progressbar" style="width: 90%; margin-right: 0;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="80"></div>
 							</div>
-							
 						</c:if>
 					</div>
-				</div>
-				<Br><!--  <span>매너온도</span> -->
+				</div><Br>
 				<div class="tooltip_wrap" >
   					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
-					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 칭찬,
-					후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
+					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
 				</div>
 			</td>
 		</tr>
-
-		<tr style="height: 10px; border-bottom: 2px solid lightgray">
-		</tr>
-		
+		<tr style="height: 10px; border-bottom: 2px solid lightgray"></tr>		
 	</thead>
 </table>
 
@@ -286,8 +277,6 @@
 	</div>
 	</c:if>
 
-
-	<%--  like 테이블에서 지금 로그인한 멤버가 이 게시물을 좋아요 한 이력이 없다면 .. 걍여기다가 img끼워넣음될듯 ajax --%
 	<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
 	<c:if test="${findCraigWish == 0 or findCraigWish == null}">
 		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
@@ -302,7 +291,6 @@
 	<span id="crcate" class="spcateNdate"></span> 
 	<span class="spcateNdate" style="margin-left: 10px; margin-right: 10px">|</span>
 	<span class="spcateNdate" style="margin-right: 30px">
-
 		<fmt:parseDate value="${craigboard.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="date" /> 
 		<fmt:formatDate value='${date}' pattern="yyyy년 MM월 dd일 a HH시 mm분"  type="both" dateStyle="full" timeStyle="full"  /> 등록
 	</span>
@@ -318,7 +306,6 @@
 	</c:if>
 
 	<div id="crContent" style="font-size: 17px; height: 200px">${craigboard.content}</div>
-
 	<div style="margin-bottom: 10px; height: 90px; ">
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> · 조회 </span> <span id="spancrReadCount">${craigboard.hits}</span>
@@ -336,7 +323,7 @@
 		<sec:authentication property="principal" var="loginMember" />
 			<c:if test="${craigboard.member.memberId == loginMember.memberId}">
 				<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
-			<!-- ♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣  -->
+		<!-- ♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣  -->
 			</c:if>	
 	</div>
 </div>
@@ -353,9 +340,6 @@
 	 action="${pageContext.request.contextPath}/craig/craigBoardDelete.do?${_csrf.parameterName}=${_csrf.token}"  >
 	 <input type="hidden" name="no" id="delno" value="${craigboard.no}" >
 </form:form>
-
-
-
 
 
 <script>
@@ -502,16 +486,7 @@ const sale = "${craigboard.state}";
 if(sale == 'CR3'){
 	$(updateBtn).attr("disabled", true);
 	$(updateBtn).css("cursor", 'not-allowed');
-
-<%--일단버려
-	$(updateBtn).remove();
-	const li = document.querySelector("#menu li");
 	
-	const text = `<span class="d-inline-block" style="display:inline" tabindex="0" data-toggle="tooltip" title="판매완료로 게시글 수정불가">
-		<button id="btnUpdate" type="button" class="btn btn-warning" style="pointer-events: none; float: right; margin-top: 10px; margin-bottom: 60px; margin-left: 50px; padding-bottom:20px; height:37px; background-color:white; color:black; vertical-align: middle; " disabled >수정하기</button>
-			</span>`;
-	$(li).prepend(text);
---%>		
 } 
 
 

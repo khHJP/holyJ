@@ -56,6 +56,7 @@ window.addEventListener('load', (e) => {
 	const stompClient = Stomp.over(ws);
 	stompClient.connect({}, (frame) => {
 		console.log("연결 성공!", frame); 
+		
 	});
 	</script>
 </sec:authorize>
