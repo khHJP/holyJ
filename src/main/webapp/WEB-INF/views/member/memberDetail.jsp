@@ -31,8 +31,7 @@
 			           	<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" class="imagePreview">
 			           </div>
 			       </div>
-			   </div>
-			
+			   </div>			
 				<td>
 					<input type="text" class="form-con" name="memberId" id="memberId" value='<sec:authentication property="principal.memberId"/>' readonly required/>
 				</td>

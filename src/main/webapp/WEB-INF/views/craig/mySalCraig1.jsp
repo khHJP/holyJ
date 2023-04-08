@@ -14,26 +14,13 @@
 </head>
 <body>
 <br /><br />
-	<div class="craig-container">
-				<c:if test="${fn:length(mySalCraig) >= 0}">
-					<h1 class="sub_title">${member.memberId}님의 판매내역</h1>
-				</c:if>
-		<br />
-		<div>
-			<ul class="craig-ul">
-				<li><a id="craig-li" class="bold" href="${pageContext.request.contextPath}/craig/mySalCraig1.do">판매중</a></li>
-		        <li>
-				<form:form name="salFCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalFCraig1.do" method="GET">
-				        <button type="submit" class="btn-list">판매완료</button>
-				        <input type="hidden" name="memberId" value="${mySalCraig1.writer}"/>
-			        </form:form>
-		        </li>
-			</ul>
-		</div>
 	<section id="board-container" class="container">
 		<table id="tbl-board" class="table ul-hover">
 		<c:choose>
 			<c:when test="${not empty mySalCraig}">
+	<div class="craig-container">
+			<h1 class="sub_title">${mySalCraig[0].member.nickname}님의 판매내역</h1>
+		<br />
 				<c:forEach items="${mySalCraig}" var="sal">
 						 <ul data-no="${sal.no}" id="ul-table">
 					 		<li id="li-img">
@@ -68,6 +55,7 @@
 				</c:forEach>
 			</c:when>
 				<c:otherwise>
+				</div>
 					<div id="empty">
 						<img src="${pageContext.request.contextPath}/resources/images/오이.png" alt="" id="emptyimg"/>
 					옹잉?? 판매중인 내역이 없어용!!</div>

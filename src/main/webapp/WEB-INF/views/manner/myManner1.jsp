@@ -14,14 +14,27 @@
 </head>
 <body>
 <br /><br />
+	<c:choose>
+		<c:when test="${not empty mannerList}">
 	<div class="manner-container">
-		<h1 class="sub_title">&닉네임&이 받은 매너</h1>
+		<h1 class="sub_title">${mannerList[0].member.nickname}님이 받은 매너</h1>
 		<hr />
 			<table id="tbl-board" class="table">
 				<div class="manner-ti">
 					<img src="${pageContext.request.contextPath}/resources/images/smile.png" alt="" id="smile"/>
 					<span class="manner-sub">받은 매너 칭찬</span>
 				</div>
+				</c:when>
+				<c:otherwise>
+		<div class="manner-container">
+			<h1 class="sub_title">받은 매너<h1>
+			<hr />
+				<table id="tbl-board" class="table">
+					<div class="manner-ti">
+						<span class="manner-sub">받은 매너 칭찬이 없습니다😥</span>
+					</div>
+				</c:otherwise>
+		</c:choose>
 				<c:forEach items="${mannerList}" var="manner">
 					 <tr data-no="${manner.mannerNo}" name="no" id="tr-table">
 						<c:if test="${manner.prefer eq 'MA2'}">
@@ -71,7 +84,7 @@
 											<hr />
 									</div>
 							</c:when>
-							<c:otherwise>
+							<c:when test="${manner.compliment eq 'COM4'}">
 									<div class="span1" id="like">시간 약속을 잘 지켜요.
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
@@ -79,7 +92,7 @@
 										</div>
 											<hr />
 									</div>
-						</c:otherwise>
+							</c:when>
 					</c:choose>
 					</tr>								
 				</c:forEach>
