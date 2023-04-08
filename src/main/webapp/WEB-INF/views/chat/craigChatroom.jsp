@@ -52,10 +52,39 @@
 					<!-- 메뉴버튼 토글시  -->
 					<div class="action_menu">
 						<ul>
-							<li id="craigReport">신고하기</li>
+							<li id="craigReport" data-toggle="modal" data-target="#reportModal">신고하기</li>
 							<li id="craigExit">채팅방 나가기</li>
 						</ul>
 					</div>
+					<!----------- 신고 Modal start ------------->
+					<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="reportModalLabel">사용자 신고</h5>
+					      </div>
+					      <div class="modal-body" style="height: 335px;">
+							<form:form name="userReportFrm" class="report-box">
+								<c:forEach items="${reasonList}" var="reason" varStatus="vs">
+										<div class="form-check">
+											<input type="checkbox" name="reasonNo" class="form-check-input" id="${reason.reportType}${vs.count}" 
+												   value="${reason.reasonNo}" data-report-type="${reason.reportType}" onclick='checkOnlyOne(this)'>
+											<label class="form-check-label" for="${reason.reportType}${vs.count}">${reason.reasonName}</label>
+										</div>
+								</c:forEach>
+								<input type="hidden" name="writer" value="${loginMember.memberId}">
+								<input type="hidden" name="reportedMember" value="${info.reportedId}">
+								<input type="hidden" name="reportType" value="${info.reportType}">
+								<input type="hidden" name="reportPostNo" value="${info.boardNo}">
+							</form:form>
+					      </div>
+					      <div class="modal-footer ">
+					        <button id="saveReport" type="button" class="btn btn-primary" style="position: relative; z-index: 10;">신고하기</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+					<!------------ 신고 Modal end ------------->
 			</div>
 			<!------- 채팅방 헤더 end ------------>
 	
@@ -322,6 +351,58 @@ headers[csrfHeader] = csrfToken;
 
 }); */
 
+/********************* 사용자 신고 *************************/
+/* 체크박스 제어 */
+const checkOnlyOne = (element) => {
+  
+  const checkboxes = document.getElementsByName("reasonNo"); // reasonNo -> NodeList
+  
+  checkboxes.forEach((cb) => {
+    cb.checked = false; // 모든 체크박스 체크 해제
+  })
+  
+  element.checked = true; // element: onclick(this) 적어놓은 태그 
+};
+/* 
+/* 유효성 검사 */
+
+document.querySelector("#saveReport").addEventListener('click', (e) => {
+	
+	const reportTypes = document.querySelectorAll("[name=reasonNo]");
+	let type;
+	
+	console.log(reportTypes);
+	reportTypes.forEach((reportType) => {
+		if(reportType.checked == true){
+			type = reportType.dataset.reportType;
+		}
+	});
+	
+	if(type == null){
+		alert("사유를 선택해주세요.");
+		return false;
+	} else {
+		if(confirm('신고하시겠습니까?')){
+			// craig_meeting에서 해당 행 update 처리
+		    $.ajax({
+		        headers,
+		        url : '${pageContext.request.contextPath}/report/chat/userReportEnroll.do',
+		        data : {
+		        	writer : chatUser,
+					reasonNo: type
+		        },
+		        type : "POST",
+		        success(){
+
+					// $("#locationModal").modal('hide'); // 모달 감추기	 
+		        },
+		        error: console.log
+		    });   
+		}
+	}	
+});
+
+
 /********************* 장소공유 관련 *************************/
 var container = document.getElementById('map');
 var map;
@@ -496,87 +577,112 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 	const dateBtn = document.querySelector("#meetingDate");
 	const placeBtn = document.querySelector("#meetingPlace");
 	
-	const craigMsgs = '${craigMsgs}';
-	if(craigMsgs.length < 3){ // [] string으로 2개 들어간것 처리됨.. 
-		alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
-		$("#meetingModal").modal('hide'); // 모달 감추기	 
-		
-		return;
-	} 
 	
-	if(!time){
-		alert("시간을 선택해주세요.");
-	}
-	else if(!meetingDate){
-		alert("날짜를 선택해주세요.");
-	}
-	else{
-		// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
-		meetingDate.setHours(time.substring(0, 2));
-		meetingDate.setMinutes(time.slice(-2)); 
-		
-		
-		// date버튼 html용 
-		let mon = meetingDate.getMonth() + 1;
-		let day = meetingDate.getDate();
-		const weekday = ['일', '월', '화', '수', '목', '금', '토'];
-		let week = weekday[meetingDate.getDay()];
-		let times = convertTime(meetingDate);
-		
-		let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
-		console.log(dateHtml);
-		
-		// 2023-04-12 19:12 형식으로 변환
-		let date = meetingDate.getFullYear() + '-' 
-					+ ( (meetingDate.getMonth() + 1) < 9 ? 
-							"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
-					+ ( (meetingDate.getDate()) < 9 ? 
-							"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
-					+ meetingDate.getHours() + ':' 
-					+ ( meetingDate.getMinutes() < 10 ? 
-							"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
-		meetingDate = date;
-	
-		
-		// 중고거래 예약 테이블에 행 추가
-    $.ajax({
+	/* 대화이력 조회 start */
+	 $.ajax({
 	        headers,
-	        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
-	        data : {
-				chatroomId, memberId, meetingDate
-	        },
-	        type : "POST",
+	        url : '${pageContext.request.contextPath}/chat/criagMsgCnt',
+	        data : {chatroomId},
+	        dataType: "json",
+	        type : "GET",
 	        success(data){
-				
-	        	// 약속 메시지 보내기
-		        const payload = {
-			        	chatroomId,
-		             	writer : '<sec:authentication property="principal.username"/>',
-		             	content : dateHtml,
-		             	sentTime : Date.now(),
-		             	type : 'BOOK',
-		            }
-			        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
-	        	
+	  			
+	        	// 채팅방 대화이력 없을때
+	        	if(data == 0){
+	        		console.log("메시지없음");
+	        		alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
+	        		frm.reset(); // 시간폼 초기화
+	        		$("#datePicker").datepicker("clearDates"); // datepicker 초기화
+	        		$("#meetingModal").modal('hide'); // 모달 감추기	
+	        		
+	        	} else {
+	        	// 채팅방 대화이력 있을때
+	        		if(!time){
+	        			alert("시간을 선택해주세요.");
+	        		}
+	        		else if(!meetingDate){
+	        			alert("날짜를 선택해주세요.");
+	        		}
+	        		else{
+	        			// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
+	        			meetingDate.setHours(time.substring(0, 2));
+	        			meetingDate.setMinutes(time.slice(-2)); 
+	        			
+	        			
+	        			// date버튼 html용 
+	        			let mon = meetingDate.getMonth() + 1;
+	        			let day = meetingDate.getDate();
+	        			const weekday = ['일', '월', '화', '수', '목', '금', '토'];
+	        			let week = weekday[meetingDate.getDay()];
+	        			let times = convertTime(meetingDate);
+	        			
+	        			let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
+	        			console.log(dateHtml);
+	        			
+	        			// 07:19 
+	        			// hours가 10보다 작다면 앞에 0, 
+	        			// 오전 12시는 0 으로 찍힘 
+	        			
+
+	        			// 2023-04-12 19:12 형식으로 변환
+	        			let date = meetingDate.getFullYear() + '-' 
+	        						+ ( (meetingDate.getMonth() + 1) < 9 ? 
+	        								"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
+	        						+ ( (meetingDate.getDate()) < 9 ? 
+	        								"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
+	        						+ ( (meetingDate.getHours()) < 10 ?
+	        								"0" + (meetingDate.getHours()) : (meetingDate.getHours()) ) + ':' 
+	        						+ ( meetingDate.getMinutes() < 10 ? 
+	        								"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
+	        			meetingDate = date;
+	        		
+	        			
+	        		/* 중고거래 예약 테이블에 행 추가 */
+	        	    $.ajax({
+	        		        headers,
+	        		        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
+	        		        data : {
+	        					chatroomId, memberId, meetingDate
+	        		        },
+	        		        type : "POST",
+	        		        success(data){
+	        					
+	        		        	// 약속 메시지 보내기
+	        			        const payload = {
+	        				        	chatroomId,
+	        			             	writer : '<sec:authentication property="principal.username"/>',
+	        			             	content : dateHtml,
+	        			             	sentTime : Date.now(),
+	        			             	type : 'BOOK',
+	        			            }
+	        				        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+	        		        	
+	        		        },
+	        		        error: console.log
+	        		    });  
+	        		
+	        				
+	        			document.querySelector(".btnWrap").innerHTML += `
+	        				<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
+	        				<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
+	        			`
+
+	        			$("#meeting").css({
+	        				"display" : "none"
+	        			}); 	
+	        			
+	        			$(".craig_status").html("예약중");
+	        			
+	        			$("#meetingModal").modal('hide'); // 모달 감추기	        	
+	        		
+	        		} /* else절 끝*/
+	
+	        	} /* success 끝 */
+	    	
 	        },
 	        error: console.log
-	    });  
-	
-			
-		document.querySelector(".btnWrap").innerHTML += `
-			<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
-			<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
-		`
-
-		$("#meeting").css({
-			"display" : "none"
-		}); 	
-		
-		$(".craig_status").html("예약중");
-		
-		$("#meetingModal").modal('hide'); // 모달 감추기	        	
-	}
-	
+		  
+ 		});  /* 대화이력 조회 end */
 });
 
 
@@ -777,7 +883,7 @@ stompClient.connect({}, (frame) => {
 					const myNick = '${chatUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<p>\${myNick} 님이 \${content} 에 약속을 만들었어요. 약속은 꼭 지켜주세요!</p>
+						<span>\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
 					</li>
 					`;
 				}
@@ -900,7 +1006,7 @@ stompClient.connect({}, (frame) => {
 					const otherNick = '${otherUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<p>\${otherNick} 님이 \${content} 에 약속을 만들었어요. 약속은 꼭 지켜주세요!</p>
+						<span>\${otherNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
 					</li>
 					`;
 					
@@ -950,27 +1056,21 @@ function convertTime(now){
 	let min = now.getMinutes();
 	let daynight;
 	
-	console.log(hour);
-		
+	console.log(hour + "시간찍어"); // 11
 	if (hour < 12){
 		daynight = '오전';
-	} else if (hour = '0'){ // 내일 질문
-		console.log('왜??');
-		daynight = '오전';
-		hour = '00';
+		
+		if(hour == '0'){
+			daynight = '오전';
+			hour = '12';
+		}
 	}
 	else {
-		switch(hour){
-		case 12 :
-			daynight = '오후';
-			break;
-		default :
-			daynight = '오후';
-			hour -= 12;
-			if(hour < 10){
+		daynight = '오후';
+		hour -= 12;
+		
+		if (hour < 10){
 			hour = '0' + hour;
-			}
-			break;
 		}
 	} 
 
