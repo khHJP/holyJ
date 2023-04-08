@@ -31,9 +31,46 @@
 	</select>
 	<!-- 하나 끝 -->
 	
-<resultMap type="notice" id="noticeMap"></resultMap>	
+<resultMap type="noticeUser" id="noticeMap"></resultMap>	
 <resultMap type="noticeKeyword" id="noticeKeywordMap"></resultMap>	
-
-
+	
+	<!--  예지 시작 -->
+	
+	<select id="selectAdminNoticeList" resultMap="noticeMap">
+		select
+			*
+		from
+			notice_admin
+		order by
+			reg_date desc
+	</select>
+	
+	<select id="selectAdminNoticeTotalCount" resultMap="noticeTotalCountMap">
+		select
+			count(*)
+		from
+			notice_admin
+	</select>
+	
+	<resultMap type="java.lang.Integer" id="noticeTotalCountMap"></resultMap>
+	
+	<insert id="insertAdminNotice">
+		insert into
+			notice_admin
+		values (
+			seq_notice_admin_no.nextval,
+			#{msg},
+			#{regDate}
+		)
+	</insert>
+	
+	<delete id="deleteAdminNotice">
+		delete from
+			notice_admin
+		where
+			no = #{no}
+	</delete>
+	
+	<!-- 예지 끝 -->
 
 </mapper>
