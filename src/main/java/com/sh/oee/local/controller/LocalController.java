@@ -329,6 +329,7 @@ public class LocalController {
 	@RequestMapping(value = "/commentInsert.do", method = RequestMethod.POST)
 	public String commentInsert(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
 		log.debug("comment보여라! : " + comment );
+		//Spring Security에서 로그인을 한 사용자의 정보를 가져오는 코드
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String memberId = userDetails.getUsername();
 		log.debug("memberId : " + memberId );
