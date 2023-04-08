@@ -8,7 +8,11 @@ import com.sh.oee.manner.model.dto.Manner;
 public interface MannerService {
 
 	
+
 	List<Manner> selectMannerList(String memberId);
+	List<Manner> selectMannerList1(String memberId);
+	List<Manner> selectSendMannerList(Map<String, Object> param);
+	List<Manner> selectTakeMannerList(Map<String, Object> param);
 
 	//혜진추가 - 0403
 	List<Manner> craigCronSchedule();
@@ -22,4 +26,11 @@ public interface MannerService {
 	//혜진추가 - 0404
 	int updateMannerDone();
 	
+	//혜진추가 - 0406
+	int craigMannerEnroll(Manner manner);
+
+	//나 매너평가한거있냐 찾기 0406
+	Manner selectMannerOne(Map<String, Object> mannerMap);
+
+
 }

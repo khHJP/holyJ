@@ -98,10 +98,15 @@ function setCommentOrderList(order) {
 <div class="localboard-container">
 	<div class="localboard-wrap">
 		<span class="category">${localdetail.localcategory.categoryName}</span>
-		<div class="memberInfo">
-			<div class="profileimg">
-				<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">
-			</div>
+			
+		<!-- -------------------------------------------------------------------------------------------------------------- -->		
+			<!-- Button trigger modal -->
+			<div class="memberInfo">
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">				
+				<div class="profileimg">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">					
+				</div>
+			</button>
 			<div class="detailInfo">
 				<span class="nickname">${localdetail.member.nickname}</span>
 				<div class="dong-date">
@@ -130,6 +135,70 @@ function setCommentOrderList(order) {
 				</div>
 			</div>
 		</div>
+			
+		
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content" id="modal-content">
+			      <div class="modal-header" id="modal-header">
+				      <div>
+					      <div style="display:flex;">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}"  alt="프로필" name="profileImg" id="imagemodal">
+					        <div>
+					        <h4 class="modal-title1 fs-5" id="exampleModalLabel">
+					        ${localdetail.member.nickname}
+					        </h4>
+					        <h6 id="dong">${localdetail.dong.dongName}</h6>
+					        </div>
+					      </div>
+			      	</div>
+					     <h6>${localdetail.member.manner}℃</h6>
+			        </div>
+			      
+			      <div class="modal-body" id="modal-body">
+			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">중고거래</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myLocal1Frm" action="${pageContext.request.contextPath}/local/myLocal1.do" method="GET">
+				      	<li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+					        <button type="submit" class="btn-list">동네생활</button>
+					        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myTogether1Frm" action="${pageContext.request.contextPath}/together/myTogether1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">같이해요</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myManner1Frm" action="${pageContext.request.contextPath}/manner/myManner1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">받은매너</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      </div>
+			      <div class="modal-footer" id="modal-footer">
+			        <button type="button" class="btn btn-secondary1" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			</td> 
+		<!-- --------------------------------------------------------------------------------------------- -->
+		
+		
+		
+		
 			<div class="titleInfo" >
 				<span>${localdetail.title}</span>
 			</div>
@@ -198,7 +267,7 @@ function setCommentOrderList(order) {
 							<span>${comment.dong.dongName}</span>
 							&nbsp;
 							<fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
-								<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
+								<fmt:formatDate value="${regDate}" pattern="MM.dd a HH:mm"/>
 						</div>
 					</div>
 				</div>

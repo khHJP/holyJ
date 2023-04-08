@@ -136,9 +136,9 @@ document.querySelector(".dupl-btn").addEventListener('click', (e) => {
 });
 
 /* 아이디 중복검사후 아이디 재설정한 경우 */
-document.querySelector(".dupl-btn").addEventListener('focus', (e) => {
+document.querySelector("#memberId").addEventListener('focus', (e) => {
 	idValid.value = 0;
-}
+});
 
 /* 비밀번호 유효성 검사 */
 // 영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
@@ -182,9 +182,14 @@ document.memberEnrollFrm.addEventListener('submit', (e) => {
 	const checkPwd = document.querySelector("#pwdValid");
 	console.log(checkId, checkPwd);
 	
-	
 	// 아이디, 비밀번호 
-	if(checkId.value == 0 || checkPwd.value == 0){
+	if(checkId.value == 0){
+		alert("아이디 중복 확인을 해주세요.");
+		document.querySelector("#memberId").select();
+		e.preventDefault();
+	}
+	
+	if(checkPwd.value == 0){
 		e.preventDefault();
 	}
 	

@@ -17,6 +17,7 @@ window.addEventListener('load', (e) => {
 	else if(temperature.innerText >= 30 && temperature.innerText < 50) temperature.style.color = '#56C271'; 
 	else if(temperature.innerText >= 50) temperature.style.color = '#F94C66'; 
 });
+
 </script>
 <sec:authentication property="principal" var="loginMember"/>
 <div class="together-container">
@@ -24,9 +25,75 @@ window.addEventListener('load', (e) => {
 		<!-- 글쓴이 프로필 -->
 		<div class="writer-info-box">
 			<div class="writer-box">
-				<div class="profile-box">
-					<img src="${pageContext.request.contextPath}/resources/upload/profile/${together.member.profileImg}" alt="사용자프로필">
+			
+			<!-- -------------------------------------------------------------------------------------------------------------- -->		
+			<!-- Button trigger modal -->
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			<div class="profile-box">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${together.member.profileImg}" alt="사용자프로필" id="imagePreview">
 				</div>
+			</button>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content" id="modal-content">
+			      <div class="modal-header" id="modal-header">
+				      <div>
+					      <div style="display:flex;">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/${together.member.profileImg}"  alt="프로필" name="profileImg" id="imagemodal">
+					        <div>
+					        <h4 class="modal-title1 fs-5" id="exampleModalLabel">
+					        ${together.member.nickname}
+					        </h4>
+					        <h6 id="dong">${together.dong.dongName}</h6>
+					        </div>
+					      </div>
+			      	</div>
+					     <h6>${together.member.manner}℃</h6>
+			        </div>
+			      
+			      <div class="modal-body" id="modal-body">
+			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">중고거래</button>
+				        <input type="hidden" name="memberId" value="${together.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myLocal1Frm" action="${pageContext.request.contextPath}/local/myLocal1.do" method="GET">
+				      	<li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+					        <button type="submit" class="btn-list">동네생활</button>
+					        <input type="hidden" name="memberId" value="${together.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myTogether1Frm" action="${pageContext.request.contextPath}/together/myTogether1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">같이해요</button>
+				        <input type="hidden" name="memberId" value="${together.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myManner1Frm" action="${pageContext.request.contextPath}/manner/myManner1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">받은매너</button>
+				        <input type="hidden" name="memberId" value="${together.writer}"/>
+				        </li>
+			        </form:form>
+			      </div>
+			      <div class="modal-footer" id="modal-footer">
+			        <button type="button" class="btn btn-secondary1" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			</td>
+		<!-- --------------------------------------------------------------------------------------------- -->
+			
+			
+				
 				<div class="detail-box">
 					<p>${together.member.nickname}</p>
 					<p>${together.dong.dongName}</p>

@@ -28,7 +28,7 @@
 								<div class="span1" id="like">좋아요
 									<div id="count">
 										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-										<span id="writer">${manner.writer}</span>
+										<span id="writer">${manner.member.nickname}</span>
 									</div>
 										<hr />
 								</div>
@@ -37,7 +37,7 @@
 								<div class="span1" id="like">최고에요
 									<div id="count">
 										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-										<span id="writer">${manner.writer}</span>
+										<span id="writer">${manner.member.nickname}</span>
 									</div>
 										<hr />
 								</div>
@@ -48,7 +48,7 @@
 									<div class="span1" id="like">제가 있는 곳까지 와서 거래했어요.
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-											<span id="writer">${manner.writer}</span>
+											<span id="writer">${manner.member.nickname}</span>
 										</div>
 											<hr />
 									</div>
@@ -57,7 +57,7 @@
 									<div class="span1" id="like">응답이 빨라요
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-											<span id="writer">${manner.writer}</span>
+											<span id="writer">${manner.member.nickname}</span>
 										</div>
 											<hr />
 									</div>
@@ -66,20 +66,20 @@
 									<div class="span1" id="like">친절하고 매너가 좋아요.
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-											<span id="writer">${manner.writer}</span>
+											<span id="writer">${manner.member.nickname}</span>
 										</div>
 											<hr />
 									</div>
 							</c:when>
-							<c:otherwise>
+							<c:when test="${manner.compliment eq 'COM4'}">
 									<div class="span1" id="like">시간 약속을 잘 지켜요.
 										<div id="count">
 											<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="" id="mannerhu"/>
-											<span id="writer">${manner.writer}</span>
+											<span id="writer">${manner.member.nickname}</span>
 										</div>
 											<hr />
 									</div>
-						</c:otherwise>
+						</c:when>
 					</c:choose>
 					</tr>								
 				</c:forEach>

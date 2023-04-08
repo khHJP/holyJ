@@ -74,6 +74,19 @@
 	
 	#map { 	margin: 0 auto; }
 	
+	.btn{ 
+	   display: inline-block;
+	    width: 100px;
+	    height: 45px;
+	    vertical-align: middle;
+	    text-decoration: none;
+	    border : none;
+	    text-align: center;
+	    line-height: 47px;
+	    border-radius: 10px;
+	    padding: 0px 14px 13px;
+	}
+		
 	.bg-warning {   background-color: #56C271 !important; }
 </style>
 
@@ -173,15 +186,78 @@
 <table id="crboProfiletbl">
 	<thead>
 		<tr>
-		<%-- ■ 프사 --%>
+		
+		<!-- -------------------------------------------------------------------------------------------------------------- -->		
+			<!-- Button trigger modal -->
+			<%-- ■ 프사 --%>
 			<td style="width: 60px">
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 				<c:if test="${craigboard.member.profileImg == null }">
 					<img id="proimg" src="${pageContext.request.contextPath}/resources/images/oee.png" alt="임시이미지">
 				</c:if>
 				<c:if test="${craigboard.member.profileImg != null }">
 					<img id="proimg" src="${pageContext.request.contextPath}/resources/upload/profile/${craigboard.member.profileImg}";" alt="임시이미지">
 				</c:if>
+			</button>
 			</td>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content" id="modal-content">
+			      <div class="modal-header" id="modal-header">
+				      <div>
+					      <div style="display:flex;">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/${craigboard.member.profileImg}"  alt="프로필" name="profileImg" id="imagemodal">
+					        <div>
+					        <h4 class="modal-title1 fs-5" id="exampleModalLabel">
+					        ${craigboard.member.nickname}
+					        </h4>
+					        </div>
+					      </div>
+			      	</div>
+					     <h6>${craigboard.member.manner}℃</h6>
+			        </div>
+			      
+			      <div class="modal-body" id="modal-body">
+			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">중고거래</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myLocal1Frm" action="${pageContext.request.contextPath}/local/myLocal1.do" method="GET">
+				      	<li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+					        <button type="submit" class="btn-list">동네생활</button>
+					        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myTogether1Frm" action="${pageContext.request.contextPath}/together/myTogether1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">같이해요</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myManner1Frm" action="${pageContext.request.contextPath}/manner/myManner1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">받은매너</button>
+				        <input type="hidden" name="memberId" value="${craigboard.writer}"/>
+				        </li>
+			        </form:form>
+			      </div>
+			      <div class="modal-footer" id="modal-footer">
+			        <button type="button" class="btn btn-secondary1" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		<!-- --------------------------------------------------------------------------------------------- -->
+			
+		
 
 			<td id="nickNdong"  colspan="5">${craigboard.member.nickname}<br>
 				<span id="memberInfo"></span>
@@ -205,7 +281,6 @@
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px;">
 							  <div class="progress-bar bg-warning" role="progressbar" style="width: 65%; background-color:color: #56C271 !important; float: right; margin-right: 0" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
-	
 						</c:if>
 						<c:if test="${craigboard.member.manner ge 50}">
 							<span style="color: red">°C</span>
@@ -213,17 +288,16 @@
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px">
 							  <div class="progress-bar bg-danger" role="progressbar" style="width: 90%; margin-right: 0;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="80"></div>
 							</div>
-							
 						</c:if>
 					</div>
+				</div><Br>
+				<div class="tooltip_wrap" >
+  					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
+					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
 				</div>
-				<Br> <span>매너온도</span>
 			</td>
 		</tr>
-
-		<tr style="height: 10px; border-bottom: 2px solid lightgray">
-		</tr>
-		
+		<tr style="height: 10px; border-bottom: 2px solid lightgray"></tr>		
 	</thead>
 </table>
 
@@ -245,7 +319,7 @@
 <%-- sec 안써도됨 --%>
 	<c:if test="${loginMember.memberId != craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:695px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:691px; width: 400px; display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -256,7 +330,7 @@
 	</c:if>
 	<c:if test="${loginMember.memberId == craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:695px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:691px; width: 400px; display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -266,8 +340,6 @@
 	</div>
 	</c:if>
 
-
-	<%--  like 테이블에서 지금 로그인한 멤버가 이 게시물을 좋아요 한 이력이 없다면 .. 걍여기다가 img끼워넣음될듯 ajax --%
 	<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
 	<c:if test="${findCraigWish == 0 or findCraigWish == null}">
 		<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
@@ -282,7 +354,6 @@
 	<span id="crcate" class="spcateNdate"></span> 
 	<span class="spcateNdate" style="margin-left: 10px; margin-right: 10px">|</span>
 	<span class="spcateNdate" style="margin-right: 30px">
-
 		<fmt:parseDate value="${craigboard.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="date" /> 
 		<fmt:formatDate value='${date}' pattern="yyyy년 MM월 dd일 a HH시 mm분"  type="both" dateStyle="full" timeStyle="full"  /> 등록
 	</span>
@@ -298,30 +369,29 @@
 	</c:if>
 
 	<div id="crContent" style="font-size: 17px; height: 200px">${craigboard.content}</div>
-
 	<div style="margin-bottom: 10px; height: 90px; ">
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> · 조회 </span> <span id="spancrReadCount">${craigboard.hits}</span>
 
+		<!-- ♣♣♣♣♣ 로그인한사람 = 글쓴이 아닐 경우 채팅하기 버튼 ♣♣♣♣♣  -->
 		<sec:authentication property="principal" var="loginMember" />
 		<c:if test="${craigboard.member.memberId != loginMember.memberId}">		
-		<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
-
-		<!-- ★★★★ 로그인한사람 = 일반사용자(no writer)일 경우 채팅하기 버튼 ★★★★★  -->
-		<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
-		<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★  -->
+			<button type="button" class="btn btn-danger" id="reportBtn" style="display: inline-block; margin-top: -10px;">신고하기</button>
+			<c:if test="${ craigboard.state != 'CR3' || ( craigboard.state =='CR3' && craigboard.buyer == loginMember.memberId )}">
+				<button id="chatBtn" type="button" class="btn btn-success" style="display: inline-block; margin-top: -10px;">채팅하기</button>
+			</c:if>	
 		</c:if>	
 		
 		<!-- ♣♣♣♣♣ 로그인한사람 = 글쓴이  경우 채팅하기 버튼 ♣♣♣♣♣  -->
 		<sec:authentication property="principal" var="loginMember" />
-		<c:if test="${craigboard.member.memberId == loginMember.memberId}">
-			<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
+			<c:if test="${craigboard.member.memberId == loginMember.memberId}">
+				<button id="writerChatBtn" type="button" class="btn btn-success" style="width:140px; display: inline-block; margin-top: -10px;">대화 중인 채팅방</button>
 		<!-- ♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣  -->
-		</c:if>	
+			</c:if>	
 	</div>
 </div>
 
-<hr style="width: 610px; margin: 0 auto; margin-top: 50px; margin-bottom: 30px; border: 1px solid lightgray" />
+<hr style="width: 610px; margin: 0 auto; margin-top: 60px; margin-bottom: 30px; border: 1px solid lightgray" />
 
 <div id="craigPlace">
 	<p style="text-align: left">거래 희망 장소</p>
@@ -333,9 +403,6 @@
 	 action="${pageContext.request.contextPath}/craig/craigBoardDelete.do?${_csrf.parameterName}=${_csrf.token}"  >
 	 <input type="hidden" name="no" id="delno" value="${craigboard.no}" >
 </form:form>
-
-
-
 
 
 <script>
@@ -482,16 +549,7 @@ const sale = "${craigboard.state}";
 if(sale == 'CR3'){
 	$(updateBtn).attr("disabled", true);
 	$(updateBtn).css("cursor", 'not-allowed');
-
-<%--일단버려
-	$(updateBtn).remove();
-	const li = document.querySelector("#menu li");
 	
-	const text = `<span class="d-inline-block" style="display:inline" tabindex="0" data-toggle="tooltip" title="판매완료로 게시글 수정불가">
-		<button id="btnUpdate" type="button" class="btn btn-warning" style="pointer-events: none; float: right; margin-top: 10px; margin-bottom: 60px; margin-left: 50px; padding-bottom:20px; height:37px; background-color:white; color:black; vertical-align: middle; " disabled >수정하기</button>
-			</span>`;
-	$(li).prepend(text);
---%>		
 } 
 
 
@@ -532,73 +590,79 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 <!-- ★★★★★★ 450번 라인부터 시작  -   로그인한사람 나 != 글쓰니가 아닐경우 !! '채팅하기' 버튼일 경우 채팅방 들어가는 코드 작성해주시면됩니다  ★★★★★★★-->
 <sec:authentication property="principal" var="loginMember" />
 <c:if test="${loginMember.memberId != craigboard.writer }">  
-<script>
-document.querySelector("#chatBtn").addEventListener('click', (e) => {
-	const craigNo = ${craigboard.no}
-	$.ajax({
-		url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
-		method : 'GET',
-		dataType : "json",
-		success(data){
-			const {memberId, chatroomId} = data;
-			
-			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-			const name = "craigChatroom";
-			openPopup(url, name);
-		},
-		error : console.log
-		});		
-
-});
-
-function openPopup(url, name){
-	let win;
-	win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
-	win.opener.self;
-}
-
-
-// 혜진추가 0402 - 채팅수 바로 증가
-const spancrChat = document.querySelector("#spancrChat");
-
-$( "#chatBtn" ).one( "click", function( event ) {
-	const craigNo = ${craigboard.no};
-
-	$.ajax({
-	    url : "${pageContext.request.contextPath}/craig/findmeFromChat.do",
-		method : 'get',
-		data : {no : craigNo},
-		dataType : 'json',
-		success(data){
-					console.log( "data : ", data  );
-					console.log( data==1  );
-					if(data == 1){
-						spancrChat.innerHTML =  parseInt(spancrChat.innerHTML);						
-					}
-					else if(data ==0 ){
-						spancrChat.innerHTML =  parseInt(spancrChat.innerHTML)+ parseInt(1);
-					}
-
-		},
-		error : console.log
-	});//end - ajax	
-});
-
-
-//신고
-document.querySelector("#reportBtn").addEventListener('click', (e)=>{
-
-	const reportedId = '${craigboard.writer}'; //게시글쓴사람
-	const reportType = 'CR';
-	const boardNo = '${craigboard.no}';
-
-	console.log(reportType, boardNo, reportedId);
+	<c:if test="${ craigboard.state != 'CR3' || ( craigboard.state =='CR3' && craigboard.buyer == loginMember.memberId )}">
+	<script>
+	document.querySelector("#chatBtn").addEventListener('click', (e) => {
+		const craigNo = ${craigboard.no}
+		$.ajax({
+			url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
+			method : 'GET',
+			dataType : "json",
+			success(data){
+				const {memberId, chatroomId} = data;
+				
+				const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
+				const name = "craigChatroom";
+				openPopup(url, name);
+			},
+			error : console.log
+			});		
 	
-	location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
-
+	});
 	
-})
-</script>	
+	function openPopup(url, name){
+		let win;
+		win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
+		win.opener.self;
+	}
+	
+	
+	// 혜진추가 0402 - 채팅수 바로 증가
+	const spancrChat = document.querySelector("#spancrChat");
+	
+	$( "#chatBtn" ).one( "click", function( event ) {
+		const craigNo = ${craigboard.no};
+	
+		$.ajax({
+		    url : "${pageContext.request.contextPath}/craig/findmeFromChat.do",
+			method : 'get',
+			data : {no : craigNo},
+			dataType : 'json',
+			success(data){
+						console.log( "data : ", data  );
+						console.log( data==1  );
+						if(data == 1){
+							spancrChat.innerHTML =  parseInt(spancrChat.innerHTML);						
+						}
+						else if(data ==0 ){
+							spancrChat.innerHTML =  parseInt(spancrChat.innerHTML)+ parseInt(1);
+						}
+	
+			},
+			error : console.log
+		});//end - ajax	
+	});
+</script>
+</c:if>
+</c:if>
+
+<sec:authentication property="principal" var="loginMember" />
+<c:if test="${loginMember.memberId != craigboard.writer }">  
+	<script>
+	//신고
+	document.querySelector("#reportBtn").addEventListener('click', (e)=>{
+	
+		const reportedId = '${craigboard.writer}'; //게시글쓴사람
+		const reportType = 'CR';
+		const boardNo = '${craigboard.no}';
+	
+		console.log(reportType, boardNo, reportedId);
+		
+		location.href = '${pageContext.request.contextPath}/report/reportEnroll.do?reportType='+ reportType + '&boardNo=' + boardNo + '&reportedId=' + reportedId;
+	
+		
+	})
+	</script>	
 </c:if>
 
 
@@ -721,13 +785,18 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 <hr style="width: 610px; margin: 0 auto; margin-top: 60px; margin-bottom: 40px; border: 1px solid lightgray" />
 <div id="othercraigDiv">
 <h5 style="font-size: 18px;"> <span style="color:#28A745" >${craigboard.member.nickname}</span> 님의 다른 판매 상품</h5>
-<span> ❗다른 판매 상품은 최대 2개까지 노출됩니다 </span>
+<span> ❗다른 판매 상품 미리보기는 최대 3개까지 노출됩니다 </span>
+
+	<c:if test="${othercraigs != null && othercraigs[3] != null}"   >
+			<button type="button" id="showMore" style="float:right;" class="btn"> 전체보기 </button>		
+	</c:if> 
+
 	<c:if test="${othercraigs != null}">
 	<table id="craigWholeListTbl" style="text-align: center; margin-left: -30px; margin-top: 20px">
 		<tbody>
 			<tr style="padding-bottom : 30px; margin-bottom : 30px; ">		
-			  <c:forEach items="${othercraigs}" var="craig" varStatus="vs" begin="0" end="1">
-			  	<td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding: 30px">
+			  <c:forEach items="${othercraigs}" var="craig" varStatus="vs" begin="0" end="2">
+			  	<td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding-left: 20px;">
 				<div class="explains" >
 					<%-- img --%>
 					<c:if test="${craig.attachments[0].reFilename != null}">
@@ -738,13 +807,14 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 					    <a><img id="eachimg"  style="display : inline-block; height : 180px; width:200px;" 
 							    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
 					</c:if>
-						<p id="crtitle" class="crpp" style="text-align: left; margin: 20px 0 10px 0;">${craig.title}</p>
+					<p id="crtitle" class="crpp" style="text-align: left; margin: 20px 0 10px 0;">${craig.title}</p>
+
 					<c:if test="${craig.price > 0}">
 						<p id="crprice" class="crpp" style="text-align: left; margin: 0px 0 10px 0; font-size:17px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
 					</c:if>
 
 					<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
-						<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:0; font-size: 17px;">나눔💚</p>
+						<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top: -2px; font-size: 17px;">나눔💚</p>
 					</c:if>
 					</div>
 				</td>
@@ -752,7 +822,13 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 			</tr>
 		</tbody>
 	</table>
+	
+	
 	</c:if>
+		
+
+	
+	
 	<c:if test="${ othercraigs == null || othercraigs == '' || othercraigs[0] == null}">
 		<table style="background-color: #f5f5f5; height: 250px; width:610px; margin-top: 40px; text-align: center; border-radius: 20px">
 			<tbody>
@@ -764,7 +840,73 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 	</c:if>
 		
 </div>
+
+
+<%--  전체보기모달   --%>
+<div id="otherModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 48rem;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black"> ${craigboard.member.nickname}님의 현재 
+        	<span class="badge badge-success" style="height: 30px; font-size: 15px; text-align: center; vertical-align: middle; padding-top: 7px;"> 판매중 </span> 혹은
+			<span class="badge badge-success" style="background-color:#FEC106; height: 30px; font-size: 15px; text-align: center; vertical-align: middle; padding-top: 7px;"> 예약중 </span> 인 상품 </h5>
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close"  onclick="$('#otherModal').modal('hide');">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 0rem 1rem 0 4.3rem;"></br>
+		<c:if test="${othercraigs != null}">
+		<table id="craigWholeListTbl" style="text-align: center; margin-left: -65px; margin-top: 20px">
+			<tbody>
+			 <c:forEach items="${othercraigs}" var="craig" varStatus="vs"  >
+			 	<c:if test="${vs.index%3==0}">
+					<tr style="padding-bottom : 30px; margin-bottom : 30px; ">		
+				 </c:if>
+					  	<td class="crnotd" data-crno="${craig.no}" style="width:200px; height: 380px; padding-left: 40px;">
+						<div class="explains" >
+							<%-- img --%>
+							<c:if test="${craig.attachments[0].reFilename != null}">
+							    <a><img  style="display : inline-block; height : 200px; width:200px; border-radius: 10px" 
+									    src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"/></a><br/>
+							</c:if>
+							<c:if test="${craig.attachments[0].reFilename==null}">
+							    <a><img style="display : inline-block; height : 180px; width:200px;" 
+									    src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>
+							</c:if>
+							<p id="crtitle" class="crpp" style="text-align: left; margin: 20px 0 10px 0;">${craig.title}</p>
+							
+							<c:if test="${craig.state == 'CR2'}">
+								<span class="badge badge-success" style="height: 26px;font-size: 15px;text-align: left;vertical-align: middle;margin-left: -138px;margin-top: -13px;"> 판매중 </span>
+							</c:if>	
+							<c:if test="${craig.state == 'CR1'}">
+								<span class="badge badge-success" style="background-color:#FEC106; height: 26px;font-size: 15px;text-align: left;vertical-align: middle;margin-left: -138px;margin-top: -13px;"> 예약중 </span>
+							</c:if>	
+							
+							<c:if test="${craig.price > 0}">
+								<p id="crprice" class="crpp" style="text-align: left; margin: 0px 0 10px 0; font-size:17px;"> <fmt:formatNumber pattern="#,###" value="${craig.price}" />원</p>
+							</c:if>
+		
+							<c:if test="${craig.price == 0 && craig.categoryNo != 7 }">
+								<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top: -2px; font-size: 17px;">나눔💚</p>
+							</c:if>
+							</div>
+						</td>
+				<c:if test="${vs.index %3==2}">	
+					</tr>
+				</c:if>
+			</c:forEach>
+			</tbody>
+		</table>
+		</c:if>	
+      </br></br></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal" onclick="$('#otherModal').modal('hide');"> 닫기 </button>      
+      </div>
+    </div>
+  </div>
+</div>
 <br><br><br><br>
+
 <script>
 //■ 상세페이지
 	document.querySelectorAll("td[data-crno]").forEach( (td)=>{
@@ -773,7 +915,48 @@ document.querySelector("#reportBtn").addEventListener('click', (e)=>{
 			const no = td.dataset.crno;
 			console.log( no );
 			location.href = "${pageContext.request.contextPath}/craig/craigDetail.do?no="+no;		
-		})
-	})
+		});
+	});	
 </script>
+
+<c:if test="${othercraigs != null && othercraigs[3] != null}"   >
+	<script>	
+		document.querySelector("#showMore").addEventListener( 'click', (e)=>{
+			$('#otherModal').modal('show');	
+		});
+	</script>
+</c:if>
+
+
+<script>
+	$(document).ready(function(){//툴팁
+		  openTooltip('.mannerdgr', '.tooltip_layer');
+	});
+
+	function openTooltip(selector, layer) {	      
+	  let $layer = $(layer);
+	
+	  $(selector).on('click', function() {
+	    $layer.toggleClass('on');
+	  });
+	  
+	  function overTooltip() {
+	    
+	    let $this = $(selector);
+	
+		    $this.on('mouseover focusin', function() {
+		      $(this).next(layer).show(); 
+		    })  
+		    $this.on('mouseleave focusout', function() {
+		      if(!$layer.hasClass('on')) {
+		          $(this).next(layer).hide();
+		        }
+		    })
+	  }
+	  overTooltip();
+	}
+</script>
+
+
+<br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

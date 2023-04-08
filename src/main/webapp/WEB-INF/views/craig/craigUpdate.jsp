@@ -239,7 +239,7 @@
         거래완료로 변경하시면 추후 게시글 수정이 불가합니다!
       </br></br></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">확인</button>
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal" onclick="$('#myModal').modal('hide')">확인</button>
       </div>
     </div>
   </div>

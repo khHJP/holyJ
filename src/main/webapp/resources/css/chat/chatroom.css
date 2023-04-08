@@ -367,6 +367,40 @@ input, button, select, textarea{
     margin-top: -21px;
     position: absolute;
 }
+
+
+/*--- 혜진추가   0406 --*/
+
+#bigMannerDiv{
+	display: flex;
+    justify-content: space-around;
+}
+
+
+.mannerimages{
+	width: 118px;
+    height: 104px;
+    padding-right: 20px;
+	
+}
+
+.mannerbox{
+	margin-left: 7px;
+}
+
+#compliDiv{
+	margin-top: 40px;
+}
+
+#sendreview:hover {
+	background-color: green;
+}
+
+#buyerconfirm:hover {
+	background-color: #00e600;
+}
+ 
+
 .messages ul li.sent  #placeMap {
 	border-radius: 10%;
 	float: left;

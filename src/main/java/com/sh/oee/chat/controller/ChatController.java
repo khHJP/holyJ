@@ -40,6 +40,8 @@ import com.sh.oee.craig.model.dto.CraigAttachment;
 import com.sh.oee.craig.model.service.CraigService;
 import com.sh.oee.craigMeeting.model.dto.CraigMeeting;
 import com.sh.oee.craigMeeting.model.service.MeetingService;
+import com.sh.oee.manner.model.dto.Manner;
+import com.sh.oee.manner.model.service.MannerService;
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
@@ -65,9 +67,11 @@ public class ChatController {
 	@Autowired
 	private MeetingService meetingService;
 	@Autowired
-	private ServletContext application;
-	@Autowired
 	private ReportService reportService;
+	@Autowired
+	private ServletContext application;	
+	@Autowired
+	private MannerService mannerService; //혜진추가 0406
 
 	@GetMapping("/chatList.do")
 	public void chatList() {
@@ -241,6 +245,7 @@ public class ChatController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("memberId", memberId);
 		map.put("chatroomId", chatroomId);
+		
 
 		return map;
 	}
@@ -378,6 +383,15 @@ public class ChatController {
 		List<ReportReason> reasonList = reportService.getReportReason("US");
 		model.addAttribute("reasonList", reasonList);
 		
+		// ++ 10.매너평가 테이블 정보가져오기 -- 혜진 
+		Map<String, Object> mannerMap = new HashMap<>();
+		mannerMap.put("writer", memberId); //내가매너평가했다
+		mannerMap.put("craigNo", craigNo);
+		Manner mydonemanner = mannerService.selectMannerOne(mannerMap);
+		log.debug("● manner = {}", mydonemanner);
+		model.addAttribute("mydonemanner", mydonemanner);
+				
+
 		return "chat/craigChatroom";
 	}
 	
@@ -393,4 +407,7 @@ public class ChatController {
 
 		return dateText;
 	}
+	
+	
+
 }

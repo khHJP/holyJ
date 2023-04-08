@@ -29,8 +29,8 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
-/**	혜진만 주석풀고 메소드 실행합니다! 
-	@Scheduled(cron="0 0 4 * * *")
+/**	혜진만 주석풀고 메소드 실행합니다! **/
+	@Scheduled(cron="0 0 1 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
 	public void craigCronSchedule() {//매일 5시에 실행 -- 잘되면 오전 1시로 바꾸기 
 
@@ -49,10 +49,18 @@ public class CraigCronTest {
 		 int result = 0;
 		 for(int i =0; i< mannerList.size()  ; i++) {
 	 
-			 String prefer = mannerList.get(i).getPrefer().toString();
-			 String memberId = mannerList.get(i).getWriter();
-			 String compliment = mannerList.get(i).getCompliment().toString();
-			 
+			String prefer = mannerList.get(i).getPrefer().toString();
+			String memberId = mannerList.get(i).getWriter();
+			String compliment="";
+			
+			try {
+				compliment = String.valueOf(mannerList.get(i).getCompliment());  // 이거 안하면 널포인트 exception 난다 ,, 
+				log.debug("compliment :  ", compliment);
+				
+			} catch (IllegalArgumentException  e) {
+				System.out.println("iligal");
+			}
+		
 			 param.put("prefer", prefer); //MA1, MA2, MA3
 			 param.put("memberId", memberId);
 			 log.debug(" ■ param = {}" , param  ); 
@@ -64,7 +72,7 @@ public class CraigCronTest {
 			 }
 			
 			 //compliment 있을경우 +0.1
-			 if( compliment.length() > 0) {
+			 if( compliment != null ||   compliment != "" ||  compliment.length() > 1 ) {
 				 result += mannerService.updateComplimentDegree(param);
 				 log.debug(" ■ compliment " , compliment  ); 
 			 }
@@ -82,12 +90,10 @@ public class CraigCronTest {
 		 log.debug("======================================================================");
 
 	 }
-**/
+
 }
 
 
 /*
-어제 4/2일 12시 ~ 23:59분까지 
-반영된 매너온도를 오늘 새벽 5시에 작업하고 
-오늘 꺼는 낼 새벽에 작업한다  
+매일새벽1시에 실행하기 
  */

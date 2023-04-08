@@ -37,4 +37,6 @@ public interface TogetherService {
 
 	void TimeOverDateTimeUpdate();
 
+	List<Together> selectTogether1List(String memberId);
+
 }

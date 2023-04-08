@@ -94,5 +94,11 @@ public class TogetherServiceImpl implements TogetherService {
 	public void TimeOverDateTimeUpdate() {
 		togetherDao.TimeOverDateTimeUpdate();
 	}
+
+	@Override
+	public List<Together> selectTogether1List(String memberId) {
+		// TODO Auto-generated method stub
+		return togetherDao.selectTogether1List(memberId);
+	}
 	
 }
