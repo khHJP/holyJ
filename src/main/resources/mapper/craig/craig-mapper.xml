@@ -357,6 +357,7 @@ order by  cr.no desc
 	              left   join  member m
 	                    on cr.writer = m.member_id 
 	where not cr.no = #{no} and cr.writer = #{memberId} and cr.state = 'CR2' 
+	    or ( not cr.no =  #{no}  and cr.writer = #{memberId} and cr.state = 'CR1' ) 
 	order by  cr.no desc     
 </select>
 
