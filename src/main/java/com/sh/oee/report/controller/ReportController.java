@@ -1,6 +1,5 @@
 package com.sh.oee.report.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.report.model.dto.BoardReport;
 import com.sh.oee.report.model.dto.ReportReason;
-import com.sh.oee.report.model.dto.ReportType;
 import com.sh.oee.report.model.dto.UserReport;
 import com.sh.oee.report.model.service.ReportService;
 
@@ -133,6 +133,15 @@ public class ReportController {
 	}
 	
 	/** 👻 정은 끝 👻 */
-	
+
+	/** 효정 시작 */
+	@PostMapping("/chat/userReportEnroll.do")
+	@ResponseBody
+	public void chatUserReportEnroll (Member writer, String reasonNo) {
+		log.debug("오긴하나요 = {}", writer);
+	//	log.debug("오긴하나요 = {}", reportedMember);
+		log.debug("오긴하나요 = {}", reasonNo);
+	}
+	/** 효정 끝 */
 	
 }

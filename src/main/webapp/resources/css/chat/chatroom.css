@@ -85,6 +85,43 @@ footer{
 	background-color: #56C271 !important;
 }
 
+/* 신고 관련 */
+.report-box {
+    margin: 30px 0;
+}
+.report-type {
+	border-top: 2px solid #4D5159;
+    border-bottom: 2px solid #4D5159;
+    margin-bottom: 20px;
+}
+.report-type p {
+    color: #4D5159;
+    padding: 9px 0px;
+    font-size: 19px;
+    font-weight: 400;
+}
+.form-check {
+    margin: 25px 0;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px gray;
+    transition-duration: 0.4s;
+}
+.form-check:hover {
+	background-color: #F2F3F6;
+	transition-duration: 0.4s;	
+}
+.form-check-input {
+    margin: 1rem 0.2rem;
+}
+.form-check-label {
+	width: 100%;
+	margin: 0.6rem 1.7rem;	
+	cursor: pointer;
+}
+
+
+
 /********** 중고거래 게시글 정보 ************/
 #craig_bar{
 	height: 140px;
