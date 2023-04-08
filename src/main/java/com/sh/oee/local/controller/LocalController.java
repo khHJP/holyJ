@@ -362,7 +362,6 @@ public class LocalController {
 			return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
 		}
 	
-
 	 
 	
 	
