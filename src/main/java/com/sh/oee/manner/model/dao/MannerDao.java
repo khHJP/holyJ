@@ -12,8 +12,10 @@ import com.sh.oee.manner.model.dto.Manner;
 @Mapper
 public interface MannerDao {
 
-	@Select("select * from manner_review where recipient = #{memberId}")
 	List<Manner> selectMannerList(String memberId);
+	List<Manner> selectMannerList1(String memberId);
+	List<Manner> selectSendMannerList(Map<String, Object> param);
+	List<Manner> selectTakeMannerList(Map<String, Object> param);
 
 	
 	//혜진추가-0403

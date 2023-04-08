@@ -38,7 +38,7 @@ $(document).ready(function() {
 		<ul class="sidebar-nav">
 			<h3>공지</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminNoticeList.do" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/notice/adminNoticeList.do" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
 			</li>
 		</ul>
 		<ul class="sidebar-nav">
@@ -100,7 +100,7 @@ $(document).ready(function() {
 							</select>
 						</td>
 						<td>${adminCraig.writer}</td>
-						<td>${adminCraig.title}</td>
+						<td style="width: 230px;">${adminCraig.title}</td>
 						<c:if test="${adminCraig.state eq 'CR1'}">
 						<td style="color: #56C271;">예약중</td>
 						</c:if>

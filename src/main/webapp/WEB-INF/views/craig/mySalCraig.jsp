@@ -62,7 +62,7 @@
 							<input type="hidden" name="no" value="${sal.no}"/>
 							<ul id="f-button">
 							<c:if test="${sal.state eq 'CR2'}">
-								<a href="${pageContext.request.contextPath}/chat/chatList.do"><input type="button" class="book" id="f-li" value="예약중"/></a>
+								<a href="${pageContext.request.contextPath}/chat/chatList.do?craigNo=${sal.no}#"><input type="button" class="book" id="f-li" value="예약중"/></a>
 							</c:if>
 								<c:if test="${sal.state eq 'CR1'}">
 									<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>

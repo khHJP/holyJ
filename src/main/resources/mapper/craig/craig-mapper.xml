@@ -173,7 +173,7 @@ from
 	craig c join craig_attachment ca
 	on c.no = ca.craig_no
 where
-	c.buyer = #{memberId}
+	c.buyer = #{memberId} and c.state like 'CR3'
 	
 </select>
 <select id="mySalCraig" resultMap="craigMap">
@@ -357,6 +357,7 @@ order by  cr.no desc
 	              left   join  member m
 	                    on cr.writer = m.member_id 
 	where not cr.no = #{no} and cr.writer = #{memberId} and cr.state = 'CR2' 
+	    or ( not cr.no =  #{no}  and cr.writer = #{memberId} and cr.state = 'CR1' ) 
 	order by  cr.no desc     
 </select>
 

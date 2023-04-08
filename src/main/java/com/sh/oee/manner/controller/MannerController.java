@@ -1,6 +1,8 @@
 package com.sh.oee.manner.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sh.oee.manner.model.dto.Compliment;
 import com.sh.oee.manner.model.dto.Manner;
 import com.sh.oee.manner.model.service.MannerService;
 import com.sh.oee.member.model.dto.Member;
@@ -38,10 +39,40 @@ public class MannerController {
 		
 		model.addAttribute("mannerList",mannerList);
 	}
+	@GetMapping("/sendManner.do")
+	public void sendMannerList(Authentication authentication, @RequestParam int no, Model model) {		
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memberId);
+		param.put("no", no);
+		
+		
+		List<Manner> sendMannerList = mannerService.selectSendMannerList(param);
+		
+		log.debug("sendMannerList = {}",sendMannerList);
+		
+		model.addAttribute("sendMannerList",sendMannerList);
+	}
+	@GetMapping("/takeManner.do")
+	public void takeMannerList(Authentication authentication, @RequestParam int no, Model model) {		
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memberId);
+		param.put("no", no);
+		
+		
+		List<Manner> takeMannerList = mannerService.selectTakeMannerList(param);
+		
+		log.debug("takeMannerList = {}",takeMannerList);
+		
+		model.addAttribute("takeMannerList",takeMannerList);
+	}
 	@GetMapping("/myManner1.do")
 	public void mannerList(String memberId, Model model) {		
 		
-		List<Manner> mannerList = mannerService.selectMannerList(memberId);
+		List<Manner> mannerList = mannerService.selectMannerList1(memberId);
 		
 		log.debug("mannerList = {}",mannerList);
 		

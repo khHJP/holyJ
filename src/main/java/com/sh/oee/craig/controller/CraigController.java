@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -219,16 +221,15 @@ public class CraigController {
 		
 		//저장
 		int result = craigService.insertCraigBoard(craig);
-				log.debug( "result : " + result );
-
-		redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 등록했습니다😊");
+		log.debug( "result : " + result );
 		
+		redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 등록했습니다😊");
+			
 		return "redirect:/craig/craigList.do";
 		
 	}
 	
-	
-	 // ■ just go to the place - 걍이동
+	// ■ just go to the place - 걍이동
 	 @GetMapping("/craigPickPlace.do")
 	 public void craigPickPlace() {
 	  
@@ -299,12 +300,10 @@ public class CraigController {
 			 
 			 
 			 List<Craig> othercraigs = craigService.selectOtherCraigs( otherParam );
-//			 mav.addObject("othercraigs", othercraigs);
-			 
+//			 mav.addObject("othercraigs", othercraigs);			 
 //			 mav.addObject("craigboard", craigboard); 
 //			 mav.addObject("findCraigWish", findCraigWish);		 
-//			 mav.setViewName("craig/craigDetail");
-			 
+//			 mav.setViewName("craig/craigDetail");		 
 //			 model.addAttribute("name", "abc");   --- model은 왜안돼?????????????
 			 model.addAttribute("craigboard", craigboard);
 			 model.addAttribute("findCraigWish", findCraigWish);

@@ -97,7 +97,7 @@ public class MemberController {
 		int result = memberService.insertMember(member);
 		
 		// view 전달
-		redirectAtrr.addFlashAttribute("msg", "오이 가족이 되신걸 환영합니다!"); // msg 안나옴,, 왤까,,?
+		redirectAtrr.addFlashAttribute("congratulation", "오이 가족이 되신걸 환영합니다!"); 
 		
 		return "redirect:/";
 	}
