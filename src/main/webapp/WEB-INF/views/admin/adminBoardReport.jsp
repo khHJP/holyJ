@@ -38,7 +38,7 @@ $(document).ready(function() {
 		<ul class="sidebar-nav">
 			<h3>공지</h3>
 			<li class="sidebar-nav-list">
-			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/admin/adminNoticeList.do" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
+			<a class="sidebar-nav-a" href="${pageContext.request.contextPath}/notice/adminNoticeList.do" style="text-decoration: none; color: black;"> 전체 공지 관리 </a>
 			</li>
 		</ul>
 		<ul class="sidebar-nav">

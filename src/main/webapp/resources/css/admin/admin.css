@@ -20,7 +20,7 @@
 #sidebar {
 	float: left;
 	width: 200px;
-	height: 900px;
+	height: 1100px;
 }
 
 .sidebar-nav {
@@ -50,6 +50,24 @@
 	background-color: white;
 	position: relative;
 }
+
+#message-text {
+	width: 950px;
+	height: 50px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+#sendBtn {
+	width: 50px;
+	height: 50px;
+	margin-left: -50px;
+	margin-bottom: 10px;
+	border-radius: 0px 10px 10px 0px;
+	background-color: white;
+	position: relative;
+}
+
 
 /* table */
 table {

@@ -305,6 +305,10 @@ public class AdminController {
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 	}
+	
+	// 관리자 공지 목록 조회
+	@GetMapping("/adminNoticeList.do")
+	public void adminNoticeList() {};
 
 	/*
 	 * update
