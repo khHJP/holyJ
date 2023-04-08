@@ -54,6 +54,21 @@ public class MannerController {
 		
 		model.addAttribute("sendMannerList",sendMannerList);
 	}
+	@GetMapping("/takeManner.do")
+	public void takeMannerList(Authentication authentication, @RequestParam int no, Model model) {		
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memberId);
+		param.put("no", no);
+		
+		
+		List<Manner> takeMannerList = mannerService.selectTakeMannerList(param);
+		
+		log.debug("takeMannerList = {}",takeMannerList);
+		
+		model.addAttribute("takeMannerList",takeMannerList);
+	}
 	@GetMapping("/myManner1.do")
 	public void mannerList(String memberId, Model model) {		
 		

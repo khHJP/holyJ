@@ -51,7 +51,7 @@
 							<form:form action="${pageContext.request.contextPath}/manner/sendManner.do" method="GET">
 							<input type="hidden" name="no" value="${buy.no}"/>
 							<ul id="hogi-ul">
-								<input id="hogi" type="submit" value="보낸 후기보기"/>
+								<input id="hogi" type="submit" value="내가 보낸 후기보기"/>
 							</ul>
 							</form:form>
 							<hr id="hogi-hr"/>
