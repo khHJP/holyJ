@@ -49,62 +49,53 @@
 			</button>
 		</div>
 	</div>
-	<div class="category-list-wrap" >
-	<c:forEach items="${localCategory}" var="category">
-				<ul class="category-list" data-category-num="${category.CATEGORY_NO}">
-					<li id="localcate">${category.CATEGORY_NAME}</li>
-				</ul>
-	</c:forEach>
-	</div>
-	<div class="local-wrqp">
+<div class="local-wrqp" style="overflow-y: auto; max-height: 600px;">
 	<c:set var="category" value="${localCategory}" scope="page"/>
 	<c:if test="${not empty localList}">
-	<table>
-		<tbody>
-			<c:forEach items="${localList}" var="local" varStatus="vs">
-				<c:if test="${vs.index % 1 == 0}">
-					<tr class="local-tr">
-				</c:if>	 
-		 		<td class="local-list" data-no="${local.no}" data-category="${category[local.categoryNo - 1].CATEGORY_NAME}">
+		<table>
+			<tbody>
+				<c:forEach items="${localList}" var="local" varStatus="vs">
+					<c:if test="${vs.index % 1 == 0}">
+						<tr class="local-tr">
+					</c:if>	 
+					<td class="local-list" data-no="${local.no}" data-category="${category[local.categoryNo - 1].CATEGORY_NAME}">
 						<div class="atimg">
-						<c:if test="${local.attachments[0].reFilename != null}">
-						    <a>
-						    	<span><img id="localimg"   
-								    src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/></span>
-						    </a>
-					    	
-						</c:if>
+							<c:if test="${local.attachments[0].reFilename != null}">
+								<a>
+									<span><img id="localimg"   
+										src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/></span>
+								</a>
+							</c:if>
 						</div>
-					<div class="local-content">
-					<div class="local-title">
-						<span class="localTitle">${local.title}</span>
-					</div>
-					<div class="local-footer">
-						<span class="local-category">${category[local.categoryNo - 1].CATEGORY_NAME}</span>
-						&nbsp;
-						<span class="local-dong">${local.dong.dongName}</span>
-						&nbsp;
-						<!-- 시간오류 수정하기 -->
-						<fmt:parseDate value="${local.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
-						<fmt:formatDate value="${regDate}" pattern="MM.dd a HH:mm"/>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						
-					</div>
-					</div>
-				</td>
-				<c:if test="${vs.index %1== 1}">
-					</tr>
-				</c:if>
-			</c:forEach>
-		</tbody>
-	</table>
+						<div class="local-content">
+							<div class="local-title">
+								<span class="localTitle">${local.title}</span>
+							</div>
+							<div class="local-footer">
+								<span class="local-category">${category[local.categoryNo - 1].CATEGORY_NAME}</span>
+								&nbsp;
+								<span class="local-dong">${local.dong.dongName}</span>
+								&nbsp;
+								<!-- 시간오류 수정하기 -->
+								<fmt:parseDate value="${local.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
+								<fmt:formatDate value="${regDate}" pattern="MM.dd a HH:mm"/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+						</div>
+					</td>
+					<c:if test="${vs.index % 1 == 1}">
+						</tr>
+					</c:if>
+				</c:forEach>
+			</tbody>
+		</table>
 	</c:if>
 	<c:if test="${empty localList}">
-			<div class="empty-box">
-				<p>게시글이 없습니다.</p>
-			</div>
+		<div class="empty-box">
+			<p>게시글이 없습니다.</p>
+		</div>
 	</c:if>
-	</div>
+</div> 
 	
 
 </body>
