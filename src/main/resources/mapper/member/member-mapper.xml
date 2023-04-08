@@ -47,7 +47,6 @@
 			#{dongRange},
 			default,
 			default,
-			default,
 			default
 		)
 	</insert>

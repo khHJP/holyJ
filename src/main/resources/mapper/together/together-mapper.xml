@@ -13,13 +13,15 @@
 	where
 		writer = #{memberId}
 	</select>
-	<select id="selectTogether1List" resultMap="togetherMap">
+	<select id="selectTogether1List" resultMap="togetherDetailMap">
 	select
-		*
+		t.*,
+		m.*
 	from
-		together
+		together t join member m
+		on t.writer = m.member_id
 	where
-		writer = #{memberId}
+		t.writer = #{memberId}
 	</select>
 	
 	<resultMap type="together" id="togetherMap"></resultMap>	

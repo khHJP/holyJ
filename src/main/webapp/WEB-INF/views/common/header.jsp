@@ -39,12 +39,19 @@ window.addEventListener('load', (e) => {
 		if(title.innerText === currentTitle){
 			title.style.color = "RGB(86, 194, 112)";
 		}
-	})
+	});
 });
 </script>
+<c:if test="${not empty congratulation}">
+	<script>
+		$(document).ready(function() {
+			$("#alert-modal").modal("show");
+		});
+	</script>
+</c:if>
 <c:if test="${not empty msg}">
 	<script>
-	alert('${msg}');
+ 	alert('${msg}');
 	</script>
 </c:if>
 <!-- 🐹 효정 03/24 로그인시 websocket연결 start 🐹 -->
@@ -116,7 +123,10 @@ window.addEventListener('load', (e) => {
 					<sec:authentication property="principal" var="loginMember"/>					
 					<img src="${pageContext.request.contextPath}/resources/upload/profile/${loginMember.profileImg}" alt="임시이미지">
 					<div class="my-select-box">
+						<!-- 회원만 접근 가능 -->
+						<sec:authorize access="hasRole('ROLE_USER')">
 						<span class="my-select"><button onclick="location='${pageContext.request.contextPath}/member/myPage.do';" class="subtitle">나의 오이</button></span>
+						</sec:authorize>
 						
 						<!-- 관리자만 접근 가능  -->
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -134,6 +144,34 @@ window.addEventListener('load', (e) => {
 			</sec:authorize>
 		</div>
 	</header>
+	<!-- 회원가입 축하 모달 -->
+	<div class="modal fade" id="alert-modal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content alert-modal-content">
+				<div class="modal-header alert-modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body alert-modal-body" style="padding: 20px 0;">
+					<div class="alert-msg-img">
+						<img src="${pageContext.request.contextPath}/resources/images/OEE-LOGO.png" alt="오이마켓로고">
+					</div>
+					<div class="alert-msg-text">
+						<h2>오늘부터 오이 가족!</h2>
+						<p>
+							이웃과 자유로운 거래를 할 수 있는 <span class="alert-modal-craig">중고거래</span>
+							<br/>
+							오늘의 동네 소식을 알 수 있는 <span class="alert-modal-local">동네생활</span>
+							<br/>
+							이웃들과 친구가 될 수 있는 <span class="alert-modal-together">같이해요</span>
+						</p>
+						<h4>오늘부터 함께해요!</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<%-- <section id="content"> --%>
 <sec:authorize access="isAuthenticated()">
 <script>
