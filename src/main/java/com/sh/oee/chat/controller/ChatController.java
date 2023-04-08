@@ -45,6 +45,8 @@ import com.sh.oee.manner.model.service.MannerService;
 import com.sh.oee.member.model.dto.Dong;
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.member.model.service.MemberService;
+import com.sh.oee.report.model.dto.ReportReason;
+import com.sh.oee.report.model.service.ReportService;
 import com.sh.oee.together.model.service.TogetherService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +66,8 @@ public class ChatController {
 	private TogetherService togetherService;
 	@Autowired
 	private MeetingService meetingService;
+	@Autowired
+	private ReportService reportService;
 	@Autowired
 	private ServletContext application;	
 	@Autowired
@@ -273,7 +277,21 @@ public class ChatController {
 		}
 		return chatroomId.toString();
 	}
-
+	
+	/**
+	 * 채팅 존재여부 확인
+	 */
+	@ResponseBody
+	@GetMapping("/criagMsgCnt")
+	public int criagMsgCnt(String chatroomId) {
+		int result = 0;
+		List<CraigMsg> msgs = chatService.findCraigMsgBychatroomId(chatroomId);
+		result = msgs.size();
+		log.debug("개수={}", result);
+		
+		return result;
+	}
+	
 	/**
 	 * 중고거래 채팅방 팝업 열기
 	 */
@@ -361,8 +379,11 @@ public class ChatController {
 		model.addAttribute("dong", dong);
 		log.debug("동정보 = {}", dong);
 		
+		// 9. 신고사유 항목 담기
+		List<ReportReason> reasonList = reportService.getReportReason("US");
+		model.addAttribute("reasonList", reasonList);
 		
-		// ++ 9.매너평가 테이블 정보가져오기 -- 혜진 
+		// ++ 10.매너평가 테이블 정보가져오기 -- 혜진 
 		Map<String, Object> mannerMap = new HashMap<>();
 		mannerMap.put("writer", memberId); //내가매너평가했다
 		mannerMap.put("craigNo", craigNo);

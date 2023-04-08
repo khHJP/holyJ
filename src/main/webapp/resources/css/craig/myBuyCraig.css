@@ -61,10 +61,8 @@
     border: 0px;
     background: white;
     display: inline-block;
-}
-#hogi{	
     color: black;
-    margin-left: 27vw;
+    margin-left: 24vw;
 }
 #hogi:hover{	
     cursor : pointer;
