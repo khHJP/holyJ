@@ -561,24 +561,12 @@ public class CraigController {
 
 				int totals = craigService.getContentCnt(param );	
 				int totalPage = (int) Math.ceil((double) totals/limit);	
-				
-				CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
-				model.addAttribute("craigPage", craigPage);
-				
-				// model담기
-				model.addAttribute("searchCrategory", searchCrategory);
-				model.addAttribute("wishCnt", wishCnt);
-				model.addAttribute("craigChatCnt", craigChatCnt);
-				
-				model.addAttribute("totalPage", totalPage);
-				model.addAttribute("page", cpage);		
-
+	
 				// 리턴
 				Map<String, Object> categoryMap = new HashMap<>();  
 				categoryMap.put("searchCrategory", searchCrategory);
 				categoryMap.put("wishCnt", wishCnt);
-				categoryMap.put("craigChatCnt", craigChatCnt);
-				
+				categoryMap.put("craigChatCnt", craigChatCnt);				
 				categoryMap.put("totalPage", totalPage);
 				categoryMap.put("page", cpage);
 				

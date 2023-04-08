@@ -423,6 +423,8 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 			data : { categoryNo : categoryNumber,
 					 cpage : searchPage },
 			success(data){
+				 console.log("마지막으로 한번만더 조회")
+				console.log(data);						 
 			
 				const tr1 =  document.createElement("tr");
 				  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
