@@ -194,7 +194,7 @@ body {
 
 #craigPlace{
 	margin: 0 auto;
-	margin-top : 20px;
+	margin-top : 40px;
 	font-weight : 700;	
 	width:600px; 
 	font-size: 18px;	
@@ -406,7 +406,8 @@ h5{
     border-radius: 10px;
     text-align: left;
 	border-radius:10px;
-	position: absolute; left: 1080px; top: 780px;
+	position: absolute; left: 1154px;
+    top: 724px;
 }
 	
 .mannerdgr{
@@ -498,3 +499,10 @@ h5{
 }
 /*-------------------------------------------------------------*/
 
+#likement{
+    position: relative;
+    left: 151px;
+    width: 400px;
+    display: inline;
+    top: -64px;
+}
