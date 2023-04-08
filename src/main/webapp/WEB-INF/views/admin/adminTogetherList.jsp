@@ -132,7 +132,12 @@ $(document).ready(function() {
 							</td>
 							<td>${adminTogetherSearch.writer}</td>
 							<td>${adminTogetherSearch.title}</td>
-							<td>${adminTogetherSearch.status}</td>
+							<c:if test="${adminTogetherSearch.status == 'Y'}">
+								<td style="color: #56C271;">모집중</td>
+							</c:if>
+							<c:if test="${adminTogetherSearch.status == 'N'}">
+								<td style="color: #868B94;">모집완료</td>
+							</c:if>
 							<td>
 								<fmt:parseDate value="${adminTogetherSearch.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" /> 
 								<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd" />

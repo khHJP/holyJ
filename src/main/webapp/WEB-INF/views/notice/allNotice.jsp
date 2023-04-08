@@ -9,7 +9,19 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notice/notice.css" />
 
 <div>
-	<ul class="list-group list-group-flush" id="data"></ul>
+	<table>
+		<c:forEach items="${adminNoticeList}" var="adminNotice"
+			varStatus="vs">
+			<tr id="table-content">
+				<td>${vs.count}</td>
+				<td>${adminNotice.msg}</td>
+				<td>
+					<fmt:parseDate value="${adminNotice.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
+					<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
 </div>
 	
 <script>

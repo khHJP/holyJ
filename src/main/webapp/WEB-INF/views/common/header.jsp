@@ -56,6 +56,19 @@ window.addEventListener('load', (e) => {
 	const stompClient = Stomp.over(ws);
 	stompClient.connect({}, (frame) => {
 		console.log("연결 성공!", frame); 
+		
+		stompClient.subscribe("/app/admin/notice", (message) => {
+			console.log("/app/admin/notice : ", message);
+			
+			const {msg, type, regDate} = JSON.parse(message.body);
+			
+			alert(`전체공지
+---------------------------
+ \${msg}
+---------------------------
+\${new Date(regDate)}`);
+			
+		});
 	});
 	</script>
 </sec:authorize>
@@ -97,7 +110,7 @@ window.addEventListener('load', (e) => {
 			<div class="login-box">
 				<div class="notice-wrap">
 					<button onclick="openPopup('${pageContext.request.contextPath}/notice/newNotice.do')" style="all: unset"><i class="bi bi-bookmark"></i></button>
-					<button onclick="openPopup('${pageContext.request.contextPath}/notice/adminNotice.do')" style="all: unset"><i class="bi bi-bell"></i></button>
+					<button onclick="openPopup('${pageContext.request.contextPath}/notice/allNotice.do')" style="all: unset"><i class="bi bi-bell"></i></button>
 				</div>
 				<div class="profile-wrap">
 					<sec:authentication property="principal" var="loginMember"/>					

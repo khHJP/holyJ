@@ -1,6 +1,6 @@
 package com.sh.oee.notice.model.dto;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class NoticeAdmin {
     private int no;
-    private String memberId;
     private String msg;
-    private Type type;
-    private LocalDateTime regDate;
-    private String readYN; // Y/N
+    private Date regDate;
 }

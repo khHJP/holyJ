@@ -63,23 +63,41 @@ alter table MEMBER add constraint ck_member_enabled check(enabled in (1, 0));
 
 alter table member modify profile_img default 'oee.png'; -- 확장자 수정
 
+select * from member;
+
 --=============================================
--- 알림 NOTICE
+-- 사용자 알림 NOTICE_USER
 --=============================================
-create table NOTICE (
+create table NOTICE_USER (
     NO number,
 	MEMBER_ID varchar2(30) not null,
 	MSG	varchar2(3000) not null,
 	TYPE varchar2(30) not null,
 	REG_DATE date default sysdate,
 	READ_YN	char(1)	default 'N',
-    constraint pk_notice_no primary key(no),
+    constraint pk_notice_user_no primary key(no),
     constraint fk_notice_member_id foreign key(member_id) references member(member_id), -- fk명 겹치는거 주의
-    constraint ck_notice_type check(type in ('CHAT', 'KEYWORD', 'NOTICE', 'REPLY')),
+    constraint ck_notice_type check(type in ('KEYWORD', 'REPLY')),
     constraint ck_read_yn check(read_yn in ('Y', 'N'))
 );
 
-create sequence seq_notice_no;
+create sequence seq_notice_user_no;
+
+--=============================================
+-- 관리자 알림 NOTICE_ADMIN
+--=============================================
+create table NOTICE_ADMIN (
+    NO number,
+	MSG	varchar2(3000) not null,
+	REG_DATE date default sysdate,
+    constraint pk_notice_admin_no primary key(no)
+);
+
+create sequence seq_notice_admin_no;
+select * from notice_admin;
+
+select seq_notice_admin_no.nextval
+from dual;
 
 --=============================================
 -- 알림 키워드 NOTICE_KEYWORD
@@ -143,6 +161,8 @@ CREATE TABLE BOARD_REPORT (
 );
 
 CREATE SEQUENCE SEQ_BOARD_REPORT_NO;
+
+select * from board_report order by report_no desc;
 
 --=============================================
 -- 사용자신고 USER_REPORT
