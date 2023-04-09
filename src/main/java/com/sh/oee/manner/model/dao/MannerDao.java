@@ -28,8 +28,8 @@ public interface MannerDao {
 	int updateComplimentDegree(Map<String, Object> param);
 
 
-	@Update("update manner_review set done = 'Y' where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD')")
-	int updateMannerDone();
+	@Update("update manner_review set done = 'Y' where manner_no = #{mannerNo} ")
+	int updateMannerDone(int mannerNo);
 
 	//혜진 추가 
 	int craigMannerEnroll(Manner manner);
