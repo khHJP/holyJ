@@ -3,12 +3,11 @@ package com.sh.oee.notice.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.messaging.handler.annotation.Payload;
+import org.apache.ibatis.session.RowBounds;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.notice.model.dto.NoticeAdmin;
 import com.sh.oee.notice.model.dto.NoticeKeyword;
-import com.sh.oee.notice.model.dto.NoticeUser;
 
 public interface NoticeDao {
 
@@ -18,7 +17,7 @@ public interface NoticeDao {
 
 	int deleteKeyword(int keywordNo);
 
-	List<NoticeAdmin> selectAdminNoticeList();
+	List<NoticeAdmin> selectAdminNoticeList(RowBounds rowBounds);
 
 	int insertAdminNotice(NoticeAdmin notice);
 

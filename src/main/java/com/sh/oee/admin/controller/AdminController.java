@@ -91,6 +91,8 @@ public class AdminController {
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 
 	// 중고거래 게시글 목록 조회
@@ -146,6 +148,8 @@ public class AdminController {
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 
 	// 동네생활 게시글 목록 조회
@@ -201,6 +205,8 @@ public class AdminController {
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 
 	// 같이해요 게시글 목록 조회
@@ -256,6 +262,8 @@ public class AdminController {
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 
 	// 게시글 신고 목록 조회
@@ -280,6 +288,8 @@ public class AdminController {
 		model.addAttribute("adminBoardReport", adminBoardReport);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 
 	// 사용자 신고 목록 조회
@@ -304,6 +314,8 @@ public class AdminController {
 		model.addAttribute("adminUserReport", adminUserReport);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("limit", limit);
 	}
 	
 	// 관리자 공지 목록 조회

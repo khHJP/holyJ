@@ -94,13 +94,13 @@ $(document).ready(function() {
 				<c:forEach items="${adminNoticeList}" var="adminNotice"
 					varStatus="vs">
 					<tr id="table-content">
-						<td>${vs.count}</td>
-						<td>${adminNotice.msg}</td>
-						<td>
+						<td style="width: 50px;">${vs.count}</td>
+						<td style="width: 500px;">${adminNotice.msg}</td>
+						<td style="width: 300px;">
 							<fmt:parseDate value="${adminNotice.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
 							<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
 						</td>
-						<td>
+						<td style="width: 100px;">
 							<input type="hidden" class="notice delete" id="noticeNo${vs.count}" value="${adminNotice.no}"/>
 							<input type="button" class="notice delete" value="삭제"  onclick="adminNoticeDelete(noticeNo${vs.count});" />
 						</td>
@@ -160,30 +160,30 @@ const generatePagination = (totalPages, currentPage) => {
     let beforeUrl;
 	 // 이전 버튼 추가
     if (currentPage != 1) {
-    	beforeUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + (currentPage - 1);
-    	pagination.append("<li class='page-item'><a class='page-link' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
+    	beforeUrl = '${pageContext.request.contextPath}/notice/adminNoticeList.do?currentPage=' + (currentPage - 1);
+    	pagination.append("<li class='page-item'><a class='page-link' style='color: black;' href='" + beforeUrl + "' tabindex='-1'>이전</a></li>");
     } else {
-      pagination.append("<li class='page-item disabled'><a class='page-link' tabindex='-1'>이전</a></li>");
+      pagination.append("<li class='page-item disabled'><a class='page-link' style='color: black;' 'tabindex='-1'>이전</a></li>");
     }
 
     // 페이지 버튼 추가
     let pageUrl
     for (let i = 1; i <= totalPages; i++) {
         if (i == currentPage) {
-            pagination.append("<li class='page-item active'><a class='page-link'>" + i + "</a></li>");
+            pagination.append("<li class='page-item active'><a class='page-link' style='background-color: #56C271; border: 1px solid #56C271;'>" + i + "</a></li>");
         } else {
-        	pageUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + i;
-        	pagination.append("<li class='page-item'><a class='page-link' href='" + pageUrl + "'>" + i + "</a></li>");
+        	pageUrl = '${pageContext.request.contextPath}/notice/adminNoticeList.do?currentPage=' + i;
+        	pagination.append("<li class='page-item'><a class='page-link' style='color: #56C271;' href='" + pageUrl + "'>" + i + "</a></li>");
         }
     }
 
     // 다음 버튼 추가
     let nextUrl;
     if (currentPage != totalPages) {
-    	nextUrl = '${pageContext.request.contextPath}/admin/adminMemberList.do?currentPage=' + totalPages;    	
-        pagination.append("<li class='page-item'><a class='page-link' href='" + nextUrl +"'>다음</a></li>");
+    	nextUrl = '${pageContext.request.contextPath}/notice/adminNoticeList.do?currentPage=' + totalPages;    	
+        pagination.append("<li class='page-item'><a class='page-link' style='color: black;' href='" + nextUrl +"'>다음</a></li>");
     } else {
-        pagination.append("<li class='page-item disabled'><a class='page-link'>다음</a></li>");
+        pagination.append("<li class='page-item disabled'><a class='page-link' style='color: black;'>다음</a></li>");
     }
 }
 </script>

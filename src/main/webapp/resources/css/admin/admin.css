@@ -121,3 +121,6 @@ input.report:hover {
 }
 
 /* pagination */
+.page-link:hover {
+	color: black;
+}
