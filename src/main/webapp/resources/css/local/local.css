@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 .local-wrqp::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -25,6 +26,8 @@
 }
 
 
+
+
 /*info Local*/
 .local-explain {
 	background-color : #CEECF5;
@@ -46,24 +49,7 @@
 	justify-content:center;
 }
 
-/*my dong*/
-/*.relativedong{
-	position:relative;
-}
-.kackssi{
-	position:fixed;
-}
-*/
-.mydongdong{
-	
-    font-family: 'BMJUA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    margin-left:18%;
-    margin-top:10px;
-	margin-bottom:-10px;
-}
+
 
 #mydong{
 	border:1px solid black;
@@ -82,8 +68,8 @@
 	position: relative;
 	width:100%;
 	display:flex;
-	margin-top : 5px;
-	margin-left : 10px;
+	margin-top : 10px;
+	margin-left : 20px;
 }
 #searchKeyword{
 	width:800px;
