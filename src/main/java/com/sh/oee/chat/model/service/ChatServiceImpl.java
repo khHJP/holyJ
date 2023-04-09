@@ -159,6 +159,40 @@ public class ChatServiceImpl implements ChatService {
 	}
 	@Override
 	public int insertTogetherMsg(TogetherMsg togetherMsg) {
-		return chatDao.insertTogetherMsg(togetherMsg);
+		int result = chatDao.insertTogetherMsg(togetherMsg);
+		MsgAttach attach = chatDao.findTogetherMsgAttach(togetherMsg.getContent());
+		
+		log.debug("첨부파일 = {}", attach);
+		Map<String, Object> map = new HashMap<>();
+		
+		if(attach != null) {
+			map.put("msgNo", togetherMsg.getMsgNo());
+			map.put("reFilename", togetherMsg.getContent());
+			result = updateTogetherAttachMsgNo(map);
+			
+			log.debug("msgNo = {}", togetherMsg.getMsgNo());
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int insertTogetherMsgAttach(MsgAttach attach) {
+		return chatDao.insertTogetherMsgAttach(attach);
+	}
+
+	@Override
+	public int updateTogetherAttachMsgNo(Map<String, Object> map) {
+		return chatDao.updateTogetherAttachMsgNo(map);
+	}
+	@Override
+	public List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap) {
+		return chatDao.findTogetherMsgAfterReg(regMap);
+	}
+	
+	/**   나의 오이    **/
+	@Override
+	public List<CraigChat> findAllCraigChatroom(String memberId) {
+		return chatDao.findAllCraigChatroom(memberId);
 	}
 }

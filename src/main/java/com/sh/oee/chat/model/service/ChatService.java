@@ -37,6 +37,7 @@ public interface ChatService {
 
 	int updateCraigAttachMsgNo(Map<String, Object> map);
 
+	/* 같이해요 시작 */
 	TogetherChat findTogetherMember(Map<String, Object> map);
 
 	List<TogetherChat> findAllTogetherMembers(Map<String, Object> map);
@@ -44,6 +45,14 @@ public interface ChatService {
 	int insertTogetherMember(Map<String, Object> map);
 
 	int insertTogetherMsg(TogetherMsg togetherMsg);
+	
+	int insertTogetherMsgAttach(MsgAttach attach);
+	
+	int updateTogetherAttachMsgNo(Map<String, Object> map);
+
+	List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap);
+
+	List<CraigChat> findAllCraigChatroom(String memberId);
 
 
 }
