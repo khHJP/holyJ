@@ -50,5 +50,38 @@
     	</selectKey>
     
     </insert>
-<resultMap type="craigMsg" id="craigMsgMap"></resultMap>
+	<resultMap type="craigMsg" id="craigMsgMap"></resultMap>
+
+
+	<!--            ***  **  같이해요   **   ***             --> 
+	 <insert id="insertTogetherMsg">
+	    	insert into 
+	    		together_msg 
+	    	values (
+	    		SEQ_TOGETHER_MSG_NO.nextval, 
+	    		#{chatroomNo}, 
+	    		#{writer}, 
+	    		#{content}, 
+	    		#{sentTime}, 
+	    		#{type}
+	    	)
+	    	<selectKey order="AFTER" resultType="_int" keyProperty="msgNo">
+	    		select
+	    			SEQ_TOGETHER_MSG_NO.currval
+	    		from
+	    			dual
+	    	</selectKey>
+	 </insert>
+	<insert id="insertTogetherMsgAttach">
+        insert into
+            together_msg_attach
+        values (
+            SEQ_TOGETHER_MSG_ATTACH_NO.nextval, 
+            null, 
+            #{originalFilename}, 
+            #{reFilename}, 
+            default
+        )
+    </insert>
+	   	<resultMap type="togetherMsg" id="togetherMsgMap"></resultMap>
 </mapper>

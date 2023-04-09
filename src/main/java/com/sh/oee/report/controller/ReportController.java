@@ -137,10 +137,14 @@ public class ReportController {
 	/** 효정 시작 */
 	@PostMapping("/chat/userReportEnroll.do")
 	@ResponseBody
-	public void chatUserReportEnroll (Member writer, String reasonNo) {
-		log.debug("오긴하나요 = {}", writer);
-	//	log.debug("오긴하나요 = {}", reportedMember);
-		log.debug("오긴하나요 = {}", reasonNo);
+	public void chatUserReportEnroll (String writer, String reportedMember, int reasonNo) {
+		
+		UserReport userReport = new UserReport();
+		userReport.setWriter(writer);
+		userReport.setReasonNo(reasonNo);
+		userReport.setReportedMember(reportedMember);
+		
+		int result = reportService.userReportEnroll(userReport);
 	}
 	/** 효정 끝 */
 	
