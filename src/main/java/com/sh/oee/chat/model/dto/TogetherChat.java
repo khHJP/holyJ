@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class TogetherChat{
 
 	@NonNull
-	private int chatroomNo; // 대화방NO
 	private int togetherNo; // 같이해요NO
 	@NonNull
 	private String memberId; // 참여자id

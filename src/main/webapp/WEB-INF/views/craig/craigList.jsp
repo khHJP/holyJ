@@ -93,6 +93,7 @@
 			  <c:forEach items="${craigCategory}" var="category">
 			    <li data-no="${category.CATEGORY_NO}"><a class="dropdown-item" data-ano="${category.CATEGORY_NO}"  href="#">${category.CATEGORY_NAME}</a></li>
 		   	  </c:forEach>
+  			    <li ><a class="dropdown-item"  href="${pageContext.request.contextPath}/craig/craigList.do"> 전체 </a></li>	   	  
 			</ul>
 		</div>
 
@@ -422,6 +423,8 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 			data : { categoryNo : categoryNumber,
 					 cpage : searchPage },
 			success(data){
+				 console.log("마지막으로 한번만더 조회")
+				console.log(data);						 
 			
 				const tr1 =  document.createElement("tr");
 				  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";

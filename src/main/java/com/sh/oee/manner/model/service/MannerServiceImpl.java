@@ -62,8 +62,8 @@ public class MannerServiceImpl implements MannerService {
 	
 	//혜진추가
 	@Override
-	public int updateMannerDone() {
-		return mannerDao.updateMannerDone();
+	public int updateMannerDone(int mannerNo) {
+		return mannerDao.updateMannerDone( mannerNo );
 	}
 
 	

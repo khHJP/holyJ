@@ -645,35 +645,50 @@ CREATE TABLE TOGETHER_CHAT (
     LAST_CHECK NUMBER default 0,
     
     CONSTRAINT PK_TOGETHER_TOGETHER_NO_MEMBER_ID PRIMARY KEY(TOGETHER_NO, MEMBER_ID), --복합pk
-    CONSTRAINT FK_TOGETHER_TOGETHER_TOGETHER_NO FOREIGN KEY(TOGETHER_NO) REFERENCES TOGETHER(NO) on delete cascade, -- 같이해요 게시물 삭제시 대화방 삭제
+ --   CONSTRAINT FK_TOGETHER_TOGETHER_TOGETHER_NO FOREIGN KEY(TOGETHER_NO) REFERENCES TOGETHER(NO) on delete cascade, -- 같이해요 게시물 삭제시 대화방 삭제
     CONSTRAINT FK_TOGETHER_MEMBER_ID FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(MEMBER_ID),
     CONSTRAINT CK_TOGETHER_ROLE CHECK(ROLE IN ('A','M')) -- Admin , Member
 );
 
+alter TABLE TOGETHER_CHAT   drop constraint FK_TOGETHER_TOGETHER_TOGETHER_NO;
+commit
 
+select * from together_chat;
+
+select * from TOGETHER_CHAT
 
 --=============================================
 -- 같이해요 메시지 TOGETHER_MSG  -- 새로만들었어요 0405 
 --=============================================
 CREATE TABLE TOGETHER_MSG (
     MSG_NO NUMBER,
-    TOGETHER_NO NUMBER,  --복합fk
-    MEMBER_ID VARCHAR2(30) NOT NULL,--복합fk
+    CHATROOM_NO NUMBER,  --복합fk
+    WRITER VARCHAR2(30) NOT NULL,--복합fk
     CONTENT VARCHAR2(3000) NOT NULL, -- file타입의 경우 파일이름
     SENT_TIME NUMBER NOT NULL,
     TYPE varchar2(50) not null,
     
     CONSTRAINT PK_TOGETHER_MSG_NO PRIMARY KEY(MSG_NO),
-    CONSTRAINT FK_TOGETHER_MNO_MEMBER_ID FOREIGN KEY(TOGETHER_NO, MEMBER_ID) REFERENCES TOGETHER_CHAT(TOGETHER_NO, MEMBER_ID) on delete set null, -- 같이해요 게시물 삭제시 null로
+    CONSTRAINT FK_CHATROOM_NO_WRITER FOREIGN KEY(CHATROOM_NO, WRITER) REFERENCES TOGETHER_CHAT(TOGETHER_NO, MEMBER_ID) on delete set null, -- 같이해요 게시물 삭제시 null로
     constraint CK_TOGETHER_MSG_TYPE CHECK(TYPE in ('CHAT', 'FILE'))
 );
-
+select * from together_msg;
 CREATE SEQUENCE SEQ_TOGETHER_MSG_NO;
 
+-- 컬럼명 수정해 새로 생성 04/05
 
+select * from together_chat;
+select * from craig_msg;
+select * from together_msg;
+
+insert into together_msg values(seq_together_msg_no.nextval, 78, 'mango', '들어가는지봅시다', 1681016509339, 'CHAT');
+
+commit;
 --=============================================
 -- 같이해요 메시지 첨부파일 TOGETHER_MSG_ATTACH -- 수정 0405 (변경된거없음)
 --=============================================
+drop table together_msg_attach;
+
 CREATE TABLE TOGETHER_MSG_ATTACH (
     ATTACH_NO NUMBER,
     MSG_NO NUMBER NOT NULL,
@@ -685,6 +700,9 @@ CREATE TABLE TOGETHER_MSG_ATTACH (
     CONSTRAINT FK_TOGETHER_MSG_NO FOREIGN KEY(MSG_NO) REFERENCES TOGETHER_MSG(MSG_NO) on delete cascade -- 메시지 삭제시 첨부파일 삭제
 );
 
+-- 04/09 제약조건 수정
+alter table together_msg_attach modify (msg_no number null);
+
 -- COMMENT
 COMMENT ON COLUMN TOGETHER_MSG_ATTACH.ATTACH_NO IS '첨부파일 NO';
 COMMENT ON COLUMN TOGETHER_MSG_ATTACH.MSG_NO IS '메시지 NO';
@@ -695,7 +713,3 @@ COMMENT ON COLUMN TOGETHER_MSG_ATTACH.REG_DATE IS '등록일';
 CREATE SEQUENCE SEQ_TOGETHER_MSG_ATTACH_NO;
 
 ---
-select * from TOGETHER
-select * from TOGETHER_MSG
-select * from TOGETHER_MSG_ATTACH
-select * from together_chat
