@@ -27,12 +27,12 @@
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
-			<td>
+			<%-- <td>
 				 <span>
-				    <fmt:parseDate value="${loginMember.enrollDate}" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm" />
-					<fmt:formatDate value="${enrollDate}" pattern="yyyy-MM-dd" />
+				    <fmt:parseDate value="principal.enrollDate" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm" />
+					<fmt:formatDate value="${enrollDate}" pattern="yyyy-MM-dd HH:mm" />				 	
 				</span>
-			</td>	
+			</td> --%>	
 			<td>
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/myProfile.do'">프로필 보기</button>
 			</td>
