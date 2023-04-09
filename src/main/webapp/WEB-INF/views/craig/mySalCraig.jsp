@@ -58,18 +58,18 @@
 							</ul>
 							</ul>
 							<hr id="hogi-hr"/>
-							<form:form name="salFCriagFrm" action="${pageContext.request.contextPath}/craig/salFCraig.do" method="POST">
-							<input type="hidden" name="no" value="${sal.no}"/>
+							<%-- <form:form name="salFCriagFrm" action="${pageContext.request.contextPath}/craig/salFCraig.do" method="POST">
+							<input type="hidden" name="no" value="${sal.no}"/> --%>
 							<ul id="f-button">
 							<c:if test="${sal.state eq 'CR2'}">
 								<a href="${pageContext.request.contextPath}/chat/chatList.do?craigNo=${sal.no}#"><input type="button" class="book" id="f-li" value="예약중"/></a>
 							</c:if>
 								<c:if test="${sal.state eq 'CR1'}">
 									<input type="button" data-no="${sal.no}" class="sal" id="f-li" value="판매중"></input>
-									<input type="submit" class="finish" id="f-li" value="판매완료"></input>
+									<a href="${pageContext.request.contextPath}/craig/craigDetail.do?no=${sal.no}"><input type="submit" class="finish" id="f-li" value="판매완료"></input></a>
 								</c:if>
 							</ul>
-							</form:form>
+							<%-- </form:form> --%>
 							<hr id="hogi-hr"/>
 				</c:forEach>
 			</c:when>

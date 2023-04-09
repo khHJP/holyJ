@@ -192,11 +192,11 @@ document.memberEnrollFrm.addEventListener('submit', (e) => {
 	if(checkPwd.value == 0){
 		e.preventDefault();
 	}
-	
 	console.log("idValid : ", idValid, "pwdValid : ", pwdValid);
+	
 	// 닉네임
 	const nickname = document.querySelector("#nickname");
-	if(!/^.[가-힣]{2,7}$/.test(nickname.value)){
+	if(!/^.[가-힣]{1,7}$/.test(nickname.value)){
 		nickname.select();
 		nickname.previousElementSibling.style.color='#E64848';
 		e.preventDefault();

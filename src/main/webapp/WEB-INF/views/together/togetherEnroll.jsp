@@ -270,11 +270,11 @@ document.querySelector(".minus").addEventListener("click", (e) => {
   	}
 });
 document.querySelector(".plus").addEventListener("click", (e) => {
-	if (cnt < 6) {
+	if (cnt < 10) {
 		cnt++;
   		joinCnt.value = cnt;
 	} else {
-  		alert("참가인원은 6명까지 가능합니다.");
+  		alert("참가인원은 10명까지 가능합니다.");
 	}
 });
 

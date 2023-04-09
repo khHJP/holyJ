@@ -24,7 +24,7 @@ public class JoinMember extends TogetherChat {
 
 	public JoinMember(@NonNull int chatroomNo, int togetherNo, @NonNull String memberId, @NonNull Role role,
 			LocalDateTime regDate, long lastCheck) {
-		super(chatroomNo, togetherNo, memberId, role, regDate, lastCheck);
+		super(togetherNo, memberId, role, regDate, lastCheck);
 	}
 
 	public JoinMember(@NonNull int chatroomNo, @NonNull String memberId, @NonNull Role role) {
@@ -33,7 +33,7 @@ public class JoinMember extends TogetherChat {
 
 	public JoinMember(@NonNull int chatroomNo, int togetherNo, @NonNull String memberId, @NonNull Role role,
 			LocalDateTime regDate, long lastCheck, Member member) {
-		super(chatroomNo, togetherNo, memberId, role, regDate, lastCheck);
+		super(togetherNo, memberId, role, regDate, lastCheck);
 		this.member = member;
 	}
 	

@@ -124,7 +124,10 @@ window.addEventListener('load', (e) => {
 						</div>
 					</c:if>
 				</div>
-				<p>매너온도</p>
+				<div class="tooltip_wrap" >
+  					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
+					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
+				</div>
 			</div>
 		</div><!-- end writer-info-box -->
 		<div class="category-box">
@@ -384,6 +387,35 @@ document.querySelector(".report").addEventListener('click', (e) => {
 });
 </script>
 </c:if>
+<script>
+/* 매너온도 설명 */
+$(document).ready(function(){//툴팁
+	  openTooltip('.mannerdgr', '.tooltip_layer');
+});
+
+function openTooltip(selector, layer) {	      
+  let $layer = $(layer);
+
+  $(selector).on('click', function() {
+    $layer.toggleClass('on');
+});
+  
+function overTooltip() {
+  
+  let $this = $(selector);
+
+   $this.on('mouseover focusin', function() {
+     $(this).next(layer).show(); 
+   })  
+   $this.on('mouseleave focusout', function() {
+     if(!$layer.hasClass('on')) {
+         $(this).next(layer).hide();
+       }
+   })
+}
+overTooltip();
+}
+</script>
 <!-- 정은 끝 👻 -->
 
 <c:if test="${together.status eq 'Y' && hasEntered eq false}">
@@ -429,16 +461,29 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 		url : `${pageContext.request.contextPath}/chat/togetherChat/\${no}`,
 		method : 'GET',
 		dataType : "json",
-		success(data){
-			const {memberId, chatroomId} = data;
-			
-			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-			const name = "craigChatroom";
-			openPopup(url, name);
-		},
+		success(){},
 		error : console.log
 		});		
 	
+	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+	const name = "togetherChatroom";
+	openPopup(url, name); 
+	
+});
+
+</script>
+</c:if>
+
+<c:if test="${together.status eq 'Y' && hasEntered eq true}">
+<script>
+/* 현재 대화방 참여자인 경우 */
+document.querySelector(".enter").addEventListener('click', (e) => {
+	const no = '${together.no}';
+	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+	const name = "togetherChatroom";
+	openPopup(url, name); 
+
+	console.log('확인');
 });
 
 /* 팝업열기 */
@@ -448,16 +493,6 @@ function openPopup(url, name){
 	win.opener.self;
 }
 /******************* 효정 끝 *********************/
-</script>
-</c:if>
-
-<c:if test="${together.status eq 'Y' && hasEntered eq true}">
-<script>
-/* 현재 대화방 참여자인 경우 */
-document.querySelector(".enter").addEventListener('click', (e) => {
-	// 아마 여기서는 현재 입장중인 채팅방을 불러오면 될것같아요🫠
-	console.log('확인');
-});
 </script>
 </c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

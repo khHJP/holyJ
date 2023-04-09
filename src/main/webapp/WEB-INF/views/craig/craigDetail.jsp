@@ -290,12 +290,17 @@
 							</div>
 						</c:if>
 					</div>
-				</div><Br>
-				<div class="tooltip_wrap" >
-  					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
-					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
 				</div>
-			</td>
+			</tr>
+			<tr>
+				<td style="width:60px"></td>
+				<td colspan="5"></td>
+				<td style="width:320px; text-align: right" >
+					<div class="tooltip_wrap" style="margin-top : 22px; ">
+	  					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
+						<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
+					</div>
+				</td>
 		</tr>
 		<tr style="height: 10px; border-bottom: 2px solid lightgray"></tr>		
 	</thead>
@@ -306,6 +311,9 @@
 	<%-- CR1 || CR3 - 거래/나눔 --%>
 	<c:if test="${craigboard.state == 'CR1'}">
 		<span class="badge badge-success" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 예약중 </span>
+	</c:if>
+	<c:if test="${craigboard.state == 'CR2'}">
+		<span class="badge " style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;  background-color: none !important;"> </span>
 	</c:if>
 	<c:if test="${craigboard.state == 'CR3' && craigboard.price != 0  }">
 		<span class="badge badge-secondary" style="height: 26px; font-size: 15px; text-align: center; vertical-align: middle;"> 거래완료 </span>
@@ -319,7 +327,7 @@
 <%-- sec 안써도됨 --%>
 	<c:if test="${loginMember.memberId != craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:691px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:790px; left:696px; width: 400px; display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -330,7 +338,7 @@
 	</c:if>
 	<c:if test="${loginMember.memberId == craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:780px; left:691px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -368,7 +376,7 @@
 		<p id="crPrice">나눔💚</p>
 	</c:if>
 
-	<div id="crContent" style="font-size: 17px; height: 200px">${craigboard.content}</div>
+	<div id="crContent" style="font-size: 17px; height: 160px; margin-bottom:  20px;">${craigboard.content}</div>
 	<div style="margin-bottom: 10px; height: 90px; ">
 		<span>관심 </span> <span id="spancrWish"></span> <span> · 채팅</span>
 		<span id="spancrChat"></span> <span> · 조회 </span> <span id="spancrReadCount">${craigboard.hits}</span>
@@ -822,12 +830,7 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 			</tr>
 		</tbody>
 	</table>
-	
-	
 	</c:if>
-		
-
-	
 	
 	<c:if test="${ othercraigs == null || othercraigs == '' || othercraigs[0] == null}">
 		<table style="background-color: #f5f5f5; height: 250px; width:610px; margin-top: 40px; text-align: center; border-radius: 20px">
@@ -837,8 +840,7 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 			</th>
 			</tbody>
 		</table>	
-	</c:if>
-		
+	</c:if>		
 </div>
 
 

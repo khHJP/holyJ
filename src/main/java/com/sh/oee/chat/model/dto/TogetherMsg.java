@@ -1,25 +1,23 @@
 package com.sh.oee.chat.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@ToString(callSuper = true)
-public class TogetherMsg extends TogetherMsgEntity {
-	private MsgAttach attach = new MsgAttach(); // 메시지 첨부파일 객체
-	// private Member member; // 메시지 작성자 객체
-
-	public TogetherMsg(long msgNo, int togetherNo, String writer, String content, long sentTime, ChatLogType type,
-			MsgAttach attach) {
-		super(msgNo, togetherNo, writer, content, sentTime, type);
-		this.attach = attach;
-	}
-	
-	// 필요할까? 모르겠음.. 
-	public void addMsgAttach(MsgAttach attach) {
-		this.attach = attach;
-	}
-	
+@AllArgsConstructor
+@RequiredArgsConstructor 
+public class TogetherMsg{
+	@NonNull
+	private long msgNo; // 같이해요메시지 no
+	@NonNull
+	private int chatroomNo; // 같이해요 No
+	@NonNull
+	private String writer; // 작성자id
+	private String content; // 메시지내용
+	private long sentTime; // 보낸시간
+	private ChatLogType type; // 메시지타입
 }

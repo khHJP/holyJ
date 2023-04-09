@@ -145,11 +145,11 @@ window.addEventListener('load', (e) => {
 	<div class="modal fade" id="alert-modal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content alert-modal-content">
-				<div class="modal-header alert-modal-header">
+<!-- 				<div class="modal-header alert-modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-				</div>
+				</div> -->
 				<div class="modal-body alert-modal-body" style="padding: 20px 0;">
 					<div class="alert-msg-img">
 						<img src="${pageContext.request.contextPath}/resources/images/OEE-LOGO.png" alt="오이마켓로고">

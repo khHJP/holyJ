@@ -3,9 +3,11 @@ package com.sh.oee.chat.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sh.oee.chat.model.dto.TogetherMsg;
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.dto.MsgAttach;
+import com.sh.oee.chat.model.dto.TogetherChat;
 
 public interface ChatService {
 
@@ -34,5 +36,14 @@ public interface ChatService {
 	int insertCraigMsgAttach(MsgAttach attach);
 
 	int updateCraigAttachMsgNo(Map<String, Object> map);
+
+	TogetherChat findTogetherMember(Map<String, Object> map);
+
+	List<TogetherChat> findAllTogetherMembers(Map<String, Object> map);
+
+	int insertTogetherMember(Map<String, Object> map);
+
+	int insertTogetherMsg(TogetherMsg togetherMsg);
+
 
 }
