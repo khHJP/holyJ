@@ -128,6 +128,7 @@
 	</association> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
+		<result column="LOCAL_NO" property="localNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
 		<result column="RE_FILENAME" property="reFilename"/>
 		<result column="REG_DATE" property="regDate"/>
@@ -151,6 +152,24 @@
 		REG_DATE = sysdate
 	where
 		ATTACH_NO = #{attachNo}
+</update>
+
+<insert id="insertAttachFile">
+  insert into 
+		local_Attachment 
+	values(
+		seq_local_attach_no.nextval, 
+		#{localNo}, 
+		#{originalFilename}, 
+		#{reFilename}, 
+		default
+	)
+</insert>
+
+<update id="updateLocalAttachment">
+	update local_attachment
+	set re_filename = #{reFilename}
+	where local_no = #{localNo}
 </update>
 
 <select id="selectAttachNo" resultType="_int">

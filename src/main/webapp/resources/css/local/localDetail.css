@@ -59,12 +59,12 @@
 }
 .titleInfo{
 	display:flex;
-	margin:10px 0px 20px 15px;
+	margin:10px 0px 20px 20px;
 	font-size : 35px;
 	font-weight:bold;
 }
 .contentInfo{
-	margin-left : 15px;
+	margin-left : 20px;
 	margin-bottom:30px;
 	font-size : 20px;
 	padding-top : 20px;
@@ -140,16 +140,49 @@ ul {
 	font-size : 12px;
 	padding-top:-2px;
 }
-.commentdots{
-	float:right;
-	color:#B1D7B4;
-}
 .replyDelete{
 	margin-left :10px;
 	color:lightgray;
 	font-size : 12px;
 	padding-top:-2px;
 }
+#replytext{
+	margin-left : 10px;
+}
+
+.div-comment button{
+	border:none;
+	background-color: transparent;
+}
+.recobtn{
+	border:none;
+	background-color: transparent;
+	font-size:13px;
+	color : lightgray;
+}
+.rcoment,.coupdate{
+	margin-left:120px;
+}
+.codelete{
+	margin-left : 10px;
+}
+.mcoupdate{
+	margin-left:20px;
+}
+#replyEditText,#replyEditTextbtn,#replyUpdate{
+	border:none;
+}
+
+/* 좋아요 */
+.hearts {
+	width:30px;
+	float:right;
+	margin-right:20px;
+	display:inline;
+	
+}
+
+
 /*-------------------------------------------------------------*/
 .profileimg img{
 	border-radius: 50px;

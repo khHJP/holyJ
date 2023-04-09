@@ -1,31 +1,6 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
-.local-wrqp::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-/* 스크롤바 배경 색상 */
-.local-wrqp::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
-.local-wrqp::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0); /* 스크롤바 썸네일 투명화 */
-}
-
-.local-wrqp::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0); /* 스크롤바 트랙 투명화 */
-}
-
-
-/* 스크롤바가 어디에 위치할지 설정 */
-.local-wrqp {
-  height: 800px;
-  overflow: auto;
-}
-
-
 
 
 /*info Local*/
@@ -169,4 +144,16 @@ table{
 /*searchKeyword*/
 .highlighted{
 	color:#5FB404;
+}
+
+.empty-box{
+	display:flex;
+	justify-content:center;
+	margin-top : 250px;
+	font-size : 35px;
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+	
 }
