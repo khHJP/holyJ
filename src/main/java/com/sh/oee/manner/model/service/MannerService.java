@@ -24,7 +24,7 @@ public interface MannerService {
 	int updateComplimentDegree(Map<String, Object> param);
 
 	//혜진추가 - 0404
-	int updateMannerDone();
+	int updateMannerDone(int mannerNo);
 	
 	//혜진추가 - 0406
 	int craigMannerEnroll(Manner manner);

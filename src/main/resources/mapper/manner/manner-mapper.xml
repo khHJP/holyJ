@@ -9,7 +9,7 @@
 		select * 
     	from manner_review r left join member m 
         on r.recipient = m.member_id
-   	    where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD') 
+   	    where TO_CHAR(reg_date, 'YY/MM/DD') = TO_CHAR(sysdate-1+9/24, 'YY/MM/DD')         	 
         	  and done = 'N'
 	</select>
 	

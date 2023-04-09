@@ -96,11 +96,6 @@ public class MannerController {
 		
 		String memberId = manner.getWriter();
 		int no = manner.getCraigNo();
-
-		String comliment  = String.valueOf(   manner.getCompliment());
-		if( comliment == null) {
-			comliment = "";
-		}
 		
 		int result = mannerService.craigMannerEnroll( manner );		
 		log.debug("result = {}",result);
