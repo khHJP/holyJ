@@ -461,16 +461,29 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 		url : `${pageContext.request.contextPath}/chat/togetherChat/\${no}`,
 		method : 'GET',
 		dataType : "json",
-		success(data){
-			const {memberId, chatroomId} = data;
-			
-			const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
-			const name = "craigChatroom";
-			openPopup(url, name);
-		},
+		success(){},
 		error : console.log
 		});		
 	
+	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+	const name = "togetherChatroom";
+	openPopup(url, name); 
+	
+});
+
+</script>
+</c:if>
+
+<c:if test="${together.status eq 'Y' && hasEntered eq true}">
+<script>
+/* 현재 대화방 참여자인 경우 */
+document.querySelector(".enter").addEventListener('click', (e) => {
+	const no = '${together.no}';
+	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+	const name = "togetherChatroom";
+	openPopup(url, name); 
+
+	console.log('확인');
 });
 
 /* 팝업열기 */
@@ -480,16 +493,6 @@ function openPopup(url, name){
 	win.opener.self;
 }
 /******************* 효정 끝 *********************/
-</script>
-</c:if>
-
-<c:if test="${together.status eq 'Y' && hasEntered eq true}">
-<script>
-/* 현재 대화방 참여자인 경우 */
-document.querySelector(".enter").addEventListener('click', (e) => {
-	// 아마 여기서는 현재 입장중인 채팅방을 불러오면 될것같아요🫠
-	console.log('확인');
-});
 </script>
 </c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
