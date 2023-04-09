@@ -132,7 +132,7 @@
 
 			<tr>
 				<th colspan="2" style="padding-bottom: 20px;">
-			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 물건에 대한 정보를 써주세요 ✍️  &#13;&#10; &#13;&#10; &nbsp; ex)구매 시기, 구매 장소, 구매 당시 가격 등  "  style="min-width:650px; height: 110px"  required="required"></textarea></br>
+			    	<textarea class="formtext" name="content" id="content" placeholder=" &nbsp; 물건에 대한 정보를 써주세요 ✍️  &#13;&#10; &#13;&#10; &nbsp; ex)구매 시기, 구매 장소, 구매 당시 가격 등  "  style="min-width:650px; height: 110px"  required="required">${craigboard.content}</textarea></br>
 			    </th>
 		    </tr>
 			
@@ -369,7 +369,6 @@
 		document.querySelector("#longitude").value  = longitude;
 		document.querySelector("#placeDetail").value  = placeDetail;
 
-		
 		const orgcate  = "${craigboard.categoryNo}";	
 		document.querySelectorAll("input[data-no]").forEach( (input)=>{
 	

@@ -124,7 +124,10 @@ window.addEventListener('load', (e) => {
 						</div>
 					</c:if>
 				</div>
-				<p>매너온도</p>
+				<div class="tooltip_wrap" >
+  					<a href="#url" class="mannerdgr"><u>매너온도</u></a>
+					<div class="tooltip_layer" > 매너온도는 오이마켓 사용자로부터 받은 후기, 비매너평가 등을 <br>종합해서 만든 매너 지표예요.</div>
+				</div>
 			</div>
 		</div><!-- end writer-info-box -->
 		<div class="category-box">
@@ -384,6 +387,35 @@ document.querySelector(".report").addEventListener('click', (e) => {
 });
 </script>
 </c:if>
+<script>
+/* 매너온도 설명 */
+$(document).ready(function(){//툴팁
+	  openTooltip('.mannerdgr', '.tooltip_layer');
+});
+
+function openTooltip(selector, layer) {	      
+  let $layer = $(layer);
+
+  $(selector).on('click', function() {
+    $layer.toggleClass('on');
+});
+  
+function overTooltip() {
+  
+  let $this = $(selector);
+
+   $this.on('mouseover focusin', function() {
+     $(this).next(layer).show(); 
+   })  
+   $this.on('mouseleave focusout', function() {
+     if(!$layer.hasClass('on')) {
+         $(this).next(layer).hide();
+       }
+   })
+}
+overTooltip();
+}
+</script>
 <!-- 정은 끝 👻 -->
 
 <c:if test="${together.status eq 'Y' && hasEntered eq false}">
