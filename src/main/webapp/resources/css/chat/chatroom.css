@@ -258,7 +258,14 @@ input, button, select, textarea{
 	color: #435f7a;
 	cursor: pointer;
 }
-
+.custom-file-input {
+    position: absolute;
+    top: -93px;
+}
+.custom-file-label {
+    position: absolute;
+    top: -93px;
+}
 /* 메시지영역  */
 #message-container {
 	height: 550px;

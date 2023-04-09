@@ -12,6 +12,8 @@ import com.sh.oee.chat.model.dao.ChatDao;
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.dto.MsgAttach;
+import com.sh.oee.chat.model.dto.TogetherChat;
+import com.sh.oee.chat.model.dto.TogetherMsg;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,5 +143,22 @@ public class ChatServiceImpl implements ChatService {
 	public int insertCraigMsgAttach(MsgAttach attach) {
 		return chatDao.insertCraigMsgAttach(attach);
 	}
-	
+
+	/********************* 같이해요 채팅방 시작 ******************************/
+	@Override
+	public TogetherChat findTogetherMember(Map<String, Object> map) {
+		return chatDao.findTogetherMember(map);
+	}
+	@Override
+	public List<TogetherChat> findAllTogetherMembers(Map<String, Object> map) {
+		return chatDao.findAllTogetherMembers(map);
+	}
+	@Override
+	public int insertTogetherMember(Map<String, Object> map) {
+		return chatDao.insertTogetherMember(map);
+	}
+	@Override
+	public int insertTogetherMsg(TogetherMsg togetherMsg) {
+		return chatDao.insertTogetherMsg(togetherMsg);
+	}
 }

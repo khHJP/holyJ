@@ -127,7 +127,7 @@
 								<c:if test="${meeting != null}">
 									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
 									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude = null}">
+									<c:if test="${meeting.longitude == null}">
 										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
 									</c:if>									
 								</c:if>
@@ -467,14 +467,10 @@
 			
 			<!-------------- 메시지 입력창 start  --------------->
 			<div class="message-input">
-				<!-- 첨부파일 start  -->
-				<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
-	    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-	    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
-				<!-- 첨부파일 end  -->
+
 				
 				<input type="text" id="msg" placeholder="메시지 보내기">
-				<i class="fa fa-paperclip attachment" aria-hidden="true"></i>					
+				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
 				<button id="sendBtn" type="button">
 					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
 						width="20" height="20" fill="currentColor"
@@ -484,7 +480,13 @@
 				</button>
 			</div>
 			<!-------------- 메시지 입력창 end --------------->
-			
+							<!-- 첨부파일 start  -->
+				<div id="fileWrap" class="custom-file" style="display: none;">
+					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
+		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
+		    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
+				</div>
+				<!-- 첨부파일 end  -->
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 
@@ -509,12 +511,16 @@ const stompClient = Stomp.over(ws);
 const chatroomId = '${chatroomId}';
 // 로그인한 사용자 아이디
 const memberId = '${memberId}';
+// 로그인한 사용자 객체
+const chatUser = '${chatUser}';
 // 로그인한 사용자 동
 const dong = '${dong}';
 // 로그인한 사용자 프로필이미지
 const profImg = '${chatUser.profileImg}';
 // 상대방 프로필이미지
 const otherImg = '${otherUser.profileImg}';
+// 상대방 객체
+const otherUser = '${otherUser}';
 
 // csrf 토큰  
 const csrfHeader = "${_csrf.headerName}";
@@ -556,11 +562,13 @@ document.querySelector("#saveReport").addEventListener('click', (e) => {
 	
 	const reportTypes = document.querySelectorAll("[name=reasonNo]");
 	let type;
+	let reasonNo;
 	
 	console.log(reportTypes);
 	reportTypes.forEach((reportType) => {
 		if(reportType.checked == true){
 			type = reportType.dataset.reportType;
+			reasonNo = reportType.value;
 		}
 	});
 	
@@ -569,21 +577,24 @@ document.querySelector("#saveReport").addEventListener('click', (e) => {
 		return false;
 	} else {
 		if(confirm('신고하시겠습니까?')){
-			// craig_meeting에서 해당 행 update 처리
+			$("#reportModal").modal('hide'); // 모달 감추기	 
+			// USER_REPORT insert처리 
 		    $.ajax({
 		        headers,
 		        url : '${pageContext.request.contextPath}/report/chat/userReportEnroll.do',
+		        dataType : 'json',
 		        data : {
-		        	writer : chatUser,
-					reasonNo: type
+		        	writer: '${chatUser.memberId}',
+					reasonNo: reasonNo,
+					reportedMember: '${otherUser.memberId}'
 		        },
 		        type : "POST",
 		        success(){
-
-					// $("#locationModal").modal('hide'); // 모달 감추기	 
 		        },
 		        error: console.log
 		    });   
+			alert("신고 완료되었습니다.");
+		    $('.action_menu').toggle(); // 메뉴토글 닫기
 		}
 	}	
 });
@@ -876,7 +887,7 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 
 
 /********************* 첨부파일 관련 *************************/
-document.querySelector("#upFileBtn").addEventListener('click', (e) => {
+document.querySelector("#sendBtn").addEventListener("click", (e) => {
 
     const formData = new FormData();
     const file = document.querySelector("#upFile").files[0];
@@ -884,6 +895,9 @@ document.querySelector("#upFileBtn").addEventListener('click', (e) => {
     formData.append("file", file);
     formData.append("memberId", memberId);
 
+    if(!file) return;
+    
+    
     // 2. 첨부파일 가져오기
     $.ajax({
         headers,
@@ -910,17 +924,14 @@ document.querySelector("#upFileBtn").addEventListener('click', (e) => {
         error: console.log
     });    
     
-});
-
-
-/* 첨부파일 선택 버튼 */
-document.querySelector("i").addEventListener("click", (e) => {
-	const div = document.querySelector(".custom-file")
-	if(div.style.display == "none"){
-		div.style.display = "block";	
-	} else {
-		div.style.display = "none";
-	}
+    const fileInput = document.querySelector("#upFile");
+    
+	$('#fileWrap').toggle(); // 파일토글 닫기
+	const label = fileInput.nextElementSibling;
+	fileInput.value = ''; // 파일 초기화 
+	label.innerHTML = '파일을 선택하세요'	; // 라벨 초기화
+	
+	
 });
 
 
@@ -1267,13 +1278,19 @@ function convertTime(now){
 	const convertedTime = daynight + ' ' + hour + ':' + min + ' ';
 	return convertedTime;
 }
-	
+
+/* 첨부파일 버튼 토글 */
+$('i').click(function(){
+	$('#fileWrap').toggle();
+});
+
 /* 채팅방 메뉴버튼 토글  */
 $(document).ready(function(){
 	$('#action_menu_btn').click(function(){
 		$('.action_menu').toggle();
 	});
 });
+
 		
 /* 채팅방 스크롤 최하단 고정  */		
 $(document).ready(function(){
