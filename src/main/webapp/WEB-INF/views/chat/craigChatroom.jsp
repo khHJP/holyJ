@@ -127,7 +127,7 @@
 								<c:if test="${meeting != null}">
 									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
 									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude == null}">
+									<c:if test="${meeting.longitude == null || meeting.longitude == '' }">
 										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
 									</c:if>									
 								</c:if>
