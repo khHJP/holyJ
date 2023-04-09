@@ -261,6 +261,8 @@ insert into TOGETHER values(
     default
 );
 
+
+
 select * from together;
 
 select * from craig;
