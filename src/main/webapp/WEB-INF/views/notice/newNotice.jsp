@@ -8,20 +8,13 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notice/notice.css" />
 
-<div>
-	<table>
-		<c:forEach items="${adminNoticeList}" var="adminNotice"
-			varStatus="vs">
-			<tr id="table-content">
-				<td>${vs.count}</td>
-				<td>${adminNotice.msg}</td>
-				<td>
-					<fmt:parseDate value="${adminNotice.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="regDate" /> 
-					<fmt:formatDate value='${regDate}' pattern="yyyy.MM.dd HH:mm" />
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
+<div class="acess-denied-container" style="text-align: center; margin-top: 70px;">
+	<div class="error-img">
+		<img src="${pageContext.request.contextPath}/resources/images/오이금지.png">
+	</div>
+	<div class="error-wrap">
+		<h1>공사 중인 페이지입니다.</h1>
+	</div>
 </div>
 	
 <script>
