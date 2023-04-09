@@ -687,11 +687,9 @@ commit;
 --=============================================
 -- 같이해요 메시지 첨부파일 TOGETHER_MSG_ATTACH -- 수정 0405 (변경된거없음)
 --=============================================
-drop table together_msg_attach;
-
 CREATE TABLE TOGETHER_MSG_ATTACH (
     ATTACH_NO NUMBER,
-    MSG_NO NUMBER NOT NULL,
+    MSG_NO NUMBER,
     ORIGINAL_FILENAME VARCHAR2(500),
     RE_FILENAME VARCHAR2(500),
     REG_DATE DATE DEFAULT SYSDATE,
@@ -711,5 +709,3 @@ COMMENT ON COLUMN TOGETHER_MSG_ATTACH.RE_FILENAME IS '서버파일명';
 COMMENT ON COLUMN TOGETHER_MSG_ATTACH.REG_DATE IS '등록일';
 
 CREATE SEQUENCE SEQ_TOGETHER_MSG_ATTACH_NO;
-
----

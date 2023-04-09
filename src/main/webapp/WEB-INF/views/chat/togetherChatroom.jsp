@@ -90,14 +90,13 @@
 	
 			<!-------------- 채팅방 메시지내용 start  ------------>
 			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
-<%-- 				<ul class="list-unstyled">
+				<ul class="list-unstyled">
 					<c:forEach items="${togetherMsgs}" var="togetherMsg">
 						<!-- java.util.Date 빈등록  -->
 						<jsp:useBean id="sentTime" class="java.util.Date"/>
-						
 						<!---------- 내가 보낸 메시지일때 -->
 						<c:if test="${chatUser.memberId == togetherMsg.writer}">
-							<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
+							<jsp:setProperty name="sentTime" property="time" value="${togetherMsg.sentTime}"/>
 							<!-- 채팅인 경우 -->
 							<c:if test="${togetherMsg.type == 'CHAT'}">
 								<li class="replies">
@@ -145,14 +144,12 @@
 						
 						</c:if>
 					</c:forEach>
-				</ul> --%>
+				</ul>
 			</div>
 			<!-------------- 채팅방 메시지내용 end  -------------->
 			
 			<!-------------- 메시지 입력창 start  --------------->
 			<div class="message-input">
-
-				
 				<input type="text" id="msg" placeholder="메시지 보내기">
 				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
 				<button id="sendBtn" type="button">
@@ -164,11 +161,10 @@
 				</button>
 			</div>
 			<!-------------- 메시지 입력창 end --------------->
-							<!-- 첨부파일 start  -->
+				<!-- 첨부파일 start  -->
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-		    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
 				</div>
 				<!-- 첨부파일 end  -->
 		</div> <!-- div.card end -->
@@ -191,7 +187,8 @@
 const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
 const stompClient = Stomp.over(ws);
 
-// 게시글번호
+// 채팅방번호 (게시글번호)
+const chatroomNo = '${together.no}'
 // 로그인한 사용자 아이디
 const memberId = '${chatUser.memberId}';
 // 로그인한 사용자 객체
@@ -220,54 +217,8 @@ const checkOnlyOne = (element) => {
   
   element.checked = true; // element: onclick(this) 적어놓은 태그 
 };
-/* 
-/* 유효성 검사 */
-/*
-document.querySelector("#saveReport").addEventListener('click', (e) => {
-	
-	const reportTypes = document.querySelectorAll("[name=reasonNo]");
-	let type;
-	let reasonNo;
-	
-	console.log(reportTypes);
-	reportTypes.forEach((reportType) => {
-		if(reportType.checked == true){
-			type = reportType.dataset.reportType;
-			reasonNo = reportType.value;
-		}
-	});
-	
-	if(type == null){
-		alert("사유를 선택해주세요.");
-		return false;
-	} else {
-		if(confirm('신고하시겠습니까?')){
-			$("#reportModal").modal('hide'); // 모달 감추기	 
-			// USER_REPORT insert처리 
-		    $.ajax({
-		        headers,
-		        url : '${pageContext.request.contextPath}/report/chat/userReportEnroll.do',
-		        dataType : 'json',
-		        data : {
-		        	writer: '${chatUser.memberId}',
-					reasonNo: reasonNo,
-					reportedMember: '${otherUser.memberId}'
-		        },
-		        type : "POST",
-		        success(){
-		        },
-		        error: console.log
-		    });   
-			alert("신고 완료되었습니다.");
-		    $('.action_menu').toggle(); // 메뉴토글 닫기
-		}
-	}	
-});
-*/
 
-
-
-/********************* 첨부파일 관련 **
+/********************* 첨부파일 관련 *************************/
 document.querySelector("#sendBtn").addEventListener("click", (e) => {
 
     const formData = new FormData();
@@ -292,14 +243,14 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
         	console.log("첨부파일 전송시입니다");
    			const {profileImg, attach} = data;
 	        const payload = {
-	        	chatroomId,
+	        	chatroomNo : '${together.no}',
              	writer : '<sec:authentication property="principal.username"/>',
              	content : attach.reFilename,
              	sentTime : Date.now(),
              	type : 'FILE',
              	prof : profileImg
             }
-	        stompClient.send(`/app/togetherChat/{togetherNo}`, {}, JSON.stringify(payload));
+	    	stompClient.send(`/app/togetherChat/${together.no}`, {}, JSON.stringify(payload));
             
         },
         error: console.log
@@ -314,7 +265,7 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	
 	
 });
-***********************/
+
 
 document.querySelector("#upFile").addEventListener("change", (e) => {
 	const file = e.target.files[0];
@@ -352,7 +303,131 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 }); 
 	
 /********************* 구독 *************************/
+stompClient.connect({}, (frame) => {
+	
+	stompClient.subscribe("/app/togetherChat/${together.no}", (message) => {		
+		// content type 헤더에 담기
+		const {'content-type' : contentType} = message.headers;
+		
+		// 받아온 json 구조분해할당
+		const {writer, content, sentTime, type, prof} = JSON.parse(message.body);
+		const time = convertTime(new Date(sentTime)); // jquery Date으로 변경 + 12시간 변환함수
+		
+		const chatMembers = '${chatMembers}';
+		
+		
+		const ul = document.querySelector("#message-container ul");
 
+		if(contentType){
+			
+			/*** ------- 내가 보낸 메시지 start ------- ***/
+			if(memberId == writer){
+				
+				/* 메시지 유형이 chat */
+				if( type == 'CHAT'){
+					ul.innerHTML += `
+					<li class="replies">
+						<p>\${content}</p>	
+						<span class="msg_time">\${time}</span>
+					</li>
+					`;
+				} 
+				
+				/* 메시지 유형이 file */
+				else if ( type == 'FILE'){
+					const li = document.createElement("li");
+					li.classList.add("replies");
+	
+					const div = document.createElement("div");
+					div.classList.add("attachFile");
+					
+					const img = document.createElement("img");
+					img.classList.add("attachImg");
+					img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+					div.append(img);
+	
+					const span = document.createElement("span");
+					span.classList.add("msg_time");
+					span.innerHTML = `\${time}`;
+					
+					li.append(div, span);
+					ul.append(li);
+				}
+			}/*** ------- 내가 보낸 메시지 end ------- ***/
+				
+			/*** ------- 상대방이 보낸 메시지 start ------- ***/
+			if(memberId != writer){
+				
+				// 프로필이미지 조회해오기
+				$.ajax({
+					url : `${pageContext.request.contextPath}/chat/findTogetherMember.do`,
+					method : 'GET',
+					data : {writer},
+					headers,
+					dataType: "json",
+					success(data){
+						const otherImg = data.profileImg;		
+						
+						/* 메시지 유형이 chat */
+						if( type == 'CHAT'){
+							const li = document.createElement("li");
+							li.classList.add("sent");
+			
+							const img = document.createElement("img");
+							img.classList.add("profImg");
+							img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${otherImg}`;
+							
+							const p = document.createElement("p");
+							p.innerHTML = `\${content}`;
+							
+							const span = document.createElement("span");
+							span.classList.add("msg_time");
+							span.innerHTML = `\${time}`;
+							
+							li.append(img, p, span);
+							ul.append(li);
+						}  
+						
+						/* 메시지 유형이 file */
+					 	else {
+							const li = document.createElement("li");
+							li.classList.add("sent");
+			
+							const img = document.createElement("img");
+							img.classList.add("profImg");
+							img.src = `${pageContext.request.contextPath}/resources/upload/profile/\${otherImg}`;
+							
+							const div = document.createElement("div");
+							div.classList.add("attachFile");
+							
+							const sentImg = document.createElement("img");
+							sentImg.classList.add("attachImg");
+							sentImg.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+							div.append(sentImg);
+			
+							const span = document.createElement("span");
+							span.classList.add("msg_time");
+							span.classList.add("attach");
+							span.innerHTML = `\${time}`;
+							
+							li.append(img, div, span);
+							ul.append(li);
+						} 
+						// 메시지창 끌어올리기
+						$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
+					},
+					error : console.log
+				});
+				
+
+	
+			}/*** ------- 상대방이 보낸 메시지 end ------- ***/
+		
+		}
+		// 메시지창 끌어올리기
+		$('#message-container').scrollTop($('#message-container')[0].scrollHeight);
+	}); // 구독 끝 
+});
 
 /********************* 채팅방 나가기 *************************/
 document.querySelector("#craigExit").addEventListener("click", (e) => {
