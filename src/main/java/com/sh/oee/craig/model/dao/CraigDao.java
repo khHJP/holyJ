@@ -73,7 +73,7 @@ public interface CraigDao {
 	@Select("select count(*) from craig_wish where craig_no = #{no}")
 	int selectCraigWishOne(int no);
 
-	@Select("select count(*) from craig_chat where craig_no = #{no}")
+	@Select("select floor(count(*)/2)   From craig_chat where craig_no = #{no} and del_date is null")
 	int selectCraigChrooms(int no);
 
 	//게시물 리스트 - chatroomcount

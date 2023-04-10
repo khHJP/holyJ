@@ -506,8 +506,8 @@ public class CraigController {
     public int selectCraigChrooms(@RequestParam int no) {  
     	log.debug("■[chat] 비동기 no 값넘어오는지 확인 = {} ", no);
     	int result = craigService.selectCraigChrooms(no);
-    	int realResult = (int)result/2;
-    	return realResult;
+  //  	int realResult = (int)result/2;
+    	return result;
     }
 	 
     
