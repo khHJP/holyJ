@@ -339,6 +339,23 @@ public class ChatController {
     	return otherUser;
     }
     
+	/**
+	 * 같이해요 채팅방 나가기 처리 
+	 */
+	@PostMapping("/exitTogether.do")
+	public void exitTogether(@RequestParam String memberId, @RequestParam int chatroomNo) {
+		log.debug("아이디 = {}", memberId);
+		log.debug("같이해요번호 = {}", chatroomNo);
+		
+		Map<String, Object> delMap= new HashMap<>();
+		delMap.put("memberId", memberId);
+		delMap.put("chatroomNo", chatroomNo);
+		
+		int result = chatService.exitTogether(delMap);
+	}
+    
+    
+    
 	
 	/* -------------------------- 중고거래 --------------------------  */
 	

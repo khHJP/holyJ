@@ -33,7 +33,13 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f728657c1f1828a75b9c549d4888eb1"
     ></script>
-	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
+<style>
+.together_info {
+	font-size: 20px;
+    font-weight: bold;
+    color: #75b274;
+}
+</style>   
 </head>
 <body>
 	<div class="chat w-100 h-100">
@@ -89,7 +95,7 @@
 			<!------- 채팅방 헤더 end ------------>
 	
 			<!-------------- 채팅방 메시지내용 start  ------------>
-			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
+			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll; height: 670px;">
 				<ul class="list-unstyled">
 					<c:forEach items="${togetherMsgs}" var="togetherMsg">
 						<!-- java.util.Date 빈등록  -->
@@ -434,7 +440,7 @@ stompClient.connect({}, (frame) => {
 /********************* 채팅방 나가기 *************************/
 document.querySelector("#craigExit").addEventListener("click", (e) => {
 	$.ajax({
-		url : `${pageContext.request.contextPath}/chat/updateDel.do?memberId=\${memberId}&chatroomId=\${chatroomId}`,
+		url : `${pageContext.request.contextPath}/chat/exitTogether.do?memberId=\${memberId}&chatroomNo=\${chatroomNo}`,
 		method : 'POST',
 		headers,
 		success(data){
