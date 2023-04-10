@@ -127,9 +127,9 @@
 								<c:if test="${meeting != null}">
 									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
 									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude == null}">
+									<c:if test="${meeting.longitude == null || meeting.longitude == ''}">
 										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
-									</c:if>									
+									</c:if>								
 								</c:if>
 							</c:if>
 						
@@ -484,7 +484,6 @@
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-		    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
 				</div>
 				<!-- 첨부파일 end  -->
 		</div> <!-- div.card end -->
@@ -555,7 +554,7 @@ const checkOnlyOne = (element) => {
   
   element.checked = true; // element: onclick(this) 적어놓은 태그 
 };
-/* 
+
 /* 유효성 검사 */
 
 document.querySelector("#saveReport").addEventListener('click', (e) => {
@@ -825,7 +824,7 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 	        			let date = meetingDate.getFullYear() + '-' 
 	        						+ ( (meetingDate.getMonth() + 1) < 9 ? 
 	        								"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
-	        						+ ( (meetingDate.getDate()) < 9 ? 
+	        						+ ( (meetingDate.getDate()) < 10 ? 
 	        								"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
 	        						+ ( (meetingDate.getHours()) < 10 ?
 	        								"0" + (meetingDate.getHours()) : (meetingDate.getHours()) ) + ':' 
