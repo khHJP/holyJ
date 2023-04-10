@@ -129,13 +129,13 @@ public class TogetherController {
 		Map<String, Object> params = new HashMap<>(); // 왜 때문에 list는 안되고 map만 매개변수에 담길까,,?
 		params.put("boardNoList", boardNoList);
 	
-//		if(boardNoList.size() > 0) {
-//			List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
-//			List<Map<String, Object>> joinCntList = togetherService.getJoinMemberCnt(params);
-//			model.addAttribute("joinMemberList", joinMemberList);
-//			model.addAttribute("joinCntList", joinCntList);
-//		}
-//		
+		if(boardNoList.size() > 0) {
+			List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
+			List<Map<String, Object>> joinCntList = togetherService.getJoinMemberCnt(params);
+			model.addAttribute("joinMemberList", joinMemberList);
+			model.addAttribute("joinCntList", joinCntList);
+		}
+		
 		// view 전달
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("totalPages", totalPages);
@@ -160,8 +160,8 @@ public class TogetherController {
 		// 업무로직
 		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
 		Together together = togetherService.selectTogetherByNo(no);
-//		List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
-//		List<Map<String, Object>> joinCnt = togetherService.getJoinMemberCnt(params);
+		List<JoinMember> joinMemberList = togetherService.joinMemberListByBoardNo(params); // 현재 참여하는 이웃 목록
+		List<Map<String, Object>> joinCnt = togetherService.getJoinMemberCnt(params);
 		
 		// 개행, 자바스크립트 코드 방어
 		together.setContent(OeeUtils.convertLineFeedToBr(OeeUtils.escapeHtml(together.getContent())));
@@ -169,8 +169,8 @@ public class TogetherController {
 		// view 전달
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("together", together);
-//		model.addAttribute("joinMemberList", joinMemberList);
-//		model.addAttribute("joinCnt", joinCnt);
+		model.addAttribute("joinMemberList", joinMemberList);
+		model.addAttribute("joinCnt", joinCnt);
 	}
 	
 	/**
