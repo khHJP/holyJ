@@ -29,12 +29,16 @@ public class OeeUtils {
 		return sdf.format(new Date()) + df.format(Math.random() * 1000) + ext;
 	}
 	
-	public static String idMultipartFile(MultipartFile upFile,Authentication authentication) {
+	public static String idMultipartFile(MultipartFile upFile, Authentication authentication) {
 		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		// 원래 파일이름 가져오기
 		String originalFilename = upFile.getOriginalFilename();
 		String ext = ""; // 확장자
+		// 원래파일이름에서 .뒤에 있는 글자를 int로 받아온다.
 		int beginIndex = originalFilename.lastIndexOf(".");
+		// int로 받아온 숫자가 -1보다 크면
 		if (beginIndex > -1)
+			// ext에 확장자를 가져온다.
 			ext = originalFilename.substring(beginIndex); // . jpg 확장자 가져옴 		
 		
 		return memberId + ext;

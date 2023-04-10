@@ -190,6 +190,11 @@ public class ChatServiceImpl implements ChatService {
 	public List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap) {
 		return chatDao.findTogetherMsgAfterReg(regMap);
 	}
+	@Override
+	public int exitTogether(Map<String, Object> delMap) {
+		return chatDao.exitTogether(delMap);
+	}
+	
 	
 	/**   나의 오이    **/
 	@Override

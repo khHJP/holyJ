@@ -3,6 +3,7 @@ package com.sh.oee.chat.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -79,6 +80,8 @@ public interface ChatDao {
 
 	int insertTogetherMsg(TogetherMsg togetherMsg);
 
+	@Delete("delete from together_chat where member_id = #{memberId} and together_no = #{chatroomNo}")
+	int exitTogether(Map<String, Object> delMap);
 
 	/** ------------- 나의 오이 --------------**/
 	@Select("select * from craig_chat where member_id = #{memberId} and del_date is null")
@@ -91,5 +94,6 @@ public interface ChatDao {
 	
 	@Select("select * from together_chat where member_id = #{memberId} and together_no = #{chatroomNo}")
 	TogetherChat findTogetherChat(Map<String, Object> findChat);
+
 
 }

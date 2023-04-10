@@ -56,13 +56,4 @@
 		<hr />
 	</div>
 </body>
-<script>
-var emojis = ['😠','😦','😑','😀','😍'];
-
-$("input").change(function(){
-	var i = $(this).val();
-	$(".emoji").html(emojis[i]);
-});
-
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
