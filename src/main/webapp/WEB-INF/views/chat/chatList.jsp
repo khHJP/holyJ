@@ -77,13 +77,6 @@ document.querySelector("#prof-bar").addEventListener('click', (e) => {
 	$a.tooltip('hide');
 })
 
-
-/* 중고거래 / 같이해요 클릭 active */
-/* $("#craigBtn a").click(function(){
-	$("#craigBtn a").toggleClass("active");
-}) */
-
-
 //csrf 토큰  
 const csrfHeader = "${_csrf.headerName}";
 const csrfToken = "${_csrf.token}";
@@ -94,6 +87,9 @@ headers[csrfHeader] = csrfToken;
 document.querySelector("#craigBtn").addEventListener("click", (e) => {
 	const chatWrapper = document.querySelector("#chatWrapper");
 	
+	chatWrapper.innerHTML = ''; // 초기화
+	
+	// 비동기로 조회
 	$.ajax({
 		url: `${pageContext.request.contextPath}/chat/findMyCraigChat.do`,
 		method : 'GET',
@@ -121,10 +117,10 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 					chatWrapper.innerHTML += `
 					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
 					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
-					        	<div class="craigTitle">
+					        	<div class="forTitle">
 							        <span>\${craigTitle}</span>
 					        	</div>		
-					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
 					        	<div class="chatList-header">
 					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
 							        <div class="last-chatting small">\${cont}</div>
@@ -138,10 +134,10 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 					chatWrapper.innerHTML += `
 					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
 					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
-					        	<div class="craigTitle">
+					        	<div class="forTitle">
 							        <span>\${craigTitle}</span>
 					        	</div>		
-					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
 					        	<div class="chatList-header">
 					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
 							        <div class="last-chatting small" style="color: #7FB77E;">(이미지파일)</div>
@@ -155,10 +151,10 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 					chatWrapper.innerHTML += `
 					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
 					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
-					        	<div class="craigTitle">
+					        	<div class="forTitle">
 							        <span>\${craigTitle}</span>
 					        	</div>		
-					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
 					        	<div class="chatList-header">
 					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
 							        <div class="last-chatting small" style="color: #7FB77E;">(예약)</div>
@@ -172,10 +168,10 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 					chatWrapper.innerHTML += `
 					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
 					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
-					        	<div class="craigTitle">
+					        	<div class="forTitle">
 							        <span>\${craigTitle}</span>
 					        	</div>		
-					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
 					        	<div class="chatList-header">
 					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
 							        <div class="last-chatting small" style="color: #7FB77E;">(장소공유)</div>
@@ -212,10 +208,92 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 			} // for문
 		}, // success
 		error: console.log()		
-	});
+	}); // ajax end
 });
 
 
+/* 같이해요 채팅 클릭 */
+document.querySelector("#togetherBtn").addEventListener("click", (e) => {
+	const chatWrapper = document.querySelector("#chatWrapper");
+	chatWrapper.innerHTML = ''; // 초기화
+	// 비동기로 조회
+	$.ajax({
+		url: `${pageContext.request.contextPath}/chat/findMyTogetherChat.do`,
+		method : 'GET',
+		data : {
+		memberId : '${member.memberId}'
+		},
+		headers,
+		dataType: "json",
+		success(chatList){
+		
+			console.log(chatList);
+			for(let i = 0; i < chatList.length; i++){
+				console.log(chatList[i]);
+			
+				const togetherNo = chatList[i].togetherNo;
+				const togetherTitle = chatList[i].togetherTitle;
+				const chatCont = chatList[i].lastChat.content;
+				let cont = chatCont.substr(0, 10) + ` …`;
+				
+				
+				if(chatList[i].lastChat.type == 'CHAT'){
+					chatWrapper.innerHTML += `
+					      <a data-together-no="\${togetherNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="forTitle">
+							        <span>\${togetherTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small">\${cont}</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+				else if(chatList[i].lastChat.type == 'FILE'){
+					chatWrapper.innerHTML += `
+					      <a data-together-no="\${togetherNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="forTitle">
+							        <span>\${togetherTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="프로필이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small" style="color: #7FB77E;">(이미지파일)</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+
+				document.querySelectorAll("a[data-together-no]").forEach((a) => {
+					console.log(a);
+					a.addEventListener('click', (e) => {
+						console.log(e.target);
+						
+						let parentA = e.target;
+						while(parentA.tagName !== 'A')
+							parentA = parentA.parentElement;
+						
+						const togetherNo = parentA.dataset.togetherNo;
+						
+						$("#chatLog").html(`
+								<iframe src="${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${togetherNo}" width="100%", height="100%"></iframe>
+							`);
+					});
+				}); // data forEach
+				
+			} // for문
+		}, // success
+		error: console.log()		
+	}); // ajax end
+});
 
 
 </script>
