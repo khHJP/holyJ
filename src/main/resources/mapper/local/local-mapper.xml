@@ -249,7 +249,6 @@
 </insert>
 
 <!-- 댓글목록 -->
-<!-- 등록순 -->
 <select id="commentList" resultMap="localCommentMap">
 	SELECT
 		lc.* ,
