@@ -365,6 +365,15 @@ h5{
 	background-color: green;
 }
 
+#delconfirm{
+    color: black;
+    background-color: white;
+    border: 1px solid gray;
+    width: 82px;
+    height: 36px;
+    line-height: 2.6;
+}
+
 
 #showMore:hover{
 	color:white;
@@ -379,6 +388,7 @@ h5{
     width: 82px;
     height: 36px;
     line-height: 2.6;
+    margin-right: -7px;
 }
 
 #statemodalcfm{
@@ -407,7 +417,8 @@ h5{
     text-align: left;
 	border-radius:10px;
 	position: absolute; left: 1154px;
-    top: 724px;
+    left: 1090px;
+    top: 762px;
 }
 	
 .mannerdgr{

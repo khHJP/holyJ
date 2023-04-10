@@ -327,7 +327,7 @@
 <%-- sec 안써도됨 --%>
 	<c:if test="${loginMember.memberId != craigboard.writer}">	
 	<div> <%-- alert --%>
-		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:790px; left:696px; width: 400px; display: none;" >
+		<div id="likement" class="alert alert-warning alert-dismissible fade show" role="alert" style="position:absolute; top:785px; left:748px; width: 400px; display: none;" >
 		  <span> 관심 목록에 추가되었어요!  
 		  	<a style="margin-left: 50px; font-size: 15px;" href="${pageContext.request.contextPath}/craig/myWishCraig.do">관심목록보기</a></span> 
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -529,7 +529,7 @@ infowindow.open(map, marker);
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" style="color: red"> 주의! </h5>
-        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close"  onclick="$('#myModal').modal('hide')">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -537,7 +537,7 @@ infowindow.open(map, marker);
         정말 게시글을 삭제하시겠습니까 ?
       </br></br></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal" onclick="$('#myModal').modal('hide')">취소</button>
         <button type="button" class="btn btn-primary" id="delconfirm">확인</button>        
       </div>
     </div>

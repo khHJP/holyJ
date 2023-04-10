@@ -51,6 +51,14 @@ public class MannerServiceImpl implements MannerService {
 	//혜진추가 - 0403 매너온도 한사람씩 체크해서 업데이트 
 	@Override
 	public int updateMannerDegree(  Map<String, Object> param ) {
+		
+		String compliment = (String)param.get("compliment"); //compliment가 있다면 -- 트랜잭션 처리
+	
+		if( compliment != null &&   compliment != "" &&  (!compliment.equals("null"))  &&  compliment != "null") {
+			updateComplimentDegree(param);
+			log.debug(" ■ compliment 실행여부(serviceImpl) : " , compliment  ); 
+		 }
+		
 		return mannerDao.updateMannerDegree(param);
 	}
 
