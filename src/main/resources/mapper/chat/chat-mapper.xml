@@ -72,6 +72,7 @@
 	    			dual
 	    	</selectKey>
 	 </insert>
+	 
 	<insert id="insertTogetherMsgAttach">
         insert into
             together_msg_attach
@@ -83,5 +84,22 @@
             default
         )
     </insert>
+    
+    <select id="findLastTogetherMsgByTogetherNo" resultMap="togetherMsgMap">
+		select 
+           tm.*
+		from (
+			    select
+			        tm.*,
+			        row_number() over(order by sent_time desc) rnum
+			    from
+			        together_msg tm
+			    where
+			    	chatroom_no = #{togetherNo}
+		) tm
+		where
+		    rnum = 1
+	</select>
+    
 	   	<resultMap type="togetherMsg" id="togetherMsgMap"></resultMap>
 </mapper>

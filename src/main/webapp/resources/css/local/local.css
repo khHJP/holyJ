@@ -1,8 +1,5 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
-
-
 /*info Local*/
 .local-explain {
 	background-color : #CEECF5;
@@ -40,7 +37,7 @@
 /* search */
 
 .search{
-	position: relative;
+	
 	width:100%;
 	display:flex;
 	margin-top : 10px;

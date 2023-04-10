@@ -50,4 +50,9 @@ public interface TogetherDao {
 
 	List<Together> selectTogether1List(String memberId);
 
+	@Select("select * from together where no = #{no}")
+	Together findTogetherByChatroomNo(int no);
+	
+	
+
 }

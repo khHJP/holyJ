@@ -41,12 +41,13 @@
 				<hr>
 			</div>
 		
-			<input type="file" name="upFile" id="upFile1">	 
+			<input type="file" name="upFile" id="upFile1">
 		 <hr>
-		<div style="display:inline-block; margin: 0 30px;  float: right;">
+		<div style="display:inline-block; margin: 0 30px 30px 0;  float: right;">
 		<input type="button" class="cancelbtn" value="취소" onclick="history.go(-1)">
 		<input type="submit" class="submitbtn" value="등록">
 		</div>
+		<br><br>	
 	</form>
 </div>
 <script>

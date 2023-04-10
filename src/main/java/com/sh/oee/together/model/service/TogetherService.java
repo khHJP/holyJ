@@ -39,4 +39,7 @@ public interface TogetherService {
 
 	List<Together> selectTogether1List(String memberId);
 
+	/* 효정 시작 */
+	Together findTogetherByChatroomNo(int no);
+	/* 효정 끝 */
 }

@@ -84,4 +84,12 @@ public interface ChatDao {
 	@Select("select * from craig_chat where member_id = #{memberId} and del_date is null")
 	List<CraigChat> findAllCraigChatroom(String memberId);
 
+	@Select("select * from together_chat where member_id = #{memberId}")
+	List<TogetherChat> findAllTogetherChatroom(String memberId);
+
+	TogetherMsg findLastTogetherMsgByTogetherNo(int togetherNo);
+	
+	@Select("select * from together_chat where member_id = #{memberId} and together_no = #{chatroomNo}")
+	TogetherChat findTogetherChat(Map<String, Object> findChat);
+
 }

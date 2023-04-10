@@ -15,6 +15,7 @@ import com.sh.oee.chat.model.dto.MsgAttach;
 import com.sh.oee.chat.model.dto.TogetherChat;
 import com.sh.oee.chat.model.dto.TogetherMsg;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -194,5 +195,17 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<CraigChat> findAllCraigChatroom(String memberId) {
 		return chatDao.findAllCraigChatroom(memberId);
+	}
+	@Override
+	public List<TogetherChat> findAllTogetherChatroom(String memberId) {
+		return chatDao.findAllTogetherChatroom(memberId);
+	}
+	@Override
+	public TogetherMsg findLastTogetherMsgByTogetherNo(int togetherNo) {
+		return chatDao.findLastTogetherMsgByTogetherNo(togetherNo);
+	}
+	@Override
+	public TogetherChat findTogetherChat(Map<String, Object> findChat) {
+		return chatDao.findTogetherChat(findChat);
 	}
 }
