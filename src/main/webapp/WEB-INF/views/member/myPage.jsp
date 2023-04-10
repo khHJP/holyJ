@@ -78,14 +78,6 @@
 				</li>
 			</ul>
 		</div>
-	<script>
-	const myModal = document.getElementById('myModal')
-	const myInput = document.getElementById('myInput')
-
-	myModal.addEventListener('shown.bs.modal', () => {
-	  myInput.focus()
-	})
-	</script>
 		
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
