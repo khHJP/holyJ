@@ -110,20 +110,83 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 				
 				const chatroomId = chatList[i].chatroomId;
 				const craigNo = chatList[i].craigNo;
+				const craigTitle = chatList[i].craigTitle;
+				const chatCont = chatList[i].lastChat.content;
+				let cont = chatCont.substr(0, 10) + ` …`;
 				
-				console.log(chatroomId);
 				
-				chatWrapper.innerHTML += `
-			      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-			        <div id="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
-			        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
-			        	<div class="chatList-header">
-			        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
-					        <div class="last-chatting small">\${chatList[i].lastChat.content}</div>
-			        	</div>
-			        </div>
-			      </a>	
-				`;
+				console.log(chatroomId);	
+				
+				if(chatList[i].lastChat.type == 'CHAT'){
+					chatWrapper.innerHTML += `
+					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="craigTitle">
+							        <span>\${craigTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small">\${cont}</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+				else if(chatList[i].lastChat.type == 'FILE'){
+					chatWrapper.innerHTML += `
+					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="craigTitle">
+							        <span>\${craigTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small" style="color: #7FB77E;">(이미지파일)</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+				else if(chatList[i].lastChat.type == 'BOOK'){
+					chatWrapper.innerHTML += `
+					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="craigTitle">
+							        <span>\${craigTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small" style="color: #7FB77E;">(예약)</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+				else { // PLACE
+					chatWrapper.innerHTML += `
+					      <a data-chatroom-id="\${chatroomId}" data-craig-no="\${craigNo}" href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+					        <div class="chatList-wrap" class="d-flex w-100 align-items-center justify-content-between">
+					        	<div class="craigTitle">
+							        <span>\${craigTitle}</span>
+					        	</div>		
+					        	 <img src="${pageContext.request.contextPath}/resources/upload/profile/\${chatList[i].chatWriter.profileImg}" alt="임시이미지"/>
+					        	<div class="chatList-header">
+					        		       <strong class="mb-1">\${chatList[i].chatWriter.nickname}</strong>
+							        <div class="last-chatting small" style="color: #7FB77E;">(장소공유)</div>
+					        	</div>
+					        </div>
+					      </a>	
+						`;
+				}
+				
+				
+				
 				
 				document.querySelectorAll("a[data-chatroom-id]").forEach((a) => {
 					console.log(a);
@@ -140,7 +203,7 @@ document.querySelector("#craigBtn").addEventListener("click", (e) => {
 						console.log(chatroomId);	
 						
 						$("#chatLog").html(`
-								<iframe src="${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}" width="711px", height="820px"></iframe>
+								<iframe src="${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}" width="100%", height="100%"></iframe>
 							`);
 						//$("#chatLog").load(`${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`);
 					});
