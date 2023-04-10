@@ -3,6 +3,7 @@ package com.sh.oee.notice.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Payload;
 
@@ -20,7 +21,7 @@ public interface NoticeService {
 
 	int deleteKeyword(int keywordNo);
 
-	List<NoticeAdmin> selectAdminNoticeList();
+	List<NoticeAdmin> selectAdminNoticeList(RowBounds rowBounds);
 
 	int insertAdminNotice(NoticeAdmin notice);
 

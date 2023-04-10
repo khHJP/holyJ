@@ -3,14 +3,12 @@ package com.sh.oee.notice.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import com.sh.oee.member.model.dto.Member;
 import com.sh.oee.notice.model.dao.NoticeDao;
-import com.sh.oee.notice.model.dto.NoticeUser;
 import com.sh.oee.notice.model.dto.NoticeAdmin;
 import com.sh.oee.notice.model.dto.NoticeKeyword;
 
@@ -40,8 +38,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<NoticeAdmin> selectAdminNoticeList() {
-		return noticeDao.selectAdminNoticeList();
+	public List<NoticeAdmin> selectAdminNoticeList(RowBounds rowBounds) {
+		return noticeDao.selectAdminNoticeList(rowBounds);
 	}
 
 	@Override

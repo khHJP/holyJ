@@ -77,8 +77,11 @@ public class ChatController {
 	private MannerService mannerService; //혜진추가 0406
 
 	@GetMapping("/chatList.do")
-	public void chatList() {
-
+	public void chatList(Authentication authentication, Model model) {
+		// 1. 로그인한 사용자 꺼내기
+		Member member = (Member) authentication.getPrincipal();
+		
+		model.addAttribute(member);
 	}
 
 	/**
@@ -160,10 +163,8 @@ public class ChatController {
 		regMap.put("regDate", regDate.getTime());
 		regMap.put("togetherNo", togetherNo);
 		
-		List<TogetherMsg> togetherMsgs = null;
-		
-		// togetherMsgs = chatService.findTogetherMsgAfterReg(regMap);
-		// model.addAttribute("togetherMsgs", togetherMsgs);
+		List<TogetherMsg> togetherMsgs = chatService.findTogetherMsgAfterReg(regMap);
+		model.addAttribute("togetherMsgs", togetherMsgs);
 		log.debug("메시지들 = {}", togetherMsgs);
 		
 		// 4. 게시글 정보 담기
@@ -204,7 +205,7 @@ public class ChatController {
             // 2. craig_msg_attach에 한행 추가
             attach.setReFilename(reFilename);
             attach.setOriginalFilename(originalFilename);
-       //     chatService.insertTogetherMsgAttach(attach);
+            chatService.insertTogetherMsgAttach(attach);
         }
         Map<String, Object> map = new HashMap<>();
         Member member = memberService.selectOneMember(memberId);
@@ -214,6 +215,16 @@ public class ChatController {
         return map; // 메시지 보내기위해 필요한것: renamedFilename, profileImg 
     }
 	
+    @GetMapping("/findTogetherMember.do")
+    @ResponseBody
+    public Member findTogetherMember(String writer) {
+    	log.debug("찍힙니까 = {}", writer);
+    	
+    	Member otherUser = memberService.selectOneMember(writer);
+    	
+    	return otherUser;
+    }
+    
 	
 	/* -------------------------- 중고거래 --------------------------  */
 	
@@ -268,6 +279,33 @@ public class ChatController {
 		delMap.put("delDate", delDate);
 		
 		int result = chatService.updateDel(delMap);
+	}
+	
+	
+	@GetMapping("/findMyCraigChat.do")
+	@ResponseBody
+	public List<Map<String, Object>> findMyCraigChat(String memberId){
+		log.debug("멤버아이디 = {}", memberId);
+		
+		// 1. 멤버 아이디를 가지고 craig_chat에서 참여중인 채팅방 전부 가져오기 (나가기 안한 방만)
+		List<CraigChat> myCraigChat = chatService.findAllCraigChatroom(memberId);
+		
+		List<Map<String, Object>> chatList = new ArrayList<>();
+		Map<String, Object> chatMap = new HashMap<>();
+		
+		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
+		for(CraigChat chat : myCraigChat) {
+			CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
+			Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+			
+			chatMap.put("lastChat", lastChat);
+			chatMap.put("chatroomId", lastChat.getChatroomId());
+			chatMap.put("chatWriter", chatWriter);
+			
+			chatList.add(chatMap);
+		}
+
+		return chatList;
 	}
 	
 	/**

@@ -72,6 +72,7 @@
 	<result column="state" property="state"/>
 	<result column="buyer" property="buyer"/>
 	<result column="complete_date" property="completeDate"/>
+	<result column="report_yn" property="reportYn"/>
 	<!-- member -->
 	<association property="member" javaType="member" >
 		<id column="member_id" property="memberId" />

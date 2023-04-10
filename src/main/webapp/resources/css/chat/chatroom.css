@@ -220,6 +220,7 @@ footer{
 	width: 100%;
 	z-index: 99;	
 	background: white;
+	top: 80px;
 }
 
 .message-input input#msg {
@@ -260,11 +261,11 @@ input, button, select, textarea{
 }
 .custom-file-input {
     position: absolute;
-    top: -93px;
+    top: -14px;
 }
 .custom-file-label {
     position: absolute;
-    top: -93px;
+    top: -14px;
 }
 /* 메시지영역  */
 #message-container {

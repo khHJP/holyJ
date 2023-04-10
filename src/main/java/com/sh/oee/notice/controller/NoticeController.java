@@ -90,11 +90,29 @@ public class NoticeController {
 	    public void newNotice (Model model) {}
 	    
 	    @GetMapping("/allNotice.do")
-	    public void allNotice (Model model) {
-	    	List<NoticeAdmin> adminNoticeList = noticeService.selectAdminNoticeList();
+	    public void allNotice (@RequestParam(defaultValue = "1") int currentPage, Model model) {
+			// 페이지 처리
+			int limit = 4;
+			int offset = (currentPage - 1) * limit;
+			RowBounds rowBounds = new RowBounds(offset, limit);
+			
+			int totalCount = 0;
+			int totalPages = 0;
+			
+	    	List<NoticeAdmin> adminNoticeList = noticeService.selectAdminNoticeList(rowBounds);
 	    	log.debug("adminNoticeList = {}", adminNoticeList);
 	    	
+			totalCount = noticeService.selectAdminNoticeTotalCount();
+			log.debug("totalCount = {}", totalCount);
+
+			// 전체 페이지 수 계산
+			totalPages = (int) Math.ceil((double) totalCount / rowBounds.getLimit());
+	    	
 	    	model.addAttribute("adminNoticeList", adminNoticeList);
+			model.addAttribute("totalPages", totalPages);
+			model.addAttribute("currentPage", currentPage);
+			model.addAttribute("totalCount", totalCount);
+			model.addAttribute("limit", limit);
 	    }
 	    
 	    @GetMapping("/adminNoticeList.do")
@@ -107,7 +125,7 @@ public class NoticeController {
 			int totalCount = 0;
 			int totalPages = 0;
 			
-	    	List<NoticeAdmin> adminNoticeList = noticeService.selectAdminNoticeList();
+	    	List<NoticeAdmin> adminNoticeList = noticeService.selectAdminNoticeList(rowBounds);
 	    	log.debug("adminNoticeList = {}", adminNoticeList);
 	    	
 			totalCount = noticeService.selectAdminNoticeTotalCount();
@@ -118,7 +136,9 @@ public class NoticeController {
 	    	
 	    	model.addAttribute("adminNoticeList", adminNoticeList);
 			model.addAttribute("totalPages", totalPages);
-			model.addAttribute("currentPage", currentPage);	    	
+			model.addAttribute("currentPage", currentPage);
+			model.addAttribute("totalCount", totalCount);
+			model.addAttribute("limit", limit);
 	    }
 	    
 	    @MessageMapping("/admin/notice")
