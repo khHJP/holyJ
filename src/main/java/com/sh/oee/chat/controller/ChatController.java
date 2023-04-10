@@ -89,8 +89,10 @@ public class ChatController {
 	 */
 	@ResponseBody
 	@GetMapping("togetherChat/{togetherNo}")
-	public void togetherChat(@PathVariable int togetherNo, Authentication authentication, HttpSession session) {
+	public int togetherChat(@PathVariable int togetherNo, Authentication authentication, HttpSession session) {
 
+		int result = 0;
+		
 		// 1. 로그인한 사용자 id 꺼내기
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
 
@@ -116,10 +118,12 @@ public class ChatController {
 			log.debug("채팅 = {}", togetherChat);
 			
 			if(togetherChat == null) {
-				chatService.insertTogetherMember(map);
+				result = chatService.insertTogetherMember(map);
 			}
 			
 		}
+		
+		return result;
 	}
 	/**
 	 * 같이해요 채팅방 팝업 열기

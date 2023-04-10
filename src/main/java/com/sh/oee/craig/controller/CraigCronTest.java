@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.sh.oee.manner.model.dto.Manner;
+import com.sh.oee.manner.model.dto.Prefer;
 import com.sh.oee.manner.model.service.MannerService;
 import com.sh.oee.member.model.service.MemberService;
 
@@ -29,29 +30,29 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
-/**	혜진만 주석풀고 메소드 실행합니다! **/
-	@Scheduled(cron="0 30 4 * * *")
+/**	혜진만 주석풀고 메소드 실행합니다! -- 시연할때 그 노트북으로에서만 주석풀기  **/
+	@Scheduled(cron="0 26 2 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
-	public void craigCronSchedule() {//매일 5시에 실행 -- 잘되면 오전 1시로 바꾸기 
+	public void craigCronSchedule() { // 매일 4시에 실행  
 
 		 
-		log.debug("==========================   메소드 시작   =================================");
-		 // 1) 전체 매너리스트 확인한다  
+		log.debug("==========================   매너온도 작업 시작   =================================");
+
+		// 1) 전체 매너리스트 확인한다  
 		 List<Manner> mannerList = mannerService.craigCronSchedule();
 		 log.debug("스케줄링테스트 = {}" ,mannerList   );
 
-		 // ** PREFER type
-		 String preferType1 = "MA1";
-		 String preferType2 = "MA2";
-		 String preferType3 = "MA3";
-
+		 // ** PREFER type - enum class 
+		 String preferType1 = String.valueOf( Prefer.MA1 ) ;  
+		 String preferType2 = String.valueOf( Prefer.MA2 ) ;
+		 String preferType3 = String.valueOf( Prefer.MA3 ) ;
 
 		 Map<String, Object> param = new HashMap<>();
-
 		 
 		 int result = 0;
 		 int realResult = 0;
-		 // 2) for문 돌면서 매너리스트의 매너온도 반영한다 
+		 
+		 // 2) for문 돌면서 각 사용자별 매너리스트의 매너온도 반영한다 
 		 for(int i =0; i< mannerList.size()  ; i++) {
 	 
 			String prefer = mannerList.get(i).getPrefer().toString();
@@ -68,33 +69,24 @@ public class CraigCronTest {
 		
 			 param.put("prefer", prefer); //MA1, MA2, MA3
 			 param.put("memberId", memberId);
+			 param.put("compliment", compliment);
 			 log.debug(" ■ param = {}" , param  ); 
 			 
 			// 매너온도 반영 
 			 if( prefer.equals(preferType1) ||  prefer.equals(preferType2) || prefer.equals(preferType3) ) {
-				 // MA1 : -0.5 ||  MA2' : +0.2  ||  'MA3' :  +0.5 로 업데이트 시키기 
-				 result = mannerService.updateMannerDegree(param);
+				 result = mannerService.updateMannerDegree(param); 	// MA1 : -0.5 ||  MA2' : +0.2  ||  'MA3' :  +0.5 로 업데이트 시키기 
 				 log.debug(" ■ MA1 result " , result  ); 
 			 }
 			
-			 //compliment 있을경우 +0.1
-			 if( compliment != null &&   compliment != "" &&  (!compliment.equals("null"))  &&  compliment != "null") {
-				 result += mannerService.updateComplimentDegree(param);
-				 log.debug(" ■ compliment " , compliment  ); 
-			 }
-			 
-			 log.debug(" ★★★ result = {}", result); //최대 2개여야됨 			
-			 
-			 
+			 log.debug(" ■■ result = {}", result); 
+			 			 
 			 int mannerNo = (int)mannerList.get(i).getMannerNo();
 			 if( result > 0) {
-				 realResult = mannerService.updateMannerDone(mannerNo);
+				 realResult = mannerService.updateMannerDone(mannerNo); // done = 'Y' 시키기 
 			 }
 		 }// end - for문 
 		 
-		 log.debug(" ★★★ realResult = {}", realResult);
-	
-
+		 log.debug(" ■■■ realResult(최종 잘 수행됐는지 확인) = {}", realResult);
 		 log.debug("======================================================================");
 
 	 }
