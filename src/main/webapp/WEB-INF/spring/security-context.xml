@@ -18,6 +18,11 @@
 	<http pattern="/resources/**" security="none"/>
 	
 	<http auto-config="true">
+		<!-- 🐹 효정 04/10 iframe관련 설정 추가 🐹-->
+		<headers> 
+			<frame-options policy="SAMEORIGIN"/>
+		</headers>
+		<!-- 🐹 ********* 효정 end ********* 🐹-->
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="isAnonymous()"/>
