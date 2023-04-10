@@ -163,10 +163,21 @@
     function setParentText(){ //to parent
     	
     	const placeDetail = document.getElementById("placeDetail");
+    	const platitude = document.getElementById("platitude");
+    
+    
     	//내용 없는경우
     	if(!/^.|\n+$/.test(placeDetail.value)){
     		alert("장소를 등록해주세요!");
     		content.select();
+    		return false;
+    	}
+    	
+    	
+    	//지도 안찍은 경우 
+    	if( platitude.value == null ){
+    		alert("장소를 찍어주세요!");
+    		platitude.select();
     		return false;
     	}
 

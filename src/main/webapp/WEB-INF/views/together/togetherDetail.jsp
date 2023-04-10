@@ -446,28 +446,51 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 	const headers = {};
 	headers[csrfHeader] = csrfToken;
 	
-	/* 
-		아마 여기에서 채팅방에 멤버 넣기를 하면 되지 않을까싶어요,,, 현재 url은 임시로 작성해놨습니다..!! 
-		나중에 url는 수정해주세요!!🥺 
-		int result = chatService.insertTogetehrChat 이런 느낌의 메소드 하시게 되면
-		result 값 또한 넘겨주면 아마 알아서
-		회원 정보가 잘 들어가고 채팅방에 열렸을때,,? 참여자 인원을 +1 해줄 예정입니다..!
-		근데 고민이 있다면,, 이미 참여한 대화방에 입장할때는 인원수를 증가시키면 안되기때문에 버튼을 분기처리 해뒀습니다..!
-		아래에 현재 대화방 참여자인 경우로 한번 만들어 봤습니다🫠
-	*/
 /******************* 효정 시작 *********************/
 
 	$.ajax({
 		url : `${pageContext.request.contextPath}/chat/togetherChat/\${no}`,
 		method : 'GET',
 		dataType : "json",
-		success(){},
+		success(data){
+			console.log(data);
+			const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+			const name = "togetherChatroom";
+			openPopup(url, name); 
+			// 참여하기에 성공했을때 참여이웃 목록에 넣기
+			if(data > 0){
+				document.querySelector(".to_join").style.display = "none";
+				enterBtn.style.display = "unset";
+				
+				cntTag.innerText = ''; // 현재 참여자수 초기화
+				cntTag.innerText = Number(currJoinCnt) + 1;
+				
+				const memberList = document.querySelector(".current-join-memberList");				
+				
+				const div1 = document.createElement("div");
+				div1.classList.add("member-info");
+				const img = document.createElement("img");
+				img.src = '${pageContext.request.contextPath}/resources/upload/profile/${loginMember.profileImg}';
+				const div2 = document.createElement("div");
+				div2.classList.add("info-txt");
+				const span1 = document.createElement("span");
+				span1.classList.add("badge");
+				span1.classList.add("badge-secondary");
+				span1.innerText = "참여자";
+				const span2 = document.createElement("span");
+				span2.innerText = '${loginMember.nickname}';
+				
+				div2.append(span1, span2);
+				div1.append(img, div2);
+				memberList.append(div1);
+				
+			}
+			
+		},
 		error : console.log
 		});		
 	
-	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
-	const name = "togetherChatroom";
-	openPopup(url, name); 
+	
 	
 });
 
