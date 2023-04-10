@@ -316,7 +316,7 @@ document.querySelector(".minus").addEventListener("click", (e) => {
 	
 	// 현재 참여인원보다 줄일수 없고, 3명 이하는 안됨
 	if(currJoinCnt >= cnt){
-		alert("현재 참여중인 인원보다 낮은 값을 입력할 수 없습니다.")
+		alert("현재 참여중인 인원보다 낮은 인원을 입력할 수 없습니다.")
 		return;
 	}
 	

@@ -270,7 +270,7 @@
 		where
 			status = 'Y'
 			and
-		    <![CDATA[date_time < sysdate]]>
+		    <![CDATA[date_time < (sysdate + 9 / 24)]]>
 	</update>
 	
 	<!-- 👻 정은 끝 👻 -->
