@@ -127,7 +127,7 @@
 								<c:if test="${meeting != null}">
 									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
 									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude == null || meeting.longitude == ''}">
+									<c:if test="${meeting.longitude == null || meeting.longitude == '' }">
 										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
 									</c:if>								
 								</c:if>
@@ -167,11 +167,11 @@
 			      </div>
 			      <div class="modal-body">
 					 <c:if test="${memberId == craig.buyer }">  <!--  로그인한사람 나 = 구매자일경우  -->
-					 	${craig.writer}님과 상품을 거래하셨나요?
+					 	${otherUser.nickname}님과 상품을 거래하셨나요?
 					 </c:if>
 			
 					 <c:if test="${memberId ==  craig.writer   }">	<!--  로그인한사람 나 = 판매자일경우  -->					 
-					 	${craig.buyer}님과 상품을 거래하셨나요?
+					 	${otherUser.nickname}님과 상품을 거래하셨나요?
 					 </c:if>
 			      	</br></br>
 			      </div>

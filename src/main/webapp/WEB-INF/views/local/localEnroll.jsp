@@ -25,23 +25,14 @@
 				<th ><label for="category"> 카테고리 </label></th>
 				<td style="text-align: center;">
 				<c:forEach items="${localCategory}" var="category"> 	
-					<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}"> <label for="categoryNo">${category.CATEGORY_NAME}</label> 
+				<label>
+				<input type="radio" id="categoryNo" name="categoryNo" value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}"> 
+				<span>${category.CATEGORY_NAME}</span>
+				</label> 
 				</c:forEach>
 				</td>
 			</tr>
 			</table>
-			 
-			<!--  
-			<select class="category-select" aria-label="Default select example">
-				 <option selected> 카테고리 </option>
-				<c:forEach items="${localCategory}" var="category">
-					<option value="${category.CATEGORY_NO}" data-no="${category.CATEGORY_NO}">${category.CATEGORY_NAME}</option>
-				</c:forEach>
-			</select>
-			--> 
-			
-			
-			
 			</div>
 			<hr>
 			<div class="title-box">

@@ -197,11 +197,14 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 	const title = e.target.title; 
 	const content  = e.target.content;
 	const placeDetail  = e.target.placeDetail;
-
-	
+	const categoryNo  = e.target.categoryNo;
+	const price  = e.target.price;
+	const latitude =  e.target.latitude;
+	const longitude =  e.target.longitude;
 	
 	//제목 작성하지 않은경우 
 	if( !/^.+$/.test(title.value)){
+		e.preventDefault();
 		alert("제목을 작성해주세요!");
 		title.select();
 		return false;
@@ -209,18 +212,50 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 	
 	//내용 없는경우
 	if(!/^.|\n+$/.test(content.value)){
+		e.preventDefault();
 		alert("내용을 작성해주세요!");
 		content.select();
 		return false;
 	}	
-	<%-- 음 쓰면오류^^
+	
+	//카테고리 없는경우
+	if( categoryNo.value == null || categoryNo.value == ""  ){
+		e.preventDefault();
+		alert("카테고리를 선택해주세요!");
+		categoryNo.select();
+		return false;
+	}	
+	
+	//가격
+	if( price.value == null || price.value == ""  ){
+		e.preventDefault();
+		alert("가격을 책정해주세요!");
+		price.select();
+		return false;
+	}	
+
 	//장소 없는경우
-	if(!/^.|\n+$/.test(placeDetail.value)){
+	if( placeDetail.value == null){
+		e.preventDefault();
 		alert("장소를 선택해주세요!");
 		pickPlace.select();
 		return false;
 	}
-	--%>
+	
+	//위 경도 없는경우
+	if( latitude.value == null || latitude.value <= 0  || latitude.value == "" ){
+		e.preventDefault();
+		alert("장소를 선택해주세요!");
+		pickPlace.select();
+		return false;
+	}
+	if( longitude.value == null || longitude.value <= 0  || longitude.value == "" ){
+		e.preventDefault();
+		alert("장소를 선택해주세요!");
+		pickPlace.select();
+		return false;
+	}
+	
 }
 </script>
 
