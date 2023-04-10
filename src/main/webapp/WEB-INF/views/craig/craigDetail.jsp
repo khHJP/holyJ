@@ -650,6 +650,10 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 			error : console.log
 		});//end - ajax	
 	});
+	
+	
+	//채팅방 나가면 바로 -1 되게
+	
 </script>
 </c:if>
 </c:if>

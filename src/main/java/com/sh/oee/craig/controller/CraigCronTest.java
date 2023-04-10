@@ -31,15 +31,12 @@ public class CraigCronTest {
 	private MannerService mannerService;
 	
 /**	혜진만 주석풀고 메소드 실행합니다! -- 시연할때 그 노트북으로에서만 주석풀기  **/
-	@Scheduled(cron="0 26 2 * * *")
-	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
+	@Scheduled(cron="0 0 11 * * *")  // 11시 실행한다는 의미 
 	public void craigCronSchedule() { // 매일 4시에 실행  
-
-		 
-		log.debug("==========================   매너온도 작업 시작   =================================");
 
 		// 1) 전체 매너리스트 확인한다  
 		 List<Manner> mannerList = mannerService.craigCronSchedule();
+		 log.debug("================================  매너온도 스케줄링  ======================================");
 		 log.debug("스케줄링테스트 = {}" ,mannerList   );
 
 		 // ** PREFER type - enum class 
@@ -60,11 +57,11 @@ public class CraigCronTest {
 			String compliment="";
 			
 			try {
-				compliment = String.valueOf(mannerList.get(i).getCompliment());  // 이거 안하면 널포인트 exception 난다 ,, 
+				compliment = String.valueOf(mannerList.get(i).getCompliment()); //안쓰면 npe
 				log.debug("compliment :  ", compliment);
 				
 			} catch (IllegalArgumentException  e) {
-				System.out.println("iligal");
+				log.error("IllegalArgumentException");
 			}
 		
 			 param.put("prefer", prefer); //MA1, MA2, MA3
@@ -96,4 +93,6 @@ public class CraigCronTest {
 
 /*
 매일새벽1시에 실행하기 
+@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
+
  */
