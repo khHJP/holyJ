@@ -78,7 +78,7 @@
 </style>
 <div style="height: 240px; margin-bottom:20px; width:2294px !important; margin-left : -350px;  background-color: #E3EDCD">
 	<div class="seconddivv" >
-	 	<div style="margin-top: 10px; margin-left: 75px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
+	 	<div style="margin-top: 10px; margin-left: 81px; "><h1>우리 동네</h1><h1 style="margin-bottom: 40px"> 중고 직거래 마켓</h1>
 	 	<p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p></div>
 <%--		<div><img  style="height: 262px" src="${pageContext.request.contextPath}/resources/images/indexdang.png" /></div>  --%>
 	</div>
@@ -93,6 +93,7 @@
 			  <c:forEach items="${craigCategory}" var="category">
 			    <li data-no="${category.CATEGORY_NO}"><a class="dropdown-item" data-ano="${category.CATEGORY_NO}"  href="#">${category.CATEGORY_NAME}</a></li>
 		   	  </c:forEach>
+  			    <li ><a class="dropdown-item"  href="${pageContext.request.contextPath}/craig/craigList.do"> 전체 </a></li>	   	  
 			</ul>
 		</div>
 
@@ -240,19 +241,27 @@
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<!--  pre   --> 
-	        <c:choose>
-	           <c:when test="${craigPage.prevPage <= 0 }">
-	             <li class="page-item disabled"><a class="page-link" href="#"> 이전 </a></li>
-			    </c:when>
-	            <c:otherwise>	
-		            <c:if test="${searchCraigs == null}">
-	             		<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${craigPage.prevPage}">Previous</a></li>					
-					</c:if>
-					<c:if test="${searchCraigs != null}">
-	 					<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${craigPage.prevPage}">Previous</a></li>	
-	 				</c:if>
-	 			</c:otherwise>
-	        </c:choose>
+	            <c:if test="${searchCraigs == null}">
+          			   <c:choose>
+		   	          <c:when test="${ page  <= 1   }"> 			    
+  							<li class="page-item"><a class="page-link" > 이전 </a></li>
+  						  </c:when>
+					  <c:otherwise>
+            				<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${page-1}"> 이전 </a></li>					
+					   </c:otherwise>
+					</c:choose> 
+				</c:if>
+				<c:if test="${searchCraigs != null}">
+         			   <c:choose>
+		   	          <c:when test="${ page  <= 1   }"> 			    
+  							<li class="page-item"><a class="page-link" > 이전 </a></li>
+  						  </c:when>
+					  <c:otherwise>
+            				<li class="page-item" ><a class="page-link" href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${page-1}"> 이전 </a></li>					
+					   </c:otherwise>
+					</c:choose> 
+ 				</c:if>
+
 	 		<!--  now --> 
 	        <c:forEach var="cpage"  begin="${craigPage.min}" end="${craigPage.max}">       
 	          <c:choose>
@@ -276,15 +285,27 @@
 		 		</c:otherwise>
 			 </c:choose>  
 			</c:forEach>
-			 <!-- next -->
-		    <c:choose>
-	          <c:when test="${craigPage.max >= craigPage.pageCnt }">
-			    <li class="page-item disabled"><a class="page-link" href="#"> 다음 </a></li>
-			  </c:when>	          
-	          <c:otherwise>
-			     <li class="page-item"><a class="page-link" href="#">Next</a></li>
-			   </c:otherwise>
-	        </c:choose>    
+			<%----- next  --%>
+		    <c:if test= "${searchCraigs == null }">
+			   <c:choose>
+	   	          <c:when test="${ page  < craigPage.max  }"> 			    
+	   			    <li class="page-item"><a class="page-link"  href="${pageContext.request.contextPath}/craig/craigList.do?cpage=${page+1}"> 다음 </a></li>			    
+				  </c:when>
+				  <c:otherwise>
+				     <li class="page-item"><a class="page-link" >다음</a></li>
+				   </c:otherwise>
+				</c:choose>   
+			</c:if>  	          
+		    <c:if test= "${searchCraigs != null }">
+		    	<c:choose>
+		          <c:when test="${ page  < craigPage.max  }"> 			    
+	   			    <li class="page-item"><a class="page-link"  href="${pageContext.request.contextPath}/craig/craigList.do?searchKeyword=${searchKeyword}&cpage=${page+1}"> 다음 </a></li>			    
+				  </c:when>
+		          <c:otherwise>
+				      <li class="page-item"><a class="page-link" >다음</a></li>
+				  </c:otherwise>
+				</c:choose> 
+			</c:if>		         
 			</ul>
 		</nav>
 
@@ -402,6 +423,8 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 			data : { categoryNo : categoryNumber,
 					 cpage : searchPage },
 			success(data){
+				 console.log("마지막으로 한번만더 조회")
+				console.log(data);						 
 			
 				const tr1 =  document.createElement("tr");
 				  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";

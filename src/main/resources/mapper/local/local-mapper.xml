@@ -13,15 +13,8 @@
 		(
 		select
 			l.*,
-			(
-			select
-				dong_name
-			from
-				member m right join dong d
-					on m.dong_no =  d.dong_no
-			where
-				member_id = l.writer
-			) dong_name
+			(select dong_name from member m right join dong d on m.dong_no =  d.dong_no where member_id = l.writer) dong_name,
+            (select re_filename from local_attachment la where la.local_no=l.no ) re_filename
 		from
 			local l
 		)
@@ -85,6 +78,7 @@
 		c.category_name category_name,
         (select nickname from member where member_id = l.writer) nickname,
         (select profile_img from member where member_id = l.writer) profile_img,
+        (select manner from member where member_id = l.writer) manner,
         (select
                 dong_name
             from
@@ -134,6 +128,7 @@
 	</association> 
 	<collection property="attachments" ofType="localAttachment">
 		<id column="ATTACH_NO" property="attachNo"/>
+		<result column="LOCAL_NO" property="localNo"/>
 		<result column="ORIGINAL_FILENAME" property="originalFilename"/>
 		<result column="RE_FILENAME" property="reFilename"/>
 		<result column="REG_DATE" property="regDate"/>
@@ -157,6 +152,24 @@
 		REG_DATE = sysdate
 	where
 		ATTACH_NO = #{attachNo}
+</update>
+
+<insert id="insertAttachFile">
+  insert into 
+		local_Attachment 
+	values(
+		seq_local_attach_no.nextval, 
+		#{localNo}, 
+		#{originalFilename}, 
+		#{reFilename}, 
+		default
+	)
+</insert>
+
+<update id="updateLocalAttachment">
+	update local_attachment
+	set re_filename = #{reFilename}
+	where local_no = #{localNo}
 </update>
 
 <select id="selectAttachNo" resultType="_int">
@@ -298,8 +311,7 @@
 
 
 <!-- 하나님 것 -->
-<select id="selectLocalCommentList" resultMap="localCommentMap">
-	
+<select id="selectLocalCommentList" resultMap="localCommentEntity">
 	select 
 		lc.* ,
 		l.title,
@@ -310,7 +322,17 @@
 	where 
 		lc.writer = #{memberId}
 </select>
-
+<select id="selectLocalList" resultMap="localDetailMap">
+	select 
+		l.*,
+		m.* 
+	from
+		local l join member m
+		on l.writer = m.member_id
+	where 
+		l.writer = #{memberId}
+</select>
+<resultMap type="localCommentEntity" id="localCommentEntity"></resultMap>
 <resultMap type="localComment" id="localCommentMap">
 	<id column="COMMENT_NO" property="commentNo"></id>
 		<result column="LOCAL_NO" property="localNo" />
@@ -329,5 +351,10 @@
 			<id column="DONG_NO" property="dongNo"/>
 			<result column="DONG_NAME" property="dongName"/>
 		</association>
+	<!-- 	<association property="localEntity" javaType="localEntity">
+			<id column="NO" property="no"/>
+			<result column="WRITER" property="writer"/>
+			<result column="TITLE" property="title"/>
+		</association> -->
 </resultMap>	
 </mapper>

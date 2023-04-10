@@ -60,6 +60,19 @@ public class TogetherController {
 		model.addAttribute("categorys", categorys);
 		model.addAttribute("myTogether",myTogether);
 	}
+	@GetMapping("/myTogether1.do")
+	public void together(@RequestParam String memberId, Model model) {
+		// member  
+		log.debug("memberId = {} ", memberId);
+		
+		List<Map<String,String>> categorys = togetherService.selectTogetherCategory();
+		List<Together> myTogether = togetherService.selectTogether1List(memberId);
+		
+		log.debug("myTogether = {}",myTogether);
+		
+		model.addAttribute("categorys", categorys);
+		model.addAttribute("myTogether",myTogether);
+	}
 		
 	/** 🐱 하나 끝 🐱 */
 	
@@ -192,13 +205,6 @@ public class TogetherController {
 								@RequestParam String hour,
 								@RequestParam String minute,
 								RedirectAttributes redirectAttr) {
-		
-		log.debug("together = {}", together);
-		log.debug("month = {}", month);
-		log.debug("date = {}", date);
-		log.debug("meridiem = {}", meridiem);
-		log.debug("hour = {}", hour);
-		log.debug("minute = {}", minute);
 		
 		// LocalDateTime 객체 생성
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss");

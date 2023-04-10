@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> <%-- 혜진 0406 추가  --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +33,7 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f728657c1f1828a75b9c549d4888eb1"
     ></script>
+	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
 </head>
 <body>
 	<div class="chat">
@@ -52,10 +53,39 @@
 					<!-- 메뉴버튼 토글시  -->
 					<div class="action_menu">
 						<ul>
-							<li id="craigReport">신고하기</li>
+							<li id="craigReport" data-toggle="modal" data-target="#reportModal">신고하기</li>
 							<li id="craigExit">채팅방 나가기</li>
 						</ul>
 					</div>
+					<!----------- 신고 Modal start ------------->
+					<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="reportModalLabel">사용자 신고</h5>
+					      </div>
+					      <div class="modal-body" style="height: 335px;">
+							<form:form name="userReportFrm" class="report-box">
+								<c:forEach items="${reasonList}" var="reason" varStatus="vs">
+										<div class="form-check">
+											<input type="checkbox" name="reasonNo" class="form-check-input" id="${reason.reportType}${vs.count}" 
+												   value="${reason.reasonNo}" data-report-type="${reason.reportType}" onclick='checkOnlyOne(this)'>
+											<label class="form-check-label" for="${reason.reportType}${vs.count}">${reason.reasonName}</label>
+										</div>
+								</c:forEach>
+								<input type="hidden" name="writer" value="${loginMember.memberId}">
+								<input type="hidden" name="reportedMember" value="${info.reportedId}">
+								<input type="hidden" name="reportType" value="${info.reportType}">
+								<input type="hidden" name="reportPostNo" value="${info.boardNo}">
+							</form:form>
+					      </div>
+					      <div class="modal-footer ">
+					        <button id="saveReport" type="button" class="btn btn-primary" style="position: relative; z-index: 10;">신고하기</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+					<!------------ 신고 Modal end ------------->
 			</div>
 			<!------- 채팅방 헤더 end ------------>
 	
@@ -97,28 +127,213 @@
 								<c:if test="${meeting != null}">
 									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
 									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude = null}">
+									<c:if test="${meeting.longitude == null || meeting.longitude == ''}">
 										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
-									</c:if>									
+									</c:if>								
 								</c:if>
 							</c:if>
-							
+						
 							<!-- 예약자가 아닐때 -->
 							<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
 								<button type="button" class="btn btn-success" >예약중</button>
 							</c:if>
-					</c:if >
-					<!-- 판매중일때  -->
-					<c:if test="${craig.state eq 'CR2'}">
-						<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
-					</c:if>
-					<!-- 판매완료일때  -->
-					<c:if test="${craig.state eq 'CR3'}">
-						<button type="button" class="btn btn btn-dark" >판매완료</button>
-					</c:if>
-					
+					</c:if >		
+							<!-- 판매중일때  -->
+							<c:if test="${craig.state eq 'CR2'}">
+								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
+							</c:if>
+						<!-- 판매완료일때  -->	
+						<c:if test="${craig.state eq 'CR3'}">
+							<button type="button" class="btn btn-outline-secondary" > 판매완료 </button> 
+	<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
+								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
+							</c:if>
+						</c:if>
+
 				</div>
+			</div>		
+						
+<%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~  혜진 거래후기보내기 시작   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>		
+			<%-- 1) 거래후기보내기 modal start(혜진) --%>
+			<%--  최초 거래후기보내기 클릭시 뜨는멘트    --%>
+			<div id="myModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel" style="color: black"> 후기 보내기 </h5>
+			        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+					 <c:if test="${memberId == craig.buyer }">  <!--  로그인한사람 나 = 구매자일경우  -->
+					 	${craig.writer}님과 상품을 거래하셨나요?
+					 </c:if>
+			
+					 <c:if test="${memberId ==  craig.writer   }">	<!--  로그인한사람 나 = 판매자일경우  -->					 
+					 	${craig.buyer}님과 상품을 거래하셨나요?
+					 </c:if>
+			      	</br></br>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">취소</button>
+			        <button type="button" class="btn btn-primary" id="buyerconfirm" style="background-color: #2a9944;">예,거래했어요! </button>        
+			      </div>
+			    </div>
+			  </div>
 			</div>
+
+			<%--  2) 거래후기보내기 모달시작   --%>
+			<div class="modal fade" id="mySecondModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle"> 🥒후기 보내기 </h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+		      	<%--======   매너평가(거래후기보내기) ======= --%>
+				       		<form:form id="craigMannerFrm" name="craigMannerFrm"   method="post" 
+					       		 action="${pageContext.request.contextPath}/manner/craigMannerEnroll.do"  >
+						       						       	
+				 				<input type="hidden" class="form-control" name="chatroomId" id="chatroomId" value="${chatroomId}" required>					
+				 				<input type="hidden" class="form-control" name="craigNo" id="craigNo" value="${craig.no}" required>				
+				 				<input type="hidden" class="form-control" name="writer" id="writer" value="${memberId}" required>				
+				
+								<p style="margin-bottom:-13px;" >${chatUser.nickname}님,<p>
+					    		<c:if test="${memberId == craig.buyer }">
+									<input type="hidden" class="form-control" name="recipient" id="recipient" value="${craig.writer}" required>
+									<p>${otherUser.nickname}님 과의 거래가 어떠셨나요? <p>
+						 		</c:if>	 
+					     	 	<c:if test="${memberId ==  craig.writer   }">
+									<input type="hidden" class="form-control" name="recipient" id="recipient" value="${craig.buyer}" required>
+									<p>${otherUser.nickname}님 과의 거래가 어떠셨나요? <p>
+						 		</c:if>
+									<p style="color:gray; font-size: 14px; margin-top: 30px;">거래 후기는 나만 볼 수 있어요. <p>	 
+					
+								<div id="bigMannerDiv" style="display: flex;  justify-content: space-around;">	<%-- 필수선택값  --%>			
+									<div>
+										<img class="mannerimages" src="${pageContext.request.contextPath}/resources/images/bad.png" alt="" /><br>
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA1" value="MA1" onclick="checkOnlyOne(this)"> <label for="MA1"> 별로예요 </label>
+									</div>	 
+									<div>
+										<img class="mannerimages"  src="${pageContext.request.contextPath}/resources/images/good.png"    alt="" /><br>
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA2" value="MA2" onclick="checkOnlyOne(this)" ><label for="MA2"> 좋아요 </label>
+									</div>	 
+									<div>
+										<img class="mannerimages"  src="${pageContext.request.contextPath}/resources/images/best.png"    alt="" /><br>					
+										<input type="checkbox" class="mannerbox" name="prefer" id="MA3" value="MA3" onclick="checkOnlyOne(this)"   > <label for="MA3"> 최고예요💚 </label>
+									</div>		 
+								</div>		 
+								
+								<div id="compliDiv">
+									<p> 어떤 점이 좋았나요 ? </p>
+									<input type="checkbox" class="complibox" name="compliment" id="COM1" value="COM1" onclick="checkCom(this)" > <label for="COM1"> 제가 있는 곳까지 와서 거래했어요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM2" value="COM2" onclick="checkCom(this)" > <label for="COM2"> 응답이 빨라요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM3" value="COM3" onclick="checkCom(this)" > <label for="COM3"> 친절하고 매너가 좋아요. </label><br>
+									<input type="checkbox" class="complibox" name="compliment" id="COM4" value="COM4" onclick="checkCom(this)" > <label for="COM4"> 시간 약속을 잘 지켜요. </label><br>
+								</div>
+							</form:form>	
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal"> 취소 </button>
+			        <button type="button" class="btn btn-primary" style="background-color: green" id="sendMannerFormbtn" > 후기 보내기 </button>
+			      </div>
+			    </div>
+			  </div>
+		</div><%-- end --%>
+			<c:if test="${craig.state eq 'CR3' &&  mydonemanner.mannerNo == null}">
+			<script>
+				 //1) 거래했냐 ? 						 
+				document.querySelector("#sendreview").addEventListener('click', (e)=>{
+					$('#myModal').modal('show');
+				});
+				 
+				//2) 했다 ~ 
+				document.querySelector("#buyerconfirm").addEventListener('click', (e) => {
+					$('#myModal').modal('hide'); //원래꺼 닫어
+					$('#mySecondModal').modal('show');
+				});
+				
+				//  체크박스 
+				const checkOnlyOne = ( input ) => { 
+					const checkboxes = document.getElementsByName("prefer");
+					checkboxes.forEach( (cb) => {
+					  cb.checked = false;		  
+					})
+			  	
+			  		input.checked = true;
+				};
+				
+				const checkCom = ( input ) => { 
+			  		const complibox = document.getElementsByName("compliment");
+					
+			  		if($('input').is(":checked")){
+			  			console.log("체크된상태");
+			  			
+			  			complibox.forEach( (other) => {
+			  				if(other != input){
+			  					other.checked = false;	
+			  				}		  
+						});	
+			  		}
+			  		console.log("선택된애 : ", input);
+				};
+				
+				//  유효성검사 후 폼 전송  
+				document.querySelector("#sendMannerFormbtn").addEventListener('click', (e) => {
+					
+					const checkboxes = document.getElementsByName("prefer");
+					const prefer = document.querySelectorAll("[name=prefer]");
+					let type;
+					
+					checkboxes.forEach((preferType) => {
+						if(preferType.checked == true){
+							type = preferType;
+						}
+					});
+					
+					if(type == null){
+						alert("거래 선호도를 반드시 하나는 선택해주셔야해요 !");
+						return false;
+					}
+					else{
+						document.craigMannerFrm.submit();
+					 	setTimeout( () => window.close(), 2500 );	
+					}
+					
+				});//end 
+			</script>
+			</c:if>
+			
+<!--  msg - alert    -->
+<div id="successModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black"> 🥒매너평가완료 </h5>
+        <button type="button" class="close" data-dismiss="modal"  data-target="myModal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        </br>거래 후기를 성공적으로 보냈습니다 💚
+      </br></br></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="statemodalcfm" data-dismiss="modal">확인</button>     
+      </div>
+    </div>
+  </div>
+</div>	
+<c:if test="${not empty msg}">
+	<script>
+	$('#successModal').modal('show');
+	</script>
+</c:if>		
+<%-- <%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~ 혜진 거래후기보내기  끝   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>			
+
 
 			<!----------- 약속잡기 Modal start ------------->
 			<div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel" aria-hidden="true">
@@ -252,14 +467,10 @@
 			
 			<!-------------- 메시지 입력창 start  --------------->
 			<div class="message-input">
-				<!-- 첨부파일 start  -->
-				<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
-	    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-	    		<button style="position: relative; z-index: 1000; background-color: black;" id="upFileBtn">사진보내기</button>
-				<!-- 첨부파일 end  -->
+
 				
 				<input type="text" id="msg" placeholder="메시지 보내기">
-				<i class="fa fa-paperclip attachment" aria-hidden="true"></i>					
+				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
 				<button id="sendBtn" type="button">
 					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
 						width="20" height="20" fill="currentColor"
@@ -269,7 +480,12 @@
 				</button>
 			</div>
 			<!-------------- 메시지 입력창 end --------------->
-			
+							<!-- 첨부파일 start  -->
+				<div id="fileWrap" class="custom-file" style="display: none;">
+					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
+		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
+				</div>
+				<!-- 첨부파일 end  -->
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 
@@ -294,12 +510,16 @@ const stompClient = Stomp.over(ws);
 const chatroomId = '${chatroomId}';
 // 로그인한 사용자 아이디
 const memberId = '${memberId}';
+// 로그인한 사용자 객체
+const chatUser = '${chatUser}';
 // 로그인한 사용자 동
 const dong = '${dong}';
 // 로그인한 사용자 프로필이미지
 const profImg = '${chatUser.profileImg}';
 // 상대방 프로필이미지
 const otherImg = '${otherUser.profileImg}';
+// 상대방 객체
+const otherUser = '${otherUser}';
 
 // csrf 토큰  
 const csrfHeader = "${_csrf.headerName}";
@@ -321,6 +541,63 @@ headers[csrfHeader] = csrfToken;
 	}
 
 }); */
+
+/********************* 사용자 신고 *************************/
+/* 체크박스 제어 */
+const checkOnlyOne = (element) => {
+  
+  const checkboxes = document.getElementsByName("reasonNo"); // reasonNo -> NodeList
+  
+  checkboxes.forEach((cb) => {
+    cb.checked = false; // 모든 체크박스 체크 해제
+  })
+  
+  element.checked = true; // element: onclick(this) 적어놓은 태그 
+};
+
+/* 유효성 검사 */
+
+document.querySelector("#saveReport").addEventListener('click', (e) => {
+	
+	const reportTypes = document.querySelectorAll("[name=reasonNo]");
+	let type;
+	let reasonNo;
+	
+	console.log(reportTypes);
+	reportTypes.forEach((reportType) => {
+		if(reportType.checked == true){
+			type = reportType.dataset.reportType;
+			reasonNo = reportType.value;
+		}
+	});
+	
+	if(type == null){
+		alert("사유를 선택해주세요.");
+		return false;
+	} else {
+		if(confirm('신고하시겠습니까?')){
+			$("#reportModal").modal('hide'); // 모달 감추기	 
+			// USER_REPORT insert처리 
+		    $.ajax({
+		        headers,
+		        url : '${pageContext.request.contextPath}/report/chat/userReportEnroll.do',
+		        dataType : 'json',
+		        data : {
+		        	writer: '${chatUser.memberId}',
+					reasonNo: reasonNo,
+					reportedMember: '${otherUser.memberId}'
+		        },
+		        type : "POST",
+		        success(){
+		        },
+		        error: console.log
+		    });   
+			alert("신고 완료되었습니다.");
+		    $('.action_menu').toggle(); // 메뉴토글 닫기
+		}
+	}	
+});
+
 
 /********************* 장소공유 관련 *************************/
 var container = document.getElementById('map');
@@ -496,87 +773,112 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 	const dateBtn = document.querySelector("#meetingDate");
 	const placeBtn = document.querySelector("#meetingPlace");
 	
-	const craigMsgs = '${craigMsgs}';
-	if(craigMsgs.length < 3){ // [] string으로 2개 들어간것 처리됨.. 
-		alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
-		$("#meetingModal").modal('hide'); // 모달 감추기	 
-		
-		return;
-	} 
 	
-	if(!time){
-		alert("시간을 선택해주세요.");
-	}
-	else if(!meetingDate){
-		alert("날짜를 선택해주세요.");
-	}
-	else{
-		// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
-		meetingDate.setHours(time.substring(0, 2));
-		meetingDate.setMinutes(time.slice(-2)); 
-		
-		
-		// date버튼 html용 
-		let mon = meetingDate.getMonth() + 1;
-		let day = meetingDate.getDate();
-		const weekday = ['일', '월', '화', '수', '목', '금', '토'];
-		let week = weekday[meetingDate.getDay()];
-		let times = convertTime(meetingDate);
-		
-		let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
-		console.log(dateHtml);
-		
-		// 2023-04-12 19:12 형식으로 변환
-		let date = meetingDate.getFullYear() + '-' 
-					+ ( (meetingDate.getMonth() + 1) < 9 ? 
-							"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
-					+ ( (meetingDate.getDate()) < 9 ? 
-							"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
-					+ meetingDate.getHours() + ':' 
-					+ ( meetingDate.getMinutes() < 10 ? 
-							"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
-		meetingDate = date;
-	
-		
-		// 중고거래 예약 테이블에 행 추가
-    $.ajax({
+	/* 대화이력 조회 start */
+	 $.ajax({
 	        headers,
-	        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
-	        data : {
-				chatroomId, memberId, meetingDate
-	        },
-	        type : "POST",
+	        url : '${pageContext.request.contextPath}/chat/criagMsgCnt',
+	        data : {chatroomId},
+	        dataType: "json",
+	        type : "GET",
 	        success(data){
-				
-	        	// 약속 메시지 보내기
-		        const payload = {
-			        	chatroomId,
-		             	writer : '<sec:authentication property="principal.username"/>',
-		             	content : dateHtml,
-		             	sentTime : Date.now(),
-		             	type : 'BOOK',
-		            }
-			        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
-	        	
+	  			
+	        	// 채팅방 대화이력 없을때
+	        	if(data == 0){
+	        		console.log("메시지없음");
+	        		alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
+	        		frm.reset(); // 시간폼 초기화
+	        		$("#datePicker").datepicker("clearDates"); // datepicker 초기화
+	        		$("#meetingModal").modal('hide'); // 모달 감추기	
+	        		
+	        	} else {
+	        	// 채팅방 대화이력 있을때
+	        		if(!time){
+	        			alert("시간을 선택해주세요.");
+	        		}
+	        		else if(!meetingDate){
+	        			alert("날짜를 선택해주세요.");
+	        		}
+	        		else{
+	        			// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
+	        			meetingDate.setHours(time.substring(0, 2));
+	        			meetingDate.setMinutes(time.slice(-2)); 
+	        			
+	        			
+	        			// date버튼 html용 
+	        			let mon = meetingDate.getMonth() + 1;
+	        			let day = meetingDate.getDate();
+	        			const weekday = ['일', '월', '화', '수', '목', '금', '토'];
+	        			let week = weekday[meetingDate.getDay()];
+	        			let times = convertTime(meetingDate);
+	        			
+	        			let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
+	        			console.log(dateHtml);
+	        			
+	        			// 07:19 
+	        			// hours가 10보다 작다면 앞에 0, 
+	        			// 오전 12시는 0 으로 찍힘 
+	        			
+
+	        			// 2023-04-12 19:12 형식으로 변환
+	        			let date = meetingDate.getFullYear() + '-' 
+	        						+ ( (meetingDate.getMonth() + 1) < 9 ? 
+	        								"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
+	        						+ ( (meetingDate.getDate()) < 10 ? 
+	        								"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
+	        						+ ( (meetingDate.getHours()) < 10 ?
+	        								"0" + (meetingDate.getHours()) : (meetingDate.getHours()) ) + ':' 
+	        						+ ( meetingDate.getMinutes() < 10 ? 
+	        								"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
+	        			meetingDate = date;
+	        		
+	        			
+	        		/* 중고거래 예약 테이블에 행 추가 */
+	        	    $.ajax({
+	        		        headers,
+	        		        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
+	        		        data : {
+	        					chatroomId, memberId, meetingDate
+	        		        },
+	        		        type : "POST",
+	        		        success(data){
+	        					
+	        		        	// 약속 메시지 보내기
+	        			        const payload = {
+	        				        	chatroomId,
+	        			             	writer : '<sec:authentication property="principal.username"/>',
+	        			             	content : dateHtml,
+	        			             	sentTime : Date.now(),
+	        			             	type : 'BOOK',
+	        			            }
+	        				        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+	        		        	
+	        		        },
+	        		        error: console.log
+	        		    });  
+	        		
+	        				
+	        			document.querySelector(".btnWrap").innerHTML += `
+	        				<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
+	        				<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
+	        			`
+
+	        			$("#meeting").css({
+	        				"display" : "none"
+	        			}); 	
+	        			
+	        			$(".craig_status").html("예약중");
+	        			
+	        			$("#meetingModal").modal('hide'); // 모달 감추기	        	
+	        		
+	        		} /* else절 끝*/
+	
+	        	} /* success 끝 */
+	    	
 	        },
 	        error: console.log
-	    });  
-	
-			
-		document.querySelector(".btnWrap").innerHTML += `
-			<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
-			<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
-		`
-
-		$("#meeting").css({
-			"display" : "none"
-		}); 	
-		
-		$(".craig_status").html("예약중");
-		
-		$("#meetingModal").modal('hide'); // 모달 감추기	        	
-	}
-	
+		  
+ 		});  /* 대화이력 조회 end */
 });
 
 
@@ -584,7 +886,7 @@ document.querySelector("#saveMeeting").addEventListener('click', (e) => {
 
 
 /********************* 첨부파일 관련 *************************/
-document.querySelector("#upFileBtn").addEventListener('click', (e) => {
+document.querySelector("#sendBtn").addEventListener("click", (e) => {
 
     const formData = new FormData();
     const file = document.querySelector("#upFile").files[0];
@@ -592,6 +894,9 @@ document.querySelector("#upFileBtn").addEventListener('click', (e) => {
     formData.append("file", file);
     formData.append("memberId", memberId);
 
+    if(!file) return;
+    
+    
     // 2. 첨부파일 가져오기
     $.ajax({
         headers,
@@ -618,17 +923,14 @@ document.querySelector("#upFileBtn").addEventListener('click', (e) => {
         error: console.log
     });    
     
-});
-
-
-/* 첨부파일 선택 버튼 */
-document.querySelector("i").addEventListener("click", (e) => {
-	const div = document.querySelector(".custom-file")
-	if(div.style.display == "none"){
-		div.style.display = "block";	
-	} else {
-		div.style.display = "none";
-	}
+    const fileInput = document.querySelector("#upFile");
+    
+	$('#fileWrap').toggle(); // 파일토글 닫기
+	const label = fileInput.nextElementSibling;
+	fileInput.value = ''; // 파일 초기화 
+	label.innerHTML = '파일을 선택하세요'	; // 라벨 초기화
+	
+	
 });
 
 
@@ -777,7 +1079,7 @@ stompClient.connect({}, (frame) => {
 					const myNick = '${chatUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<p>\${myNick} 님이 \${content} 에 약속을 만들었어요. 약속은 꼭 지켜주세요!</p>
+						<span>\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
 					</li>
 					`;
 				}
@@ -900,7 +1202,7 @@ stompClient.connect({}, (frame) => {
 					const otherNick = '${otherUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<p>\${otherNick} 님이 \${content} 에 약속을 만들었어요. 약속은 꼭 지켜주세요!</p>
+						<span>\${otherNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
 					</li>
 					`;
 					
@@ -950,27 +1252,21 @@ function convertTime(now){
 	let min = now.getMinutes();
 	let daynight;
 	
-	console.log(hour);
-		
+	console.log(hour + "시간찍어"); // 11
 	if (hour < 12){
 		daynight = '오전';
-	} else if (hour = '0'){ // 내일 질문
-		console.log('왜??');
-		daynight = '오전';
-		hour = '00';
+		
+		if(hour == '0'){
+			daynight = '오전';
+			hour = '12';
+		}
 	}
 	else {
-		switch(hour){
-		case 12 :
-			daynight = '오후';
-			break;
-		default :
-			daynight = '오후';
-			hour -= 12;
-			if(hour < 10){
+		daynight = '오후';
+		hour -= 12;
+		
+		if (hour < 10){
 			hour = '0' + hour;
-			}
-			break;
 		}
 	} 
 
@@ -981,13 +1277,19 @@ function convertTime(now){
 	const convertedTime = daynight + ' ' + hour + ':' + min + ' ';
 	return convertedTime;
 }
-	
+
+/* 첨부파일 버튼 토글 */
+$('i').click(function(){
+	$('#fileWrap').toggle();
+});
+
 /* 채팅방 메뉴버튼 토글  */
 $(document).ready(function(){
 	$('#action_menu_btn').click(function(){
 		$('.action_menu').toggle();
 	});
 });
+
 		
 /* 채팅방 스크롤 최하단 고정  */		
 $(document).ready(function(){

@@ -29,6 +29,7 @@
 	</div>
 </div>
 <!-- 내동네 가져오기 -->
+	<div class="relatviedong">
 		<div class="search">
 			<span id="mydong"></span>
 			<!-- 검색창 -->
@@ -44,6 +45,7 @@
 				<i style="color: green;" class="fa-solid fa-pencil fa-2x"></i>
 			</button>
 		</div>
+	</div>
 	<div class="category-list-wrap" >
 	<c:forEach items="${localCategory}" var="category">
 				<ul class="category-list" data-category-num="${category.CATEGORY_NO}">
@@ -55,32 +57,34 @@
 	<c:set var="category" value="${localCategory}" scope="page"/>
 	<c:if test="${not empty localList}">
 	<table>
-		<tbody>
+		<tbody id="localList">
 			<c:forEach items="${localList}" var="local" varStatus="vs">
 				<c:if test="${vs.index % 1 == 0}">
 					<tr class="local-tr">
 				</c:if>	 
-				<td class="local-list" data-no="${local.no}" data-category="${category[local.categoryNo - 1].CATEGORY_NAME}">
-				
+		 		<td class="local-list" data-no="${local.no}" data-category="${category[local.categoryNo - 1].CATEGORY_NAME}">
+						<div class="atimg">
+						<c:if test="${local.attachments[0].reFilename != null}">
+						    <a>
+						    	<span><img id="localimg"   
+								    src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/></span>
+						    </a>
+					    	
+						</c:if>
+						</div>
+					<div class="local-content">
 					<div class="local-title">
-						<span>${local.title}</span>
+						<span class="localTitle">${local.title}</span>
 					</div>
 					<div class="local-footer">
 						<span class="local-category">${category[local.categoryNo - 1].CATEGORY_NAME}</span>
 						&nbsp;
 						<span class="local-dong">${local.dong.dongName}</span>
 						&nbsp;
+						<!-- 시간오류 수정하기 -->
 						<fmt:parseDate value="${local.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
 						<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<c:if test="${local.attachments[0].reFilename != null}">
-						    <a>
-						    	<img id="localimg"  style="display : inline-block; height : 40px; width:40px; " 
-								    src="${pageContext.request.contextPath}/resources/upload/local/${local.attachments[0].reFilename}"/>
-						    </a>
-					    	<br/>
-						</c:if>
-								
+					</div>
 					</div>
 				</td>
 				<c:if test="${vs.index %1== 1}">
@@ -92,8 +96,9 @@
 	</c:if>
 	<c:if test="${empty localList}">
 			<div class="empty-box">
-				<p>게시글이 없습니다.</p>
+				<p>해당 게시글은 아직 등록이 안되었어요😥 </p>
 			</div>
+		
 	</c:if>
 	</div>
 	
@@ -134,7 +139,7 @@ document.querySelectorAll("td[data-no]").forEach( (td) => {
 		const no = td.dataset.no;
 		const category = td.dataset.category;
 		console.log(no, category);
-		location.href='${pageContext.request.contextPath}/local/localDetail.do?category=' + category + "&no=" + no;
+		location.href='${pageContext.request.contextPath}/local/localDetail.do?&no=' + no;
 	});
 });
 </script>
@@ -158,24 +163,39 @@ window.addEventListener('load', () => {
 </script>
 
 <script>
-//검색
+//검색 버튼 클릭 시 이벤트 핸들러
 document.querySelector(".searchbtn").addEventListener('click', (e) => {
-	const searchKeyword = document.querySelector("#searchKeyword").value;
-	console.log(searchKeyword);
-	
-	const blank_pattern = /^\s+|\s+$/g;  //정규표현식 공란있음 안됨 
-	if(searchKeyword.replace(blank_pattern, '' ) == "" ){
-		alert("검색어를 입력해주세요!");
-		document.querySelector("#searchKeyword").select();
-		e.preventDefault();
-		return false;
-	}
-	
-	else if(searchKeyword != null && searchKeyword !="" ){
-		location.href = "${pageContext.request.contextPath}/local/localLists.do";
-	}
-})
+    const searchKeyword = document.querySelector("#searchKeyword").value;
+    console.log(searchKeyword);
+
+    const blank_pattern = /^\s+|\s+$/g;
+    if (searchKeyword.replace(blank_pattern, '') == "") {
+        alert("검색어를 입력해주세요!");
+        document.querySelector("#searchKeyword").select();
+        e.preventDefault();
+        return false;
+    }
+
+    else if (searchKeyword != null && searchKeyword != "") {
+        location.href = "${pageContext.request.contextPath}/local/localLists.do?searchKeyword=" + searchKeyword;
+    }
+});
+
+// 검색 결과 페이지에서 타이틀 강조 표시
+const searchKeyword = new URLSearchParams(window.location.search).get('searchKeyword');
+const highlightedTitle = "<strong><span class='highlighted'>" + searchKeyword + "</span></strong>";
+const titles = document.querySelectorAll('.localTitle');
+titles.forEach(title => {
+    if (title.innerText.includes(searchKeyword)) {
+        title.innerHTML = title.innerHTML.replace(new RegExp(searchKeyword, 'g'), highlightedTitle);
+    }
+});
+
+
+
+
 
 </script>
+
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

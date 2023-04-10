@@ -212,8 +212,12 @@ window.addEventListener('load', (e) => {
 							<label class="to-title">장소</label>
 						</div>
 						<div>
-							<input type="text" name="place" class="to-input place" style="display: block;" placeholder="장소를 직접 입력해주세요!">
+							<input type="text" name="place" class="to-input place" style="display: block;" list="place-list" placeholder="장소를 직접 입력해주세요!">
 							<p class="error-msg place-error">장소를 입력해주세요.(3글자 이상)</p>
+			                <datalist id="place-list">
+			                    <option value="장소는 같이 정해요!">장소는 같이 정해요!</option>
+			                    <option value="각자 집에서 만나요!">각자 집에서 만나요!</option>
+			                </datalist>
 						</div>
 					</div>
 				</div>
@@ -266,11 +270,11 @@ document.querySelector(".minus").addEventListener("click", (e) => {
   	}
 });
 document.querySelector(".plus").addEventListener("click", (e) => {
-	if (cnt < 6) {
+	if (cnt < 10) {
 		cnt++;
   		joinCnt.value = cnt;
 	} else {
-  		alert("참가인원은 6명까지 가능합니다.");
+  		alert("참가인원은 10명까지 가능합니다.");
 	}
 });
 

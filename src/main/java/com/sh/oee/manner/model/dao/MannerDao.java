@@ -12,8 +12,10 @@ import com.sh.oee.manner.model.dto.Manner;
 @Mapper
 public interface MannerDao {
 
-	@Select("select * from manner_review where recipient = #{memberId}")
 	List<Manner> selectMannerList(String memberId);
+	List<Manner> selectMannerList1(String memberId);
+	List<Manner> selectSendMannerList(Map<String, Object> param);
+	List<Manner> selectTakeMannerList(Map<String, Object> param);
 
 	
 	//혜진추가-0403
@@ -26,7 +28,15 @@ public interface MannerDao {
 	int updateComplimentDegree(Map<String, Object> param);
 
 
-	@Update("update manner_review set done = 'Y' where TO_CHAR(reg_date, 'YY/MM/DD')  =  TO_CHAR(sysdate-1, 'YY/MM/DD')")
-	int updateMannerDone();
+	@Update("update manner_review set done = 'Y' where manner_no = #{mannerNo} ")
+	int updateMannerDone(int mannerNo);
+
+	//혜진 추가 
+	int craigMannerEnroll(Manner manner);
+
+	//혜진추가 
+	Manner selectMannerOne(Map<String, Object> mannerMap);
+
+
 
 }

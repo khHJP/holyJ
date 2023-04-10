@@ -12,16 +12,46 @@ hr{
 td{
 	padding-left: 35px;
 }
+/*-------------------------------------------------------------*/
+.btn1{
+	border-radius: 50px;
+    height: 100px;
+    width: 100px;
+}
 #imagePreview{
 	border-radius: 50px;
 	height: 100px; 
     width: 100px; 
+    margin: -20px;
     /* margin: 50px 0 0 50px; */
 }
 #nickname{
-	font-size: 25px;
+	font-size: 23px;
     font-weight: 600;
 }
+#imagemodal{
+	margin-left: 3px;
+    margin-right: 5px;
+    height: 50px; 
+    width: 50px; 
+    border-radius: 50px;
+}
+div.modal-header{
+	 background-color: #d5ffd6;
+}
+div.modal-body{
+	list-style: none;
+    font-size: 22px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+div.modal-body li{
+	margin: 10px;
+}
+.btn-secondary{
+	 background-color: #d5ffd6;
+	
+}
+/*-------------------------------------------------------------*/
 td button{
 	background: #7FB77E;
     color: white;

@@ -29,8 +29,8 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
-/**	혜진만 주석풀고 메소드 실행합니다! 
-	@Scheduled(cron="0 0 4 * * *")
+/**	혜진만 주석풀고 메소드 실행합니다! **/
+	@Scheduled(cron="0 30 4 * * *")
 	@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
 	public void craigCronSchedule() {//매일 5시에 실행 -- 잘되면 오전 1시로 바꾸기 
 
@@ -45,18 +45,32 @@ public class CraigCronTest {
 		 String preferType2 = "MA2";
 		 String preferType3 = "MA3";
 
+
 		 Map<String, Object> param = new HashMap<>();
+
+		 
 		 int result = 0;
+		 int realResult = 0;
+		 // 2) for문 돌면서 매너리스트의 매너온도 반영한다 
 		 for(int i =0; i< mannerList.size()  ; i++) {
 	 
-			 String prefer = mannerList.get(i).getPrefer().toString();
-			 String memberId = mannerList.get(i).getWriter();
-			 String compliment = mannerList.get(i).getCompliment().toString();
-			 
+			String prefer = mannerList.get(i).getPrefer().toString();
+			String memberId = mannerList.get(i).getWriter();
+			String compliment="";
+			
+			try {
+				compliment = String.valueOf(mannerList.get(i).getCompliment());  // 이거 안하면 널포인트 exception 난다 ,, 
+				log.debug("compliment :  ", compliment);
+				
+			} catch (IllegalArgumentException  e) {
+				System.out.println("iligal");
+			}
+		
 			 param.put("prefer", prefer); //MA1, MA2, MA3
 			 param.put("memberId", memberId);
 			 log.debug(" ■ param = {}" , param  ); 
 			 
+			// 매너온도 반영 
 			 if( prefer.equals(preferType1) ||  prefer.equals(preferType2) || prefer.equals(preferType3) ) {
 				 // MA1 : -0.5 ||  MA2' : +0.2  ||  'MA3' :  +0.5 로 업데이트 시키기 
 				 result = mannerService.updateMannerDegree(param);
@@ -64,30 +78,30 @@ public class CraigCronTest {
 			 }
 			
 			 //compliment 있을경우 +0.1
-			 if( compliment.length() > 0) {
+			 if( compliment != null &&   compliment != "" &&  (!compliment.equals("null"))  &&  compliment != "null") {
 				 result += mannerService.updateComplimentDegree(param);
 				 log.debug(" ■ compliment " , compliment  ); 
 			 }
 			 
 			 log.debug(" ★★★ result = {}", result); //최대 2개여야됨 			
 			 
+			 
+			 int mannerNo = (int)mannerList.get(i).getMannerNo();
+			 if( result > 0) {
+				 realResult = mannerService.updateMannerDone(mannerNo);
+			 }
 		 }// end - for문 
 		 
-		 int realResult = 0;
-		 if( result > 0) {
-			 realResult = mannerService.updateMannerDone();
-			 log.debug(" ★★★ realResult = {}", realResult);
-		 }
+		 log.debug(" ★★★ realResult = {}", realResult);
+	
 
 		 log.debug("======================================================================");
 
 	 }
-**/
+
 }
 
 
 /*
-어제 4/2일 12시 ~ 23:59분까지 
-반영된 매너온도를 오늘 새벽 5시에 작업하고 
-오늘 꺼는 낼 새벽에 작업한다  
+매일새벽1시에 실행하기 
  */

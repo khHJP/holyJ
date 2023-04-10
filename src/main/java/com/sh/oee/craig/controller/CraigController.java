@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -219,16 +221,15 @@ public class CraigController {
 		
 		//저장
 		int result = craigService.insertCraigBoard(craig);
-				log.debug( "result : " + result );
-
-		redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 등록했습니다😊");
+		log.debug( "result : " + result );
 		
+		redirectAttr.addFlashAttribute("msg", "중고거래 게시글을 성공적으로 등록했습니다😊");
+			
 		return "redirect:/craig/craigList.do";
 		
 	}
 	
-	
-	 // ■ just go to the place - 걍이동
+	// ■ just go to the place - 걍이동
 	 @GetMapping("/craigPickPlace.do")
 	 public void craigPickPlace() {
 	  
@@ -299,12 +300,10 @@ public class CraigController {
 			 
 			 
 			 List<Craig> othercraigs = craigService.selectOtherCraigs( otherParam );
-//			 mav.addObject("othercraigs", othercraigs);
-			 
+//			 mav.addObject("othercraigs", othercraigs);			 
 //			 mav.addObject("craigboard", craigboard); 
 //			 mav.addObject("findCraigWish", findCraigWish);		 
-//			 mav.setViewName("craig/craigDetail");
-			 
+//			 mav.setViewName("craig/craigDetail");		 
 //			 model.addAttribute("name", "abc");   --- model은 왜안돼?????????????
 			 model.addAttribute("craigboard", craigboard);
 			 model.addAttribute("findCraigWish", findCraigWish);
@@ -562,24 +561,12 @@ public class CraigController {
 
 				int totals = craigService.getContentCnt(param );	
 				int totalPage = (int) Math.ceil((double) totals/limit);	
-				
-				CraigPage  craigPage = new CraigPage(totals, cpage, limit, 5);
-				model.addAttribute("craigPage", craigPage);
-				
-				// model담기
-				model.addAttribute("searchCrategory", searchCrategory);
-				model.addAttribute("wishCnt", wishCnt);
-				model.addAttribute("craigChatCnt", craigChatCnt);
-				
-				model.addAttribute("totalPage", totalPage);
-				model.addAttribute("page", cpage);		
-
+	
 				// 리턴
 				Map<String, Object> categoryMap = new HashMap<>();  
 				categoryMap.put("searchCrategory", searchCrategory);
 				categoryMap.put("wishCnt", wishCnt);
-				categoryMap.put("craigChatCnt", craigChatCnt);
-				
+				categoryMap.put("craigChatCnt", craigChatCnt);				
 				categoryMap.put("totalPage", totalPage);
 				categoryMap.put("page", cpage);
 				
@@ -707,6 +694,19 @@ public class CraigController {
 				
 			model.addAttribute("mySalCraig",mySalCraig);
 		}
+	 
+	 @GetMapping("/mySalCraig1.do")
+	 public void mySalCraig1(String memberId, Model model) {
+		 // member  
+		 log.debug("memberId = {} ", memberId);
+		 
+		 List<Craig> mySalCraig = craigService.mySalCraig(memberId);
+		 
+		 log.debug("mySalCraig = {}",mySalCraig);
+		 
+		 model.addAttribute("mySalCraig",mySalCraig);
+	 }
+	 
 	 @GetMapping("/mySalFCraig.do")
 	 public void mySalFCraig(Authentication authentication, Model model) {
 		 // member  
@@ -717,6 +717,17 @@ public class CraigController {
 				
 		 log.debug("mySalFCraig = {}",mySalFCraig);
 				
+		 model.addAttribute("mySalFCraig",mySalFCraig);
+	 }
+	 @GetMapping("/mySalFCraig1.do")
+	 public void mySalFCraig1(String memberId, Model model) {
+		 // member  
+		 log.debug("memberId = {} ", memberId);
+		 
+		 List<Craig> mySalFCraig = craigService.mySalFCraig(memberId);
+		 
+		 log.debug("mySalFCraig = {}",mySalFCraig);
+		 
 		 model.addAttribute("mySalFCraig",mySalFCraig);
 	 }
 	 

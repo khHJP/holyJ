@@ -261,8 +261,35 @@ insert into TOGETHER values(
     default
 );
 
-
-
 select * from together;
 
-select * from craig;
+--================================================
+-- 날려버린 같이해요 작성자.. together_chat에 추가
+--================================================
+insert into together_chat values(120, 'dujun74', 'A', to_date('23/04/07'), default);
+insert into together_chat values(124, 'admin1', 'A', to_date('23/04/07'), default);
+insert into together_chat values(84, 'pro1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(79, 'test12344', 'A', to_date('23/04/05'), default);
+insert into together_chat values(103, 'happy77', 'A', to_date('23/04/06'), default);
+insert into together_chat values(77, 'One1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(105, 'peach0406', 'A', to_date('23/04/06'), default);
+insert into together_chat values(106, 'mango', 'A', to_date('23/04/06'), default);
+
+insert into together_chat values(109, 'skzz5252', 'A', to_date('23/04/07'), default);
+insert into together_chat values(143, 'tigerhj', 'A', to_date('23/04/09'), default);
+insert into together_chat values(78, 'tigerhj', 'A', to_date('23/04/05'), default);
+insert into together_chat values(82, 'birdhj1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(85, 'pro1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(86, 'pro2345', 'A', to_date('23/04/05'), default);
+insert into together_chat values(87, 'pro2345', 'A', to_date('23/04/05'), default);
+insert into together_chat values(88, 'pro3456', 'A', to_date('23/04/05'), default);
+insert into together_chat values(89, 'pro3456', 'A', to_date('23/04/05'), default);
+
+insert into together_chat values(104, 'whale147', 'A', to_date('23/04/06'), default);
+insert into together_chat values(108, 'cathj', 'A', to_date('23/04/07'), default);
+insert into together_chat values(107, 'haha7777', 'A', to_date('23/04/06'), default);
+insert into together_chat values(80, 'test1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(81, 'test1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(83, 'One1234', 'A', to_date('23/04/05'), default);
+insert into together_chat values(90, 'pro4567', 'A', to_date('23/04/05'), default);
+insert into together_chat values(91, 'pro4567', 'A', to_date('23/04/05'), default);

@@ -21,7 +21,7 @@ function reReply(commentNo) {
 				<input type="hidden" name="commentNo" id="replyCommentNo" value="">
 				<input type="hidden" name="localNo" value="${localdetail.no}">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<button type="submit">등록</button>
+				<button type="submit" id="replyEditTextbtn">등록</button>
 			</form>
 		`);
 	
@@ -98,10 +98,15 @@ function setCommentOrderList(order) {
 <div class="localboard-container">
 	<div class="localboard-wrap">
 		<span class="category">${localdetail.localcategory.categoryName}</span>
-		<div class="memberInfo">
-			<div class="profileimg">
-				<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">
-			</div>
+			
+		<!-- -------------------------------------------------------------------------------------------------------------- -->		
+			<!-- Button trigger modal -->
+			<div class="memberInfo">
+			<button type="button" class="btn1 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">				
+				<div class="profileimg">
+					<img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}" alt="사용자프로필">					
+				</div>
+			</button>
 			<div class="detailInfo">
 				<span class="nickname">${localdetail.member.nickname}</span>
 				<div class="dong-date">
@@ -130,6 +135,70 @@ function setCommentOrderList(order) {
 				</div>
 			</div>
 		</div>
+			
+		
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content" id="modal-content">
+			      <div class="modal-header" id="modal-header">
+				      <div>
+					      <div style="display:flex;">
+					        <img src="${pageContext.request.contextPath}/resources/upload/profile/${localdetail.member.profileImg}"  alt="프로필" name="profileImg" id="imagemodal">
+					        <div>
+					        <h4 class="modal-title1 fs-5" id="exampleModalLabel">
+					        ${localdetail.member.nickname}
+					        </h4>
+					        <h6 id="dong">${localdetail.dong.dongName}</h6>
+					        </div>
+					      </div>
+			      	</div>
+					     <h6>${localdetail.member.manner}℃</h6>
+			        </div>
+			      
+			      <div class="modal-body" id="modal-body">
+			      	<form:form name="salCriag1Frm" action="${pageContext.request.contextPath}/craig/mySalCraig1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Cr.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">중고거래</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myLocal1Frm" action="${pageContext.request.contextPath}/local/myLocal1.do" method="GET">
+				      	<li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Lo.png" alt="" id="mypageimg"/>
+					        <button type="submit" class="btn-list">동네생활</button>
+					        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myTogether1Frm" action="${pageContext.request.contextPath}/together/myTogether1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/To.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">같이해요</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      	<form:form name="myManner1Frm" action="${pageContext.request.contextPath}/manner/myManner1.do" method="GET">
+				        <li>
+				        <img src="${pageContext.request.contextPath}/resources/images/Ma.png" alt="" id="mypageimg"/>
+				        <button type="submit" class="btn-list">받은매너</button>
+				        <input type="hidden" name="memberId" value="${localdetail.writer}"/>
+				        </li>
+			        </form:form>
+			      </div>
+			      <div class="modal-footer" id="modal-footer">
+			        <button type="button" class="btn btn-secondary1" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			</td> 
+		<!-- --------------------------------------------------------------------------------------------- -->
+		
+		
+		
+		
 			<div class="titleInfo" >
 				<span>${localdetail.title}</span>
 			</div>
@@ -143,18 +212,16 @@ function setCommentOrderList(order) {
 						</c:if>
 			</div>
 			<div class="reheco">
-				<span>조회${localdetail.hits}</span>
+				<span>조회&nbsp;${localdetail.hits}</span>
 				<!-- 좋아요 -->
 				<span id="likeimg">
 				<%-- <c:if test="${}" 이 로그인멤버의 아이디&게시글 no가 wish테이블에 없다면 빈하트 아니 꽉찬하트  --%>
 			
 				<c:if test="${findlike == 0 or findlike == null}">
-					<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
-					class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="임시이미지">
+					<img class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_empty.png" alt="임시이미지">
 				</c:if>
 				<c:if test="${findlike == 1}">
-					<img  style="width: 40px; float: right; margin-right: 10px; margin-top: -50px; display: inline"
-					class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
+					<img class="hearts" src="${pageContext.request.contextPath}/resources/images/heart_red.png" alt="heartfull">
 				</c:if>
 				</span> 
 						
@@ -171,19 +238,14 @@ function setCommentOrderList(order) {
 				</div>
 			</div>
 		</form>
-		<c:if test="${not empty commentList}">
+		<!-- 댓글목록 등록순, 최신순 -->
 			<div class="div-comment">
-				<div id="commentOriList">
-					<button id="commentOriList" onclick="setCommentOrderList('asc');">·등록순</button>
-				</div>
-				&nbsp;&nbsp;&nbsp;
-				<div id="commentNewList">
-					<button id="commentNewList" onclick="setCommentOrderList('desc');">·최신순</button>
-				</div>
+				<span><button id="commentOriList" onclick="setCommentOrderList('asc');">👆🏻등록순</button></span>
+				<span><button id="commentNewList" onclick="setCommentOrderList('desc');">👇🏻최신순</button></span>
 			</div>
-		</c:if>
+		
 		<c:forEach items="${commentList}" var="comment">
-	<!-- -등록순 최신순 -->
+		<!-- 댓글 목록 -->
 		<div id="commentList">
 		<!-- 모댓글 -->
 		<div class="moComment" style="margin-left:20px;">
@@ -198,17 +260,17 @@ function setCommentOrderList(order) {
 							<span>${comment.dong.dongName}</span>
 							&nbsp;
 							<fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
-								<fmt:formatDate value="${regDate}" pattern="MM.dd HH:mm"/>
+								<fmt:formatDate value="${regDate}" pattern="MM.dd a HH:mm"/>
 						</div>
 					</div>
 				</div>
 				<p class="commentContent" id="parentContent-${comment.commentNo}"> ${comment.content }</p>
 			
 				<!-- 댓글 수정 삭제 버튼 넣기 -->
-				<button type="button" onclick="reReply(${comment.commentNo});">답글쓰기</button>
+				<button type="button" class="recobtn rcoment" onclick="reReply(${comment.commentNo});">답글쓰기</button>
 				<c:if test="${comment.writer == loginMember.memberId  }">
-					<button type="button" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
-					<button type="button" onclick="replyDelete(${comment.commentNo});">삭제</button>
+					<button type="button" class="recobtn mcoupdate" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
+					<button type="button" class="recobtn codelete" onclick="replyDelete(${comment.commentNo});">삭제</button>
 					
 				</c:if>
 			</c:if>
@@ -232,8 +294,8 @@ function setCommentOrderList(order) {
 			</div>
 				<p class="commentContent" id="parentContent-${comment.commentNo}">${comment.content}</p>
 				<c:if test="${comment.writer == loginMember.memberId  }">
-				<button type="button" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
-				<button type="button" onclick="replyDelete(${comment.commentNo});">삭제</button>
+				<button type="button" class="recobtn coupdate" onclick="replyEdit(${comment.commentNo}, '${comment.content}');">수정</button>
+				<button type="button" class="recobtn codelete" onclick="replyDelete(${comment.commentNo});">삭제</button>
 				
 			</c:if>
 			</div>

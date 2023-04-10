@@ -316,7 +316,7 @@ document.querySelector(".minus").addEventListener("click", (e) => {
 	
 	// 현재 참여인원보다 줄일수 없고, 3명 이하는 안됨
 	if(currJoinCnt >= cnt){
-		alert("현재 참여중인 인원보다 낮은 값을 입력할 수 없습니다.")
+		alert("현재 참여중인 인원보다 낮은 인원을 입력할 수 없습니다.")
 		return;
 	}
 	
@@ -328,11 +328,11 @@ document.querySelector(".minus").addEventListener("click", (e) => {
   	}
 });
 document.querySelector(".plus").addEventListener("click", (e) => {
-	if (cnt < 6) {
+	if (cnt < 10) {
 		cnt++;
   		joinCnt.value = cnt;
 	} else {
-  		alert("참가인원은 6명까지 가능합니다.");
+  		alert("참가인원은 10명까지 가능합니다.");
 	}
 });
 

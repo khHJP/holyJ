@@ -33,6 +33,7 @@
 		<result column="nickname" property="nickname"></result>
 		<result column="phone" property="phone"></result>
 		<result column="manner" property="manner"></result>
+		<result column="profile_img" property="profileImg"></result>
 		<result column="report_cnt" property="reportCnt"></result>
 		<result column="enroll_date" property="enrollDate"></result>
 		<result column="delete_date" property="deleteDate"></result>

@@ -18,11 +18,29 @@ public class MannerServiceImpl implements MannerService {
 	@Autowired
 	private MannerDao mannerDao;
 
+	// ☏☏☏☏☏☏☏☏ 하나 추가 ☏☏☏☏☏☏☏☏ //
+
 	@Override
 	public List<Manner> selectMannerList(String memberId) {
 		// TODO Auto-generated method stub
 		return mannerDao.selectMannerList(memberId);
 	}
+	@Override
+	public List<Manner> selectMannerList1(String memberId) {
+		// TODO Auto-generated method stub
+		return mannerDao.selectMannerList1(memberId);
+	}
+	@Override
+	public List<Manner> selectSendMannerList(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return mannerDao.selectSendMannerList(param);
+	}
+	@Override
+	public List<Manner> selectTakeMannerList(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return mannerDao.selectTakeMannerList(param);
+	}
+	// ☏☏☏☏☏☏☏☏ 하나 끝 ☏☏☏☏☏☏☏☏ //
 
 	//혜진추가 - 0403 
 	@Override
@@ -36,13 +54,30 @@ public class MannerServiceImpl implements MannerService {
 		return mannerDao.updateMannerDegree(param);
 	}
 
+	//혜진추가
 	@Override
 	public int updateComplimentDegree(Map<String, Object> param) {
 		return mannerDao.updateComplimentDegree(param);
 	}
-
+	
+	//혜진추가
 	@Override
-	public int updateMannerDone() {
-		return mannerDao.updateMannerDone();
+	public int updateMannerDone(int mannerNo) {
+		return mannerDao.updateMannerDone( mannerNo );
 	}
+
+	
+	// 혜진추가 
+	@Override
+	public int craigMannerEnroll(Manner manner) {
+		return mannerDao.craigMannerEnroll(manner);
+	}
+
+	//혜진추가 - 내가 매너평가한거있냐 
+	@Override
+	public Manner selectMannerOne(Map<String, Object> mannerMap) {
+		return mannerDao.selectMannerOne(mannerMap);
+	}
+
+
 }

@@ -38,8 +38,8 @@ public interface LocalDao {
 	int insertLocalAttachment(LocalAttachment attach);
 
 	// ----------------------------- 하나 시작 -----------------------------------------------
-	@Select("select * from local where writer = #{memberId}")
-	List<Local> selectLocalList(Member member);
+	
+	List<Local> selectLocalList(String memberId);
 	
 	List<LocalCommentEntity> selectLocalCommentList(String memberId);
 	// ----------------------------- 하나 끝 -----------------------------------------------
@@ -77,7 +77,7 @@ public interface LocalDao {
 	
 	
 
-	int selectAttachNo(int no);
+	Integer selectAttachNo(int no);
 
 	int updateAttachFile(LocalAttachment attach);
 
@@ -99,4 +99,11 @@ public interface LocalDao {
 
 	//댓글 최신순
 	List<LocalCommentEntity> commentNewList(int no);
+
+	int insertLocalReAttachment(LocalAttachment attach);
+
+	int updateLocalAttachment(LocalAttachment attach);
+	
+	@Delete("DELETE FROM local_attachment WHERE ATTACH_NO = #{attachNo}")
+	int deleteAttachment(int attachNoToDelete);
 }

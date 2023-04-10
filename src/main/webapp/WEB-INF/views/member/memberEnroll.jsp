@@ -15,7 +15,7 @@
 		<div class="sign-up-box">
 			<h3 class="input-title">아이디</h3>
 			<p>영문, 숫자를 포함한 5~15자의 아이디를 입력해주세요.</p>
-			<input type="text" name="memberId" id="memberId" class="sign-up-input" required/>
+			<input type="text" name="memberId" id="memberId" class="sign-up-input"/>
 			<button class="dupl-btn">중복확인</button>
 			<span class="dupl-msg ok">사용 가능한 아이디입니다.</span>
 			<span class="dupl-msg error">이미 사용중인 아이디입니다. 새로운 아이디를 입력해주세요.</span>
@@ -24,23 +24,23 @@
 		<div class="sign-up-box">
 			<h3 class="input-title">비밀번호</h3>
 			<p>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
-			<input type="password" name="password" id="pwd" class="sign-up-input" required>
+			<input type="password" name="password" id="pwd" class="sign-up-input">
 			<input type="hidden" id="pwdValid" value="0"/>
 		</div>
 		<div class="sign-up-box">
 			<h3 class="input-title">비밀번호 확인</h3>
-			<input type="password" id="pwdCheck" class="sign-up-input" required>
+			<input type="password" id="pwdCheck" class="sign-up-input">
 			<p class="check-msg">비밀번호가 일치하지 않습니다. 다시 입력해주세요.</p>
 		</div>
 		<div class="sign-up-box">
 			<h3 class="input-title">닉네임</h3>
 			<p>한글 2~7자의 닉네임을 입력해주세요.</p>
-			<input type="text" name="nickname" id="nickname" class="sign-up-input" required>
+			<input type="text" name="nickname" id="nickname" class="sign-up-input">
 		</div>
 		<div class="sign-up-box">
 			<h3 class="input-title">휴대폰번호</h3>
 			<p>-를 제외한 휴대폰번호를 입력해주세요.</p>
-			<input type="tel" name="phone" id="phone" class="sign-up-input" required>
+			<input type="tel" name="phone" id="phone" class="sign-up-input">
 		</div>
 		<div class="sign-up-box">
 			<h3 class="input-title">주소</h3>
@@ -51,13 +51,13 @@
 	            		<option value="${gu.guNo}">${gu.guName}</option>
 			  		</c:forEach> 
 			</select>
-			<select class="form-select" id="dong-select" name="dongNo" aria-label="Default select example" required>
+			<select class="form-select" id="dong-select" name="dongNo" aria-label="Default select example">
 				<option selected>동 선택</option>
 				<c:forEach items="${dongList}" var="dong">
 					<option value="${dong.dongNo}" class="dong-option ${dong.guNo}">${dong.dongName}</option>
 				</c:forEach>
 			</select>
-			<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example" required>
+			<select class="form-select" id="dong-range-select" name="dongRange" aria-label="Default select example">
 				<option selected>범위 선택</option>
 				<option value="N">근처동네 3개</option>
 				<option value="F">근처동네 5개</option>
@@ -136,9 +136,9 @@ document.querySelector(".dupl-btn").addEventListener('click', (e) => {
 });
 
 /* 아이디 중복검사후 아이디 재설정한 경우 */
-document.querySelector(".dupl-btn").addEventListener('focus', (e) => {
+document.querySelector("#memberId").addEventListener('focus', (e) => {
 	idValid.value = 0;
-}
+});
 
 /* 비밀번호 유효성 검사 */
 // 영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
@@ -182,16 +182,23 @@ document.memberEnrollFrm.addEventListener('submit', (e) => {
 	const checkPwd = document.querySelector("#pwdValid");
 	console.log(checkId, checkPwd);
 	
-	
 	// 아이디, 비밀번호 
-	if(checkId.value == 0 || checkPwd.value == 0){
+	if(checkId.value == 0){
+		alert("아이디 중복 확인을 해주세요.");
+		document.querySelector("#memberId").previousElementSibling.style.color='#E64848';
+		document.querySelector("#memberId").select();
 		e.preventDefault();
 	}
 	
+	if(checkPwd.value == 0){
+		e.preventDefault();
+		document.querySelector("#pwd").previousElementSibling.style.color="#E64848";
+	}
 	console.log("idValid : ", idValid, "pwdValid : ", pwdValid);
+	
 	// 닉네임
 	const nickname = document.querySelector("#nickname");
-	if(!/^.[가-힣]{2,7}$/.test(nickname.value)){
+	if(!/^.[가-힣]{1,7}$/.test(nickname.value)){
 		nickname.select();
 		nickname.previousElementSibling.style.color='#E64848';
 		e.preventDefault();

@@ -11,6 +11,8 @@ import org.apache.ibatis.annotations.Update;
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.dto.MsgAttach;
+import com.sh.oee.chat.model.dto.TogetherChat;
+import com.sh.oee.chat.model.dto.TogetherMsg;
 
 @Mapper
 public interface ChatDao {
@@ -54,6 +56,32 @@ public interface ChatDao {
 	@Update("update craig_msg_attach set msg_no = #{msgNo} where re_filename = #{reFilename}")
 	int updateCraigAttachMsgNo(Map<String, Object> map);
 
+	/** 같이해요 시작 ----- */
+	@Insert("insert into together_chat values(#{togetherNo}, #{memberId}, 'M', sysdate, default)")
+	int insertTogetherMember(Map<String, Object> map);
 
+	@Select("select * from together_chat where together_no = #{togetherNo} and member_id = #{memberId}")
+	TogetherChat findTogetherMember(Map<String, Object> map);
+
+	@Select("select * from together_chat where together_no = #{togetherNo}")
+	List<TogetherChat> findAllTogetherMembers(Map<String, Object> map);
+
+	@Select("select * from together_msg where sent_time > #{regDate} and chatroom_no = #{togetherNo} order by msg_no")
+	List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap);
+
+	@Select("select * from together_msg_attach where re_filename = #{content}")
+	MsgAttach findTogetherMsgAttach(String content);
+	
+	@Update("update together_msg_attach set msg_no = #{msgNo} where re_filename = #{reFilename}")
+	int updateTogetherAttachMsgNo(Map<String, Object> map);
+
+	int insertTogetherMsgAttach(MsgAttach attach);
+
+	int insertTogetherMsg(TogetherMsg togetherMsg);
+
+
+	/** ------------- 나의 오이 --------------**/
+	@Select("select * from craig_chat where member_id = #{memberId} and del_date is null")
+	List<CraigChat> findAllCraigChatroom(String memberId);
 
 }

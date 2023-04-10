@@ -246,51 +246,51 @@ public class LocalController {
 	
 	// 글 수정하기
 	@PostMapping("/localUpdate.do")
-	public String localUpdate(Local local,
-			@RequestParam("upFile") List<MultipartFile> upFiles) {
-		
-		String saveDirectory = application.getRealPath("/resources/upload/local");
-			
-		
-		//기존 첨부파일번호 조회
-		if(upFiles != null || upFiles.size() > 0) {
-			int attachNo = localService.selectAttachNo(local.getNo());	
-			
-			LocalAttachment attach = new LocalAttachment();
-			//첨부파일 저장 및 Attachment 객체 만들기
-			for(MultipartFile upFile : upFiles) {
-				log.debug("upFile = {} ", upFile);
-				log.debug("upFile = {} ", upFile.getOriginalFilename());
-				log.debug("upFileSize = {} ", upFile.getSize());
-				
-				if(upFile.getSize() > 0) {
-					// 저장
-					String renamedFilename = OeeUtils.renameMultipartFile(upFile);
-					String originalFilename = upFile.getOriginalFilename();
-					File destFile = new File(saveDirectory, renamedFilename);
-					try {
-						upFile.transferTo(destFile);
-					}  catch (IllegalStateException | IOException e) {
-						log.error(e.getMessage(), e);
-					}
-					
-					// attach객체 생성 및 Board에 추가
-					attach.setReFilename(renamedFilename);
-					attach.setOriginalFilename(originalFilename);
-					attach.setAttachNo(attachNo);
-					//local.addAttachment(attach);
-				}
-			}
-			localService.updateAttachFile(attach);
-		}
-		
-		
-				
-		//Board 저장
-		int result = localService.updateLocalBoard(local);
-		log.debug("result : " + result);
+	public String localUpdate(Local local, @RequestParam("upFile") List<MultipartFile> upFiles) {
 
-		return "redirect:/local/localDetail.do?no=" + local.getNo();
+	    String saveDirectory = application.getRealPath("/resources/upload/local");
+	    int attachNo = 0;
+	    LocalAttachment attach = new LocalAttachment();
+
+	    // 이미지가 있는 경우에만 첨부파일 저장 및 Attachment 객체 만들기
+	    if (!upFiles.isEmpty()) {
+	        Integer attachNoObj = localService.selectAttachNo(local.getNo());
+	        if (attachNoObj != null) {
+	            attachNo = attachNoObj;
+	        }
+	        
+	        // 첨부파일 저장 및 Attachment 객체 만들기
+	        for (MultipartFile upFile : upFiles) {
+	            log.debug("upFile = {} ", upFile);
+	            log.debug("upFile = {} ", upFile.getOriginalFilename());
+	            log.debug("upFileSize = {} ", upFile.getSize());
+
+	            if (upFile.getSize() > 0) {
+	                // 저장
+	                String renamedFilename = OeeUtils.renameMultipartFile(upFile);
+	                String originalFilename = upFile.getOriginalFilename();
+	                File destFile = new File(saveDirectory, renamedFilename);
+	                try {
+	                    upFile.transferTo(destFile);
+	                } catch (IllegalStateException | IOException e) {
+	                    log.error(e.getMessage(), e);
+	                }
+
+	                // attach객체 생성 및 Board에 추가
+	                attach = new LocalAttachment(); // 새로운 객체 생성
+	                attach.setReFilename(renamedFilename);
+	                attach.setOriginalFilename(originalFilename);
+	                attach.setAttachNo(attachNo);
+	                local.addAttachment(attach); // Local 객체에 추가
+	            }
+	        }
+	    }
+
+	    localService.updateAttachFile(attach);
+	    int result = localService.updateLocalBoard(local);
+	    log.debug("result : " + result);
+
+	    return "redirect:/local/localDetail.do?no=" + local.getNo();
 	}
 	
 	
@@ -329,6 +329,7 @@ public class LocalController {
 	@RequestMapping(value = "/commentInsert.do", method = RequestMethod.POST)
 	public String commentInsert(LocalCommentEntity comment, Authentication authentication, RedirectAttributes redirectAttr) {
 		log.debug("comment보여라! : " + comment );
+		//Spring Security에서 로그인을 한 사용자의 정보를 가져오는 코드
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String memberId = userDetails.getUsername();
 		log.debug("memberId : " + memberId );
@@ -362,7 +363,6 @@ public class LocalController {
 			return "redirect:/local/localDetail.do?no="+comment.getLocalNo();
 		}
 	
-
 	 
 	
 	
@@ -426,10 +426,21 @@ public class LocalController {
 	@GetMapping("/myLocal.do")
 	public void local(Authentication authentication, Model model) {
 		// member  
-		Member member = ((Member)authentication.getPrincipal());
-		log.debug("member = {} ", member);
+		String memberId = ((Member)authentication.getPrincipal()).getMemberId();
+		log.debug("memberId = {} ", memberId);
 		
-		List<Local> myLocal = localService.selectLocalList(member);
+		List<Local> myLocal = localService.selectLocalList(memberId);
+		
+		log.debug("myLocal = {}",myLocal);
+		
+		model.addAttribute("myLocal",myLocal);
+	}
+	@GetMapping("/myLocal1.do")
+	public void local(String memberId, Model model) {
+		// member  
+		log.debug("memberId = {} ", memberId);
+		
+		List<Local> myLocal = localService.selectLocalList(memberId);
 		
 		log.debug("myLocal = {}",myLocal);
 		

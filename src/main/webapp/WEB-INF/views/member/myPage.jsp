@@ -21,13 +21,18 @@
 	<table>
 		<th>
 			<td>
-			<!-- <button type="button" class="btn btn-lg" data-bs-toggle="popover" data-bs-title="타이틀이다 이시키야" data-bs-content="안뇽"> -->
-				  <img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
+		
+			<img src="${pageContext.request.contextPath}/resources/upload/profile/<sec:authentication property="principal.profileImg"/>"  alt="프로필" name="profileImg" id="imagePreview">
 			
-			</td>
 			<td>
 				<span id="nickname"><sec:authentication property="principal.nickname"/></span>
 			</td>
+			<%-- <td>
+				 <span>
+				    <fmt:parseDate value="principal.enrollDate" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm" />
+					<fmt:formatDate value="${enrollDate}" pattern="yyyy-MM-dd HH:mm" />				 	
+				</span>
+			</td> --%>	
 			<td>
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/myProfile.do'">프로필 보기</button>
 			</td>
@@ -74,13 +79,12 @@
 			</ul>
 		</div>
 	<script>
-		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+	const myModal = document.getElementById('myModal')
+	const myInput = document.getElementById('myInput')
 
-	  $( function () {
-	    $( '[data-toggle="popover"]' ).popover()
-	  } );
-		
+	myModal.addEventListener('shown.bs.modal', () => {
+	  myInput.focus()
+	})
 	</script>
 		
 </body>

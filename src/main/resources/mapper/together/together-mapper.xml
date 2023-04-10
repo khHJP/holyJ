@@ -13,6 +13,16 @@
 	where
 		writer = #{memberId}
 	</select>
+	<select id="selectTogether1List" resultMap="togetherDetailMap">
+	select
+		t.*,
+		m.*
+	from
+		together t join member m
+		on t.writer = m.member_id
+	where
+		t.writer = #{memberId}
+	</select>
 	
 	<resultMap type="together" id="togetherMap"></resultMap>	
 	<!-- 🐱 하나 끝 🐱 -->
@@ -260,7 +270,7 @@
 		where
 			status = 'Y'
 			and
-		    <![CDATA[date_time < sysdate]]>
+		    <![CDATA[date_time < (sysdate + 9 / 24)]]>
 	</update>
 	
 	<!-- 👻 정은 끝 👻 -->
