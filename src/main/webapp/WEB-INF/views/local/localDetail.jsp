@@ -304,7 +304,6 @@ function setCommentOrderList(order) {
 		</c:forEach>
 		</div>
 	</div>
-<!-- 댓글 등록순(기본) 최신순 정렬 (클릭하면 로직 따르게...?) -->
 
 
 <c:if test="${localdetail.writer eq loginMember.memberId}">

@@ -62,6 +62,7 @@ public class MannerServiceImpl implements MannerService {
 		return mannerDao.updateMannerDegree(param);
 	}
 
+
 	//혜진추가
 	@Override
 	public int updateComplimentDegree(Map<String, Object> param) {

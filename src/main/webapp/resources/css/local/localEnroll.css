@@ -7,14 +7,16 @@ input[type=file]::file-selector-button {
   border: 1px solid rgb(77,77,77);
   border-radius: 10px;
   cursor: pointer;
-  &:hover {
-    background: rgb(77,77,77);
+
+}
+input[type=file]::file-selector-button:hover{
+	
+	background: rgb(77,77,77);
     color: #fff;
-  }
 }
 
 input[type=file]{
-	padding-left:20px;
+	padding-left:120px;
 }
 
 div#localEnrollContainer{
@@ -33,6 +35,49 @@ input[type="button"] {
 	padding:5px;
 	color:#7FB77E;
 }
+input[type="radio"]:checked + span {
+  font-weight: bold;
+  color: green;
+}
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #999;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+  position: relative;
+}
+
+input[type="radio"]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.3s ease-in-out;
+}
+
+input[type="radio"]:checked::before {
+  background-color: #4CAF50;
+}
+
+input[type="radio"]:focus::before {
+  box-shadow: 0 0 0 2px #ffffff;
+  border-color: #ffffff;
+}
+
+input[type="radio"]:checked {
+  border-color: #4CAF50;
+}
 
 input[type="submit"] {
 	border-radius:10px;
@@ -44,26 +89,23 @@ input[type="submit"] {
 }
 
 textarea {
-	width : 1400px;
+	width : 1000px;
 	height : 300px;
-	padding-left:40px;
+	margin-left:140px;
 	border:none;
+	border-bottom:1px solid ligtgray;
 }
 
 input[type="text"]{
-	width : 1400px;
-	padding-left:40px;
+	width : 1000px;
+	margin-left:140px;
 	border:none;
 }
 
-select {
-	border:none;
-	width : 1400px;
-	height:50px;
-	color : gray;
-	padding-left:40px;
+.category-box{
+	margin-left : 140px;
+	margin-top : 20px;
 }
-
-option{
-	padding-left:40px;
+#categoryNo{
+	margin-left:10px;
 }

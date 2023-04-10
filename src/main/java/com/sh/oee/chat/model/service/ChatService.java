@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.sh.oee.chat.model.dto.TogetherMsg;
+
+import lombok.NonNull;
+
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.dto.MsgAttach;
@@ -52,7 +55,14 @@ public interface ChatService {
 
 	List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap);
 
+	/* 나의오이 시작 */
 	List<CraigChat> findAllCraigChatroom(String memberId);
+
+	List<TogetherChat> findAllTogetherChatroom(String memberId);
+
+	TogetherMsg findLastTogetherMsgByTogetherNo(@NonNull int togetherNo);
+
+	TogetherChat findTogetherChat(Map<String, Object> findChat);
 
 
 }

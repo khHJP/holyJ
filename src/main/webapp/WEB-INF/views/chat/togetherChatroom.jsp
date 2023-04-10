@@ -36,8 +36,8 @@
 	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
 </head>
 <body>
-	<div class="chat">
-		<div class="card" style="min-height: 760px; max-height: 100%; min-width: 500px;">
+	<div class="chat w-100 h-100">
+		<div class="card">
 			<!-------- 채팅방 헤더 start -------->
 			<div class="card-header msg_head align-top">
 				<div class="d-flex bd-highlight">
@@ -149,6 +149,7 @@
 			<!-------------- 채팅방 메시지내용 end  -------------->
 			
 			<!-------------- 메시지 입력창 start  --------------->
+		<div class="card-footer">
 			<div class="message-input">
 				<input type="text" id="msg" placeholder="메시지 보내기">
 				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
@@ -160,13 +161,14 @@
 					</svg>
 				</button>
 			</div>
-			<!-------------- 메시지 입력창 end --------------->
+				<!-------------- 메시지 입력창 end --------------->
 				<!-- 첨부파일 start  -->
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 				</div>
-				<!-- 첨부파일 end  -->
+				<!-- 첨부파일 end  -->	
+			</div>
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 

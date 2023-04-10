@@ -36,8 +36,8 @@
 	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
 </head>
 <body>
-	<div class="chat">
-		<div class="card" style="min-height: 760px; max-height: 100%; min-width: 500px;">
+	<div class="chat w-100 h-100">
+		<div class="card">
 			<!-------- 채팅방 헤더 start -------->
 			<div class="card-header msg_head align-top">
 				<div class="d-flex bd-highlight">
@@ -115,43 +115,41 @@
 				<div class="btnWrap">
 					<!-- 예약중일때  -->
 					<c:if test="${craig.state eq 'CR1'}">
-							<!-- 로그인중인 사용자가 예약자일때 / 게시글 작성자일때 -->
-							<c:if test="${memberId == craig.buyer || memberId == craig.writer}">
-								<!-- 약속잡기 안했을때  -->
-								<c:if test="${meeting == null}">
-									<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>	
-									<button id="meetingDate" type="button" class="btn  btn-success" style="display: none;"></button>
-									<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal" style="display: none;">장소공유</button>				
-								</c:if>
-								<!-- 약속잡기 했을때 -->
-								<c:if test="${meeting != null}">
-									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
-									<!-- 장소공유 안했을때 -->
-									<c:if test="${meeting.longitude == null || meeting.longitude == '' }">
-										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
-									</c:if>								
-								</c:if>
+						<!-- 로그인중인 사용자가 예약자일때 / 게시글 작성자일때 -->
+						<c:if test="${memberId == craig.buyer || memberId == craig.writer}">
+							<!-- 약속잡기 안했을때  -->
+							<c:if test="${meeting == null}">
+								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>	
+								<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal" style="display: none;">장소공유</button>				
 							</c:if>
-						
-							<!-- 예약자가 아닐때 -->
-							<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
-								<button type="button" class="btn btn-success" >예약중</button>
-							</c:if>
-					</c:if >		
-							<!-- 판매중일때  -->
-							<c:if test="${craig.state eq 'CR2'}">
-								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
-							</c:if>
-						<!-- 판매완료일때  -->	
-						<c:if test="${craig.state eq 'CR3'}">
-							<button type="button" class="btn btn-outline-secondary" > 판매완료 </button> 
-	<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
-								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
+							<!-- 약속잡기 했을때 -->
+							<c:if test="${meeting != null}">
+								<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
+								<!-- 장소공유 안했을때 -->
+								<c:if test="${meeting.longitude == null || meeting.longitude == '' }">
+									<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
+								</c:if>								
 							</c:if>
 						</c:if>
-
-				</div>
-			</div>		
+					
+						<!-- 예약자가 아닐때 -->
+						<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
+							<button type="button" class="btn btn-success" >예약중</button>
+						</c:if>
+					</c:if >		
+					<!-- 판매중일때  -->
+						<c:if test="${craig.state eq 'CR2'}">
+							<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
+						</c:if>
+					<!-- 판매완료일때  -->	
+					<c:if test="${craig.state eq 'CR3'}">
+						<button type="button" class="btn btn-dark" > 판매완료 </button> 
+<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
+							<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
+						</c:if>
+					</c:if>
+				</div> <!-- btnWrap end -->
+			</div>	<!-- craig_bar end -->	
 						
 <%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~  혜진 거래후기보내기 시작   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>		
 			<%-- 1) 거래후기보내기 modal start(혜진) --%>
@@ -378,22 +376,22 @@
 			    </div>
 			  </div>
 			</div>
-			
 			<!------------ 위치공유 Modal end ------------->
 			
-			
-			<!--------- 게시글정보 end ----------->
+		<!----------------------------- 게시글정보 end ------------------------------>
 	
 			<!-------------- 채팅방 메시지내용 start  ------------>
 			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
 				<ul class="list-unstyled">
 					<c:forEach items="${craigMsgs}" var="craigMsg">
+						
 						<!-- java.util.Date 빈등록  -->
 						<jsp:useBean id="sentTime" class="java.util.Date"/>
 						
-						<!---------- 내가 보낸 메시지일때 -->
+						<!---------- 내가 보낸 메시지 start ----------->
 						<c:if test="${memberId == craigMsg.writer}">
 							<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
+							
 							<!-- 채팅인 경우 -->
 							<c:if test="${craigMsg.type == 'CHAT'}">
 								<li class="replies">
@@ -401,6 +399,7 @@
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							
 							<!-- 첨부파일인 경우 -->
 							<c:if test="${craigMsg.type == 'FILE'}">
 								<li class="replies">
@@ -410,6 +409,7 @@
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							
 							<!-- 예약인 경우 -->
 							<c:if test="${craigMsg.type == 'BOOK'}">
 								<li class="book"> 
@@ -421,16 +421,18 @@
 							
 							<!-- 장소인 경우 -->
 							<c:if test="${craigMsg.type == 'PLACE'}">
-							
+								<li class="replies">
+									<div id="placeMap" onload="placeMap.relayOut();"></div>
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
+								</li>
 							</c:if>
-							
-							
-							
 						</c:if>
+						<!---------- 내가 보낸 메시지 end ----------->
 						
-						<!------------- 다른사람이 보낸 메시지일때 -->
+						<!---------- 남이 보낸 메시지 start ----------->
 						<c:if test="${memberId != craigMsg.writer}">
 							<jsp:setProperty name="sentTime" property="time" value="${craigMsg.sentTime}"/>
+							
 							<!-- 채팅인 경우 -->
 							<c:if test="${craigMsg.type == 'CHAT'}">
 								<li class="sent">
@@ -439,6 +441,7 @@
 									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							
 							<!-- 첨부파일인 경우 -->
 							<c:if test="${craigMsg.type == 'FILE'}">
 								<li class="sent">
@@ -449,6 +452,7 @@
 									<span class="msg_time attach"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
 								</li>
 							</c:if>
+							
 							<!-- 예약인 경우 -->
 							<c:if test="${craigMsg.type == 'BOOK'}">
 								<li class="book"> 
@@ -459,33 +463,40 @@
 							</c:if>
 							
 							<!-- 장소인 경우 -->
+							<c:if test="${craigMsg.type == 'PLACE'}">
+								<li class="sent">
+									<div id="placeMap" onload="placeMap.relayOut();"></div>
+									<span class="msg_time"><fmt:formatDate value="${sentTime}" pattern="a hh:mm"/></span>
+								</li>
+							</c:if>
 						</c:if>
-					</c:forEach>
+						<!---------- 남이 보낸 메시지 end ----------->
+					</c:forEach> <!-- forEach end -->
 				</ul>
 			</div>
 			<!-------------- 채팅방 메시지내용 end  -------------->
 			
 			<!-------------- 메시지 입력창 start  --------------->
-			<div class="message-input">
-
-				
-				<input type="text" id="msg" placeholder="메시지 보내기">
-				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
-				<button id="sendBtn" type="button">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-						width="20" height="20" fill="currentColor"
-						class="bi bi-send-fill" viewBox="0 0 16 16">
- 						<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-					</svg>
-				</button>
-			</div>
-			<!-------------- 메시지 입력창 end --------------->
-							<!-- 첨부파일 start  -->
+			<div class="card-footer">
+				<div class="message-input">
+					<input type="text" id="msg" placeholder="메시지 보내기">
+					<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
+					<button id="sendBtn" type="button">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+							width="20" height="20" fill="currentColor"
+							class="bi bi-send-fill" viewBox="0 0 16 16">
+	 						<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
+						</svg>
+					</button>
+				</div>
+				<!-------------- 메시지 입력창 end --------------->
+				<!-- 첨부파일 start  -->
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 				</div>
-				<!-- 첨부파일 end  -->
+				<!-- 첨부파일 end  -->	
+			</div>
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 
@@ -527,20 +538,6 @@ const csrfToken = "${_csrf.token}";
 const headers = {};
 headers[csrfHeader] = csrfToken;
 
-/* 약속잡기 toggle이벤트 */
-/* document.querySelector("#meeting").addEventListener('click', (e) => {
-	const meeting = document.getElementById('meetingWrap');
-	
-	$("#meetingWrap").modal('show');
-	
-	if(meeting.style.display !== 'none'){
-		meeting.style.display = 'none';
-	}
-	else {
-		meeting.style.display = 'block';
-	}
-
-}); */
 
 /********************* 사용자 신고 *************************/
 /* 체크박스 제어 */
@@ -556,7 +553,6 @@ const checkOnlyOne = (element) => {
 };
 
 /* 유효성 검사 */
-
 document.querySelector("#saveReport").addEventListener('click', (e) => {
 	
 	const reportTypes = document.querySelectorAll("[name=reasonNo]");
@@ -686,6 +682,59 @@ $("#locationModal").on('shown.bs.modal', function(){
 	 map.relayout();
 });
 
+// 장소채팅 로드 
+window.onload = function(){
+	const placeMsg = '${placeMsg}';
+	
+	if(placeMsg != null){
+		const placeCont = '${placeMsg.content}';
+		
+		let chatLat = placeCont.split(',')[0];
+		let chatLon = placeCont.split(',')[1];
+		let chatPlaceName = placeCont.split(',')[2];
+		
+		console.log(placeCont.split(',')[2]);
+		
+		
+		$(document).ready(function(){
+			var placeContainer = document.getElementById('placeMap');
+			var placeMap;
+		
+			const options = {
+					center: new kakao.maps.LatLng(chatLat, chatLon),
+					level: 2
+			}
+			placeMap = new kakao.maps.Map(placeContainer, options); // map생성
+			
+			// marker 생성
+			var placeMarker = new kakao.maps.Marker({
+				position: new kakao.maps.LatLng(chatLat, chatLon)
+			});
+			placeMarker.setMap(placeMap);
+			
+			// 인포윈도우 내용   
+			var chatIwContent = 
+				`<div style="padding:5px;">
+					\${chatPlaceName}<br><a href="https://map.kakao.com/link/to/\${chatPlaceName},\${chatLat},\${chatLon}" style="color:blue" target="_blank">길찾기</a>
+				</div>`;
+			
+			// 인포윈도우 생성
+			var chatInfowindow = new kakao.maps.InfoWindow({
+			    position : new kakao.maps.LatLng(chatLat, chatLon), 
+			    content : chatIwContent  
+			});
+			
+			chatInfowindow.open(placeMap, placeMarker); 
+		
+		});
+		
+		
+	};
+		
+		
+}
+
+
 
 // 장소등록
 document.querySelector("#savePlace").addEventListener('click', (e) => {
@@ -727,9 +776,6 @@ document.querySelector("#savePlace").addEventListener('click', (e) => {
         },
         error: console.log
     });   
-	
-
-
 });
 
 
@@ -1079,7 +1125,9 @@ stompClient.connect({}, (frame) => {
 					const myNick = '${chatUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<span>\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
+						<div>
+							<span>\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
+						</div>
 					</li>
 					`;
 				}
@@ -1202,7 +1250,9 @@ stompClient.connect({}, (frame) => {
 					const otherNick = '${otherUser.nickname}';
 					ul.innerHTML += `
 					<li class="book"> 
-						<span>\${otherNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
+						<div>
+							<span>\${otherNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
+						</div>
 					</li>
 					`;
 					
