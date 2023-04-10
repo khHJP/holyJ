@@ -86,6 +86,114 @@ public class ChatController {
 	}
 
 	/**
+	 * 나의오이 - 중고거래 채팅
+	 */
+	@GetMapping("/findMyCraigChat.do")
+	@ResponseBody
+	public List<Map<String, Object>> findMyCraigChat(String memberId){
+		log.debug("멤버아이디 = {}", memberId);
+		
+		// 1. 멤버 아이디를 가지고 craig_chat에서 참여중인 채팅방 전부 가져오기 (나가기 안한 방만)
+		List<CraigChat> myCraigChat = chatService.findAllCraigChatroom(memberId);
+		
+		List<Map<String, Object>> chatList = new ArrayList<>();
+		
+		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
+		
+		for(int i = 0; i < myCraigChat.size(); i++) {
+			Map<String, Object> chatMap = new HashMap<>();
+			
+			CraigChat chat = myCraigChat.get(i);
+			
+			log.debug("채팅 = {}", chat);
+			log.debug("채팅방번호 = {}", chat.getChatroomId());
+
+			
+			if(chat.getCraigNo() != 0) { // 게시글이 삭제되지 않았을 때 
+				CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
+				log.debug("마지막채팅 = {}", lastChat);
+				
+				// 게시글 제목 담기
+				chatMap.put("craigTitle", craigService.findCraigByCraigNo(chat.getCraigNo()).getTitle());
+				
+				if(lastChat != null) { // 채팅이 한개라도 있을때
+					Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+					log.debug("마지막채팅 작성자 = {}", chatWriter);
+					chatMap.put("lastChat", lastChat);
+					chatMap.put("chatroomId", lastChat.getChatroomId());
+					
+					Map<String, Object> findChat = new HashMap<>();
+					findChat.put("memberId", memberId);
+					findChat.put("chatroomId", lastChat.getChatroomId());
+					CraigChat craigChat = chatService.findCraigChat(findChat);
+					
+					chatMap.put("craigNo", craigChat.getCraigNo());
+					chatMap.put("chatWriter", chatWriter);
+					
+					chatList.add(chatMap);
+				};				
+			};
+		};
+		return chatList;
+	}
+	
+	/**
+	 * 나의오이 - 같이해요 채팅
+	 */
+	@GetMapping("/findMyTogetherChat.do")
+	@ResponseBody
+	public List<Map<String, Object>> findMyTogetherChat(String memberId){
+		log.debug("멤버아이디 = {}", memberId);
+		
+		// 1. 멤버 아이디를 가지고 TOGETHER_CHAT 에서 참여중인 채팅방 전부 가져오기 (모집종료 안된 글만)
+		List<TogetherChat> myTogetherChat = chatService.findAllTogetherChatroom(memberId);
+		
+		List<Map<String, Object>> chatList = new ArrayList<>();
+	
+		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
+		for(int i = 0; i < myTogetherChat.size(); i++) {
+			Map<String, Object> chatMap = new HashMap<>();
+			
+			TogetherChat chat = myTogetherChat.get(i);
+			
+			log.debug("채팅 = {}", chat);
+			log.debug("채팅방번호 = {}", chat.getTogetherNo());
+
+			
+			TogetherMsg lastChat = chatService.findLastTogetherMsgByTogetherNo(chat.getTogetherNo());
+			log.debug("마지막채팅 = {}", lastChat);
+				
+			// 게시글 제목 담기
+			Together together = togetherService.findTogetherByChatroomNo(chat.getTogetherNo());
+			
+			chatMap.put("togetherTitle", together.getTitle());
+			log.debug("제목 = {}", together.getTitle());	
+			
+			if(lastChat != null) { // 채팅이 한개라도 있을때
+				Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+				log.debug("마지막채팅 작성자 = {}", chatWriter);
+				chatMap.put("lastChat", lastChat);
+				chatMap.put("chatroomNo", lastChat.getChatroomNo());
+				
+				Map<String, Object> findChat = new HashMap<>();
+				findChat.put("memberId", memberId);
+				findChat.put("chatroomNo", lastChat.getChatroomNo());
+				TogetherChat togetherChat = chatService.findTogetherChat(findChat);
+				
+				chatMap.put("togetherNo", togetherChat.getTogetherNo());
+				chatMap.put("chatWriter", chatWriter);
+				
+				chatList.add(chatMap);
+			};				
+		
+		};
+		return chatList;
+	}
+	
+	
+	
+	
+	/**
 	 * 같이해요 채팅방 입장
 	 */
 	@ResponseBody
@@ -285,58 +393,6 @@ public class ChatController {
 		delMap.put("delDate", delDate);
 		
 		int result = chatService.updateDel(delMap);
-	}
-	
-	
-	@GetMapping("/findMyCraigChat.do")
-	@ResponseBody
-	public List<Map<String, Object>> findMyCraigChat(String memberId){
-		log.debug("멤버아이디 = {}", memberId);
-		
-		// 1. 멤버 아이디를 가지고 craig_chat에서 참여중인 채팅방 전부 가져오기 (나가기 안한 방만)
-		List<CraigChat> myCraigChat = chatService.findAllCraigChatroom(memberId);
-		
-		List<Map<String, Object>> chatList = new ArrayList<>();
-		
-		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
-		
-		for(int i = 0; i < myCraigChat.size(); i++) {
-			Map<String, Object> chatMap = new HashMap<>();
-			
-			CraigChat chat = myCraigChat.get(i);
-			
-			log.debug("채팅 = {}", chat);
-			log.debug("채팅방번호 = {}", chat.getChatroomId());
-
-			
-			if(chat.getCraigNo() != 0) { // 게시글이 삭제되지 않았을 때 
-				CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
-				log.debug("마지막채팅 = {}", lastChat);
-				
-				// 게시글 제목 담기
-				chatMap.put("craigTitle", craigService.findCraigByCraigNo(chat.getCraigNo()).getTitle());
-				
-				if(lastChat != null) { // 채팅이 한개라도 있을때
-					Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
-					log.debug("마지막채팅 작성자 = {}", chatWriter);
-					chatMap.put("lastChat", lastChat);
-					chatMap.put("chatroomId", lastChat.getChatroomId());
-					
-					Map<String, Object> findChat = new HashMap<>();
-					findChat.put("memberId", memberId);
-					findChat.put("chatroomId", lastChat.getChatroomId());
-					CraigChat craigChat = chatService.findCraigChat(findChat);
-					
-					chatMap.put("craigNo", craigChat.getCraigNo());
-					chatMap.put("chatWriter", chatWriter);
-					
-					chatList.add(chatMap);
-				};				
-			};
-		};
-		
-
-		return chatList;
 	}
 	
 	/**

@@ -101,4 +101,10 @@ public class TogetherServiceImpl implements TogetherService {
 		return togetherDao.selectTogether1List(memberId);
 	}
 	
+	/* 효정 시작 */
+	@Override
+	public Together findTogetherByChatroomNo(int no) {
+		return togetherDao.findTogetherByChatroomNo(no);
+	}
+	/* 효정 끝 */
 }
