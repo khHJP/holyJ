@@ -29,7 +29,7 @@
 	</div>
 </div>
 <!-- 내동네 가져오기 -->
-	<div class="relatviedong">
+	
 		<div class="search">
 			<span id="mydong"></span>
 			<!-- 검색창 -->
@@ -45,7 +45,7 @@
 				<i style="color: green;" class="fa-solid fa-pencil fa-2x"></i>
 			</button>
 		</div>
-	</div>
+	
 	<div class="category-list-wrap" >
 	<c:forEach items="${localCategory}" var="category">
 				<ul class="category-list" data-category-num="${category.CATEGORY_NO}">
