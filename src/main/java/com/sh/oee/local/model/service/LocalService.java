@@ -61,7 +61,7 @@ public interface LocalService {
 
 	
 
-	int selectAttachNo(int no);
+	Integer selectAttachNo(int no);
 
 	int updateAttachFile(LocalAttachment attach);
 
@@ -85,6 +85,10 @@ public interface LocalService {
 
 	//댓글 최신순
 	List<LocalCommentEntity> commentNewList(int no);
+
+	int insertAttachFile(LocalAttachment attach);
+
+	int deleteAttachment(int attachNoToDelete);
 
 	
 
