@@ -454,6 +454,9 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 		dataType : "json",
 		success(data){
 			console.log(data);
+			const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
+			const name = "togetherChatroom";
+			openPopup(url, name); 
 			// 참여하기에 성공했을때 참여이웃 목록에 넣기
 			if(data > 0){
 				document.querySelector(".to_join").style.display = "none";
@@ -487,9 +490,7 @@ document.querySelector(".to_join").addEventListener('click', (e) => {
 		error : console.log
 		});		
 	
-	const url = `${pageContext.request.contextPath}/chat/togetherChat.do?togetherNo=\${no}`;
-	const name = "togetherChatroom";
-	openPopup(url, name); 
+	
 	
 });
 

@@ -14,14 +14,30 @@
 </head>
 <body>
 <br /><br />
-	<div class="manner-container">
-		<h1 class="sub_title">${takeMannerList[0].member.nickname}님이 보내신 매너평가</h1>
-		<hr />
-			<table id="tbl-board" class="table">
-				<div class="manner-ti">
-					<img src="${pageContext.request.contextPath}/resources/images/smile.png" alt="" id="smile"/>
-					<span class="manner-sub">받은 매너 칭찬</span>
+	<c:choose>
+		<c:when test="${not empty takeMannerList}">
+			<div class="manner-container">
+				<h1 class="sub_title">${takeMannerList[0].member.nickname}님이 보내신 매너평가</h1>
+				<hr />
+					<table id="tbl-board" class="table">
+						<div class="manner-ti">
+							<img src="${pageContext.request.contextPath}/resources/images/smile.png" alt="" id="smile"/>
+							<span class="manner-sub">받은 매너 칭찬</span>
+						</div>
+					</table>
 				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="manner-container">
+				<h1 class="sub_title">구매자님이 보내신 매너평가</h1>
+				<hr />
+			</c:otherwise>
+		</c:choose>
+						
+		<div class="manner-container">
+			<table id="tbl-board" class="table">
+			<c:choose>
+				<c:when test="${not empty takeMannerList}">
 				<c:forEach items="${takeMannerList}" var="manner">
 					 <tr data-no="${manner.mannerNo}" name="no" id="tr-table">
 						<c:if test="${manner.prefer eq 'MA2'}">
@@ -56,9 +72,18 @@
 											<hr />
 									</div>
 							</c:when>
-					</c:choose>
+						</c:choose>
 					</tr>								
 				</c:forEach>
-			</table>
-	</div>
+				</c:when>
+				<c:otherwise>				
+					<table id="tbl-board" class="table">
+						<div class="manner-ti">
+							<span class="manner-sub">매너 칭찬이 아직 오지 않았어요😭</span>
+						</div>
+					</table>
+			</c:otherwise>
+			</c:choose>
+				</table>
+				</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
