@@ -32,6 +32,7 @@ footer{
 	background-color: white !important;
 	margin-top: 0;
 	min-width: 500px;
+	min-height: 760px;	
 }
 
 .card-header{
@@ -216,11 +217,9 @@ footer{
 
 /* 채팅방 하단 메시지입력바  */
 .message-input {
-	position: relative;
 	width: 100%;
 	z-index: 99;	
 	background: white;
-	top: 80px;
 }
 
 .message-input input#msg {

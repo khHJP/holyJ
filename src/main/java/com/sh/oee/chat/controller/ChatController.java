@@ -89,8 +89,11 @@ public class ChatController {
 	 */
 	@ResponseBody
 	@GetMapping("togetherChat/{togetherNo}")
-	public void togetherChat(@PathVariable int togetherNo, Authentication authentication, HttpSession session) {
+	public int togetherChat(@PathVariable int togetherNo, Authentication authentication, HttpSession session) {
 
+		// 같이해요 detail 참여자 추가용
+		int result = 0;
+		
 		// 1. 로그인한 사용자 id 꺼내기
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
 
@@ -116,10 +119,11 @@ public class ChatController {
 			log.debug("채팅 = {}", togetherChat);
 			
 			if(togetherChat == null) {
-				chatService.insertTogetherMember(map);
+				result = chatService.insertTogetherMember(map);
 			}
 			
 		}
+		return result;
 	}
 	/**
 	 * 같이해요 채팅방 팝업 열기
@@ -291,20 +295,41 @@ public class ChatController {
 		List<CraigChat> myCraigChat = chatService.findAllCraigChatroom(memberId);
 		
 		List<Map<String, Object>> chatList = new ArrayList<>();
-		Map<String, Object> chatMap = new HashMap<>();
 		
 		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
 		for(CraigChat chat : myCraigChat) {
+			Map<String, Object> chatMap = new HashMap<>();
+			log.debug("채팅 = {}", chat);
+			log.debug("채팅방번호 = {}", chat.getChatroomId());
+			
 			CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
-			Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+			log.debug("마지막채팅 = {}", lastChat);
 			
-			chatMap.put("lastChat", lastChat);
-			chatMap.put("chatroomId", lastChat.getChatroomId());
-			chatMap.put("chatWriter", chatWriter);
 			
-			chatList.add(chatMap);
+			if(lastChat != null) {
+				Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+				log.debug("마지막채팅 작성자 = {}", chatWriter);
+				chatMap.put("lastChat", lastChat);
+				chatMap.put("chatroomId", lastChat.getChatroomId());
+				
+				Map<String, Object> findChat = new HashMap<>();
+				findChat.put("memberId", memberId);
+				findChat.put("chatroomId", lastChat.getChatroomId());
+				CraigChat craigChat = chatService.findCraigChat(findChat);
+				
+				chatMap.put("craigNo", craigChat.getCraigNo());
+				chatMap.put("chatWriter", chatWriter);
+
+				chatList.add(chatMap);
+			}						
 		}
 
+		for(int i = 0; i < chatList.size(); i++) {
+			
+			log.debug("채팅리스트 = {}", chatList.get(i));
+		}
+		
+		
 		return chatList;
 	}
 	
