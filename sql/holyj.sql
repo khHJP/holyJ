@@ -651,11 +651,13 @@ CREATE TABLE TOGETHER_CHAT (
 );
 
 alter TABLE TOGETHER_CHAT   drop constraint FK_TOGETHER_TOGETHER_TOGETHER_NO;
-commit
+commit;
 
 select * from together_chat;
 
-select * from TOGETHER_CHAT
+select * from TOGETHER_CHAT;
+
+
 
 --=============================================
 -- 같이해요 메시지 TOGETHER_MSG  -- 새로만들었어요 0405 
@@ -682,6 +684,10 @@ select * from craig_msg;
 select * from together_msg;
 
 insert into together_msg values(seq_together_msg_no.nextval, 78, 'mango', '들어가는지봅시다', 1681016509339, 'CHAT');
+
+-- 04/11 writer 제약조건 null로 변경
+alter table together_msg modify (writer varchar2(30) null);
+
 
 commit;
 --=============================================

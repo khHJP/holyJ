@@ -64,5 +64,7 @@ public interface ChatService {
 
 	TogetherChat findTogetherChat(Map<String, Object> findChat);
 
+	int exitTogether(Map<String, Object> delMap);
+
 
 }
