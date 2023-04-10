@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sh.oee.chat.model.dto.ChatLogType;
 import com.sh.oee.chat.model.dto.CraigChat;
 import com.sh.oee.chat.model.dto.CraigMsg;
 import com.sh.oee.chat.model.dto.MsgAttach;
@@ -298,39 +299,43 @@ public class ChatController {
 		List<Map<String, Object>> chatList = new ArrayList<>();
 		
 		// 2. 각 채팅방의 마지막 메시지 + 메시지 작성자 객체 map -> List에 담기
-		for(CraigChat chat : myCraigChat) {
+		
+		for(int i = 0; i < myCraigChat.size(); i++) {
 			Map<String, Object> chatMap = new HashMap<>();
+			
+			CraigChat chat = myCraigChat.get(i);
+			
 			log.debug("채팅 = {}", chat);
 			log.debug("채팅방번호 = {}", chat.getChatroomId());
-			
-			CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
-			log.debug("마지막채팅 = {}", lastChat);
-			
-			
-			if(lastChat != null) {
-				Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
-				log.debug("마지막채팅 작성자 = {}", chatWriter);
-				chatMap.put("lastChat", lastChat);
-				chatMap.put("chatroomId", lastChat.getChatroomId());
-				
-				Map<String, Object> findChat = new HashMap<>();
-				findChat.put("memberId", memberId);
-				findChat.put("chatroomId", lastChat.getChatroomId());
-				CraigChat craigChat = chatService.findCraigChat(findChat);
-				
-				chatMap.put("craigNo", craigChat.getCraigNo());
-				chatMap.put("chatWriter", chatWriter);
 
-				chatList.add(chatMap);
-			}						
-		}
-
-		for(int i = 0; i < chatList.size(); i++) {
 			
-			log.debug("채팅리스트 = {}", chatList.get(i));
-		}
+			if(chat.getCraigNo() != 0) { // 게시글이 삭제되지 않았을 때 
+				CraigMsg lastChat = chatService.findLastCraigMsgByChatroomId(chat.getChatroomId());
+				log.debug("마지막채팅 = {}", lastChat);
+				
+				// 게시글 제목 담기
+				chatMap.put("craigTitle", craigService.findCraigByCraigNo(chat.getCraigNo()).getTitle());
+				
+				if(lastChat != null) { // 채팅이 한개라도 있을때
+					Member chatWriter = memberService.selectOneMember(lastChat.getWriter());
+					log.debug("마지막채팅 작성자 = {}", chatWriter);
+					chatMap.put("lastChat", lastChat);
+					chatMap.put("chatroomId", lastChat.getChatroomId());
+					
+					Map<String, Object> findChat = new HashMap<>();
+					findChat.put("memberId", memberId);
+					findChat.put("chatroomId", lastChat.getChatroomId());
+					CraigChat craigChat = chatService.findCraigChat(findChat);
+					
+					chatMap.put("craigNo", craigChat.getCraigNo());
+					chatMap.put("chatWriter", chatWriter);
+					
+					chatList.add(chatMap);
+				};				
+			};
+		};
 		
-		
+
 		return chatList;
 	}
 	
@@ -508,6 +513,8 @@ public class ChatController {
 		// craigMsgs 객체 선언
 		List<CraigMsg> craigMsgs = null;
 		
+		CraigMsg place = null;
+		
 		// 2. DEL_DATE 조회 후 분기 
 		// 2-1. DEL_DATE = null : 안나갔음
 		if(craigChat.getDelDate() == null) {
@@ -538,6 +545,14 @@ public class ChatController {
 			// 대화내역 찾기 (after reg_date)
 			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
 			model.addAttribute("craigMsgs", craigMsgs);
+		}
+		
+		// 2-3. PLACE 메시지 담기
+		for(int i = 0; i < craigMsgs.size(); i++) {
+			if(craigMsgs.get(i).getType() == ChatLogType.PLACE) {
+				log.debug("나와랏 = {}", craigMsgs.get(i));
+				model.addAttribute("placeMsg", craigMsgs.get(i));
+			}
 		}
 		
 		// 3. 대화상대 Member객체 담기

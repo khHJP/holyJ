@@ -28,6 +28,13 @@ main#chatWrap {
 	height: 72px;
 }
 
+/* 프로필사진 */
+#prof-bar img {
+	width: 40px;
+    border-radius: 50%;
+    float: left;
+}
+
 /* 채팅목록  */
 #chatList > div#nickname {
 	height: 72px;
@@ -47,7 +54,7 @@ main#chatWrap {
 .scrollarea::-webkit-scrollbar-thumb {
     background: rgba(178, 215, 181, 0.412); 
     border-radius: 10px;
-    border: 1px solid #7FB77E;
+
 }
 .scrollarea::-webkit-scrollbar-track {
     background: #F2F3F6; 
@@ -59,16 +66,36 @@ main#chatWrap {
 
 /* 채팅목록 */
 #chatList {
-
+	border-right: 1px solid #dee2e6
 }
-#chatList-wrap img{
+.chatList-wrap img{
 	width: 40px;
-	border-radius:50%;
-	float: left;
+    height: 40px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 18px;
+    margin-top: 3px;
+    margin: 3px 18px 0 2px;
 }
 .chatList-header {
 	margin-right: 150px;
 }
+.chatList-header strong {
+	color: #212124;
+}
+
+.chatList-header .last-chatting {
+	width: 200px;
+	color: #555555;
+}
 .col-10 {
 	max-width: 100%;	
 }
+.craigTitle {
+	background-color: #eaf4eb;
+    border-radius: 6px;
+    padding: 2px 6px;
+    margin-bottom: 8px;
+    color: black;
+}
+

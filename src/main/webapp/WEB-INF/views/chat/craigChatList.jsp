@@ -66,19 +66,76 @@
 			<div id="chatList" class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
 				<div class="list-group list-group-flush border-bottom scrollarea">
 					<c:forEach items="${chatModel}" var="chatMember">
-						<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
-							<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
-							<div id="chatList-wrap">
-        	 					<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
-        						<div class="chatList-header">
-        							<div id="chatUserInfo">
-		        		       			<strong class="mb-1">${chatMember.otherName}</strong>
-					          			<small>${chatMember.otherDong}</small>
-				        				<div class="last-chatting">${chatMember.lastChat.content}</div>
+						<!-- 채팅인 경우 -->
+						<c:if test="${chatMember.lastChat.type == 'CHAT'}">
+							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
+								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
+								<div id="chatList-wrap">
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        							<div class="chatList-header">
+        								<div id="chatUserInfo">
+		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+					          				<small>${chatMember.otherDong}</small>
+				        					<div class="last-chatting">${fn:substring(chatMember.lastChat.content, 0, 10)} …</div>
+        								</div>
         							</div>
         						</div>
-        					</div>
-						</a>
+							</a>
+						</c:if>
+						
+						
+						<!-- 첨부파일인 경우 -->
+						<c:if test="${chatMember.lastChat.type == 'FILE'}">
+							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
+								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
+								<div id="chatList-wrap">
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        							<div class="chatList-header">
+        								<div id="chatUserInfo">
+		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+					          				<small>${chatMember.otherDong}</small>
+				        					<div class="last-chatting" style="color: #7FB77E;">(이미지파일)</div>
+        								</div>
+        							</div>
+        						</div>
+							</a>
+						</c:if>
+						
+						<!-- 예약인 경우 -->
+						<c:if test="${chatMember.lastChat.type == 'BOOK'}">
+							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
+								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
+								<div id="chatList-wrap">
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        							<div class="chatList-header">
+        								<div id="chatUserInfo">
+		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+					          				<small>${chatMember.otherDong}</small>
+				        					<div class="last-chatting" style="color: #7FB77E;">(예약)</div>
+        								</div>
+        							</div>
+        						</div>
+							</a>
+						</c:if>
+						
+						<!-- 장소인 경우 -->
+						<c:if test="${chatMember.lastChat.type == 'PLACE'}">
+							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
+								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
+								<div id="chatList-wrap">
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        							<div class="chatList-header">
+        								<div id="chatUserInfo">
+		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+					          				<small>${chatMember.otherDong}</small>
+				        					<div class="last-chatting" style="color: #7FB77E;">(장소공유)</div>
+        								</div>
+        							</div>
+        						</div>
+							</a>
+						</c:if>
+						
+	
 					</c:forEach>
 				</div>
 

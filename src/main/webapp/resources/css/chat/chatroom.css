@@ -42,12 +42,21 @@ footer{
 }
  .card-footer{
 	border-top: 0 !important;
-	position: absolute;
+	position: relative;
 	bottom: 0;
 	display: inline-block;
 	width: 100%;
+	padding: 0;
+	background-color: white;
+	height: 56px;
 }
-
+.custom-file {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    top: -80px;
+}
 /* 스크롤바 관련  */
 .scrollarea {
    overflow-y: auto;
@@ -268,7 +277,7 @@ input, button, select, textarea{
 }
 /* 메시지영역  */
 #message-container {
-	height: 550px;
+	height: 530px;
 }
 .card .messages {
 	height: auto;
@@ -334,6 +343,7 @@ input, button, select, textarea{
 
 .messages ul li.book div span {
 	color: #868B94;
+	padding-bottom: 30px;
 }
 
 /* 메시지박스 */
