@@ -36,8 +36,8 @@
 	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
 </head>
 <body>
-	<div class="chat">
-		<div class="card" style="min-height: 760px; max-height: 100%; min-width: 500px;">
+	<div class="chat w-100 h-100">
+		<div class="card">
 			<!-------- 채팅방 헤더 start -------->
 			<div class="card-header msg_head align-top">
 				<div class="d-flex bd-highlight">
@@ -466,26 +466,26 @@
 			<!-------------- 채팅방 메시지내용 end  -------------->
 			
 			<!-------------- 메시지 입력창 start  --------------->
-			<div class="message-input">
-
-				
-				<input type="text" id="msg" placeholder="메시지 보내기">
-				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
-				<button id="sendBtn" type="button">
-					<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-						width="20" height="20" fill="currentColor"
-						class="bi bi-send-fill" viewBox="0 0 16 16">
- 						<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-					</svg>
-				</button>
-			</div>
-			<!-------------- 메시지 입력창 end --------------->
-							<!-- 첨부파일 start  -->
+			<div class="card-footer">
+				<div class="message-input">
+					<input type="text" id="msg" placeholder="메시지 보내기">
+					<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
+					<button id="sendBtn" type="button">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+							width="20" height="20" fill="currentColor"
+							class="bi bi-send-fill" viewBox="0 0 16 16">
+	 						<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
+						</svg>
+					</button>
+				</div>
+				<!-------------- 메시지 입력창 end --------------->
+				<!-- 첨부파일 start  -->
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 				</div>
-				<!-- 첨부파일 end  -->
+				<!-- 첨부파일 end  -->	
+			</div>
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 
@@ -527,20 +527,6 @@ const csrfToken = "${_csrf.token}";
 const headers = {};
 headers[csrfHeader] = csrfToken;
 
-/* 약속잡기 toggle이벤트 */
-/* document.querySelector("#meeting").addEventListener('click', (e) => {
-	const meeting = document.getElementById('meetingWrap');
-	
-	$("#meetingWrap").modal('show');
-	
-	if(meeting.style.display !== 'none'){
-		meeting.style.display = 'none';
-	}
-	else {
-		meeting.style.display = 'block';
-	}
-
-}); */
 
 /********************* 사용자 신고 *************************/
 /* 체크박스 제어 */

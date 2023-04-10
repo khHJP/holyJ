@@ -583,7 +583,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		});		  
 	});		  
 		  
-	// ※※ 더보기 버튼이 있을 경우 
+	// ※※ 더보기 버튼이 있을 경우 호출하는 함수
 	document.querySelector("#btn-more").addEventListener('click', ()=>{
 	
 		 const searchPage = document.querySelector("#searchPage").innerHTML; //searchPage

@@ -310,7 +310,7 @@ order by  cr.no desc
 <!--  ■ 채팅수 select list - 0401 - 메소드 통합(리스트/검색/카테고리)  ■ jin  -->
 <select id="selectCraigChatCnt" resultType="_int">
 
-select (select count(*)/2 from craig_chat where craig_no  = cr.no )chat
+select (select floor(count(*)/2)   From craig_chat where craig_no  = cr.no  and del_date is null )chat
         
 from ( 
              select  ca.*       
@@ -366,7 +366,7 @@ order by  cr.no desc
 	select count(*) 
 	from craig_chat 
 	where craig_no = #{no}
-		and member_id = #{memberId}
+		and member_id = #{memberId} and del_date is null
 </select>
 
 </mapper>
