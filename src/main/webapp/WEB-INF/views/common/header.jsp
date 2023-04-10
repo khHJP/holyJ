@@ -47,6 +47,9 @@ window.addEventListener('load', (e) => {
 		$(document).ready(function() {
 			$("#alert-modal").modal("show");
 		});
+		setTimeout(() => {
+			$("#alert-modal").modal("hide");
+		}, 3000);
 	</script>
 </c:if>
 <c:if test="${not empty msg}">
