@@ -66,7 +66,7 @@ public interface ChatDao {
 	@Select("select * from together_chat where together_no = #{togetherNo}")
 	List<TogetherChat> findAllTogetherMembers(Map<String, Object> map);
 
-	@Select("select * from together_msg where sent_time > #{regDate} and chatroom_no = #{togetherNo}")
+	@Select("select * from together_msg where sent_time > #{regDate} and chatroom_no = #{togetherNo} order by msg_no")
 	List<TogetherMsg> findTogetherMsgAfterReg(Map<String, Object> regMap);
 
 	@Select("select * from together_msg_attach where re_filename = #{content}")
@@ -80,5 +80,8 @@ public interface ChatDao {
 	int insertTogetherMsg(TogetherMsg togetherMsg);
 
 
+	/** ------------- 나의 오이 --------------**/
+	@Select("select * from craig_chat where member_id = #{memberId} and del_date is null")
+	List<CraigChat> findAllCraigChatroom(String memberId);
 
 }

@@ -85,13 +85,14 @@ public class LocalServiceImpl implements LocalService {
 	}
 	
 	//게시글 수정
-	@Override
 	public int updateLocalBoard(Local local) {
-		
-		int result = localDao.updateLocalBoard(local);
-		log.debug("local no = {}" , local.getNo());
-		
-		return result;
+	    // 이미지가 있을 경우 첨부 파일 정보를 업데이트
+	    if (local.getAttachments() != null && local.getAttachments().size() > 0) {
+	        for (LocalAttachment attach : local.getAttachments()) {
+	            localDao.updateAttachFile(attach);
+	        }
+	    }
+	    return localDao.updateLocalBoard(local);
 	}
 	
 	//게시글 수정 첨부파일
@@ -136,9 +137,8 @@ public class LocalServiceImpl implements LocalService {
 	}
 
 	@Override
-	public int selectAttachNo(int no) {
-		
-		return localDao.selectAttachNo(no);
+	public Integer selectAttachNo(int no) {
+	    return localDao.selectAttachNo(no);
 	}
 
 	@Override
@@ -195,4 +195,16 @@ public class LocalServiceImpl implements LocalService {
 	public List<LocalCommentEntity> commentNewList(int no) {
 		return localDao.commentNewList(no);
 	}
+
+	@Override
+	public int insertAttachFile(LocalAttachment attach) {
+		return localDao.updateLocalAttachment(attach);
+	}
+
+	@Override
+	public int deleteAttachment(int attachNoToDelete) {
+		return localDao.deleteAttachment(attachNoToDelete);
+	}
+
+	
 }
