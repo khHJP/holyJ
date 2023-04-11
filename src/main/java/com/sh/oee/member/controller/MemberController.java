@@ -156,20 +156,17 @@ public class MemberController {
 		Member loginMember = (Member) authentication.getPrincipal();
 		
 		// 내 동네 정보
+		// 가까운 동네 (기본값)
 		String dongs = memberService.selectMydongName(loginMember.getDongNo());
 		dongs += (":" + memberService.selectDongNearOnly(loginMember.getDongNo()));
 		
+		// 먼 동네 (추가값)
 		if(loginMember.getDongRange().equals(DongRangeEnum.F)) {
 			dongs += (":" +  memberService.selectDongNearFar(loginMember.getDongNo()));
 		}
-		log.debug("dons = {}", dongs);
 		
-//		List<String> dongList = Arrays.asList(dongs.split(","));
-//		log.debug("dongList = {}", dongList);
-//		session.setAttribute("myDongList", dongList); // @SessionAttributes는 객체만 저장할 수 있기때문에 HttpSession에 저장
-		
+		// 쿠키에는 ,가 저장되지 않기때문에 : 변경
 		String myDong = dongs.replace(",", ":");
-		log.debug("myDong = {}", myDong);
 		
 		// 자동로그인시 세션 값이 증발 문제로 HttpSession 저장대신 Cookie 저장으로 변경 
 		Cookie myDongList = new Cookie("myDongList", URLEncoder.encode(myDong)); // 콤마는 쿠키값에 저장 못함
