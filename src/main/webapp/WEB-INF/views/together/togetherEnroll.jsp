@@ -65,7 +65,7 @@ window.addEventListener('load', (e) => {
                date.append(option);
         }
     	// 다음달
-	   	for(let i = 1; i < futureDate.getDate(); i++) {
+	   	for(let i = 1; i <= futureDate.getDate(); i++) {
 	   		const option = document.createElement("option");
 	   	        option.value = i;
 	   	        option.innerText = i;
