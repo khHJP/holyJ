@@ -650,10 +650,21 @@ CREATE TABLE TOGETHER_CHAT (
     CONSTRAINT CK_TOGETHER_ROLE CHECK(ROLE IN ('A','M')) -- Admin , Member
 );
 
+<<<<<<< HEAD
+=======
+alter TABLE TOGETHER_CHAT   drop constraint FK_TOGETHER_TOGETHER_TOGETHER_NO;
+commit;
+>>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 
 --   alter table TOGETHER_CHAT add CONSTRAINT FK_TOGETHER_TOGETHER_TOGETHER_NO foreign key(TOGETHER_NO) REFERENCES TOGETHER(NO) on delete cascade
 -- 제약조건다시추가_혜진_0411
 
+<<<<<<< HEAD
+=======
+select * from TOGETHER_CHAT;
+
+
+>>>>>>> branch 'master' of https://github.com/khHJP/holyJ.git
 
 --=============================================
 -- 같이해요 메시지 TOGETHER_MSG  -- 새로만들었어요 0405 
@@ -680,6 +691,10 @@ select * from craig_msg;
 select * from together_msg;
 
 insert into together_msg values(seq_together_msg_no.nextval, 78, 'mango', '들어가는지봅시다', 1681016509339, 'CHAT');
+
+-- 04/11 writer 제약조건 null로 변경
+alter table together_msg modify (writer varchar2(30) null);
+
 
 commit;
 --=============================================

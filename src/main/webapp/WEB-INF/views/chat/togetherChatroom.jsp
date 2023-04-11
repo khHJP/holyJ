@@ -33,11 +33,17 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1f728657c1f1828a75b9c549d4888eb1"
     ></script>
-	<style> #buyerconfirm:hover{	background-color: #19722e !important; }</style>   
+<style>
+.together_info {
+	font-size: 20px;
+    font-weight: bold;
+    color: #75b274;
+}
+</style>   
 </head>
 <body>
-	<div class="chat">
-		<div class="card" style="min-height: 760px; max-height: 100%; min-width: 500px;">
+	<div class="chat w-100 h-100">
+		<div class="card">
 			<!-------- 채팅방 헤더 start -------->
 			<div class="card-header msg_head align-top">
 				<div class="d-flex bd-highlight">
@@ -89,7 +95,7 @@
 			<!------- 채팅방 헤더 end ------------>
 	
 			<!-------------- 채팅방 메시지내용 start  ------------>
-			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll;">
+			<div id="message-container" class="messages scrollarea" style="overflow-y: scroll; height: 670px;">
 				<ul class="list-unstyled">
 					<c:forEach items="${togetherMsgs}" var="togetherMsg">
 						<!-- java.util.Date 빈등록  -->
@@ -149,6 +155,7 @@
 			<!-------------- 채팅방 메시지내용 end  -------------->
 			
 			<!-------------- 메시지 입력창 start  --------------->
+		<div class="card-footer">
 			<div class="message-input">
 				<input type="text" id="msg" placeholder="메시지 보내기">
 				<i id="attachClip" class="fa fa-paperclip attachment" aria-hidden="true"></i>					
@@ -160,13 +167,14 @@
 					</svg>
 				</button>
 			</div>
-			<!-------------- 메시지 입력창 end --------------->
+				<!-------------- 메시지 입력창 end --------------->
 				<!-- 첨부파일 start  -->
 				<div id="fileWrap" class="custom-file" style="display: none;">
 					<input type="file" class="custom-file-input" name="upFile" id="upFile" multiple>
 		    		<label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 				</div>
-				<!-- 첨부파일 end  -->
+				<!-- 첨부파일 end  -->	
+			</div>
 		</div> <!-- div.card end -->
 	</div> <!-- div.chat end  -->
 
@@ -432,7 +440,7 @@ stompClient.connect({}, (frame) => {
 /********************* 채팅방 나가기 *************************/
 document.querySelector("#craigExit").addEventListener("click", (e) => {
 	$.ajax({
-		url : `${pageContext.request.contextPath}/chat/updateDel.do?memberId=\${memberId}&chatroomId=\${chatroomId}`,
+		url : `${pageContext.request.contextPath}/chat/exitTogether.do?memberId=\${memberId}&chatroomNo=\${chatroomNo}`,
 		method : 'POST',
 		headers,
 		success(data){

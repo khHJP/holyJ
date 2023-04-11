@@ -156,20 +156,17 @@ public class MemberController {
 		Member loginMember = (Member) authentication.getPrincipal();
 		
 		// 내 동네 정보
+		// 가까운 동네 (기본값)
 		String dongs = memberService.selectMydongName(loginMember.getDongNo());
 		dongs += (":" + memberService.selectDongNearOnly(loginMember.getDongNo()));
 		
+		// 먼 동네 (추가값)
 		if(loginMember.getDongRange().equals(DongRangeEnum.F)) {
 			dongs += (":" +  memberService.selectDongNearFar(loginMember.getDongNo()));
 		}
-		log.debug("dons = {}", dongs);
 		
-//		List<String> dongList = Arrays.asList(dongs.split(","));
-//		log.debug("dongList = {}", dongList);
-//		session.setAttribute("myDongList", dongList); // @SessionAttributes는 객체만 저장할 수 있기때문에 HttpSession에 저장
-		
+		// 쿠키에는 ,가 저장되지 않기때문에 : 변경
 		String myDong = dongs.replace(",", ":");
-		log.debug("myDong = {}", myDong);
 		
 		// 자동로그인시 세션 값이 증발 문제로 HttpSession 저장대신 Cookie 저장으로 변경 
 		Cookie myDongList = new Cookie("myDongList", URLEncoder.encode(myDong)); // 콤마는 쿠키값에 저장 못함
@@ -219,22 +216,30 @@ public class MemberController {
 			String encodePassword = passwordEncoder.encode(rawPassword);
 			member.setPassword(encodePassword);
 			
+			// 업로드 된 파일
 			log.debug("imageUpload = {}", imageUpload);
+			// 이미지 저장 주소
 			String saveDirectory = application.getRealPath("/resources/upload/profile");
 			log.debug("saveDirectory = {}", saveDirectory);
 			
-			if(imageUpload.getSize() >0) {
+			// 만약 업로드된 사이즈가 0보다 크면
+			if(imageUpload.getSize() > 0) {
+				// OeeUtils에 가서 파일 이름을 가져온다.
 				String profileImg = OeeUtils.idMultipartFile(imageUpload, authentication);
-				String originalFilename = imageUpload.getOriginalFilename();
+				// 파일지정 주소와 memberId.확장자를 새로운 File객체에 덮어씌운다.
 				File destFile = new File(saveDirectory, profileImg);
 				 try {
+					 // imageUpload에 destFile을 업로드 한다.
 					 imageUpload.transferTo(destFile);
 				 }catch (IllegalStateException | IOException e) {
 						log.error(e.getMessage(), e);
 				 }
 				 log.debug("profileImg = {} ",profileImg);
-				 // 2. profile member에 추가				 
+				 // 2. profile member에 추가		
 				 member.setProfileImg(profileImg);
+			}
+			else {
+				member.setProfileImg("oee.png");
 			}
 			// 1. db변경
 			int result = memberService.updateMember(member);			
