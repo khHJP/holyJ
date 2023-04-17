@@ -579,7 +579,8 @@ document.querySelector("#delconfirm").addEventListener('click', (e) => {
 });
 
 
-<!-- ★★★★★★★★★★★★  로그인한사람 나 == 글쓰니인경우  채팅방 들어가는 코드   ★★★★★★★★★★★★★ -->
+<!------------------ 🐹 효정 시작 🐹 -------------------->
+// 내 게시글일때 채팅목록 확인
 document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 	const craigNo = ${craigboard.no}
 
@@ -588,10 +589,9 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 	const spec = "width=500px, height=790px, scrollbars=yes";
 	open(url, name, spec);
 });
-<!--  ★★★★★★★★★★★★   채팅방 들어가는 코드   ★★★★★★★★★★★★★★★★★★★ -->
+<!------------------ 🐹  효정 끝  🐹 ------------------->
 </script>
 </c:if>
-
 
 
 
@@ -600,15 +600,19 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 <c:if test="${loginMember.memberId != craigboard.writer }">  
 	<c:if test="${ craigboard.state != 'CR3' || ( craigboard.state =='CR3' && craigboard.buyer == loginMember.memberId )}">
 	<script>
+<!------------------ 🐹 효정 시작 🐹 -------------------->
+	// 내 게시글이 아닐때 채팅 시작
 	document.querySelector("#chatBtn").addEventListener('click', (e) => {
-		const craigNo = ${craigboard.no}
+		const craigNo = ${craigboard.no};
+		const memberId = '${loginMember.memberId}';
+
+		
 		$.ajax({
 			url : `${pageContext.request.contextPath}/chat/craigChat/\${craigNo}`,
 			method : 'GET',
-			dataType : "json",
 			success(data){
-				const {memberId, chatroomId} = data;
-				
+				const chatroomId = data;
+
 				const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
 				const name = "craigChatroom";
 				openPopup(url, name);
@@ -623,7 +627,7 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 		win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
 		win.opener.self;
 	}
-	
+<!------------------ 🐹  효정 끝  🐹 ------------------->
 	
 	// 혜진추가 0402 - 채팅수 바로 증가
 	const spancrChat = document.querySelector("#spancrChat");

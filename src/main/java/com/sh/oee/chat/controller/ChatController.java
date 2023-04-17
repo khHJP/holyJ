@@ -490,43 +490,37 @@ public class ChatController {
 	 */
 	@ResponseBody
 	@GetMapping("/craigChat/{craigNo}")
-	public Map<String, Object> craigChat(@PathVariable int craigNo, Authentication authentication, Model model,
-			HttpSession session) {
+	public String craigChat(@PathVariable int craigNo, Authentication authentication, Model model) {
 
 		// 1. 로그인한 사용자 id 꺼내기
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
 
 		// 2. 게시글 번호로 게시글객체 -> 판매자정보 꺼내기
 		// 게시글정보만 가져오는 메소드 새로 추가함!
-		Craig craig = craigService.findCraigByCraigNo(craigNo);
-		String sellerId = craig.getWriter();
+		Craig craig = craigService.findCraigByCraigNo(craigNo); // 게시글객체
+		String sellerId = craig.getWriter(); // 판매자아이디 
 
 		// 3. memberId, craigNo로 chatroom_id 조회
-
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("craigNo", craigNo);
 
 		String chatroomId = chatService.findCraigChatroomId(craigChatMap);
 
+		// 4. 조회한 chatroom_id로 분기 
 		// 채팅방 첫 입장시
 		if (chatroomId == null) {
-			// 1. chatroomId 생성 chatroomId =
+			// 4-1. chatroomId 생성 
 			chatroomId = generateCraigChatroomId();
-			log.debug("채팅방번호 = {}", chatroomId);
 
-			// 2. craig_chat 테이블에 2행 insert (로그인한 사용자memberId, 게시글 작성자 sellerId)
-			List<CraigChat> chatMembers = Arrays.asList(new CraigChat(chatroomId, memberId, craigNo),
-					new CraigChat(chatroomId, sellerId, craigNo));
+			// 4-2. craig_chat 테이블에 2행 insert (로그인한 사용자 memberId, 게시글 작성자 sellerId)
+			List<CraigChat> chatMembers = Arrays.asList(
+					new CraigChat(chatroomId, memberId, craigNo), // 채팅방아이디, 사용자아이디, 게시글번호
+					new CraigChat(chatroomId, sellerId, craigNo)); // 채팅방아이디, 판매자아이디, 게시글번호
 			int result = chatService.createCraigChatroom(chatMembers);
 		}
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("memberId", memberId);
-		map.put("chatroomId", chatroomId);
 		
-
-		return map;
+		return chatroomId; // 채팅방id, 사용자id 리턴
 	}
 
 	/**

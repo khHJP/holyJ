@@ -18,7 +18,8 @@ import com.sh.oee.chat.model.dto.TogetherMsg;
 @Mapper
 public interface ChatDao {
 
-	@Select("select chatroom_id from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
+	/* -------------------- 중고거래 채팅방 ----------------------- */
+	@Select("SELECT chatroom_id FROM craig_chat WHERE member_id = #{memberId} AND craig_no = #{craigNo}")
 	String findCraigChatroomId(Map<String, Object> craigChatMap);
 
 	@Insert("insert into craig_chat (chatroom_id, member_id, craig_no) values(#{chatroomId}, #{memberId}, #{craigNo})")
