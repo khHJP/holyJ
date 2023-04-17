@@ -24,11 +24,9 @@ public class ChatMsgController {
 	 */
 	@MessageMapping("/craigChat/{chatroomId}")
 	@SendTo("/app/craigChat/{chatroomId}")
-	public CraigMsg craigMsg(CraigMsg craigMsg, @DestinationVariable String chatroomId) { // @DestinationVariable : Stomp가 사용하는 pathVariable
+	public CraigMsg craigMsg(CraigMsg craigMsg, @DestinationVariable String chatroomId) { 
 		int result = chatService.insertCraigMsg(craigMsg);		
 		
-		log.debug("craigMsg메시지 = {}", craigMsg);
-
 		return craigMsg;
 	}
 
@@ -37,7 +35,7 @@ public class ChatMsgController {
 	 */
 	@MessageMapping("/togetherChat/{chatroomNo}")
 	@SendTo("/app/togetherChat/{chatroomNo}")
-	public TogetherMsg togetherMsg(TogetherMsg togetherMsg, @DestinationVariable String chatroomNo) { // @DestinationVariable : Stomp가 사용하는 pathVariable
+	public TogetherMsg togetherMsg(TogetherMsg togetherMsg, @DestinationVariable String chatroomNo) { 
 		int result = chatService.insertTogetherMsg(togetherMsg);		
 		
 		log.debug("togetherMsg메시지 = {}", togetherMsg);

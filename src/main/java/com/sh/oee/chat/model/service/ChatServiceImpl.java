@@ -26,10 +26,11 @@ public class ChatServiceImpl implements ChatService {
 	@Autowired
 	private ChatDao chatDao;
 
+	/* -------------------- 중고거래 채팅방 ----------------------- */
 	/**
 	 * SELECT
-	 * - 로그인한 사용자 id, 중고거래 게시글no 
-	 * - CRAIG_CHAT에서 chatroomId 조회
+	 * - CRAIG_CHAT : chatroomId 조회
+	 * - memberId + craigNo 
 	 */
 	@Override 
 	public String findCraigChatroomId(Map<String, Object> craigChatMap) {
@@ -145,7 +146,7 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.insertCraigMsgAttach(attach);
 	}
 
-	/********************* 같이해요 채팅방 시작 ******************************/
+	/* -------------------- 같이해요 채팅방 시작 ----------------------- */
 	@Override
 	public TogetherChat findTogetherMember(Map<String, Object> map) {
 		return chatDao.findTogetherMember(map);
