@@ -31,7 +31,7 @@ public class CraigCronTest {
 	private MannerService mannerService;
 	
 /**	혜진만 주석풀고 메소드 실행합니다! -- 시연할때 그 노트북으로에서만 주석풀기  **/
-	@Scheduled(cron="0 0 11 * * *")  // 11시 실행한다는 의미 
+	@Scheduled(cron="0 30 12 * * *")  // 11시 실행한다는 의미 
 	public void craigCronSchedule() { // 매일 4시에 실행  
 
 		// 1) 전체 매너리스트 확인한다  
