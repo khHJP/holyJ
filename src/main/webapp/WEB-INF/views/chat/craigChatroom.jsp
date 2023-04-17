@@ -942,7 +942,6 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 
     if(!file) return;
     
-    
     // 2. 첨부파일 가져오기
     $.ajax({
         headers,
