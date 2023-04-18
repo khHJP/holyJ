@@ -93,12 +93,14 @@
 			<div id="craig_bar">
 				<div class="craig_info_wrap"> 
 					<!-- 게시글 썸네일 이미지 start -->
-					<c:if test="${craigImg[0] == null}">	
-						<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
-					</c:if>
-					<c:if test="${craigImg[0] != null}">
-						<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/upload/craig/${craigImg[0].reFilename}"alt="" />
-					</c:if>
+
+						<c:if test="${craig.attachments[0] == null}">	
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
+						</c:if>
+						<c:if test="${craig.attachments[0] != null}">
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"alt="" />
+						</c:if>
+
 					<!-- 게시글 썸네일 이미지 end -->
 					<div class="craig_text">
 						<p class="craig_status">

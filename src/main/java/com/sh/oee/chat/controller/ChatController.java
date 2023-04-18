@@ -638,21 +638,22 @@ public class ChatController {
 		Member chatUser = memberService.selectOneMember(memberId);
 		model.addAttribute("chatUser", chatUser);
 		
-		// 5. 게시글 정보 담기
+		// 5. 게시글 정보 + 첨부파일 담기
 		Craig craig = craigService.findCraigByCraigNo(craigNo);
+		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
+		craig.setAttachments(craigImg);
 		model.addAttribute("craig", craig);
 		
+		
+		// 6. 약속 담기
 		CraigMeeting meeting = null;
 		meeting = meetingService.findMeetingByCraigNo(craigNo);
 		model.addAttribute("meeting", meeting);
 		if(meeting != null) {
 			model.addAttribute("meetingDate", convertMeetingDate(meeting.getMeetingDate()));
 		}
-		
-		// 6. 게시글 첨부파일 담기
-		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
-		model.addAttribute("craigImg", craigImg);
 
+		
 		// 7. 채팅방아이디 담기
 		model.addAttribute("chatroomId", chatroomId);
 
