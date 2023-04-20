@@ -615,18 +615,12 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 
 				const url = `${pageContext.request.contextPath}/chat/craigChat.do?chatroomId=\${chatroomId}&memberId=\${memberId}&craigNo=\${craigNo}`;
 				const name = "craigChatroom";
-				openPopup(url, name);
+				open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
 			},
 			error : console.log
 			});		
 	
 	});
-	
-	function openPopup(url, name){
-		let win;
-		win = window.open(url, name, 'scrollbars=yes,width=500,height=790,status=no,resizable=no');
-		win.opener.self;
-	}
 <!------------------ 🐹  효정 끝  🐹 ------------------->
 	
 	// 혜진추가 0402 - 채팅수 바로 증가

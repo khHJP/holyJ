@@ -34,7 +34,7 @@ public interface ChatService {
 
 	int updateDel(Map<String, Object> delMap);
 
-	int updateRegDel(Map<String, Object> regDelMap);
+	int reJoinCraigChat(Map<String, Object> reJoinMap);
 
 	int insertCraigMsgAttach(MsgAttach attach);
 
@@ -65,6 +65,8 @@ public interface ChatService {
 	TogetherChat findTogetherChat(Map<String, Object> findChat);
 
 	int exitTogether(Map<String, Object> delMap);
+
+
 
 
 }

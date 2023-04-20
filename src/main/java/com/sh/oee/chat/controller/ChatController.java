@@ -570,51 +570,39 @@ public class ChatController {
 	 */
 	@GetMapping("/craigChat.do")
 	public String craigChatPop(@RequestParam String chatroomId, @RequestParam String memberId, @RequestParam int craigNo, Model model) {
-		// 1. chatroomId, memberId, craigNo로 craigChat객체 가져오기
+	
+		List<CraigMsg> craigMsgs = null; // craigMsgs 객체 선언
+		CraigMsg place = null; // place 객체 선언
+		
+		// 1. craigChat객체 가져오기 (chatroomId, memberId)
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("chatroomId", chatroomId);
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
 		
-		// craigMsgs 객체 선언
-		List<CraigMsg> craigMsgs = null;
-		
-		CraigMsg place = null;
-		
-		// 2. DEL_DATE 조회 후 분기 
-		// 2-1. DEL_DATE = null : 안나갔음
-		if(craigChat.getDelDate() == null) {
-			// 대화내역 찾기 (after reg_date)
+		// 2. 채팅내역 담기 - DEL_DATE 조회 후 분기 
+			// 2-1. 나갔던 채팅방일 경우
+			if(craigChat.getDelDate() != null) {
+				// craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
+				Map<String, Object> reJoinMap = new HashMap<>();
+				reJoinMap.put("memberId", memberId);
+				reJoinMap.put("chatroomId", chatroomId);
+				chatService.reJoinCraigChat(reJoinMap);	
+			}
+			// 2-2. reg_date 이후 내화내역 담기
+			// sent_time은 unix초 형식 -> reg_date와 비교를 위해 변환
 			Map<String, Object> regMap = new HashMap<>();
-			Timestamp reg = Timestamp.valueOf(craigChat.getRegDate());
-			regMap.put("regDate", reg.getTime());
+			Timestamp regDate = Timestamp.valueOf(craigChat.getRegDate());
+			
+			regMap.put("regDate", regDate.getTime());
 			regMap.put("chatroomId", chatroomId);
 			
 			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
-			
-			model.addAttribute("craigMsgs", craigMsgs);			
-		}
+			model.addAttribute("craigMsgs", craigMsgs);		
 		
-		// 2-2. DEL_DATE != null : 나갔던 채팅방임
-		else {
-			// ** craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
-			Map<String, Object> regMap = new HashMap<>();
-			regMap.put("memberId", memberId);
-
-			regMap.put("regDate",LocalDateTime.now());
-			regMap.put("chatroomId", chatroomId);
-			chatService.updateRegDel(regMap);
-			
-			// del_date는 LocalDateTime 형식! sent_time과 비교를 위해 Timestamp로 변환해준다
-			Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-			regMap.put("regDate", now.getTime());
-			// 대화내역 찾기 (after reg_date)
-			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
-			model.addAttribute("craigMsgs", craigMsgs);
-		}
 		
-		// 2-3. PLACE 메시지 담기
+		// 3. PLACE 메시지 담기
 		for(int i = 0; i < craigMsgs.size(); i++) {
 			if(craigMsgs.get(i).getType() == ChatLogType.PLACE) {
 				log.debug("나와랏 = {}", craigMsgs.get(i));

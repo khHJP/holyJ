@@ -136,11 +136,15 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.updateDel(delMap);
 	}
 
+	/**
+	 * UPDATE
+	 * - reg_date를 현재 날짜로, del_date을 null로 변경
+	 */
 	@Override
-	public int updateRegDel(Map<String, Object> regDelMap) {
-		return chatDao.updateRegDel(regDelMap);
+	public int reJoinCraigChat(Map<String, Object> reJoinMap) {
+		return chatDao.reJoinCraigChat(reJoinMap);
 	}
-
+	
 	@Override
 	public int insertCraigMsgAttach(MsgAttach attach) {
 		return chatDao.insertCraigMsgAttach(attach);
