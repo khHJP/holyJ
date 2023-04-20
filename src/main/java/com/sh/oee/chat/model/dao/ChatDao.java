@@ -47,9 +47,11 @@ public interface ChatDao {
 	@Update("update craig_chat set del_date = #{delDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
 	int updateDel(Map<String, Object> delMap);
 
-	@Update("update craig_chat set del_date = null, reg_date = #{regDate} where chatroom_id = #{chatroomId} and member_id = #{memberId}")
-	int updateRegDel(Map<String, Object> regDelMap);
-
+	// 채팅방 재입장
+	@Update("update craig_chat set del_date = null, reg_date = sysdate where chatroom_id = #{chatroomId} and member_id = #{memberId}")
+	int reJoinCraigChat(Map<String, Object> reJoinMap);
+	
+	
 	int insertCraigMsgAttach(MsgAttach attach);
 
 	@Select("select * from craig_msg_attach where re_filename = #{content}")
@@ -95,6 +97,8 @@ public interface ChatDao {
 	
 	@Select("select * from together_chat where member_id = #{memberId} and together_no = #{chatroomNo}")
 	TogetherChat findTogetherChat(Map<String, Object> findChat);
+
+
 
 
 }
