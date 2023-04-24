@@ -32,7 +32,7 @@ public interface ChatService {
 
 	List<CraigMsg> findCraigMsgAfterReg(Map<String, Object> delMap);
 
-	int updateDel(Map<String, Object> delMap);
+	int exitCraigChat(Map<String, Object> delMap);
 
 	int reJoinCraigChat(Map<String, Object> reJoinMap);
 

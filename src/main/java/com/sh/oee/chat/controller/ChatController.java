@@ -398,18 +398,13 @@ public class ChatController {
 	/**
 	 * 중고거래 채팅방 나가기 처리 
 	 */
-	@PostMapping("/updateDel.do")
-	public void updateDel(@RequestParam String memberId, @RequestParam String chatroomId) {
-		LocalDateTime delDate = LocalDateTime.now();
-		
-		log.debug("채팅방아이디 = {}", chatroomId);
-		
+	@PostMapping("/exitCraigChat.do")
+	public void exitCraigChat(@RequestParam String memberId, @RequestParam String chatroomId) {
 		Map<String, Object> delMap= new HashMap<>();
 		delMap.put("memberId", memberId);
 		delMap.put("chatroomId", chatroomId);
-		delMap.put("delDate", delDate);
-		
-		int result = chatService.updateDel(delMap);
+
+		int result = chatService.exitCraigChat(delMap);
 	}
 	
 	/**

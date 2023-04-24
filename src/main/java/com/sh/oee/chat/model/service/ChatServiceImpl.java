@@ -132,8 +132,8 @@ public class ChatServiceImpl implements ChatService {
 	 * - del_date를 현재 날짜로 변경
 	 */
 	@Override
-	public int updateDel(Map<String, Object> delMap) {
-		return chatDao.updateDel(delMap);
+	public int exitCraigChat(Map<String, Object> delMap) {
+		return chatDao.exitCraigChat(delMap);
 	}
 
 	/**
