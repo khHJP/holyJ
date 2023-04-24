@@ -75,8 +75,8 @@ public class ChatServiceImpl implements ChatService {
 	 * - CRAIG_CHAT에서 craigChatMap에 담아온 memberId, 게시글id로 판매자 채팅목록 조회
 	 */
 	@Override
-	public List<String> findCraigChatList(Map<String, Object> craigChatMap) {
-		return chatDao.findCraigChatList(craigChatMap);
+	public List<String> findAllCraigChatroomIds(Map<String, Object> craigChatMap) {
+		return chatDao.findAllCraigChatroomIds(craigChatMap);
 	}
 
 	/**

@@ -32,7 +32,7 @@ public interface ChatDao {
 	String findOtherFromCraigChat(Map<String, Object> startUser);
 
 	@Select("select chatroom_id from craig_chat where member_id = #{memberId} and craig_no = #{craigNo}")
-	List<String> findCraigChatList(Map<String, Object> craigChatMap);
+	List<String> findAllCraigChatroomIds(Map<String, Object> craigChatMap);
  	
 	int insertCraigMsg(CraigMsg craigMsg);
 

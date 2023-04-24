@@ -33,29 +33,22 @@
 			<!-- 게시글정보 start -->
 			<div id="craig_bar">
 				<div class="craig_info_wrap">
-					<c:if test="${craigImg[0] == null}">	
-						<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
-					</c:if>
-					<c:if test="${craigImg[0] != null}">
-						<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/upload/craig/${craigImg[0].reFilename}"alt="" />
-					</c:if>
+						<c:if test="${craig.attachments[0] == null}">	
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
+						</c:if>
+						<c:if test="${craig.attachments[0] != null}">
+							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/upload/craig/${craig.attachments[0].reFilename}"alt="" />
+						</c:if>
 					<div class="craig_text">
 						<p class="craig_status">
 							<c:choose>
-								<c:when test="${craig.state eq 'CR1'}">
-							예약중
-							</c:when>
-								<c:when test="${craig.state eq 'CR2'}">
-							판매중
-							</c:when>
-								<c:when test="${craig.state eq 'CR3'}">
-							판매완료
-							</c:when>
+								<c:when test="${craig.state eq 'CR1'}">예약중</c:when>
+								<c:when test="${craig.state eq 'CR2'}">판매중</c:when>
+								<c:when test="${craig.state eq 'CR3'}">판매완료</c:when>
 							</c:choose>
 						</p>
 						<p class="craig_name">${craig.title}</p>
-						<span class="price"> <fmt:formatNumber
-								value="${craig.price}" pattern="#,###" />원
+						<span class="price"> <fmt:formatNumber value="${craig.price}" pattern="#,###" />원
 						</span>
 					</div>
 				</div>
@@ -71,12 +64,19 @@
 							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
 								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
 								<div id="chatList-wrap">
-        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherUser.profileImg}" alt="profileImg"/>
         							<div class="chatList-header">
         								<div id="chatUserInfo">
-		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+		        		       				<strong class="mb-1">${chatMember.otherUser.nickname}</strong>
 					          				<small>${chatMember.otherDong}</small>
-				        					<div class="last-chatting">${fn:substring(chatMember.lastChat.content, 0, 10)} …</div>
+				        					<div class="last-chatting">
+				        						<c:if test="${chatMember.lastChat.content.length() > 10}">
+					        						${fn:substring(chatMember.lastChat.content, 0, 10)} …				        						
+				        						</c:if>
+				        						<c:if test="${chatMember.lastChat.content.length() <= 10}">
+					        						${chatMember.lastChat.content}				        						
+				        						</c:if>
+				        					</div>
         								</div>
         							</div>
         						</div>
@@ -89,10 +89,10 @@
 							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
 								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
 								<div id="chatList-wrap">
-        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherUser.profileImg}" alt="profileImg"/>
         							<div class="chatList-header">
         								<div id="chatUserInfo">
-		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+		        		       				<strong class="mb-1">${chatMember.otherUser.nickname}</strong>
 					          				<small>${chatMember.otherDong}</small>
 				        					<div class="last-chatting" style="color: #7FB77E;">(이미지파일)</div>
         								</div>
@@ -106,10 +106,10 @@
 							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
 								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
 								<div id="chatList-wrap">
-        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherUser.profileImg}" alt="profileImg"/>
         							<div class="chatList-header">
         								<div id="chatUserInfo">
-		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+		        		       				<strong class="mb-1">${chatMember.otherUser.nickname}</strong>
 					          				<small>${chatMember.otherDong}</small>
 				        					<div class="last-chatting" style="color: #7FB77E;">(예약)</div>
         								</div>
@@ -123,10 +123,10 @@
 							<a href="#" class="toChatroom list-group-item list-group-item-action py-3 lh-sm" aria-current="true" onclick="openChat(this)">
 								<input type="hidden" name="chatroomId" value="${chatMember.lastChat.chatroomId}"/>
 								<div id="chatList-wrap">
-        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherProf}" alt="profileImg"/>
+        	 						<img src="${pageContext.request.contextPath}/resources/upload/profile/${chatMember.otherUser.profileImg}" alt="profileImg"/>
         							<div class="chatList-header">
         								<div id="chatUserInfo">
-		        		       				<strong class="mb-1">${chatMember.otherName}</strong>
+		        		       				<strong class="mb-1">${chatMember.otherUser.nickname}</strong>
 					          				<small>${chatMember.otherDong}</small>
 				        					<div class="last-chatting" style="color: #7FB77E;">(장소공유)</div>
         								</div>
