@@ -22,7 +22,7 @@ public interface ChatService {
 
 	String findOtherFromCraigChat(Map<String, Object> startUser);
 
-	List<String> findCraigChatList(Map<String, Object> craigChatMap);
+	List<String> findAllCraigChatroomIds(Map<String, Object> craigChatMap);
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 

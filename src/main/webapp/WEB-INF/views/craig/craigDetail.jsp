@@ -584,7 +584,7 @@ document.querySelector("#delconfirm").addEventListener('click', (e) => {
 document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 	const craigNo = ${craigboard.no}
 
-	const url = `${pageContext.request.contextPath}/chat/craigChatList.do?craigNo=\${craigNo}`;
+	const url = `${pageContext.request.contextPath}/chat/sellerChatList.do?craigNo=\${craigNo}`;
 	const name = "craigChatList";
 	const spec = "width=500px, height=790px, scrollbars=yes";
 	open(url, name, spec);

@@ -415,74 +415,53 @@ public class ChatController {
 	/**
 	 * 중고거래 게시글 작성자가 본인 게시글에서 대화중인 채팅방 선택시
 	 */
-	@GetMapping("/craigChatList.do")
-	public void craigChatList(@RequestParam int craigNo, Authentication authentication, Model model) {
-		// 1. 로그인한 사용자 id 꺼내기 (판매자)
+	@GetMapping("/sellerChatList.do")
+	public void sellerChatList(@RequestParam int craigNo, Authentication authentication, Model model) {
+		// 각 채팅방별 대화상대 정보, 마지막채팅을 Model에 담기 위해 List 선언
+		List<Map<String, Object>> chatModel = new ArrayList<>();
+		
+		// 1. 게시글 정보 (+첨부파일)
+		Craig craig = craigService.findCraigByCraigNo(craigNo);
+		craig.setAttachments(craigService.selectcraigAttachments(craigNo));
+		model.addAttribute("craig", craig);
+		
+		// 2. 로그인한 사용자 id 꺼내기 (판매자)
 		String memberId = ((Member) authentication.getPrincipal()).getMemberId();
-//		log.debug("판매자 = {}", memberId);
 
-		// 2. memberId, craigNo로 chatroom_id 조회
+		// 3. memberId, craigNo로 모든 채팅방 chatroom_id 조회
 		Map<String, Object> craigChatMap = new HashMap<>();
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("craigNo", craigNo);
+		List<String> chatroomIds = chatService.findAllCraigChatroomIds(craigChatMap);
 
-		// 3. 해당 chatroomId로 모든 채팅방 조회해 List에 담기
-		List<String> craigChatList = chatService.findCraigChatList(craigChatMap);
-//		log.debug("채팅방id = {}", craigChatList);
-
-		CraigMsg lastChat = new CraigMsg();
-
-//		log.debug("리스트보기 = {}", craigChatList);
-
-		// model로 전달할 대화상대 + 마지막메시지 객체
-		List<Map<String, Object>> chatModel = new ArrayList<>();
-
-		for (int i = 0; i < craigChatList.size(); i++) {
-
-			String chatroomId = craigChatList.get(i);
-			// 1. 채팅방id로 각 채팅방 마지막 메시지 가져옴
-			lastChat = chatService.findLastCraigMsgByChatroomId(chatroomId);
-
-			if (lastChat != null) {
-				// 2. 현재 사용자 id, 채팅방id로 각 채팅방의 대화상대 가져옴
+		// 4. chatroomId 별로 대화상대 객체, 마지막채팅메시지 조회
+		for(String chatroomId : chatroomIds) {
+			List<CraigMsg> craigMsgs = findCraigMsg(chatroomId, memberId);
+			if( !craigMsgs.isEmpty() ) { // not null으론 안걸러짐! 
+				
+				// 4-1. 현재 사용자 id, 채팅방id로 각 채팅방의 대화상대 가져옴
 				Map<String, Object> startUser = new HashMap<>();
 				startUser.put("memberId", memberId);
 				startUser.put("chatroomId", chatroomId);
-				// 대화상대 id
-				String otherUserId = chatService.findOtherFromCraigChat(startUser);
-				// id로 Member객체 가져옴
-				Member otherUser = memberService.selectOneMember(otherUserId);
-
-				// 대화상대 닉네임
-				String otherName = otherUser.getNickname();
+				
+				// 대화상대 객체 (닉네임, 지역, 프로필사진)
+				Member otherUser = memberService.selectOneMember(chatService.findOtherFromCraigChat(startUser));
 				// 대화상대 동 정보
 				String otherDong = memberService.selectMydongName(otherUser.getDongNo());
-				// 대화상대 프로필이미지
-				String otherProf = otherUser.getProfileImg();
-
-				// 3. 대화상대 + 메시지 담을 map
+				// 마지막메시지 
+				CraigMsg lastChat = craigMsgs.get(craigMsgs.size() - 1);
+				
+				// 4-2 각 정보를 map에 담고, List에 추가
 				Map<String, Object> chatMap = new HashMap<>();
-				chatMap.put("otherName", otherName);
+				chatMap.put("otherUser", otherUser);
 				chatMap.put("otherDong", otherDong);
-				chatMap.put("otherProf", otherProf);
 				chatMap.put("lastChat", lastChat);
-
-				// 4. map을 List에 추가
+				
 				chatModel.add(chatMap);
 			}
 		}
-
 		// 5. model에 List 넣어주기!
 		model.addAttribute("chatModel", chatModel);
-
-		// 6. model에 해당 중고거래 게시글 객체 담기
-		Craig craig = craigService.findCraigByCraigNo(craigNo);
-		model.addAttribute("craig", craig);
-
-		// 7. model에 해당 중고거래 게시글 이미지 담기
-		List<CraigAttachment> craigImg = craigService.selectcraigAttachments(craigNo);
-		model.addAttribute("craigImg", craigImg);
-
 	}
 
 	/**
@@ -576,30 +555,15 @@ public class ChatController {
 		
 		// 1. craigChat객체 가져오기 (chatroomId, memberId)
 		Map<String, Object> craigChatMap = new HashMap<>();
+		
 		craigChatMap.put("memberId", memberId);
 		craigChatMap.put("chatroomId", chatroomId);
 
 		CraigChat craigChat = chatService.findCraigChat(craigChatMap);
 		
-		// 2. 채팅내역 담기 - DEL_DATE 조회 후 분기 
-			// 2-1. 나갔던 채팅방일 경우
-			if(craigChat.getDelDate() != null) {
-				// craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
-				Map<String, Object> reJoinMap = new HashMap<>();
-				reJoinMap.put("memberId", memberId);
-				reJoinMap.put("chatroomId", chatroomId);
-				chatService.reJoinCraigChat(reJoinMap);	
-			}
-			// 2-2. reg_date 이후 내화내역 담기
-			// sent_time은 unix초 형식 -> reg_date와 비교를 위해 변환
-			Map<String, Object> regMap = new HashMap<>();
-			Timestamp regDate = Timestamp.valueOf(craigChat.getRegDate());
-			
-			regMap.put("regDate", regDate.getTime());
-			regMap.put("chatroomId", chatroomId);
-			
-			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
-			model.addAttribute("craigMsgs", craigMsgs);		
+		// 2. craigMsgs 담기
+		craigMsgs = findCraigMsg(chatroomId, memberId);
+		model.addAttribute("craigMsgs", craigMsgs);		
 		
 		
 		// 3. PLACE 메시지 담기
@@ -665,6 +629,40 @@ public class ChatController {
 				
 
 		return "chat/craigChatroom";
+	}
+		
+	public List<CraigMsg> findCraigMsg(String chatroomId, String memberId){
+		CraigChat craigChat = null; // craigChat 객체 선언
+		List<CraigMsg> craigMsgs = null; // craigMsgs 객체 선언
+			
+		// 1. craigChat객체 가져오기 (chatroomId, memberId)
+		Map<String, Object> craigChatMap = new HashMap<>();
+		craigChatMap.put("memberId", memberId);
+		craigChatMap.put("chatroomId", chatroomId);
+
+		craigChat = chatService.findCraigChat(craigChatMap);
+		
+		// 2. 채팅내역 담기 - DEL_DATE 조회 후 분기 
+			// 2-1. 나갔던 채팅방일 경우
+			if(craigChat.getDelDate() != null) {
+				// craig_chat의 해당 멤버 행 update (reg_date: 지금, del_date: null)
+				Map<String, Object> reJoinMap = new HashMap<>();
+				reJoinMap.put("memberId", memberId);
+				reJoinMap.put("chatroomId", chatroomId);
+				chatService.reJoinCraigChat(reJoinMap);	
+			}
+			// 2-2. reg_date 이후 내화내역 담기
+			// sent_time은 unix초 형식 -> reg_date와 비교를 위해 변환
+			Map<String, Object> regMap = new HashMap<>();
+			Timestamp regDate = Timestamp.valueOf(craigChat.getRegDate());
+			
+			regMap.put("regDate", regDate.getTime());
+			regMap.put("chatroomId", chatroomId);
+			
+			craigMsgs = chatService.findCraigMsgAfterReg(regMap);
+
+			
+		return craigMsgs;
 	}
 	
 	public String convertMeetingDate (LocalDateTime meetingDate){
