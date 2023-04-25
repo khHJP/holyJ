@@ -75,8 +75,8 @@ public class ChatServiceImpl implements ChatService {
 	 * - CRAIG_CHAT에서 craigChatMap에 담아온 memberId, 게시글id로 판매자 채팅목록 조회
 	 */
 	@Override
-	public List<String> findCraigChatList(Map<String, Object> craigChatMap) {
-		return chatDao.findCraigChatList(craigChatMap);
+	public List<String> findAllCraigChatroomIds(Map<String, Object> craigChatMap) {
+		return chatDao.findAllCraigChatroomIds(craigChatMap);
 	}
 
 	/**
@@ -132,15 +132,19 @@ public class ChatServiceImpl implements ChatService {
 	 * - del_date를 현재 날짜로 변경
 	 */
 	@Override
-	public int updateDel(Map<String, Object> delMap) {
-		return chatDao.updateDel(delMap);
+	public int exitCraigChat(Map<String, Object> delMap) {
+		return chatDao.exitCraigChat(delMap);
 	}
 
+	/**
+	 * UPDATE
+	 * - reg_date를 현재 날짜로, del_date을 null로 변경
+	 */
 	@Override
-	public int updateRegDel(Map<String, Object> regDelMap) {
-		return chatDao.updateRegDel(regDelMap);
+	public int reJoinCraigChat(Map<String, Object> reJoinMap) {
+		return chatDao.reJoinCraigChat(reJoinMap);
 	}
-
+	
 	@Override
 	public int insertCraigMsgAttach(MsgAttach attach) {
 		return chatDao.insertCraigMsgAttach(attach);

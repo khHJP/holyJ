@@ -22,7 +22,7 @@ public interface ChatService {
 
 	String findOtherFromCraigChat(Map<String, Object> startUser);
 
-	List<String> findCraigChatList(Map<String, Object> craigChatMap);
+	List<String> findAllCraigChatroomIds(Map<String, Object> craigChatMap);
 
 	CraigMsg findLastCraigMsgByChatroomId(String chatroomId);
 
@@ -32,9 +32,9 @@ public interface ChatService {
 
 	List<CraigMsg> findCraigMsgAfterReg(Map<String, Object> delMap);
 
-	int updateDel(Map<String, Object> delMap);
+	int exitCraigChat(Map<String, Object> delMap);
 
-	int updateRegDel(Map<String, Object> regDelMap);
+	int reJoinCraigChat(Map<String, Object> reJoinMap);
 
 	int insertCraigMsgAttach(MsgAttach attach);
 
@@ -65,6 +65,8 @@ public interface ChatService {
 	TogetherChat findTogetherChat(Map<String, Object> findChat);
 
 	int exitTogether(Map<String, Object> delMap);
+
+
 
 
 }
