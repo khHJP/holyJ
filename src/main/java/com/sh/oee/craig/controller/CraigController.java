@@ -511,7 +511,7 @@ public class CraigController {
     }
 	 
     
-    // ■ 비동기 카테고리 검색
+    // ■ 비동기 카테고리 검색 - 원래버전
     @ResponseBody
     @GetMapping("/selectCategorySearch.do")
     public Map<String, Object>  selectCategorySearch( @RequestParam int categoryNo,
@@ -591,7 +591,65 @@ public class CraigController {
 	 
 
 	 
-	 
+    // ■ 비동기 카테고리 검색 -- 리팩토링 0425
+    @PostMapping("/selectCategorySearchNew.do")
+    public String  selectCategorySearchNew( @RequestParam int categoryNo,
+    		@RequestParam(defaultValue = "1")int cpage, Model model, Authentication authentication ) {    	
+    			
+    	log.debug( "■■■■ searparamchCraigs : " + categoryNo ); 
+    			
+    			// member  
+    			Member member = ((Member)authentication.getPrincipal());
+			
+    			// dong range  
+    			int dongNo = member.getDongNo();
+    			String NF = member.getDongRange().toString();	
+
+    			String searchDong = memberService.selectMydongName(dongNo ) + ","; //자기동네
+    				   searchDong += memberService.selectDongNearOnly(dongNo );
+    			
+    			if(NF.equals("F")) {
+    				searchDong += "," + memberService.selectDongNearFar(dongNo );
+    				log.debug( "■ searchDong = {}", searchDong);
+    			}
+    			
+    			List<String> dongList = Arrays.asList(searchDong.split(","));
+    			log.debug( "■ dongList = {}", dongList);
+    			
+    			// paging
+    			int limit = 12; //한페이지당 조회할 게시글 수 
+    			int offset = (cpage - 1)*limit; // 현제페이지가 1 ->  첫페이지는 0 //  현재페이지가 2 -> 두번째 페이지는 10 
+    		
+    			RowBounds rowBounds = new RowBounds(offset, limit);
+ 
+				///////////// donglist, 키워드, rowbounds
+    			String searchKeyword = null;
+		    	Map<String, Object> param = new HashMap<>();    	
+		    	param.put("dongName", dongList); //ㅁㅁ
+		    	param.put("categoryNo", categoryNo);
+		    	param.put("searchKeyword", searchKeyword);
+		    	log.debug( "■■■■ categoryparam : " + param ); 
+		    	
+		    	
+    			List<Craig> searchCrategory = craigService.craigList(param, rowBounds);
+				log.debug( "■■■■ searchCraigs : " + searchCrategory ); 
+    	
+				List<Integer> wishCnt = craigService.selectCraigWishCnt(param, rowBounds); //
+				List<Integer> craigChatCnt = craigService.selectCraigChatCnt(param, rowBounds);  //
+				log.debug( "■■■■ wishCnt(List) = {}, craigChatCnt(List) = {}", wishCnt , craigChatCnt );				
+
+				int totals = craigService.getContentCnt(param );	
+				int totalPage = (int) Math.ceil((double) totals/limit);	
+	
+				// model에 담기
+				model.addAttribute("searchCrategory",searchCrategory );
+				model.addAttribute("wishCnt",wishCnt );
+				model.addAttribute("craigChatCnt",craigChatCnt );
+				model.addAttribute("totalPage",totalPage );
+				model.addAttribute("page", cpage );
+				
+				return "craig/craigCategoryResult";
+    } 
 	 
 	 
 	 

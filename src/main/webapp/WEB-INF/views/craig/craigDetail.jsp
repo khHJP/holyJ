@@ -657,7 +657,7 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 	});
 	
 	
-	//채팅방 나가면 바로 -1 되게
+
 	
 </script>
 </c:if>
