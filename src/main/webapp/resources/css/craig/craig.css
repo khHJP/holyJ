@@ -3,9 +3,11 @@ body {
 	margin: 0 auto;
 	font-family: 'Noto Sans KR', sans-serif;
 	min-width: 1200px;
-    max-width: 1200px;
+/*     max-width: 1200px; */
 	min-height: 1000px;
 	overflow-x: hidden;
+	margin: 0 auto;
+	
 	
 }
 
@@ -27,10 +29,8 @@ body {
 .seconddivv{
 	display: flex;
     width: 1300px;
-    justify-content: flex-start
-    align-items: center;
-    margin-left: 270px;
-    margin-top: 0px;
+    justify-content: flex-start align-items: center;
+	margin: 0 auto;
     padding-top: 38px;
 }
 
@@ -44,6 +44,8 @@ body {
   border-radius: 5px 0 0 5px;
   color: black;
 }
+
+
 
 .searchTerm:focus{
   color: #black;
@@ -73,6 +75,7 @@ body {
 <!-- wholetbl -->
 #craigWholeListTbl{
 	margin: 0 auto;
+	text-align: center;
 }
 
 .crpp{
@@ -350,10 +353,7 @@ h5{
 }
 **/
 
-#eachimg:hover{
-	transform: scale( 1.08 );
-  	transition: all 0.5s	
-}
+d
 
 #statemodalcfm:hover{
 	color:black;
@@ -516,4 +516,10 @@ h5{
     width: 400px;
     display: inline;
     top: -64px;
+}
+
+#eachimg:hover{
+    cursor: pointer;
+    transform: scale(1.05, 1.05);
+    transition-duration: 0.7s
 }

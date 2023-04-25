@@ -76,6 +76,20 @@ window.addEventListener('load', (e) => {
 			alert(`[공지] > \${msg}`);
 			
 		});
+		
+		
+		setTimeout( ()=>{
+			stompClient.subscribe("/app/craig/findCraigsbyKeyword", (message) => {
+		
+			console.log("뭐지?");
+			console.log( message );
+//			const { title, content } = JSON.parse(message.body);
+//			console.log("/app/craig/findCraigsbyKeyword : ", message);		
+//			alert(` 답을줘 > \${message}`);
+//			alert("오긴오니?", message, title, content)
+		});
+		}, 1500)
+		//혜진추가 
 	});
 	</script>
 </sec:authorize>
