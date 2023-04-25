@@ -275,18 +275,25 @@
 							  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 30%; display: absolute;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 						</c:if>
-						<c:if test="${craigboard.member.manner ge 35 && craigboard.member.manner lt 50}">
+						<c:if test="${craigboard.member.manner ge 35 && craigboard.member.manner lt 40}">
 							<span style="color: #56C271">°C</span>
 							<span style="position:relative; top:5px;" >☺️</span>
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px;">
 							  <div class="progress-bar bg-warning" role="progressbar" style="width: 65%; background-color:color: #56C271 !important; float: right; margin-right: 0" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 						</c:if>
+						<c:if test="${craigboard.member.manner ge 40 && craigboard.member.manner lt 50}">
+							<span style="color: #FEC106">°C</span>
+							<span style="position:relative; top:5px;" >🥰</span>
+							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px;">
+							  <div class="progress-bar bg-warning" role="progressbar" style="width: 65%; background-color: #ffc107 !important; color: #ffc107 !important; float: right; margin-right: 0" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</c:if>
 						<c:if test="${craigboard.member.manner ge 50}">
 							<span style="color: red">°C</span>
 							<span style="position:relative; top:5px;" >😍</span>
 							<div class="progress" style="width:80px; height: 10px; position: relative; left:195px; top: 5px">
-							  <div class="progress-bar bg-danger" role="progressbar" style="width: 90%; margin-right: 0;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="80"></div>
+							  <div class="progress-bar bg-danger" role="progressbar" style="width: 90%; margin-right: 0;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="80" ></div>
 							</div>
 						</c:if>
 					</div>
@@ -689,7 +696,8 @@ document.querySelector("#writerChatBtn").addEventListener('click', (e) => {
 		console.log(temperature);
 		
 		if(temperature.innerText < 30) temperature.style.color = '#3AB0FF'; 
-		else if(temperature.innerText >= 30 && temperature.innerText < 50) temperature.style.color = '#56C271'; 
+		else if(temperature.innerText >= 30 && temperature.innerText < 40) temperature.style.color = '#56C271'; 
+		else if(temperature.innerText >= 40 && temperature.innerText < 50) temperature.style.color = '#FEC106'; 
 		else if(temperature.innerText >= 50) temperature.style.color = '#F94C66'; 
 		
 	});

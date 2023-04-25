@@ -53,7 +53,7 @@
 	
 	.explains{ margin-bottom: 50px; width : 240px; margin: auto; }
 	
-	#eachimg{ border-radius: 15px 15px 15px 15px;  margin-bottom: 15px; }
+	#eachimg{ border-radius : 15px 15px 15px 15px;  margin-bottom: 15px; }
 	
 	.page-link{ color: green; }
 	
@@ -182,7 +182,6 @@
 					</c:if>
 				</c:forEach>
 			
-			
 <%--  ★★★★★ 검색 결과 ★★★★★--%>
 		<c:if test="${searchCraigs != null}">
 			<c:forEach items="${searchCraigs}" var="searchcraig" varStatus="searchvs">
@@ -236,6 +235,8 @@
 			</tbody>
 		</table><br><br><br><br><br>
 </section>
+
+
 
 		<%-- ◆◆◆ 페이징 ◆◆◆--%>
 		<nav aria-label="Page navigation example">
@@ -423,9 +424,10 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 			data : { categoryNo : categoryNumber,
 					 cpage : searchPage },
 			success(data){
-				 console.log("마지막으로 한번만더 조회")
+				console.log("마지막으로 한번만더 조회")
 				console.log(data);						 
 			
+				
 				const tr1 =  document.createElement("tr");
 				  	tr1.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
 	
@@ -433,8 +435,10 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 				  	tr2.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
 	
 				const tr3 =  document.createElement("tr");
-				  	tr3.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
+					  tr3.style.cssText = "padding-bottom : 30px; margin-bottom : 30px";
 	
+  
+					  
 				if( data.wishCnt[0] == null || data.totalPage == 0  ){ // 결과없다 
 
 					tbody.innerHTML = `<p style='position:absolute; top: 520px; left:600px; font-size:33px' >
@@ -442,11 +446,14 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 										<img  style='width:700px; height: 600px; position:relative; top: 220px; left:280px; display : block;' 
 						    				src='${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png'/><br/></br></br>`;
 				};
-	
+
+				
+
 				// ** 엄청난 비동기의 시작 .... 		
 				for( let i=0; i<data.searchCrategory.length; i++ ){
-					let img_html = ``; //◆◆◆이미지
+
 					
+					let img_html = ``; //◆◆◆이미지
 					if( data.searchCrategory[i].attachments[0].reFilename != null  ){
 						img_html = `<div class="explains"><a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg"  style="display : inline-block; height : 250px; width:240px;" 
 						    		src="${pageContext.request.contextPath}/resources/upload/craig/\${data.searchCrategory[i].attachments[0].reFilename}" /></a><br/>`
@@ -455,6 +462,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 						img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.searchCrategory[i].no}" /><img id="eachimg" style="display : inline-block; height : 250px; width:240px;" 
 						    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
 				    }
+  
 						
 					let price_html = ``; //◆◆◆ 가격
 					if( data.searchCrategory[i].price > 0  ){
@@ -466,7 +474,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:15px; font-size: 17px;">나눔💚</p>`
 				    }
 					else{
-						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:15px; font-size: 17px;"> data.searchCrategory[i].price원</p>`
+						price_html = `<p id="crPrice" class="crpp" style="margin-bottom: 3px; margin-top:15px; font-size: 17px;"> \${data.searchCrategory[i].price}원</p>`
 				    }
 					
 					
@@ -593,6 +601,28 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 	});
 </script>
 
+<%--
+				var list = new Array();
+				// ** 엄청난 비동기의 시작 .... 		
+				for( let i=0; i<data.searchCrategory.length; i++ ){
+					
+					<c:forEach items = "${data.searchCrategory}" var = "cdata"   >
+						console.log( "test" )
+						console.log( cdata)
+						if( cdata.attachments[0].reFilename != null  ){
+							img_html = `<div class="explains">
+											<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.no}" /><img id="eachimg"  style="display : inline-block; height : 250px; width:240px;" 
+							    		src="${pageContext.request.contextPath}/resources/upload/craig/\${cdata.reFilename}" /></a><br/>`
+						  }
+						else if( cdata.attachments[0].reFilename == null  ){
+							img_html = `<a href = "${pageContext.request.contextPath}/craig/craigDetail.do?no=\${data.no}" /><img id="eachimg" style="display : inline-block; height : 250px; width:240px;" 
+							    					src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png"/></a><br/>`
+				    	}
+						
+					</c:forEach>
+					
+
+ --%>
 
 <br><br><br><br>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

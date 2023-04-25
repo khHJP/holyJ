@@ -30,8 +30,7 @@ public class CraigCronTest {
 	@Autowired
 	private MannerService mannerService;
 	
-/**	혜진만 주석풀고 메소드 실행합니다! -- 시연할때 그 노트북으로에서만 주석풀기  **/
-	@Scheduled(cron="0 30 12 * * *")  // 11시 실행한다는 의미 
+	@Scheduled(cron="0 16 6 * * *")   
 	public void craigCronSchedule() { // 매일 4시에 실행  
 
 		// 1) 전체 매너리스트 확인한다  
@@ -91,8 +90,3 @@ public class CraigCronTest {
 }
 
 
-/*
-매일새벽1시에 실행하기 
-@SchedulerLock(name = "craigCronSchedule", lockAtMostForString = TEN_MIN,  lockAtLeastForString = TEN_MIN)
-
- */

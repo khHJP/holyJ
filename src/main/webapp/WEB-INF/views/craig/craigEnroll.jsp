@@ -193,7 +193,7 @@ function sharecheck(){
 //form 유효성검사 
 document.craigEnrollFrm.onsubmit = (e) =>{
 	console.log ( e );
-
+	const frm = document.craigEnrollFrm;
 	const title = e.target.title; 
 	const content  = e.target.content;
 	const placeDetail  = e.target.placeDetail;
@@ -256,6 +256,24 @@ document.craigEnrollFrm.onsubmit = (e) =>{
 		return false;
 	}
 	
+
+	const payload = {
+
+		title : title.value,
+		content : content.value
+	}
+	
+	stompClient.send(`/app/craig/findCraigsbyKeyword`,{}, JSON.stringify(payload) );
+<%--
+<<< MESSAGE
+destination:/app/craig/findCraigsbyKeyword
+subscription:sub-1
+message-id:5dijms5v-4
+content-length:37
+
+{"title":"ㅇㅇ","content":"ㄴㅇ"}
+--%>
+
 }
 </script>
 
