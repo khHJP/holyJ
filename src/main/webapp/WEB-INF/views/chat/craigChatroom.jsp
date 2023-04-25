@@ -93,7 +93,6 @@
 			<div id="craig_bar">
 				<div class="craig_info_wrap"> 
 					<!-- 게시글 썸네일 이미지 start -->
-
 						<c:if test="${craig.attachments[0] == null}">	
 							<img style="width: 60px; height: 60px;" src="${pageContext.request.contextPath}/resources/images/OEE-LOGO2.png" alt="" />
 						</c:if>
@@ -813,125 +812,127 @@ $(function(){
 });
 
 
+/* 메시지 전송 중복 메소드 */
+function sendMessage(payload){
+	stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+}
+
 /* 예약 */
 document.querySelector("#saveMeeting").addEventListener('click', (e) => {
-	const frm = document.querySelector("#timeForm");
-	const time = frm.time.value; // 19:12
+const frm = document.querySelector("#timeForm");
+const time = frm.time.value; // 19:12
 	
-	const dateBtn = document.querySelector("#meetingDate");
-	const placeBtn = document.querySelector("#meetingPlace");
-	
-	
-	/* 대화이력 조회 start */
-	 $.ajax({
-	        headers,
-	        url : '${pageContext.request.contextPath}/chat/criagMsgCnt',
-	        data : {chatroomId},
-	        dataType: "json",
-	        type : "GET",
-	        success(data){
-	  			
-	        	// 채팅방 대화이력 없을때
-	        	if(data == 0){
-	        		console.log("메시지없음");
-	        		alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
-	        		frm.reset(); // 시간폼 초기화
-	        		$("#datePicker").datepicker("clearDates"); // datepicker 초기화
-	        		$("#meetingModal").modal('hide'); // 모달 감추기	
-	        		
-	        	} else {
-	        	// 채팅방 대화이력 있을때
-	        		if(!time){
-	        			alert("시간을 선택해주세요.");
-	        		}
-	        		else if(!meetingDate){
-	        			alert("날짜를 선택해주세요.");
-	        		}
-	        		else{
-	        			// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
-	        			meetingDate.setHours(time.substring(0, 2));
-	        			meetingDate.setMinutes(time.slice(-2)); 
-	        			
-	        			
-	        			// date버튼 html용 
-	        			let mon = meetingDate.getMonth() + 1;
-	        			let day = meetingDate.getDate();
-	        			const weekday = ['일', '월', '화', '수', '목', '금', '토'];
-	        			let week = weekday[meetingDate.getDay()];
-	        			let times = convertTime(meetingDate);
-	        			
-	        			let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
-	        			console.log(dateHtml);
-	        			
-	        			// 07:19 
-	        			// hours가 10보다 작다면 앞에 0, 
-	        			// 오전 12시는 0 으로 찍힘 
-	        			
-
-	        			// 2023-04-12 19:12 형식으로 변환
-	        			let date = meetingDate.getFullYear() + '-' 
-	        						+ ( (meetingDate.getMonth() + 1) < 9 ? 
-	        								"0" + (meetingDate.getMonth() + 1) : (meetingDate.getMonth() + 1)) + '-'
-	        						+ ( (meetingDate.getDate()) < 10 ? 
-	        								"0" + (meetingDate.getDate()) : (meetingDate.getDate()) ) + ' '
-	        						+ ( (meetingDate.getHours()) < 10 ?
-	        								"0" + (meetingDate.getHours()) : (meetingDate.getHours()) ) + ':' 
-	        						+ ( meetingDate.getMinutes() < 10 ? 
-	        								"0" + (meetingDate.getMinutes()) : (meetingDate.getMinutes()));
-	        			meetingDate = date;
-	        		
-	        			
-	        		/* 중고거래 예약 테이블에 행 추가 */
-	        	    $.ajax({
-	        		        headers,
-	        		        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
-	        		        data : {
-	        					chatroomId, memberId, meetingDate
-	        		        },
-	        		        type : "POST",
-	        		        success(data){
-	        					
-	        		        	// 약속 메시지 보내기
-	        			        const payload = {
-	        				        	chatroomId,
-	        			             	writer : '<sec:authentication property="principal.username"/>',
-	        			             	content : dateHtml,
-	        			             	sentTime : Date.now(),
-	        			             	type : 'BOOK',
-	        			            }
-	        				        stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
-	        		        	
-	        		        },
-	        		        error: console.log
-	        		    });  
-	        		
-	        				
-	        			document.querySelector(".btnWrap").innerHTML += `
-	        				<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
-	        				<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
-	        			`
-
-	        			$("#meeting").css({
-	        				"display" : "none"
-	        			}); 	
-	        			
-	        			$(".craig_status").html("예약중");
-	        			
-	        			$("#meetingModal").modal('hide'); // 모달 감추기	        	
-	        		
-	        		} /* else절 끝*/
-	
-	        	} /* success 끝 */
-	    	
-	        },
-	        error: console.log
-		  
- 		});  /* 대화이력 조회 end */
+// 1. 대화이력 존재여부 확인
+ $.ajax({
+    headers,
+    url: '${pageContext.request.contextPath}/chat/criagMsgCnt',
+    data: { chatroomId },
+    dataType: "json",
+    type: "GET",
+    success(data) {
+	// 1-1. 대화이력 없음
+   	if (data === 0) {
+        alert("상대방과 대화한 후에 약속을 잡을 수 있어요.");
+        resetMeetingFrm(frm);
+        $("#meetingModal").modal('hide');
+      } 
+	// 1-2. 대화이력 있음
+      else {
+    	// 시간 미선택시
+   		if(!time){
+   			alert("시간을 선택해주세요.");
+   			return;
+   		}
+    	// 날짜 미선택시
+   		else if(!meetingDate){
+   			alert("날짜를 선택해주세요.");
+   			return;
+   		}
+    	// 시간, 날짜 모두 선택시
+   		else{
+			// meetingDate의 시간을 사용자가 입력한 값으로 바꿔준다 // Wed Apr 12 2023 19:12:00 GMT+0900 (한국 표준시)
+			meetingDate.setHours(time.substring(0, 2));
+			meetingDate.setMinutes(time.slice(-2)); 
+			
+			// 버튼용 html 
+   			let dateHtml = convertDateHtml(meetingDate);
+			
+			// 3. Meeting테이블에 행추가 // 2023-04-12 19:12 형식으로 변환
+			enrollMeeting(convertMeetingDate(meetingDate), dateHtml);
+			
+			// 4. 버튼내용 변경 및 후처리
+			document.querySelector(".btnWrap").innerHTML += `
+				<button id="meetingDate" type="button" class="btn btn-success">\${dateHtml}</button>
+				<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>
+			`
+			$("#meeting").css({
+				"display" : "none"
+			}); 	
+			
+			$(".craig_status").html("예약중");
+			
+			$("#meetingModal").modal('hide'); // 모달 감추기	
+   		} /* else절 끝*/
+      } /* success 끝 */
+    },
+    error: console.log
+  });
 });
 
+/* Meeting테이블 행추가 + 예약 메시지 전송 */
+function enrollMeeting(meetingDate, dateHtml){
+    $.ajax({
+        headers,
+        url : '${pageContext.request.contextPath}/craigMeeting/enrollMeeting',
+        data : {
+			chatroomId, memberId, meetingDate
+        },
+        type : "POST",
+        success(data){
+		     // 약속 메시지 보내기
+		      const payload = {
+	       		chatroomId,
+	          	writer : '<sec:authentication property="principal.username"/>',
+	           	content : dateHtml,
+	           	sentTime : Date.now(),
+	           	type : 'BOOK',
+      		}
+		   	sendMessage(payload);     	
+        },
+        error: console.log
+    });  
+}
 
+/* date버튼 html변경용 */
+function convertDateHtml(meetingDate){
+	let mon = meetingDate.getMonth() + 1;
+	let day = meetingDate.getDate();
+	const weekday = ['일', '월', '화', '수', '목', '금', '토'];
 
+	let week = weekday[meetingDate.getDay()];
+	let times = convertTime(meetingDate);
+	
+	let dateHtml = mon + '/' + day + '(' + week + ') ' + times;
+	
+	return dateHtml;
+}
 
+/* meetingDate 2023-04-12 19:12 형식으로 변환 */
+function convertMeetingDate(meetingDate){	
+	const year = meetingDate.getFullYear();
+	const month = (meetingDate.getMonth() + 1) < 9 ? "0" + (meetingDate.getMonth() + 1) : meetingDate.getMonth() + 1;
+	const date = meetingDate.getDate() < 10 ? "0" + meetingDate.getDate() : meetingDate.getDate();
+	const hour = meetingDate.getHours() < 10 ? "0" + meetingDate.getHours() : meetingDate.getHours();
+	const minute = meetingDate.getMinutes() < 10 ? "0" + meetingDate.getMinutes() : meetingDate.getMinutes();
+	
+	return year + '-' + month + '-' + date + ' ' + hour + ':' + minute;
+}
+
+/* 예약폼 초기화 */
+function resetMeetingFrm(form){
+	form.reset(); // 시간폼 초기화
+	$("#datePicker").datepicker("clearDates"); // datepicker 초기화
+}
 
 /********************* 첨부파일 관련 *************************/
 document.querySelector("#sendBtn").addEventListener("click", (e) => {
@@ -991,6 +992,7 @@ document.querySelector("#upFile").addEventListener("change", (e) => {
 	else
 		label.innerHTML = '파일을 선택하세요'	;
 });
+
 
 
 /********************* 일반 메시지 전송 *************************/
@@ -1297,29 +1299,31 @@ document.querySelector("#craigExit").addEventListener("click", (e) => {
 
 
 
-/* 채팅시간 12시간으로 변환하는 함수 */
+/* 채팅시간 12시간 format으로 변환하는 함수 */
 function convertTime(now){
 	let hour = now.getHours();
 	let min = now.getMinutes();
 	let daynight;
 	
-	console.log(hour + "시간찍어"); // 11
 	if (hour < 12){
 		daynight = '오전';
 		
 		if(hour == '0'){
-			daynight = '오전';
-			hour = '12';
+			hour = 12;
 		}
 	}
 	else {
 		daynight = '오후';
-		hour -= 12;
 		
-		if (hour < 10){
-			hour = '0' + hour;
+		if(hour != 12){
+			hour -= 12;
 		}
+		
 	} 
+
+	if (hour < 10){
+		hour = '0' + hour;
+	}
 
 	if (min < 10){
 		min = '0' + min;
