@@ -215,7 +215,7 @@ body {
   list-style: none;
   position: relative;
   float: right;
-  left:-55px;
+  left:-480px;
   top:10px;
   margin-left: -150px;
   padding: 10px;
@@ -233,7 +233,7 @@ body {
 .tb-menu-toggle {
   border: 0;
   position: relative;
-  left : 1000px;
+  left : 1272px;
   top: 30px;
   background: transparent;
   cursor: pointer;
@@ -418,7 +418,7 @@ d
 	border-radius:10px;
 	position: absolute; left: 1154px;
     left: 1090px;
-    top: 762px;
+    top: 783px;
 }
 	
 .mannerdgr{
