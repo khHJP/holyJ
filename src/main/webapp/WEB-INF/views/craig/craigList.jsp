@@ -406,12 +406,13 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 		h3.innerHTML = "";
 		nav.innerHTML = "";
 		
+		
 		if( page == 1 ){ // 앞에 내용이 나와야되니까 
 			tbody.innerHTML = ""; //일단 tbody 안에 내용 비운다 
 		}
 
 //		console.log( "버튼에서 호출했을때 categoryNumber -> " , categoryNumber   );
-//		console.log("내가호출한 함수의 page : ", page );
+		console.log("내가호출한 함수의 page : ", page );
 		
 		const csrfHeader = "${_csrf.headerName}";
 		const csrfToken = "${_csrf.token}";
@@ -428,8 +429,15 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 					 cpage : searchPage },
 			success(data){
 						 
- 				$("tbody").html(data);
-// 				console.log( data );
+				let oldData;						 
+				if( page == 1 ){
+					oldData = $("tbody").html(data);				    	
+				}
+
+				if( page > 1){
+					$("tbody").append(data);
+			    }
+
  			},
 			error : console.log,
 			complete(){
@@ -460,7 +468,7 @@ document.querySelector(".searchButton").addEventListener('click', (e)=>{
 	
 		 const searchPage = document.querySelector("#searchPage").innerHTML; //searchPage		 
 		 getMoreCategory(searchPage, letCategoryLi); // ■■ 더보기함수호출
-//		 console.log( "함수호출후" , searchPage,  letCategoryLi  ); // 해당  page, li
+		 console.log( "더보기실행 : searchPage ", searchPage   ); // 해당  page, li
 	});
 </script>
 

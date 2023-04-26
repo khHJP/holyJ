@@ -90,8 +90,9 @@
 	.bg-warning {   background-color: #56C271 !important; }
 </style>
 
+
 <br>
-<%-- 수정 / 삭제하기 위로 올림 --%>
+<%-- 수정 / 삭제하기 --%>
 <sec:authentication property="principal" var="loginMember" />
 <c:if test="${craigboard.member.memberId == loginMember.memberId  }">
 	<h3 id="menu-toggle" style="width: 50px; margin-right: -50px;">Menu</h3>
@@ -105,6 +106,7 @@
 	  	</li> 
 	</ul>
 </c:if>
+
 
 <%-- img --%>
 <c:if
@@ -181,6 +183,7 @@
 		<!-- inner -->
 	</div>
 </c:if>
+
 
 <!--  Profile -->
 <table id="crboProfiletbl">
