@@ -213,6 +213,8 @@ public class MemberController {
 				RedirectAttributes redirectAttr) {
 			log.debug("member = {}", member);
 			String rawPassword = member.getPassword();
+			String name = ((Member)authentication.getPrincipal()).getProfileImg();
+			log.debug("name= {}",name);
 			String encodePassword = passwordEncoder.encode(rawPassword);
 			member.setPassword(encodePassword);
 			
@@ -223,7 +225,10 @@ public class MemberController {
 			log.debug("saveDirectory = {}", saveDirectory);
 			
 			// 만약 업로드된 사이즈가 0보다 크면
-			if(imageUpload.getSize() > 0) {
+			if(imageUpload.getSize() <= 0) {
+				member.setProfileImg(name);
+			}
+			else {				
 				// OeeUtils에 가서 파일 이름을 가져온다.
 				String profileImg = OeeUtils.idMultipartFile(imageUpload, authentication);
 				// 파일지정 주소와 memberId.확장자를 새로운 File객체에 덮어씌운다.
@@ -237,9 +242,6 @@ public class MemberController {
 				 log.debug("profileImg = {} ",profileImg);
 				 // 2. profile member에 추가		
 				 member.setProfileImg(profileImg);
-			}
-			else {
-				member.setProfileImg("oee.png");
 			}
 			// 1. db변경
 			int result = memberService.updateMember(member);			
