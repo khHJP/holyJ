@@ -113,45 +113,50 @@
 						<span class="price"> <fmt:formatNumber value="${craig.price}" pattern="#,###" />원</span>
 					</div>
 				</div>
-				<div class="btnWrap">
-					<!-- 예약중일때  -->
-					<c:if test="${craig.state eq 'CR1'}">
-						<!-- 로그인중인 사용자가 예약자일때 / 게시글 작성자일때 -->
-						<c:if test="${memberId == craig.buyer || memberId == craig.writer}">
-							<!-- 약속잡기 안했을때  -->
-							<c:if test="${meeting == null}">
-								<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>	
-								<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal" style="display: none;">장소공유</button>				
+				<div class="btnWrap">	
+					<%-- 판매글 상태에 따른 분기 --%>
+					<c:choose>	
+						<%-- 1. 예약중 --%>
+						<c:when test="${craig.state eq 'CR1'}">
+							<%-- 1-1. 예약자-판매자간 채팅방 --%>
+							<c:if test="${chatroomId == meeting.chatroomId}">							
+								<%-- a. 약속잡기X  --%>
+								<c:if test="${meeting == null}">
+									<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>	
+									<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal" style="display: none;">장소공유</button>				
+								</c:if>
+								<%-- b. 약속잡기O  --%>
+								<c:if test="${meeting != null}">
+									<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
+									<%-- 약속잡기O + 장소공유X --%>
+									<c:if test="${meeting.longitude == null || meeting.longitude == ''}">
+										<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
+									</c:if>								
+								</c:if>
 							</c:if>
-							<!-- 약속잡기 했을때 -->
-							<c:if test="${meeting != null}">
-								<button id="meetingDate" type="button" class="btn  btn-success" >${meetingDate}</button>	
-								<!-- 장소공유 안했을때 -->
-								<c:if test="${meeting.longitude == null || meeting.longitude == '' }">
-									<button id="meetingPlace" type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#locationModal">장소공유</button>													
-								</c:if>								
+							
+							<%-- 1-2. 그 외 채팅방 --%>
+							<c:if test="${chatroomId != meeting.chatroomId}">
+								<button type="button" class="btn btn-success" >예약중</button>
 							</c:if>
-						</c:if>
-					
-						<!-- 예약자가 아닐때 -->
-						<c:if test="${memberId != craig.buyer && memberId != craig.writer}">
-							<button type="button" class="btn btn-success" >예약중</button>
-						</c:if>
-					</c:if >		
-					<!-- 판매중일때  -->
-						<c:if test="${craig.state eq 'CR2'}">
+						</c:when>
+						
+						<%-- 2. 판매중 --%>
+						<c:when test="${craig.state eq 'CR2'}">
 							<button id="meeting" type="button" class="btn btn-outline-secondary"  data-toggle="modal" data-target="#meetingModal">약속잡기</button>			
-						</c:if>
-					<!-- 판매완료일때  -->	
-					<c:if test="${craig.state eq 'CR3'}">
-						<button type="button" class="btn btn-dark" > 판매완료 </button> 
-<%-- 분기 --%>				<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
-							<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
-						</c:if>
-					</c:if>
+						</c:when>
+						
+						<%-- 3. 판매완료 --%>
+						<c:when test="${craig.state eq 'CR3'}">
+							<button type="button" class="btn btn-dark" > 판매완료 </button> 
+							<%-- 혜진 거래후기 분기 --%>
+							<c:if test="${ ( mydonemanner.mannerNo == null &&  memberId == craig.writer)  || ( mydonemanner.mannerNo == null &&  memberId == craig.buyer)   }">
+								<button id="sendreview" class="btn btn-outline-secondary" style="width: 88px; margin-left:10px; padding-left :5px; padding-right :5px" >후기보내기</button>
+							</c:if>
+						</c:when>
+					</c:choose>
 				</div> <!-- btnWrap end -->
 			</div>	<!-- craig_bar end -->	
-						
 <%-- ★★★★★★★★★    ε=ε=ε=(~￣▽￣)~  혜진 거래후기보내기 시작   ε=ε=ε=(~￣▽￣)~  ★★★★★★★★★ --%>		
 			<%-- 1) 거래후기보내기 modal start(혜진) --%>
 			<%--  최초 거래후기보내기 클릭시 뜨는멘트    --%>
@@ -812,7 +817,7 @@ $(function(){
 });
 
 
-/* 메시지 전송 중복 메소드 */
+/* 메시지 전송 */
 function sendMessage(payload){
 	stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
 }
@@ -890,14 +895,7 @@ function enrollMeeting(meetingDate, dateHtml){
         type : "POST",
         success(data){
 		     // 약속 메시지 보내기
-		      const payload = {
-	       		chatroomId,
-	          	writer : '<sec:authentication property="principal.username"/>',
-	           	content : dateHtml,
-	           	sentTime : Date.now(),
-	           	type : 'BOOK',
-      		}
-		   	sendMessage(payload);     	
+		   	sendMessage(createChatPayload(dateHtml, 'BOOK'));     	
         },
         error: console.log
     });  
@@ -1000,19 +998,9 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	// 1. input에 작성한 메세지내용 가져오기
 	const msg = document.querySelector("#msg");
 	if(!msg.value) return; // 메시지 없을시 return 
-	
-	// 2. payload : CraigMsg와 규격 맞춤
-	const payload = {
-		chatroomId,
-		writer : '<sec:authentication property="principal.username"/>',
-		content : msg.value,
-		sentTime : Date.now(),
-		type : 'CHAT',
-		prof : '${chatUser.profileImg}'
-	};
-	
-	// 3. 전송
-	stompClient.send(`/app/craigChat/${chatroomId}`, {}, JSON.stringify(payload));
+
+	// 2. 전송
+	sendMessage(createChatPayload(msg.value, 'CHAT'));
 	msg.value = '';
 	msg.focus();
 }); 
@@ -1025,7 +1013,7 @@ stompClient.connect({}, (frame) => {
 		const {'content-type' : contentType} = message.headers;
 		
 		// 받아온 json 구조분해할당
-		const {writer, content, sentTime, type, prof} = JSON.parse(message.body);
+		const {writer, content, sentTime, type} = JSON.parse(message.body);
 		const time = convertTime(new Date(sentTime)); // jquery Date으로 변경 + 12시간 변환함수
 		
 		
@@ -1297,9 +1285,19 @@ document.querySelector("#craigExit").addEventListener("click", (e) => {
 });
 
 
+/* payload 생성 */
+function createChatPayload(content, type){
+	const payload = {
+	      		chatroomId,
+	        	writer : '<sec:authentication property="principal.username"/>',
+	        	content : content,
+	        	sentTime : Date.now(),
+	        	type : type
+	       }
+	return payload;
+}
 
-
-/* 채팅시간 12시간 format으로 변환하는 함수 */
+/* 채팅시간 12시간 format으로 변환 */
 function convertTime(now){
 	let hour = now.getHours();
 	let min = now.getMinutes();
