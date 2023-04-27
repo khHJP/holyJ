@@ -58,8 +58,11 @@
 	
 </c:forEach>
 
+<p> ${totalPage} </p>
+
 <c:if test="${totalPage >= 2}">
 <script>
+console.log( "왜 ?? ",  ${totalPage}   );
 	// 더보기 버튼 보일 경우 
 		if( ${totalPage} > 1 ){
 			const searchPageResultjsp = document.querySelector("#searchPage").innerHTML;
