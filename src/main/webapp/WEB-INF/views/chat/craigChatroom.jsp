@@ -1005,6 +1005,92 @@ document.querySelector("#sendBtn").addEventListener("click", (e) => {
 	msg.focus();
 }); 
 	
+function createPlaceMessge(content){
+	// 1. content에서 위/경도, 장소명 가져오기
+	const [latitude, longitude, placeName] = content.split(',');
+	console.log(latitude);
+	
+	// 2. 장소채팅용 map 생성 
+    var placeMapContainer = document.getElementById("placeMap"),
+    	mapOption = {
+    	center : new kakao.maps.LatLng(meetingLat, meetingLon),
+    	level: 2
+    };
+	var placeMap = new kakao.maps.Map(placeMapContainer, mapOption);
+	
+	// 3. 마커생성 및 배치
+	var placeMarker = new kakao.maps.Marker({
+		position: new kakao.maps.LatLng(meetingLat, meetingLon)
+	});
+	placeMarker.setMap(placeMap);
+	
+	// 4. 인포윈도우 내용   
+	var iwContent = 
+		`<div style="padding:5px;">
+			\${placeName}<br><a href="https://map.kakao.com/link/to/\${placeName},\${meetingLat},\${meetingLon}" style="color:blue" target="_blank">길찾기</a>
+		</div>`;
+	
+	// 5. 인포윈도우 생성 및 배치
+	var infowindow = new kakao.maps.InfoWindow({
+	    position : new kakao.maps.LatLng(meetingLat, meetingLon), 
+	    content : iwContent 
+	});
+	infowindow.open(placeMap, placeMarker); 
+	
+}
+	
+function handleMyMessage(type, content, time, ul){
+	const li = document.createElement("li");
+	li.classList.add("replies");
+	const p = document.createElement("p");
+	const div = document.createElement("div");
+	const img = document.createElement("img");
+	const span = document.createElement("span");
+	span.classList.add("msg_time");
+	span.innerHTML = `\${time}`;
+	
+	switch(type){
+	case "CHAT":
+			p.innerHTML = `\${content}`
+			li.append(p, span);
+			ul.append(li);
+		break;
+		
+	case "FILE":
+			div.classList.add("attachFile");
+			img.classList.add("attachImg");
+			img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
+			div.append(img);
+	
+			li.append(div, span);
+			ul.append(li);
+		break;
+		
+	case "PLACE":
+		div.id = "placeMap";
+		div.setAttribute("onload", "placeMap.relayout();");
+		
+		li.append(div, span);
+		ul.append(li);
+		createPlaceMessge(content);
+		break;
+	
+	case "BOOK":
+			const myNick = '${chatUser.nickname}';
+			const bookLi = document.createElement("li");
+			const bookSpan = document.createElement("span");
+			
+			bookLi.classList.add("book");
+			bookSpan.innerHTML = `\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!`;
+			
+			div.append(bookSpan);
+			bookLi.append(div);
+			ul.append(bookLi);
+		break;
+	}
+	
+}
+	
 /********************* 구독 *************************/
 stompClient.connect({}, (frame) => {
 	
@@ -1023,105 +1109,7 @@ stompClient.connect({}, (frame) => {
 			
 			/*** ------- 내가 보낸 메시지 start ------- ***/
 			if(memberId == writer){
-				
-				/* 메시지 유형이 chat */
-				if( type == 'CHAT'){
-					ul.innerHTML += `
-					<li class="replies">
-						<p>\${content}</p>	
-						<span class="msg_time">\${time}</span>
-					</li>
-					`;
-				} 
-				
-				/* 메시지 유형이 file */
-				else if ( type == 'FILE'){
-					const li = document.createElement("li");
-					li.classList.add("replies");
-	
-					const div = document.createElement("div");
-					div.classList.add("attachFile");
-					
-					const img = document.createElement("img");
-					img.classList.add("attachImg");
-					img.src = `${pageContext.request.contextPath}/resources/upload/chat/craig/\${content}`;
-					div.append(img);
-	
-					const span = document.createElement("span");
-					span.classList.add("msg_time");
-					span.innerHTML = `\${time}`;
-					
-					li.append(div, span);
-					ul.append(li);
-				}
-				
-				/* 메시지 유형이 place */
-				else if ( type == 'PLACE'){
-					const li = document.createElement("li");
-					li.classList.add("replies");
-	
-					const div = document.createElement("div");
-					div.id = "placeMap";
-					div.setAttribute("onload", "placeMap.relayout();");
-		
-					const span = document.createElement("span");
-					span.classList.add("msg_time");
-					span.innerHTML = `\${time}`;
-					
-					li.append(div, span);
-					ul.append(li);	
-			
-					// content에서 위/경도, 장소명 가져오기
-					let places = content.split(',');
-					const meetingLat = places[0];
-					const meetingLon = places[1];
-					const placeName = places[2];
-					
-					console.log(meetingLat);
-					console.log(meetingLon);
-					console.log(placeName);
-					
-			   		 // 장소채팅용 map 
-			        var placeMapContainer = document.getElementById("placeMap"),
-			        	mapOption = {
-			        	center : new kakao.maps.LatLng(meetingLat, meetingLon),
-			        	level: 2
-			        };
-			   		var placeMap = new kakao.maps.Map(placeMapContainer, mapOption);
-			    	
-			   		// 마커
-			   		var placeMarker = new kakao.maps.Marker({
-			    		position: new kakao.maps.LatLng(meetingLat, meetingLon)
-			    	});
-			    	
-			    	placeMarker.setMap(placeMap);
-			    	
-					// 인포윈도우 내용   
-					var iwContent = 
-						`<div style="padding:5px;">
-							\${placeName}<br><a href="https://map.kakao.com/link/to/\${placeName},\${meetingLat},\${meetingLon}" style="color:blue" target="_blank">길찾기</a>
-						</div>`;
-					
-					// 인포윈도우 생성
-					var infowindow = new kakao.maps.InfoWindow({
-					    position : new kakao.maps.LatLng(meetingLat, meetingLon), 
-					    content : iwContent 
-					});
-					
-					infowindow.open(placeMap, placeMarker); 
-				}
-				
-				/* 메시지 유형이 book*/
-				if( type == 'BOOK'){
-					const myNick = '${chatUser.nickname}';
-					ul.innerHTML += `
-					<li class="book"> 
-						<div>
-							<span>\${myNick} 님이 \${content} 에 약속을 만들었어요.<br>약속은 꼭 지켜주세요!</span>
-						</div>
-					</li>
-					`;
-				}
+				 handleMyMessage(type, content, time, ul);
 			}/*** ------- 내가 보낸 메시지 end ------- ***/
 				
 			/*** ------- 상대방이 보낸 메시지 start ------- ***/
